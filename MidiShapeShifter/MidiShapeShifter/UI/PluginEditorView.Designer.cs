@@ -28,32 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.Label label1;
-            label1 = new System.Windows.Forms.Label();
+            this.components = new System.ComponentModel.Container();
+            this.zedGraphControl1 = new ZedGraph.ZedGraphControl();
             this.SuspendLayout();
             // 
-            // label1
+            // zedGraphControl1
             // 
-            label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(27, 54);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(165, 13);
-            label1.TabIndex = 0;
-            label1.Text = "TODO: Create a custom Editor UI";
+            this.zedGraphControl1.Location = new System.Drawing.Point(321, 33);
+            this.zedGraphControl1.Name = "zedGraphControl1";
+            this.zedGraphControl1.ScrollGrace = 0;
+            this.zedGraphControl1.ScrollMaxX = 0;
+            this.zedGraphControl1.ScrollMaxY = 0;
+            this.zedGraphControl1.ScrollMaxY2 = 0;
+            this.zedGraphControl1.ScrollMinX = 0;
+            this.zedGraphControl1.ScrollMinY = 0;
+            this.zedGraphControl1.ScrollMinY2 = 0;
+            this.zedGraphControl1.Size = new System.Drawing.Size(352, 325);
+            this.zedGraphControl1.TabIndex = 1;
             // 
             // PluginEditorView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(label1);
+            this.Controls.Add(this.zedGraphControl1);
             this.Name = "PluginEditorView";
-            this.Size = new System.Drawing.Size(215, 122);
+            this.Size = new System.Drawing.Size(711, 442);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
+
+        private ZedGraph.ZedGraphControl zedGraphControl1;
 
     }
 }
