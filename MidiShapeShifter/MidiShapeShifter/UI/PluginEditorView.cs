@@ -11,7 +11,7 @@ namespace MidiShapeShifter.UI
 
         private void testKnob_KnobChangeValue(object sender, LBSoft.IndustrialCtrls.Knobs.LBKnobEventArgs e)
         {
-            testKnobDisplay.Text = System.Math.Round((double) testKnob.Value, 2).ToString();
+            presetParam1Value.Text = System.Math.Round((double) presetParam1Knob.Value, 2).ToString();
         }
     }
 }
