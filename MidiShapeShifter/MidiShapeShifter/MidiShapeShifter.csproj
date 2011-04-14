@@ -70,12 +70,23 @@
     <Compile Include="Dmp\Gain.cs" />
     <Compile Include="Dmp\MidiHelper.cs" />
     <Compile Include="Dmp\Transpose.cs" />
+    <Compile Include="UI\MappingDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MappingDlg.Designer.cs">
+      <DependentUpon>MappingDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="MidiProcessor.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="PluginCommandStub.cs" />
     <Compile Include="PluginEditor.cs" />
     <Compile Include="PluginPrograms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="UI\PluginEditorView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -84,10 +95,51 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\PluginEditorView.resx">
       <DependentUpon>PluginEditorView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgAddBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgDeleteBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgDeleteGrey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgDownBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgDownGrey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgEditBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgEditGrey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgNotebookBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgOpenBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgSaveBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgUpBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgUpGrey.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
