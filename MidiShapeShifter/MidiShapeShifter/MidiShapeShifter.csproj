@@ -66,17 +66,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DummyAudioProcessor.cs" />
-    <Compile Include="Dmp\Gain.cs" />
-    <Compile Include="Dmp\MidiHelper.cs" />
-    <Compile Include="Dmp\Transpose.cs" />
+    <Compile Include="DummyAudioHandler.cs" />
+    <Compile Include="MidiHelper.cs" />
+    <Compile Include="MidiProcessors\MidiProcessor.cs" />
     <Compile Include="UI\MappingDlg.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\MappingDlg.Designer.cs">
       <DependentUpon>MappingDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="MidiProcessor.cs" />
+    <Compile Include="MidiHandler.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="PluginCommandStub.cs" />
     <Compile Include="PluginEditor.cs" />

@@ -9,7 +9,7 @@ namespace MidiShapeShifter.UI
             InitializeComponent();
         }
 
-        private void testKnob_KnobChangeValue(object sender, LBSoft.IndustrialCtrls.Knobs.LBKnobEventArgs e)
+        private void presetParam1Knob_KnobChangeValue(object sender, LBSoft.IndustrialCtrls.Knobs.LBKnobEventArgs e)
         {
             presetParam1Value.Text = System.Math.Round((double) presetParam1Knob.Value, 2).ToString();
         }

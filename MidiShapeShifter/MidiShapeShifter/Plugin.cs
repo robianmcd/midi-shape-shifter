@@ -9,26 +9,11 @@ namespace MidiShapeShifter
     /// </summary>
     internal sealed class Plugin : VstPluginWithInterfaceManagerBase
     {
-        /// <summary>
-        /// TODO: assign a unique plugin.
-        /// </summary>
-        private static readonly int UniquePluginId = new FourCharacterCode("1234").ToInt32();
-        /// <summary>
-        /// TODO: assign a plugin name.
-        /// </summary>
-        private static readonly string PluginName = "MyPluginName";
-        /// <summary>
-        /// TODO: assign a product name.
-        /// </summary>
-        private static readonly string ProductName = "MyProduct";
-        /// <summary>
-        /// TODO: assign a vendor name.
-        /// </summary>
-        private static readonly string VendorName = "MyVendor";
-        /// <summary>
-        /// TODO: assign a plugin version.
-        /// </summary>
-        private static readonly int PluginVersion = 0000;
+        private static readonly int UniquePluginId = new FourCharacterCode("1132").ToInt32();
+        private static readonly string PluginName = "Midi Shape Shifter";
+        private static readonly string ProductName = "Midi Shape Shifter";
+        private static readonly string VendorName = "SpeqSoft";
+        private static readonly int PluginVersion = 1;
 
         /// <summary>
         /// Initializes the one an only instance of the Plugin root object.
@@ -36,7 +21,6 @@ namespace MidiShapeShifter
         public Plugin()
             : base(PluginName,
             new VstProductInfo(ProductName, VendorName, PluginVersion),
-                // TODO: what type of plugin are your making?
                 VstPluginCategory.Effect,
                 VstPluginCapabilities.NoSoundInStop,
                 // initial delay: number of samples your plugin lags behind.
@@ -47,17 +31,17 @@ namespace MidiShapeShifter
         /// <summary>
         /// Gets the audio processor object.
         /// </summary>
-        public DummyAudioProcessor AudioProcessor
+        public DummyAudioHandler AudioProcessor
         {
-            get { return GetInstance<DummyAudioProcessor>(); }
+            get { return GetInstance<DummyAudioHandler>(); }
         }
 
         /// <summary>
         /// Gets the midi processor object.
         /// </summary>
-        public MidiProcessor MidiProcessor
+        public MidiHandler MidiProcessor
         {
-            get { return GetInstance<MidiProcessor>(); }
+            get { return GetInstance<MidiHandler>(); }
         }
 
         /// <summary>
@@ -89,7 +73,7 @@ namespace MidiShapeShifter
 
             if (instance == null)
             {
-                return new DummyAudioProcessor(this);
+                return new DummyAudioHandler(this);
             }
 
             // TODO: implement a thread-safe wrapper.
@@ -106,7 +90,7 @@ namespace MidiShapeShifter
         {
             if (instance == null)
             {
-                return new MidiProcessor(this);
+                return new MidiHandler(this);
             }
 
             // TODO: implement a thread-safe wrapper.

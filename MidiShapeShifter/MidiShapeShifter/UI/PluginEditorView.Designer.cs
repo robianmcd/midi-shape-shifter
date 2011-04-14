@@ -122,7 +122,7 @@
             this.presetParam1Knob.Style = LBSoft.IndustrialCtrls.Knobs.LBKnob.KnobStyle.Circular;
             this.presetParam1Knob.TabIndex = 2;
             this.presetParam1Knob.Value = 0F;
-            this.presetParam1Knob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.testKnob_KnobChangeValue);
+            this.presetParam1Knob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.presetParam1Knob_KnobChangeValue);
             // 
             // presetParam1Value
             // 
@@ -162,7 +162,7 @@
             this.curveGroup.Controls.Add(this.radioCurveEquation);
             this.curveGroup.Location = new System.Drawing.Point(360, 292);
             this.curveGroup.Name = "curveGroup";
-            this.curveGroup.Size = new System.Drawing.Size(273, 173);
+            this.curveGroup.Size = new System.Drawing.Size(273, 171);
             this.curveGroup.TabIndex = 6;
             this.curveGroup.TabStop = false;
             this.curveGroup.Text = "Curve Shape";
@@ -171,10 +171,10 @@
             // 
             this.equationBookBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgNotebookBlue;
             this.equationBookBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.equationBookBtn.Location = new System.Drawing.Point(234, 18);
+            this.equationBookBtn.Location = new System.Drawing.Point(236, 20);
             this.equationBookBtn.Margin = new System.Windows.Forms.Padding(0);
             this.equationBookBtn.Name = "equationBookBtn";
-            this.equationBookBtn.Size = new System.Drawing.Size(30, 30);
+            this.equationBookBtn.Size = new System.Drawing.Size(28, 28);
             this.equationBookBtn.TabIndex = 9;
             this.equationBookBtn.UseVisualStyleBackColor = true;
             // 
@@ -320,7 +320,7 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(86, 28);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(145, 20);
+            this.textBox1.Size = new System.Drawing.Size(147, 20);
             this.textBox1.TabIndex = 2;
             this.textBox1.Text = "Normalize(LFO(Sine, 1, 2))";
             // 
@@ -376,7 +376,7 @@
             this.groupBox1.Controls.Add(this.variableAValue);
             this.groupBox1.Controls.Add(this.variableATitle);
             this.groupBox1.Controls.Add(this.variableAKnob);
-            this.groupBox1.Location = new System.Drawing.Point(0, 325);
+            this.groupBox1.Location = new System.Drawing.Point(0, 323);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(340, 140);
             this.groupBox1.TabIndex = 7;
@@ -678,7 +678,7 @@
             this.addBtn.Location = new System.Drawing.Point(3, 291);
             this.addBtn.Margin = new System.Windows.Forms.Padding(0);
             this.addBtn.Name = "addBtn";
-            this.addBtn.Size = new System.Drawing.Size(30, 30);
+            this.addBtn.Size = new System.Drawing.Size(28, 28);
             this.addBtn.TabIndex = 8;
             this.addBtn.UseVisualStyleBackColor = true;
             // 
@@ -689,7 +689,7 @@
             this.deleteBtn.Location = new System.Drawing.Point(33, 291);
             this.deleteBtn.Margin = new System.Windows.Forms.Padding(0);
             this.deleteBtn.Name = "deleteBtn";
-            this.deleteBtn.Size = new System.Drawing.Size(30, 30);
+            this.deleteBtn.Size = new System.Drawing.Size(28, 28);
             this.deleteBtn.TabIndex = 9;
             this.deleteBtn.UseVisualStyleBackColor = true;
             // 
@@ -700,7 +700,7 @@
             this.editBtn.Location = new System.Drawing.Point(63, 291);
             this.editBtn.Margin = new System.Windows.Forms.Padding(0);
             this.editBtn.Name = "editBtn";
-            this.editBtn.Size = new System.Drawing.Size(30, 30);
+            this.editBtn.Size = new System.Drawing.Size(28, 28);
             this.editBtn.TabIndex = 10;
             this.editBtn.UseVisualStyleBackColor = true;
             // 
@@ -711,7 +711,7 @@
             this.moveUpBtn.Location = new System.Drawing.Point(95, 291);
             this.moveUpBtn.Margin = new System.Windows.Forms.Padding(0);
             this.moveUpBtn.Name = "moveUpBtn";
-            this.moveUpBtn.Size = new System.Drawing.Size(30, 30);
+            this.moveUpBtn.Size = new System.Drawing.Size(28, 28);
             this.moveUpBtn.TabIndex = 11;
             this.moveUpBtn.UseVisualStyleBackColor = true;
             // 
@@ -722,7 +722,7 @@
             this.moveDownBtn.Location = new System.Drawing.Point(125, 291);
             this.moveDownBtn.Margin = new System.Windows.Forms.Padding(0);
             this.moveDownBtn.Name = "moveDownBtn";
-            this.moveDownBtn.Size = new System.Drawing.Size(30, 30);
+            this.moveDownBtn.Size = new System.Drawing.Size(28, 28);
             this.moveDownBtn.TabIndex = 12;
             this.moveDownBtn.UseVisualStyleBackColor = true;
             // 
@@ -740,7 +740,7 @@
             this.Controls.Add(this.mappingList);
             this.Controls.Add(this.zedGraphControl1);
             this.Name = "PluginEditorView";
-            this.Size = new System.Drawing.Size(641, 471);
+            this.Size = new System.Drawing.Size(641, 469);
             this.curveGroup.ResumeLayout(false);
             this.curveGroup.PerformLayout();
             this.groupBox1.ResumeLayout(false);
