@@ -68,10 +68,10 @@ namespace MidiShapeShifter.UI
         }
 
         private void lbKnob_KnobChangeValue(object sender, LBSoft.IndustrialCtrls.Knobs.LBKnobEventArgs e) {
-            var trackBar = (LBKnob)sender;
-            var paramMgr = (VstParameterManager)trackBar.Tag;
+            var knob = (LBKnob)sender;
+            var paramMgr = (VstParameterManager)knob.Tag;
 
-            paramMgr.ActiveParameter.Value = trackBar.Value;
+            paramMgr.ActiveParameter.Value = knob.Value;
         }
             
         private void presetParam1Knob_KnobChangeValue(object sender, LBSoft.IndustrialCtrls.Knobs.LBKnobEventArgs e)
