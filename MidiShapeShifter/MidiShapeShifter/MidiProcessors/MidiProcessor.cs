@@ -3,7 +3,7 @@ using Jacobi.Vst.Framework;
 
 namespace MidiShapeShifter.MidiProcessors
 {
-    class MidiProcessor
+    internal sealed class MidiProcessor
     {
         private static readonly string PARAM_CATEGORY_NAME = "Variable";
 
@@ -18,16 +18,16 @@ namespace MidiShapeShifter.MidiProcessors
             m_plugin = plugin;
 
             VstParameterInfo paramInfo;
-            paramInfo = InitializeVariableParam("Variable A");
+            paramInfo = InitializeVariableParam("A");
             VariableAMgr = new VstParameterManager(paramInfo);
             
-            paramInfo = InitializeVariableParam("Variable B");
+            paramInfo = InitializeVariableParam("B");
             VariableBMgr = new VstParameterManager(paramInfo);
             
-            paramInfo = InitializeVariableParam("Variable C");
+            paramInfo = InitializeVariableParam("C");
             VariableCMgr = new VstParameterManager(paramInfo);
             
-            paramInfo = InitializeVariableParam("Variable D");
+            paramInfo = InitializeVariableParam("D");
             VariableDMgr = new VstParameterManager(paramInfo);
         }
 
@@ -46,7 +46,7 @@ namespace MidiShapeShifter.MidiProcessors
             paramInfo.Category = paramCategory;
             paramInfo.CanBeAutomated = true;
             paramInfo.Name = name;
-            paramInfo.Label = "units";
+            paramInfo.Label = "";
             paramInfo.ShortLabel = "";
             paramInfo.MinInteger = 0;
             paramInfo.MaxInteger = 1;

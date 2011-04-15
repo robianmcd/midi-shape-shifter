@@ -11,12 +11,12 @@ namespace MidiShapeShifter
     internal sealed class MidiHandler : IVstMidiProcessor, IVstPluginMidiSource
     {
         private Plugin _plugin;
-        private MidiProcessor _processor;
+        internal MidiProcessor processor {get; private set;}
 
         public MidiHandler(Plugin plugin)
         {
             _plugin = plugin;
-            _processor = new MidiProcessor(plugin);
+            processor = new MidiProcessor(plugin);
 
             // for most host midi output is expected during the audio processing cycle.
             SyncWithAudioProcessor = true;
@@ -76,7 +76,7 @@ namespace MidiShapeShifter
                     {
                         VstMidiEvent midiEvent = (VstMidiEvent)evnt;
 
-                        midiEvent = _processor.ProcessEvent(midiEvent);
+                        midiEvent = processor.ProcessEvent(midiEvent);
 
                         outEvents.Add(midiEvent);
                     }

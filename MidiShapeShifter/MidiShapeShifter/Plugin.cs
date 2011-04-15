@@ -31,7 +31,7 @@ namespace MidiShapeShifter
         /// <summary>
         /// Gets the audio processor object.
         /// </summary>
-        public DummyAudioHandler AudioProcessor
+        public DummyAudioHandler AudioHandler
         {
             get { return GetInstance<DummyAudioHandler>(); }
         }
@@ -39,7 +39,7 @@ namespace MidiShapeShifter
         /// <summary>
         /// Gets the midi processor object.
         /// </summary>
-        public MidiHandler MidiProcessor
+        public MidiHandler MidiHandler
         {
             get { return GetInstance<MidiHandler>(); }
         }
@@ -69,7 +69,7 @@ namespace MidiShapeShifter
         protected override IVstPluginAudioProcessor CreateAudioProcessor(IVstPluginAudioProcessor instance)
         {
             // Dont expose an AudioProcessor if Midi is output in the MidiProcessor
-            if (!MidiProcessor.SyncWithAudioProcessor) return null;
+            if (!MidiHandler.SyncWithAudioProcessor) return null;
 
             if (instance == null)
             {
@@ -106,7 +106,7 @@ namespace MidiShapeShifter
         protected override IVstPluginMidiSource CreateMidiSource(IVstPluginMidiSource instance)
         {
             // we implement this interface on out midi processor.
-            return (IVstPluginMidiSource)MidiProcessor;
+            return (IVstPluginMidiSource)MidiHandler;
         }
 
         /// <summary>

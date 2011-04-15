@@ -36,9 +36,9 @@ namespace MidiShapeShifter
             base.Process(inChannels, outChannels);
 
             // check to see if we need to output midi here
-            if (_plugin.MidiProcessor.SyncWithAudioProcessor)
+            if (_plugin.MidiHandler.SyncWithAudioProcessor)
             {
-                _plugin.MidiProcessor.ProcessCurrentEvents();
+                _plugin.MidiHandler.ProcessCurrentEvents();
             }
         }
     }
