@@ -28,6 +28,11 @@ namespace MidiShapeShifter
                 UniquePluginId)
         { }
 
+        public override void Open(IVstHost host)
+        {
+            base.Open(host);
+        }
+
         /// <summary>
         /// Gets the audio processor object.
         /// </summary>
@@ -68,6 +73,10 @@ namespace MidiShapeShifter
         /// <returns>Returns null when not supported by the plugin.</returns>
         protected override IVstPluginAudioProcessor CreateAudioProcessor(IVstPluginAudioProcessor instance)
         {
+           /* if (instance == null) return new DummyAudioHandler(this);
+
+            return instance;*/
+
             // Dont expose an AudioProcessor if Midi is output in the MidiProcessor
             if (!MidiHandler.SyncWithAudioProcessor) return null;
 
@@ -77,7 +86,7 @@ namespace MidiShapeShifter
             }
 
             // TODO: implement a thread-safe wrapper.
-            return base.CreateAudioProcessor(instance);
+            return base.CreateAudioProcessor(instance); 
         }
 
         /// <summary>

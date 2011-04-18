@@ -19,7 +19,9 @@ namespace MidiShapeShifter.MidiProcessors
 
             VstParameterInfo paramInfo;
             paramInfo = InitializeVariableParam("A");
-            VariableAMgr = new VstParameterManager(paramInfo);
+           // var host = m_plugin.Host;
+            //var automation = host.GetInstance<IVstHostAutomation>();
+            VariableAMgr = new VstParameterManager(paramInfo/*, automation*/);
             
             paramInfo = InitializeVariableParam("B");
             VariableBMgr = new VstParameterManager(paramInfo);
