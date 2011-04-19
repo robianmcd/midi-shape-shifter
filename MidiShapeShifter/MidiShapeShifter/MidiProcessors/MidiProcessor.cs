@@ -5,43 +5,47 @@ namespace MidiShapeShifter.MidiProcessors
 {
     internal sealed class MidiProcessor
     {
-        private static readonly string PARAM_CATEGORY_NAME = "Variable";
+        private static readonly string VARIABLE_PARAM_CATEGORY_NAME = "Variable";
 
         internal VstParameterManager VariableAMgr { get; private set; }
         internal VstParameterManager VariableBMgr { get; private set; }
         internal VstParameterManager VariableCMgr { get; private set; }
         internal VstParameterManager VariableDMgr { get; private set; }
 
-        private Plugin m_plugin;
+        private Plugin _plugin;
 
         public MidiProcessor(Plugin plugin) {
-            m_plugin = plugin;
+            _plugin = plugin;
 
+            InitializeAllParams();
+
+            _plugin.Opened += new System.EventHandler(Plugin_Opened);
+        }
+
+        public void InitializeAllParams() {
             VstParameterInfo paramInfo;
             paramInfo = InitializeVariableParam("A");
-           // var host = m_plugin.Host;
-            //var automation = host.GetInstance<IVstHostAutomation>();
-            VariableAMgr = new VstParameterManager(paramInfo/*, automation*/);
-            
+            VariableAMgr = new VstParameterManager(paramInfo);
+
             paramInfo = InitializeVariableParam("B");
             VariableBMgr = new VstParameterManager(paramInfo);
-            
+
             paramInfo = InitializeVariableParam("C");
             VariableCMgr = new VstParameterManager(paramInfo);
-            
+
             paramInfo = InitializeVariableParam("D");
             VariableDMgr = new VstParameterManager(paramInfo);
         }
 
-        // This method initializes the plugin parameters this processing component owns.
+        // This method initializes the "Variable" plugin parameters.
         private VstParameterInfo InitializeVariableParam(string name)
         {
             // all parameter definitions are added to a central list.
-            VstParameterInfoCollection parameterInfos = m_plugin.PluginPrograms.ParameterInfos;
+            VstParameterInfoCollection parameterInfos = _plugin.PluginPrograms.ParameterInfos;
 
             // retrieve the category for all variable parameters.
             VstParameterCategory paramCategory =
-                m_plugin.PluginPrograms.GetParameterCategory(PARAM_CATEGORY_NAME);
+                _plugin.PluginPrograms.GetParameterCategory(VARIABLE_PARAM_CATEGORY_NAME);
 
             // Variable parameter
             VstParameterInfo paramInfo = new VstParameterInfo();
@@ -63,6 +67,17 @@ namespace MidiShapeShifter.MidiProcessors
             return paramInfo;
         }
 
+        private void Plugin_Opened(object sender, System.EventArgs e)
+        {
+            //Host automation must be set up in this even handler and not in the constructor becasue _plugin.Host is 
+            //null when the constructor is called.
+            VariableAMgr.HostAutomation = _plugin.Host.GetInstance<IVstHostAutomation>();
+            VariableBMgr.HostAutomation = _plugin.Host.GetInstance<IVstHostAutomation>();
+            VariableCMgr.HostAutomation = _plugin.Host.GetInstance<IVstHostAutomation>();
+            VariableDMgr.HostAutomation = _plugin.Host.GetInstance<IVstHostAutomation>();
+
+            _plugin.Opened -= new System.EventHandler(Plugin_Opened);
+        }
 
         internal VstMidiEvent ProcessEvent(VstMidiEvent midiEvent)
         {
