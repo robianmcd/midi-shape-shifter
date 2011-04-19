@@ -2,6 +2,16 @@
 {
     internal static class MidiHelper
     {
+        public enum MidiMsgType { NoteOn, NoteOff, CC, PitchBend, Aftertouch }
+
+        public struct MidiMsg 
+        {
+            public MidiMsgType type;
+            public int channel;
+            public int param1;
+            public int param2;
+        }
+
         public static bool IsNoteOn(byte[] dataBuffer)
         {
             return IsNoteOn(dataBuffer[0]);
