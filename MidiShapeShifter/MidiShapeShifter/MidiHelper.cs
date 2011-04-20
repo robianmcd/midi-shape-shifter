@@ -1,8 +1,9 @@
 ﻿namespace MidiShapeShifter
 {
-    internal static class MidiHelper
+    public static class MidiHelper
     {
-        public enum MidiMsgType { NoteOn, NoteOff, CC, PitchBend, Aftertouch }
+        public enum MidiMsgType { NoteOn, NoteOff, CC, PitchBend, Aftertouch };
+        public static readonly string[] MidiMsgTypeStr = { "NoteOn", "NoteOff", "CC", "PitchBend", "Aftertouch" };
 
         public struct MidiMsg 
         {
@@ -11,6 +12,22 @@
             public int param1;
             public int param2;
         }
+
+        //Each instance represents a range of midi messages. For example: All note on message from C1 to C2
+        public struct MidiMsgRange
+        {
+            public MidiMsgType msgType;
+            public int topChannel;
+            public int bottomChannel;
+            public int topParam;
+            public int bottomParam;
+
+        }
+
+        //The following constants are used to specify midi message ranges that convere all channels or all 
+        //parameter values
+        public const int RANGE_ALL_INT = -1;
+        public const string RANGE_ALL_STR = "All";
 
         public static bool IsNoteOn(byte[] dataBuffer)
         {

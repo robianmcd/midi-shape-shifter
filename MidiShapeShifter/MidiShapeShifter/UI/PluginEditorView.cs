@@ -2,6 +2,7 @@
 using Jacobi.Vst.Framework;
 using System.Collections.Generic;
 using LBSoft.IndustrialCtrls.Knobs;
+using MidiShapeShifter;
 namespace MidiShapeShifter.UI
 {
     public partial class PluginEditorView : UserControl
@@ -17,6 +18,7 @@ namespace MidiShapeShifter.UI
         }
 
         public VariableParamsInfo variableParamsInfo;
+        public MappingEntry ActiveMapping = null;
 
         public PluginEditorView()
         {
@@ -37,6 +39,7 @@ namespace MidiShapeShifter.UI
 
             for (int i = 0; i < NUM_VARIABLE_PARAMS; i++ )
             {
+                //TODO: Need a 
                 variableParamsInfo.knobs[i].DataBindings.Add("Value", parameters[i], "ActiveParameter.Value");
                 variableParamsInfo.knobs[i].KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(lbKnob_KnobChangeValue);
                 variableParamsInfo.knobs[i].Tag = parameters[i];
@@ -67,6 +70,12 @@ namespace MidiShapeShifter.UI
             //knob.Tag = paramMgr;
         }
 
+        protected void AddEntryToListView(MappingEntry entry) 
+        {
+            ListViewItem inTypeItem = new ListView();
+            //TODO: finish this
+        }
+
         private void lbKnob_KnobChangeValue(object sender, LBSoft.IndustrialCtrls.Knobs.LBKnobEventArgs e) {
             var knob = (LBKnob)sender;
             var paramMgr = (VstParameterManager)knob.Tag;
@@ -77,6 +86,50 @@ namespace MidiShapeShifter.UI
         private void presetParam1Knob_KnobChangeValue(object sender, LBSoft.IndustrialCtrls.Knobs.LBKnobEventArgs e)
         {
             presetParam1Value.Text = System.Math.Round((double) presetParam1Knob.Value, 2).ToString();
+        }
+
+        private void addBtn_Click(object sender, System.EventArgs e)
+        {
+            if (ActiveMapping == null)
+            {
+                return;
+            }
+
+            MappingDlg mapDlg = new MappingDlg();
+            if (mapDlg.ShowDialog(this) == DialogResult.OK)
+            {
+                ActiveMapping = mapDlg.mappingEntry.Clone();
+                ActiveMapping.priority = mappingListView.Items.Count;
+                AddEntryToListView(ActiveMapping);
+            }
+        }
+
+        private void editBtn_Click(object sender, System.EventArgs e)
+        {
+            if (ActiveMapping == null)
+            {
+                return;
+            }
+
+            MappingDlg mapDlg = new MappingDlg();
+            
+            mapDlg.mappingEntry = ActiveMapping.Clone();
+            mapDlg.useMappingEntryForDefaultValues = true;
+
+            if (mapDlg.ShowDialog(this) == DialogResult.OK)
+            {
+                ActiveMapping = mapDlg.mappingEntry.Clone();
+            }
+        }
+
+        private void mappingListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            /*if (mappingListView.SelectedItems.Count != 1)
+            {
+                return;
+            }
+
+            mappingListView.SelectedItems[0].Index;*/
         }
     }
 }

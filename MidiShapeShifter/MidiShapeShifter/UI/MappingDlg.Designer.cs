@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.inGroup = new System.Windows.Forms.GroupBox();
-            this.inTypeLbl = new System.Windows.Forms.Label();
-            this.inTypeCombo = new System.Windows.Forms.ComboBox();
-            this.inChanelRangeLbl = new System.Windows.Forms.Label();
-            this.inChannelRangeTextBox = new System.Windows.Forms.TextBox();
+            this.inLearnBtn = new System.Windows.Forms.Button();
+            this.inOverrideDupsCheckBox = new System.Windows.Forms.CheckBox();
             this.inParamRangeTextBox = new System.Windows.Forms.TextBox();
             this.inParamRangeLbl = new System.Windows.Forms.Label();
-            this.inOverrideDupsCheckBox = new System.Windows.Forms.CheckBox();
-            this.inLearnBtn = new System.Windows.Forms.Button();
+            this.inChannelRangeTextBox = new System.Windows.Forms.TextBox();
+            this.inChanelRangeLbl = new System.Windows.Forms.Label();
+            this.inTypeCombo = new System.Windows.Forms.ComboBox();
+            this.inTypeLbl = new System.Windows.Forms.Label();
             this.outGroup = new System.Windows.Forms.GroupBox();
             this.outLearnBtn = new System.Windows.Forms.Button();
             this.outParamRangeTextBox = new System.Windows.Forms.TextBox();
@@ -68,38 +68,24 @@
             this.inGroup.TabStop = false;
             this.inGroup.Text = "In";
             // 
-            // inTypeLbl
+            // inLearnBtn
             // 
-            this.inTypeLbl.AutoSize = true;
-            this.inTypeLbl.Location = new System.Drawing.Point(6, 21);
-            this.inTypeLbl.Name = "inTypeLbl";
-            this.inTypeLbl.Size = new System.Drawing.Size(80, 13);
-            this.inTypeLbl.TabIndex = 1;
-            this.inTypeLbl.Text = "Message Type:";
+            this.inLearnBtn.Location = new System.Drawing.Point(29, 185);
+            this.inLearnBtn.Name = "inLearnBtn";
+            this.inLearnBtn.Size = new System.Drawing.Size(75, 23);
+            this.inLearnBtn.TabIndex = 8;
+            this.inLearnBtn.Text = "Learn";
+            this.inLearnBtn.UseVisualStyleBackColor = true;
             // 
-            // inTypeCombo
+            // inOverrideDupsCheckBox
             // 
-            this.inTypeCombo.FormattingEnabled = true;
-            this.inTypeCombo.Location = new System.Drawing.Point(6, 37);
-            this.inTypeCombo.Name = "inTypeCombo";
-            this.inTypeCombo.Size = new System.Drawing.Size(122, 21);
-            this.inTypeCombo.TabIndex = 2;
-            // 
-            // inChanelRangeLbl
-            // 
-            this.inChanelRangeLbl.AutoSize = true;
-            this.inChanelRangeLbl.Location = new System.Drawing.Point(6, 66);
-            this.inChanelRangeLbl.Name = "inChanelRangeLbl";
-            this.inChanelRangeLbl.Size = new System.Drawing.Size(84, 13);
-            this.inChanelRangeLbl.TabIndex = 1;
-            this.inChanelRangeLbl.Text = "Channel Range:";
-            // 
-            // inChannelRangeTextBox
-            // 
-            this.inChannelRangeTextBox.Location = new System.Drawing.Point(9, 82);
-            this.inChannelRangeTextBox.Name = "inChannelRangeTextBox";
-            this.inChannelRangeTextBox.Size = new System.Drawing.Size(119, 20);
-            this.inChannelRangeTextBox.TabIndex = 3;
+            this.inOverrideDupsCheckBox.AutoSize = true;
+            this.inOverrideDupsCheckBox.Location = new System.Drawing.Point(9, 157);
+            this.inOverrideDupsCheckBox.Name = "inOverrideDupsCheckBox";
+            this.inOverrideDupsCheckBox.Size = new System.Drawing.Size(119, 17);
+            this.inOverrideDupsCheckBox.TabIndex = 7;
+            this.inOverrideDupsCheckBox.Text = "Override Duplicates";
+            this.inOverrideDupsCheckBox.UseVisualStyleBackColor = true;
             // 
             // inParamRangeTextBox
             // 
@@ -117,24 +103,38 @@
             this.inParamRangeLbl.TabIndex = 4;
             this.inParamRangeLbl.Text = "Param Range:";
             // 
-            // inOverrideDupsCheckBox
+            // inChannelRangeTextBox
             // 
-            this.inOverrideDupsCheckBox.AutoSize = true;
-            this.inOverrideDupsCheckBox.Location = new System.Drawing.Point(9, 157);
-            this.inOverrideDupsCheckBox.Name = "inOverrideDupsCheckBox";
-            this.inOverrideDupsCheckBox.Size = new System.Drawing.Size(119, 17);
-            this.inOverrideDupsCheckBox.TabIndex = 7;
-            this.inOverrideDupsCheckBox.Text = "Override Duplicates";
-            this.inOverrideDupsCheckBox.UseVisualStyleBackColor = true;
+            this.inChannelRangeTextBox.Location = new System.Drawing.Point(9, 82);
+            this.inChannelRangeTextBox.Name = "inChannelRangeTextBox";
+            this.inChannelRangeTextBox.Size = new System.Drawing.Size(119, 20);
+            this.inChannelRangeTextBox.TabIndex = 3;
             // 
-            // inLearnBtn
+            // inChanelRangeLbl
             // 
-            this.inLearnBtn.Location = new System.Drawing.Point(29, 185);
-            this.inLearnBtn.Name = "inLearnBtn";
-            this.inLearnBtn.Size = new System.Drawing.Size(75, 23);
-            this.inLearnBtn.TabIndex = 8;
-            this.inLearnBtn.Text = "Learn";
-            this.inLearnBtn.UseVisualStyleBackColor = true;
+            this.inChanelRangeLbl.AutoSize = true;
+            this.inChanelRangeLbl.Location = new System.Drawing.Point(6, 66);
+            this.inChanelRangeLbl.Name = "inChanelRangeLbl";
+            this.inChanelRangeLbl.Size = new System.Drawing.Size(84, 13);
+            this.inChanelRangeLbl.TabIndex = 1;
+            this.inChanelRangeLbl.Text = "Channel Range:";
+            // 
+            // inTypeCombo
+            // 
+            this.inTypeCombo.FormattingEnabled = true;
+            this.inTypeCombo.Location = new System.Drawing.Point(6, 37);
+            this.inTypeCombo.Name = "inTypeCombo";
+            this.inTypeCombo.Size = new System.Drawing.Size(122, 21);
+            this.inTypeCombo.TabIndex = 2;
+            // 
+            // inTypeLbl
+            // 
+            this.inTypeLbl.AutoSize = true;
+            this.inTypeLbl.Location = new System.Drawing.Point(6, 21);
+            this.inTypeLbl.Name = "inTypeLbl";
+            this.inTypeLbl.Size = new System.Drawing.Size(80, 13);
+            this.inTypeLbl.TabIndex = 1;
+            this.inTypeLbl.Text = "Message Type:";
             // 
             // outGroup
             // 
@@ -212,6 +212,7 @@
             // 
             // OkBtn
             // 
+            this.OkBtn.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OkBtn.Location = new System.Drawing.Point(72, 241);
             this.OkBtn.Name = "OkBtn";
             this.OkBtn.Size = new System.Drawing.Size(75, 23);
@@ -221,6 +222,7 @@
             // 
             // cancelBtn
             // 
+            this.cancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelBtn.Location = new System.Drawing.Point(153, 241);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);

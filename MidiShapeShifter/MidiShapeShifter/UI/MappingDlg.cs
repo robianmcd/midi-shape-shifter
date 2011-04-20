@@ -10,6 +10,10 @@ namespace MidiShapeShifter
 {
     public partial class MappingDlg : Form
     {
+
+        public MappingEntry mappingEntry = new MappingEntry();
+        public bool useMappingEntryForDefaultValues = false;
+
         public MappingDlg()
         {
             InitializeComponent();

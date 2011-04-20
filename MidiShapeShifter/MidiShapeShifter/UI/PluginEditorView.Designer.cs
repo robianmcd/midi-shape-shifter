@@ -33,7 +33,6 @@
             this.zedGraphControl1 = new ZedGraph.ZedGraphControl();
             this.presetParam1Knob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
             this.presetParam1Value = new System.Windows.Forms.Label();
-            this.mappingList = new System.Windows.Forms.ListBox();
             this.curveGroup = new System.Windows.Forms.GroupBox();
             this.equationBookBtn = new System.Windows.Forms.Button();
             this.presetParam4Title = new System.Windows.Forms.Label();
@@ -84,6 +83,14 @@
             this.editBtn = new System.Windows.Forms.Button();
             this.moveUpBtn = new System.Windows.Forms.Button();
             this.moveDownBtn = new System.Windows.Forms.Button();
+            this.mappingListView = new System.Windows.Forms.ListView();
+            this.inTypeColHeader = new System.Windows.Forms.ColumnHeader();
+            this.inChannelsColHeader = new System.Windows.Forms.ColumnHeader();
+            this.inParamsColHeader = new System.Windows.Forms.ColumnHeader();
+            this.outTypeColHeader = new System.Windows.Forms.ColumnHeader();
+            this.outChannelsColHeader = new System.Windows.Forms.ColumnHeader();
+            this.outParamsColHeader = new System.Windows.Forms.ColumnHeader();
+            this.overrideColHeader = new System.Windows.Forms.ColumnHeader();
             this.curveGroup.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -132,14 +139,6 @@
             this.presetParam1Value.Size = new System.Drawing.Size(40, 16);
             this.presetParam1Value.TabIndex = 4;
             this.presetParam1Value.Text = "0";
-            // 
-            // mappingList
-            // 
-            this.mappingList.FormattingEnabled = true;
-            this.mappingList.Location = new System.Drawing.Point(3, 14);
-            this.mappingList.Name = "mappingList";
-            this.mappingList.Size = new System.Drawing.Size(337, 277);
-            this.mappingList.TabIndex = 5;
             // 
             // curveGroup
             // 
@@ -681,6 +680,7 @@
             this.addBtn.Size = new System.Drawing.Size(28, 28);
             this.addBtn.TabIndex = 8;
             this.addBtn.UseVisualStyleBackColor = true;
+            this.addBtn.Click += new System.EventHandler(this.addBtn_Click);
             // 
             // deleteBtn
             // 
@@ -703,6 +703,7 @@
             this.editBtn.Size = new System.Drawing.Size(28, 28);
             this.editBtn.TabIndex = 10;
             this.editBtn.UseVisualStyleBackColor = true;
+            this.editBtn.Click += new System.EventHandler(this.editBtn_Click);
             // 
             // moveUpBtn
             // 
@@ -726,10 +727,67 @@
             this.moveDownBtn.TabIndex = 12;
             this.moveDownBtn.UseVisualStyleBackColor = true;
             // 
+            // mappingListView
+            // 
+            this.mappingListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.inTypeColHeader,
+            this.inChannelsColHeader,
+            this.inParamsColHeader,
+            this.outTypeColHeader,
+            this.outChannelsColHeader,
+            this.outParamsColHeader,
+            this.overrideColHeader});
+            this.mappingListView.Font = new System.Drawing.Font("Arial", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mappingListView.HideSelection = false;
+            this.mappingListView.Location = new System.Drawing.Point(3, 14);
+            this.mappingListView.MultiSelect = false;
+            this.mappingListView.Name = "mappingListView";
+            this.mappingListView.Size = new System.Drawing.Size(337, 275);
+            this.mappingListView.TabIndex = 13;
+            this.mappingListView.UseCompatibleStateImageBehavior = false;
+            this.mappingListView.View = System.Windows.Forms.View.Details;
+            this.mappingListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.mappingListView_ItemSelectionChanged);
+            // 
+            // inTypeColHeader
+            // 
+            this.inTypeColHeader.Text = "In Type";
+            this.inTypeColHeader.Width = 52;
+            // 
+            // inChannelsColHeader
+            // 
+            this.inChannelsColHeader.Text = "Chans";
+            this.inChannelsColHeader.Width = 45;
+            // 
+            // inParamsColHeader
+            // 
+            this.inParamsColHeader.Text = "Params";
+            this.inParamsColHeader.Width = 45;
+            // 
+            // outTypeColHeader
+            // 
+            this.outTypeColHeader.Text = "Out Type";
+            this.outTypeColHeader.Width = 52;
+            // 
+            // outChannelsColHeader
+            // 
+            this.outChannelsColHeader.Text = "Chans";
+            this.outChannelsColHeader.Width = 45;
+            // 
+            // outParamsColHeader
+            // 
+            this.outParamsColHeader.Text = "Params";
+            this.outParamsColHeader.Width = 45;
+            // 
+            // overrideColHeader
+            // 
+            this.overrideColHeader.Text = "Override";
+            this.overrideColHeader.Width = 50;
+            // 
             // PluginEditorView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.mappingListView);
             this.Controls.Add(this.moveDownBtn);
             this.Controls.Add(this.moveUpBtn);
             this.Controls.Add(this.editBtn);
@@ -737,7 +795,6 @@
             this.Controls.Add(this.addBtn);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.curveGroup);
-            this.Controls.Add(this.mappingList);
             this.Controls.Add(this.zedGraphControl1);
             this.Name = "PluginEditorView";
             this.Size = new System.Drawing.Size(641, 469);
@@ -754,7 +811,6 @@
         private ZedGraph.ZedGraphControl zedGraphControl1;
         private LBSoft.IndustrialCtrls.Knobs.LBKnob presetParam1Knob;
         private System.Windows.Forms.Label presetParam1Value;
-        private System.Windows.Forms.ListBox mappingList;
         private System.Windows.Forms.GroupBox curveGroup;
         private System.Windows.Forms.RadioButton radioCurvePreset;
         private System.Windows.Forms.RadioButton radioCurveEquation;
@@ -805,6 +861,14 @@
         private System.Windows.Forms.Button editBtn;
         private System.Windows.Forms.Button moveUpBtn;
         private System.Windows.Forms.Button moveDownBtn;
+        private System.Windows.Forms.ListView mappingListView;
+        private System.Windows.Forms.ColumnHeader inTypeColHeader;
+        private System.Windows.Forms.ColumnHeader inChannelsColHeader;
+        private System.Windows.Forms.ColumnHeader inParamsColHeader;
+        private System.Windows.Forms.ColumnHeader outTypeColHeader;
+        private System.Windows.Forms.ColumnHeader outChannelsColHeader;
+        private System.Windows.Forms.ColumnHeader outParamsColHeader;
+        private System.Windows.Forms.ColumnHeader overrideColHeader;
 
     }
 }

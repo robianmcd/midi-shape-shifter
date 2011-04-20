@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DummyAudioHandler.cs" />
+    <Compile Include="MappingEntry.cs" />
     <Compile Include="MappingManager.cs" />
     <Compile Include="MidiHelper.cs" />
     <Compile Include="MidiProcessors\MidiProcessor.cs" />
@@ -158,6 +159,7 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetPath)" "$(TargetDir)\$(TargetName).net.vstdll"
+copy "$(TargetPath)" "$(TargetDir)\$(TargetName).NUint.dll"
 copy "$(TargetDir)$(TargetName).pdb" "$(TargetDir)\$(TargetName).net.pdb"
 copy "$(TargetDir)\Jacobi.Vst.Interop.dll" "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
