@@ -7,7 +7,17 @@ namespace MidiShapeShifter
 {
     public class MappingManager
     {
-        public List<MappingEntry> MappingEntries { get; private set; }
+        private List<MappingEntry> _mappingEntries = new List<MappingEntry>();
+        public List<MappingEntry> MappingEntries { 
+            get 
+            {
+                return _mappingEntries;
+            } 
+            private set 
+            {
+                _mappingEntries = value;
+            } 
+        }
 
         public bool AddMappingEntry(MappingEntry newEntry) 
         {
