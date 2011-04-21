@@ -72,7 +72,7 @@ namespace MidiShapeShifter.UI
 
         protected void AddEntryToListView(MappingEntry entry) 
         {
-            ListViewItem inTypeItem = new ListView();
+            ListViewItem inTypeItem = new ListViewItem();
             //TODO: finish this
         }
 
