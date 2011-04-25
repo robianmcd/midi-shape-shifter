@@ -31,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MidiShapeShifter.NUint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\MidiShapeShifter\bin\Debug\MidiShapeShifter.NUint.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\SDK\NUnit\bin\net-2.0\nunit.framework.dll</HintPath>
@@ -55,6 +51,12 @@
   <ItemGroup>
     <Compile Include="MappingManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MidiShapeShifter\MidiShapeShifter.csproj">
+      <Project>{D19470F9-7D1E-4385-AD34-C7D826649F89}</Project>
+      <Name>MidiShapeShifter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
