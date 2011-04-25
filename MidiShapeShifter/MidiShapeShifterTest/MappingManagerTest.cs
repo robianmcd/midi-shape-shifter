@@ -11,29 +11,39 @@ namespace MidiShapeShifterTest
     public class MappingManagerTest
     {
         [Test]
-        public void AddTest()
+        public void AddMappingEntry_SingleEntry()
         {
             MappingManager mappingMgr = new MappingManager();
-            MappingEntry mapEntry = new MappingEntry();
-
-            mapEntry.inMsgRange = new MidiHelper.MidiMsgRange();
-            mapEntry.inMsgRange.bottomParam = 1;
-            mapEntry.inMsgRange.topParam = 2;
-            mapEntry.inMsgRange.bottomChannel = 1;
-            mapEntry.inMsgRange.topChannel = 2;
-            mapEntry.inMsgRange.msgType = MidiHelper.MidiMsgType.NoteOn;
-
-            mapEntry.outMsgRange = new MidiHelper.MidiMsgRange();
-            mapEntry.outMsgRange.bottomParam = 1;
-            mapEntry.outMsgRange.topParam = 2;
-            mapEntry.outMsgRange.bottomChannel = 1;
-            mapEntry.outMsgRange.topChannel = 2;
-            mapEntry.outMsgRange.msgType = MidiHelper.MidiMsgType.NoteOn;
-
-            mapEntry.priority = 0;
-            mapEntry.overrideDuplicates = false;
+            MappingEntry mapEntry = new MappingEntry(1, 2, 1, 2, MidiHelper.MidiMsgType.NoteOn,
+                                                     1, 2, 1, 2, MidiHelper.MidiMsgType.NoteOn,
+                                                     0, false);
 
             Assert.IsTrue(mappingMgr.AddMappingEntry(mapEntry));
+            Assert.AreEqual(1, mappingMgr.MappingEntries.Count);
+            Assert.AreEqual(mapEntry, mappingMgr.MappingEntries[0]);
+        }
+
+        [Test]
+        public void AddMappingEntry_MultipleEntries()
+        {
+            MappingManager mappingMgr = new MappingManager();
+            MappingEntry mapEntry1 = new MappingEntry(0, 127, 1, 16, MidiHelper.MidiMsgType.NoteOn,
+                                                     0, 127, 1, 16, MidiHelper.MidiMsgType.NoteOn,
+                                                     0, false);
+            MappingEntry mapEntry2 = new MappingEntry(1, 1, 1, 16, MidiHelper.MidiMsgType.NoteOn,
+                                                     1, 1, 1, 16, MidiHelper.MidiMsgType.NoteOn,
+                                                     1, true);
+            MappingEntry mapEntry3 = new MappingEntry(64, 64, 1, 1, MidiHelper.MidiMsgType.CC,
+                                                     65, 65, 1, 1, MidiHelper.MidiMsgType.CC,
+                                                     2, false);
+
+            Assert.IsTrue(mappingMgr.AddMappingEntry(mapEntry1));
+            Assert.IsTrue(mappingMgr.AddMappingEntry(mapEntry2));
+            Assert.IsTrue(mappingMgr.AddMappingEntry(mapEntry3));
+            Assert.AreEqual(3, mappingMgr.MappingEntries.Count);
+            Assert.AreEqual(mapEntry1, mappingMgr.MappingEntries[0]);
+            Assert.AreEqual(mapEntry2, mappingMgr.MappingEntries[1]);
+            Assert.AreEqual(mapEntry3, mappingMgr.MappingEntries[2]);
         }
     }
 }

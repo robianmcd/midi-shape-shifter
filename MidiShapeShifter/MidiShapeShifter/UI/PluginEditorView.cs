@@ -39,7 +39,8 @@ namespace MidiShapeShifter.UI
 
             for (int i = 0; i < NUM_VARIABLE_PARAMS; i++ )
             {
-                //TODO: Need a 
+                //TODO: The binding should also get a property changed notification on the ActiveParameter property, 
+                //indicating it should release the old instance and bind to the new.
                 variableParamsInfo.knobs[i].DataBindings.Add("Value", parameters[i], "ActiveParameter.Value");
                 variableParamsInfo.knobs[i].KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(lbKnob_KnobChangeValue);
                 variableParamsInfo.knobs[i].Tag = parameters[i];
@@ -90,11 +91,6 @@ namespace MidiShapeShifter.UI
 
         private void addBtn_Click(object sender, System.EventArgs e)
         {
-            if (ActiveMapping == null)
-            {
-                return;
-            }
-
             MappingDlg mapDlg = new MappingDlg();
             if (mapDlg.ShowDialog(this) == DialogResult.OK)
             {

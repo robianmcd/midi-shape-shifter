@@ -106,8 +106,7 @@ namespace MidiShapeShifter
 
         protected bool ValueIsInRange(int value, int bottomOfRange, int topOfRange) 
         {
-            return (value >= bottomOfRange && value <= topOfRange) ||
-                   (topOfRange == MidiHelper.RANGE_ALL_INT && bottomOfRange == MidiHelper.RANGE_ALL_INT);
+            return (value >= bottomOfRange && value <= topOfRange);
         }
     }
 }

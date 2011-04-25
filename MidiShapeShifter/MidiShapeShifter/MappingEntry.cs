@@ -7,6 +7,8 @@ namespace MidiShapeShifter
 {
     public class MappingEntry : ICloneable
     {
+        public enum EquationInputMode { Text, Preset };
+
         public MidiHelper.MidiMsgRange inMsgRange;
         public MidiHelper.MidiMsgRange outMsgRange;
 
@@ -19,6 +21,38 @@ namespace MidiShapeShifter
         //with a priority closer to 0 will override the other. This priority also corresponds to the index of an 
         //entry in the listbox it is displayed in. Each entry should have a unique priority.
         public int priority;
+
+        public EquationInputMode inputMode;
+        public string equation;
+        public int presetIndex;
+        public double[] presetParamValues = new double[4];
+
+        public MappingEntry() 
+        { 
+        
+        }
+
+        public MappingEntry(int inBottomParam, int inTopParam, int inBottomChannel, int inTopChannel, 
+                            MidiHelper.MidiMsgType inMsgType, int outBottomParam, int outTopParam, int outBottomChannel,
+                            int outTopChannel, MidiHelper.MidiMsgType outMsgType, int priority, bool overrideDuplicates) 
+        {
+            this.inMsgRange = new MidiHelper.MidiMsgRange();
+            this.inMsgRange.bottomParam = inBottomParam;
+            this.inMsgRange.topParam = inTopParam;
+            this.inMsgRange.bottomChannel = inBottomChannel;
+            this.inMsgRange.topChannel = inTopChannel;
+            this.inMsgRange.msgType = inMsgType;
+
+            this.outMsgRange = new MidiHelper.MidiMsgRange();
+            this.outMsgRange.bottomParam = outBottomParam;
+            this.outMsgRange.topParam = outTopParam;
+            this.outMsgRange.bottomChannel = outBottomChannel;
+            this.outMsgRange.topChannel = outTopChannel;
+            this.outMsgRange.msgType = outMsgType;
+
+            this.priority = priority;
+            this.overrideDuplicates = overrideDuplicates;
+        }
 
         object ICloneable.Clone()
         {
@@ -55,7 +89,7 @@ namespace MidiShapeShifter
                 range = this.outMsgRange;
             }
 
-            if (range.bottomChannel == MidiHelper.RANGE_ALL_INT && range.topChannel == MidiHelper.RANGE_ALL_INT)
+            if (range.bottomChannel == MidiHelper.MIN_CHANNEL && range.topChannel == MidiHelper.MAX_CHANNEL)
             {
                 return MidiHelper.RANGE_ALL_STR;
             }
@@ -77,14 +111,13 @@ namespace MidiShapeShifter
                 range = this.outMsgRange;
             }
 
-            if (range.bottomParam == MidiHelper.RANGE_ALL_INT && range.topParam == MidiHelper.RANGE_ALL_INT)
+            if (range.bottomParam == MidiHelper.MIN_PARAM && range.topParam == MidiHelper.MAX_PARAM)
             {
                 return MidiHelper.RANGE_ALL_STR;
             }
             else
             {
-                //TODO: The binding should also get a property changed notification on the ActiveParameter property, 
-                //indicating it should release the old instance and bind to the new.
+                //TODO: Should display note names if the message type is a note type
                 return range.topParam.ToString() + "-" + range.bottomParam.ToString();
             }
         }
