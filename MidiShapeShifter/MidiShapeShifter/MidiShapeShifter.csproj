@@ -158,9 +158,11 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "$(TargetDir)\$(TargetName).net.vstdll"
-copy "$(TargetPath)" "$(TargetDir)\$(TargetName).NUint.dll"
-copy "$(TargetDir)$(TargetName).pdb" "$(TargetDir)\$(TargetName).net.pdb"
-copy "$(TargetDir)\Jacobi.Vst.Interop.dll" "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>mkdir "$(ProjectDir)\vst-dist"
+mkdir "$(ProjectDir)\vst-dist\$(Configuration)"
+Set vstDir="$(ProjectDir)\vst-dist\$(Configuration)"
+copy "$(TargetPath)" "%25vstDir%25\$(TargetName).net.vstdll"
+copy "$(TargetDir)$(TargetName).pdb" "%25vstDir%25\$(TargetName).net.pdb"
+copy "$(TargetDir)\Jacobi.Vst.Interop.dll" "%25vstDir%25\$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
