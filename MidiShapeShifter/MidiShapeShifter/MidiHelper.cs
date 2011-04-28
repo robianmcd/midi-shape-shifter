@@ -1,13 +1,31 @@
-﻿namespace MidiShapeShifter
+﻿using System.Collections.Generic;
+
+namespace MidiShapeShifter
 {
     public static class MidiHelper
     {
-        public enum MidiMsgType { NoteOn, NoteOff, CC, PitchBend, Aftertouch };
-        public static readonly string[] MidiMsgTypeStr = { "NoteOn", "NoteOff", "CC", "PitchBend", "Aftertouch" };
+        //Mss message types include a subset of midi message types as well as some messages that are generated within 
+        //Midi Shape Shifter
+        public enum MssMsgType { NoteOn, NoteOff, CC, PitchBend, Aftertouch, Cycle, LFO, LFOToggle };
+        public const int NUM_MSS_MSG_TYPES = 7;
+        public static readonly List<string> MssMsgTypeNames = new List<string>(NUM_MSS_MSG_TYPES);
+
+        //Static constructor
+        static MidiHelper()
+        {
+            MssMsgTypeNames.Insert((int)MssMsgType.NoteOn, "Note On");
+            MssMsgTypeNames.Insert((int)MssMsgType.NoteOff, "Note Off");
+            MssMsgTypeNames.Insert((int)MssMsgType.CC, "CC");
+            MssMsgTypeNames.Insert((int)MssMsgType.PitchBend, "Pitch Bend");
+            MssMsgTypeNames.Insert((int)MssMsgType.Aftertouch, "Aftertouch");
+            MssMsgTypeNames.Insert((int)MssMsgType.Cycle, "Cycle");
+            MssMsgTypeNames.Insert((int)MssMsgType.LFO, "LFO");
+            MssMsgTypeNames.Insert((int)MssMsgType.LFOToggle, "LFO Toggle");
+        }
 
         public struct MidiMsg 
         {
-            public MidiMsgType type;
+            public MssMsgType type;
             public int channel;
             public int param1;
             public int param2;
@@ -16,7 +34,7 @@
         //Each instance represents a range of midi messages. For example: All note on message from C1 to C2
         public struct MidiMsgRange
         {
-            public MidiMsgType msgType;
+            public MssMsgType msgType;
             public int topChannel;
             public int bottomChannel;
             public int topParam;

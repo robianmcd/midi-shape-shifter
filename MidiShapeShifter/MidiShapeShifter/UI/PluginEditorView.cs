@@ -3,6 +3,8 @@ using Jacobi.Vst.Framework;
 using System.Collections.Generic;
 using LBSoft.IndustrialCtrls.Knobs;
 using MidiShapeShifter;
+using MidiShapeShifter.Mapping;
+
 namespace MidiShapeShifter.UI
 {
     public partial class PluginEditorView : UserControl

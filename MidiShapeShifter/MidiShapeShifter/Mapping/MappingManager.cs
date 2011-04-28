@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-namespace MidiShapeShifter
+namespace MidiShapeShifter.Mapping
 {
     public class MappingManager
     {

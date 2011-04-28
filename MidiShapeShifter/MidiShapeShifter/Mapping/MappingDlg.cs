@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 
-namespace MidiShapeShifter
+namespace MidiShapeShifter.Mapping
 {
     public partial class MappingDlg : Form
     {
@@ -30,20 +30,60 @@ namespace MidiShapeShifter
         public MappingDlg()
         {
             InitializeComponent();
+
+            inTypeCombo.Items.AddRange(MidiHelper.MssMsgTypeNames.ToArray());
+            inTypeCombo.SelectedIndex = 0;
+
+            PopulateOutTypeCombo();
         }
 
+        protected MidiHelper.MssMsgType GetMessageTypeFromCombo(ComboBox combo) 
+        {
+            return (MidiHelper.MssMsgType)MidiHelper.MssMsgTypeNames.FindIndex(item => item.Equals(combo.Text));
+        }
 
-        private void inChannelRangeTextBox_Validating(object sender, CancelEventArgs e)
+        protected void PopulateOutTypeCombo()
+        {
+            outTypeCombo.Items.Clear();
+
+            MidiHelper.MssMsgType inMsgType = GetMessageTypeFromCombo(inTypeCombo);
+
+            switch (inMsgType)
+            {
+                case MidiHelper.MssMsgType.Cycle:
+                {
+                    outTypeCombo.Items.Add(MidiHelper.MssMsgTypeNames[(int) MidiHelper.MssMsgType.LFO]);
+                    outSameAsInCheckBox.Checked = false;
+                    outSameAsInCheckBox.Enabled = false;
+                    break;
+                }
+                default:
+                {
+                    outTypeCombo.Items.Add(MidiHelper.MssMsgTypeNames[(int)MidiHelper.MssMsgType.NoteOn]);
+                    outTypeCombo.Items.Add(MidiHelper.MssMsgTypeNames[(int)MidiHelper.MssMsgType.NoteOff]);
+                    outTypeCombo.Items.Add(MidiHelper.MssMsgTypeNames[(int)MidiHelper.MssMsgType.CC]);
+                    outTypeCombo.Items.Add(MidiHelper.MssMsgTypeNames[(int)MidiHelper.MssMsgType.PitchBend]);
+                    outTypeCombo.Items.Add(MidiHelper.MssMsgTypeNames[(int)MidiHelper.MssMsgType.Aftertouch]);
+                    outSameAsInCheckBox.Enabled = true;
+                    break;
+                }
+            }
+
+            outTypeCombo.SelectedIndex = 0;
+
+        }
+
+        protected void validateRangeTextBox(TextBox sender, CancelEventArgs e, FieldType fieldType)
         {
             errorProvider.SetError((Control)sender, "");
+
             int rangeBottom;
             int rangeTop;
-            RangeValidity rangeValidity = 
-                GetRangeFromString(((TextBox)sender).Text, FieldType.ChannelField, out rangeBottom, out rangeTop);
+            RangeValidity rangeValidity =
+                GetRangeFromString(sender.Text, fieldType, out rangeBottom, out rangeTop);
             if (rangeValidity != RangeValidity.ValidRange)
             {
-                e.Cancel = true;
-                errorProvider.SetError((Control)sender, "You must enter a valid channel range. Eg. \"1\", \"1-5\", or \"All\".");
+                errorProvider.SetError((Control)sender, GetRangeValidityMessage(rangeValidity, fieldType));
             }
         }
 
@@ -54,23 +94,28 @@ namespace MidiShapeShifter
             {
                 case RangeValidity.EmptyRange:
                     {
-                        msg = "You must enter a ";
+                        msg = "You must enter a " + FieldTypeStr[(int)fieldType] + " range. Eg. " + RANGE_EXAMPLE + ".";
                         break;
                     }
                 case RangeValidity.InvalidInOutRangeRatio:
                     {
+                        msg = "The size of the output range must be 1 or the same as the size of the input range.";
                         break;
                     }
                 case RangeValidity.InvalidRangeFormat:
                     {
+                        msg = "The range must be formatted in a way similar to one of the following examples: " + 
+                            RANGE_EXAMPLE + ".";
                         break;
                     }
                 case RangeValidity.OutOfChannelRange:
                     {
+                        msg = "Channel values must be between 1 and 16.";
                         break;
                     }
                 case RangeValidity.OutOfParamRange:
                     {
+                        msg = "Parameter values must be between 0 and 127.";
                         break;
                     }
                 default:
@@ -82,7 +127,18 @@ namespace MidiShapeShifter
             return msg;
         }
 
-        //returns false if the string does not contain a valid range
+        protected RangeValidity GetRangeFromTextBox(TextBox rangeTextBox, FieldType fieldType,
+                                          out int rangeBottom, out int rangeTop)
+        {
+            RangeValidity rangeValidity = GetRangeFromString(rangeTextBox.Text, fieldType, out rangeBottom, out rangeTop);
+            
+            if (rangeValidity != RangeValidity.ValidRange) {
+                errorProvider.SetError((Control)rangeTextBox, GetRangeValidityMessage(rangeValidity, fieldType));                
+            }
+
+            return rangeValidity;
+        }
+
         protected RangeValidity GetRangeFromString(string rangeStr, FieldType fieldType, 
                                           out int rangeBottom, out int rangeTop)
         {
@@ -202,6 +258,52 @@ namespace MidiShapeShifter
             }
 
             return rangeValidity;
+        }
+
+        private void outSameAsInCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            bool enabledStatus = !((CheckBox)sender).Checked;
+
+            outTypeCombo.Enabled = enabledStatus;
+            outParamRangeTextBox.Enabled = enabledStatus;
+            outChannelRangeTextBox.Enabled = enabledStatus;
+            outLearnBtn.Enabled = enabledStatus;
+        }
+
+
+        private void inChannelRangeTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            validateRangeTextBox((TextBox)sender, e, FieldType.ChannelField);
+        }
+
+        private void outChannelRangeTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            validateRangeTextBox((TextBox)sender, e, FieldType.ChannelField);
+
+        }
+
+        private void inParamRangeTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            validateRangeTextBox((TextBox)sender, e, FieldType.ParamField);
+
+        }
+
+        private void outParamRangeTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            validateRangeTextBox((TextBox)sender, e, FieldType.ParamField);
+
+        }
+
+        private void OkBtn_Validating(object sender, CancelEventArgs e)
+        {
+            //TODO: make sure all fields are valid and set values in mappingEntry
+
+            e.Cancel = true;
+        }
+
+        private void inTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PopulateOutTypeCombo();
         }
     }
 }

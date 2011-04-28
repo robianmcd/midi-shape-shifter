@@ -2,7 +2,7 @@
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
 
-namespace MidiShapeShifter
+namespace MidiShapeShifter.Framework
 {
     /// <summary>
     /// The Plugin root object.

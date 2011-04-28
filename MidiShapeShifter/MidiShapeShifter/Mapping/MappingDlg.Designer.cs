@@ -1,4 +1,4 @@
-﻿namespace MidiShapeShifter
+﻿namespace MidiShapeShifter.Mapping
 {
     partial class MappingDlg
     {
@@ -39,6 +39,7 @@
             this.inTypeCombo = new System.Windows.Forms.ComboBox();
             this.inTypeLbl = new System.Windows.Forms.Label();
             this.outGroup = new System.Windows.Forms.GroupBox();
+            this.outSameAsInCheckBox = new System.Windows.Forms.CheckBox();
             this.outLearnBtn = new System.Windows.Forms.Button();
             this.outParamRangeTextBox = new System.Windows.Forms.TextBox();
             this.outParamRangeLbl = new System.Windows.Forms.Label();
@@ -97,6 +98,7 @@
             this.inParamRangeTextBox.Name = "inParamRangeTextBox";
             this.inParamRangeTextBox.Size = new System.Drawing.Size(105, 20);
             this.inParamRangeTextBox.TabIndex = 5;
+            this.inParamRangeTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.inParamRangeTextBox_Validating);
             // 
             // inParamRangeLbl
             // 
@@ -126,11 +128,13 @@
             // 
             // inTypeCombo
             // 
+            this.inTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.inTypeCombo.FormattingEnabled = true;
             this.inTypeCombo.Location = new System.Drawing.Point(6, 37);
             this.inTypeCombo.Name = "inTypeCombo";
             this.inTypeCombo.Size = new System.Drawing.Size(105, 21);
             this.inTypeCombo.TabIndex = 2;
+            this.inTypeCombo.SelectedIndexChanged += new System.EventHandler(this.inTypeCombo_SelectedIndexChanged);
             // 
             // inTypeLbl
             // 
@@ -143,6 +147,7 @@
             // 
             // outGroup
             // 
+            this.outGroup.Controls.Add(this.outSameAsInCheckBox);
             this.outGroup.Controls.Add(this.outLearnBtn);
             this.outGroup.Controls.Add(this.outParamRangeTextBox);
             this.outGroup.Controls.Add(this.outParamRangeLbl);
@@ -157,9 +162,23 @@
             this.outGroup.TabStop = false;
             this.outGroup.Text = "Out";
             // 
+            // outSameAsInCheckBox
+            // 
+            this.outSameAsInCheckBox.AutoSize = true;
+            this.outSameAsInCheckBox.Checked = true;
+            this.outSameAsInCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.outSameAsInCheckBox.Location = new System.Drawing.Point(9, 157);
+            this.outSameAsInCheckBox.Name = "outSameAsInCheckBox";
+            this.outSameAsInCheckBox.Size = new System.Drawing.Size(94, 17);
+            this.outSameAsInCheckBox.TabIndex = 9;
+            this.outSameAsInCheckBox.Text = "Same as Input";
+            this.outSameAsInCheckBox.UseVisualStyleBackColor = true;
+            this.outSameAsInCheckBox.CheckedChanged += new System.EventHandler(this.outSameAsInCheckBox_CheckedChanged);
+            // 
             // outLearnBtn
             // 
             this.outLearnBtn.CausesValidation = false;
+            this.outLearnBtn.Enabled = false;
             this.outLearnBtn.Location = new System.Drawing.Point(29, 185);
             this.outLearnBtn.Name = "outLearnBtn";
             this.outLearnBtn.Size = new System.Drawing.Size(75, 23);
@@ -169,10 +188,12 @@
             // 
             // outParamRangeTextBox
             // 
+            this.outParamRangeTextBox.Enabled = false;
             this.outParamRangeTextBox.Location = new System.Drawing.Point(9, 126);
             this.outParamRangeTextBox.Name = "outParamRangeTextBox";
             this.outParamRangeTextBox.Size = new System.Drawing.Size(105, 20);
             this.outParamRangeTextBox.TabIndex = 5;
+            this.outParamRangeTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.outParamRangeTextBox_Validating);
             // 
             // outParamRangeLbl
             // 
@@ -185,10 +206,12 @@
             // 
             // outChannelRangeTextBox
             // 
+            this.outChannelRangeTextBox.Enabled = false;
             this.outChannelRangeTextBox.Location = new System.Drawing.Point(9, 82);
             this.outChannelRangeTextBox.Name = "outChannelRangeTextBox";
             this.outChannelRangeTextBox.Size = new System.Drawing.Size(105, 20);
             this.outChannelRangeTextBox.TabIndex = 3;
+            this.outChannelRangeTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.outChannelRangeTextBox_Validating);
             // 
             // outChannelRangeLbl
             // 
@@ -201,6 +224,8 @@
             // 
             // outTypeCombo
             // 
+            this.outTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.outTypeCombo.Enabled = false;
             this.outTypeCombo.FormattingEnabled = true;
             this.outTypeCombo.Location = new System.Drawing.Point(6, 37);
             this.outTypeCombo.Name = "outTypeCombo";
@@ -225,6 +250,7 @@
             this.OkBtn.TabIndex = 10;
             this.OkBtn.Text = "Ok";
             this.OkBtn.UseVisualStyleBackColor = true;
+            this.OkBtn.Validating += new System.ComponentModel.CancelEventHandler(this.OkBtn_Validating);
             // 
             // cancelBtn
             // 
@@ -250,7 +276,10 @@
             this.Controls.Add(this.OkBtn);
             this.Controls.Add(this.outGroup);
             this.Controls.Add(this.inGroup);
+            this.MaximizeBox = false;
             this.Name = "MappingDlg";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "MappingDlg";
             this.inGroup.ResumeLayout(false);
             this.inGroup.PerformLayout();
@@ -283,5 +312,6 @@
         private System.Windows.Forms.Button OkBtn;
         private System.Windows.Forms.Button cancelBtn;
         private System.Windows.Forms.ErrorProvider errorProvider;
+        private System.Windows.Forms.CheckBox outSameAsInCheckBox;
     }
 }

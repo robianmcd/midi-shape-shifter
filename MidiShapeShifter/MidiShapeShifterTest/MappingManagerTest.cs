@@ -14,8 +14,8 @@ namespace MidiShapeShifterTest
         public void AddMappingEntry_SingleEntry()
         {
             MappingManager mappingMgr = new MappingManager();
-            MappingEntry mapEntry = new MappingEntry(1, 2, 1, 2, MidiHelper.MidiMsgType.NoteOn,
-                                                     1, 2, 1, 2, MidiHelper.MidiMsgType.NoteOn,
+            MappingEntry mapEntry = new MappingEntry(1, 2, 1, 2, MidiHelper.MssMsgType.NoteOn,
+                                                     1, 2, 1, 2, MidiHelper.MssMsgType.NoteOn,
                                                      0, false);
 
             Assert.IsTrue(mappingMgr.AddMappingEntry(mapEntry));
@@ -27,14 +27,14 @@ namespace MidiShapeShifterTest
         public void AddMappingEntry_MultipleEntries()
         {
             MappingManager mappingMgr = new MappingManager();
-            MappingEntry mapEntry1 = new MappingEntry(0, 127, 1, 16, MidiHelper.MidiMsgType.NoteOn,
-                                                     0, 127, 1, 16, MidiHelper.MidiMsgType.NoteOn,
+            MappingEntry mapEntry1 = new MappingEntry(0, 127, 1, 16, MidiHelper.MssMsgType.NoteOn,
+                                                     0, 127, 1, 16, MidiHelper.MssMsgType.NoteOn,
                                                      0, false);
-            MappingEntry mapEntry2 = new MappingEntry(1, 1, 1, 16, MidiHelper.MidiMsgType.NoteOn,
-                                                     1, 1, 1, 16, MidiHelper.MidiMsgType.NoteOn,
+            MappingEntry mapEntry2 = new MappingEntry(1, 1, 1, 16, MidiHelper.MssMsgType.NoteOn,
+                                                     1, 1, 1, 16, MidiHelper.MssMsgType.NoteOn,
                                                      1, true);
-            MappingEntry mapEntry3 = new MappingEntry(64, 64, 1, 1, MidiHelper.MidiMsgType.CC,
-                                                     65, 65, 1, 1, MidiHelper.MidiMsgType.CC,
+            MappingEntry mapEntry3 = new MappingEntry(64, 64, 1, 1, MidiHelper.MssMsgType.CC,
+                                                     65, 65, 1, 1, MidiHelper.MssMsgType.CC,
                                                      2, false);
 
             Assert.IsTrue(mappingMgr.AddMappingEntry(mapEntry1));

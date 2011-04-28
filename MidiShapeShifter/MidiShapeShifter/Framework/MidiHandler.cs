@@ -3,7 +3,7 @@ using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
 using MidiShapeShifter.MidiProcessors;
 
-namespace MidiShapeShifter
+namespace MidiShapeShifter.Framework
 {
     /// <summary>
     /// This object performs midi processing for your plugin.

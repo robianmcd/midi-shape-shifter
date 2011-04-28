@@ -1,7 +1,7 @@
 ﻿using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
 
-namespace MidiShapeShifter
+namespace MidiShapeShifter.Framework
 {
     /// <summary>
     /// This object manages the Plugin programs and its parameters.

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MidiShapeShifter
+namespace MidiShapeShifter.Mapping
 {
     public class MappingEntry : ICloneable
     {
@@ -33,8 +33,8 @@ namespace MidiShapeShifter
         }
 
         public MappingEntry(int inBottomParam, int inTopParam, int inBottomChannel, int inTopChannel, 
-                            MidiHelper.MidiMsgType inMsgType, int outBottomParam, int outTopParam, int outBottomChannel,
-                            int outTopChannel, MidiHelper.MidiMsgType outMsgType, int priority, bool overrideDuplicates) 
+                            MidiHelper.MssMsgType inMsgType, int outBottomParam, int outTopParam, int outBottomChannel,
+                            int outTopChannel, MidiHelper.MssMsgType outMsgType, int priority, bool overrideDuplicates) 
         {
             this.inMsgRange = new MidiHelper.MidiMsgRange();
             this.inMsgRange.bottomParam = inBottomParam;
@@ -69,11 +69,11 @@ namespace MidiShapeShifter
         {
             if (input == true)
             {
-                return MidiHelper.MidiMsgTypeStr[(int)this.inMsgRange.msgType];
+                return MidiHelper.MssMsgTypeNames[(int)this.inMsgRange.msgType];
             }
             else
             {
-                return MidiHelper.MidiMsgTypeStr[(int)this.outMsgRange.msgType];
+                return MidiHelper.MssMsgTypeNames[(int)this.outMsgRange.msgType];
             }
         }
 

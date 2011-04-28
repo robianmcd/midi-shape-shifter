@@ -69,22 +69,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DummyAudioHandler.cs" />
-    <Compile Include="MappingEntry.cs" />
-    <Compile Include="MappingManager.cs" />
+    <Compile Include="Framework\DummyAudioHandler.cs" />
+    <Compile Include="Mapping\MappableData.cs" />
+    <Compile Include="Mapping\MappingEntry.cs" />
+    <Compile Include="Mapping\MappingManager.cs" />
     <Compile Include="MidiHelper.cs" />
+    <Compile Include="Mapping\MidiMsgRange.cs" />
     <Compile Include="MidiProcessors\MidiProcessor.cs" />
-    <Compile Include="UI\MappingDlg.cs">
+    <Compile Include="Mapping\MappingDlg.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\MappingDlg.Designer.cs">
+    <Compile Include="Mapping\MappingDlg.Designer.cs">
       <DependentUpon>MappingDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="MidiHandler.cs" />
-    <Compile Include="Plugin.cs" />
-    <Compile Include="PluginCommandStub.cs" />
-    <Compile Include="PluginEditor.cs" />
-    <Compile Include="PluginPrograms.cs" />
+    <Compile Include="Framework\MidiHandler.cs" />
+    <Compile Include="Framework\Plugin.cs" />
+    <Compile Include="Framework\PluginCommandStub.cs" />
+    <Compile Include="Framework\PluginEditor.cs" />
+    <Compile Include="Framework\PluginPrograms.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -104,7 +106,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\MappingDlg.resx">
+    <EmbeddedResource Include="Mapping\MappingDlg.resx">
       <DependentUpon>MappingDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

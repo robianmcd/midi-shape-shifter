@@ -6,7 +6,7 @@ using Jacobi.Vst.Framework.Common;
 using MidiShapeShifter.UI;
 using System.Collections.Generic;
 
-namespace MidiShapeShifter
+namespace MidiShapeShifter.Framework
 {
     /// <summary>
     /// This object manages the custom editor (UI) for your plugin.

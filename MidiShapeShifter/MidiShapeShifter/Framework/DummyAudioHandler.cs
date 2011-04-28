@@ -2,7 +2,7 @@
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
 
-namespace MidiShapeShifter
+namespace MidiShapeShifter.Framework
 {
     /// <summary>
     /// This object is a dummy AudioProcessor only to be able to output Midi during the Audio processing cycle.

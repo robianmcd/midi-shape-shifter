@@ -1,5 +1,6 @@
 ﻿using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
+using MidiShapeShifter.Framework;
 
 namespace MidiShapeShifter.MidiProcessors
 {
