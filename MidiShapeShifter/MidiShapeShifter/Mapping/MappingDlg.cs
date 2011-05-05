@@ -31,39 +31,39 @@ namespace MidiShapeShifter.Mapping
         {
             InitializeComponent();
 
-            inTypeCombo.Items.AddRange(MidiHelper.MssMsgTypeNames.ToArray());
+            inTypeCombo.Items.AddRange(MssMsgUtil.MssMsgTypeNames.ToArray());
             inTypeCombo.SelectedIndex = 0;
 
             PopulateOutTypeCombo();
         }
 
-        protected MidiHelper.MssMsgType GetMessageTypeFromCombo(ComboBox combo) 
+        protected MssMsgUtil.MssMsgType GetMessageTypeFromCombo(ComboBox combo) 
         {
-            return (MidiHelper.MssMsgType)MidiHelper.MssMsgTypeNames.FindIndex(item => item.Equals(combo.Text));
+            return (MssMsgUtil.MssMsgType)MssMsgUtil.MssMsgTypeNames.FindIndex(item => item.Equals(combo.Text));
         }
 
         protected void PopulateOutTypeCombo()
         {
             outTypeCombo.Items.Clear();
 
-            MidiHelper.MssMsgType inMsgType = GetMessageTypeFromCombo(inTypeCombo);
+            MssMsgUtil.MssMsgType inMsgType = GetMessageTypeFromCombo(inTypeCombo);
 
             switch (inMsgType)
             {
-                case MidiHelper.MssMsgType.Cycle:
+                case MssMsgUtil.MssMsgType.Cycle:
                 {
-                    outTypeCombo.Items.Add(MidiHelper.MssMsgTypeNames[(int) MidiHelper.MssMsgType.LFO]);
+                    outTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int) MssMsgUtil.MssMsgType.LFO]);
                     outSameAsInCheckBox.Checked = false;
                     outSameAsInCheckBox.Enabled = false;
                     break;
                 }
                 default:
                 {
-                    outTypeCombo.Items.Add(MidiHelper.MssMsgTypeNames[(int)MidiHelper.MssMsgType.NoteOn]);
-                    outTypeCombo.Items.Add(MidiHelper.MssMsgTypeNames[(int)MidiHelper.MssMsgType.NoteOff]);
-                    outTypeCombo.Items.Add(MidiHelper.MssMsgTypeNames[(int)MidiHelper.MssMsgType.CC]);
-                    outTypeCombo.Items.Add(MidiHelper.MssMsgTypeNames[(int)MidiHelper.MssMsgType.PitchBend]);
-                    outTypeCombo.Items.Add(MidiHelper.MssMsgTypeNames[(int)MidiHelper.MssMsgType.Aftertouch]);
+                    outTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOn]);
+                    outTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOff]);
+                    outTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.CC]);
+                    outTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.PitchBend]);
+                    outTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.Aftertouch]);
                     outSameAsInCheckBox.Enabled = true;
                     break;
                 }
@@ -154,29 +154,29 @@ namespace MidiShapeShifter.Mapping
             //param or channel values
             if (rangeStr.Equals(""))
             {
-                rangeBottom = MidiHelper.RANGE_INVALID;
-                rangeTop = MidiHelper.RANGE_INVALID;
+                rangeBottom = MssMsgUtil.RANGE_INVALID;
+                rangeTop = MssMsgUtil.RANGE_INVALID;
                 rangeValidity = RangeValidity.EmptyRange;
                 validRangeStructure = false;
             }
-            else if (rangeStr.Equals(MidiHelper.RANGE_ALL_STR, StringComparison.OrdinalIgnoreCase))
+            else if (rangeStr.Equals(MssMsgUtil.RANGE_ALL_STR, StringComparison.OrdinalIgnoreCase))
             {
                 if (fieldType == FieldType.ChannelField)
                 {
-                    rangeBottom = MidiHelper.MIN_CHANNEL;
-                    rangeTop = MidiHelper.MAX_CHANNEL;
+                    rangeBottom = MssMsgUtil.MIN_CHANNEL;
+                    rangeTop = MssMsgUtil.MAX_CHANNEL;
                 }
                 else if (fieldType == FieldType.ParamField)
                 {
-                    rangeBottom = MidiHelper.MIN_PARAM;
-                    rangeTop = MidiHelper.MAX_PARAM;
+                    rangeBottom = MssMsgUtil.MIN_PARAM;
+                    rangeTop = MssMsgUtil.MAX_PARAM;
                 }
                 else
                 {
                     //Unknown field type
                     Debug.Assert(false);
-                    rangeBottom = MidiHelper.RANGE_INVALID;
-                    rangeTop = MidiHelper.RANGE_INVALID;
+                    rangeBottom = MssMsgUtil.RANGE_INVALID;
+                    rangeTop = MssMsgUtil.RANGE_INVALID;
                     return RangeValidity.UnexpectedError;
                 }
                 validRangeStructure = true;
@@ -193,8 +193,8 @@ namespace MidiShapeShifter.Mapping
                 string[] rangeArr = rangeStr.Split('-');
                 if (rangeArr.Length != 2)
                 {
-                    rangeBottom = MidiHelper.RANGE_INVALID;
-                    rangeTop = MidiHelper.RANGE_INVALID;
+                    rangeBottom = MssMsgUtil.RANGE_INVALID;
+                    rangeTop = MssMsgUtil.RANGE_INVALID;
                     validRangeStructure = false;
                     rangeValidity = RangeValidity.InvalidRangeFormat;
                 }
@@ -209,8 +209,8 @@ namespace MidiShapeShifter.Mapping
                     }
                     else
                     {
-                        rangeBottom = MidiHelper.RANGE_INVALID;
-                        rangeTop = MidiHelper.RANGE_INVALID;
+                        rangeBottom = MssMsgUtil.RANGE_INVALID;
+                        rangeTop = MssMsgUtil.RANGE_INVALID;
                         validRangeStructure = false;
                         rangeValidity = RangeValidity.InvalidRangeFormat;                     
                     }
@@ -229,7 +229,7 @@ namespace MidiShapeShifter.Mapping
             {
                 if (fieldType == FieldType.ChannelField)
                 {
-                    if (MidiHelper.isValidChannel(rangeBottom) && MidiHelper.isValidChannel(rangeTop))
+                    if (MssMsgUtil.isValidChannel(rangeBottom) && MssMsgUtil.isValidChannel(rangeTop))
                     {
                         rangeValidity = RangeValidity.ValidRange;
                     }
@@ -240,7 +240,7 @@ namespace MidiShapeShifter.Mapping
                 }
                 else if (fieldType == FieldType.ParamField)
                 {
-                    if (MidiHelper.isValidParamValue(rangeBottom) && MidiHelper.isValidParamValue(rangeTop))
+                    if (MssMsgUtil.isValidParamValue(rangeBottom) && MssMsgUtil.isValidParamValue(rangeTop))
                     {
                         rangeValidity = RangeValidity.ValidRange;
                     }
@@ -265,8 +265,8 @@ namespace MidiShapeShifter.Mapping
             bool enabledStatus = !((CheckBox)sender).Checked;
 
             outTypeCombo.Enabled = enabledStatus;
-            outParamRangeTextBox.Enabled = enabledStatus;
-            outChannelRangeTextBox.Enabled = enabledStatus;
+            outEntryField2TextBox.Enabled = enabledStatus;
+            outEntryField1TextBox.Enabled = enabledStatus;
             outLearnBtn.Enabled = enabledStatus;
         }
 

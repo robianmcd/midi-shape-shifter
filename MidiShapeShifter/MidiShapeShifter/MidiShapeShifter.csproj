@@ -69,12 +69,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\AftertouchMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\CCMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\CycleMsgInfoEntryMetadata.cs" />
     <Compile Include="Framework\DummyAudioHandler.cs" />
-    <Compile Include="Mapping\MappableData.cs" />
+    <Compile Include="Mapping\EntryFieldInterpretingUtils.cs" />
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\LfoToggleMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\LfoMsgInfoEntryMetadata.cs" />
     <Compile Include="Mapping\MappingEntry.cs" />
     <Compile Include="Mapping\MappingManager.cs" />
-    <Compile Include="MidiHelper.cs" />
-    <Compile Include="Mapping\MidiMsgRange.cs" />
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\NoteOffMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\NoteOnMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\PitchBendMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mapping\MssMsgInfoTypes\AftertouchMsgInfo.cs" />
+    <Compile Include="Mapping\MssMsgInfoTypes\CCMsgInfo.cs" />
+    <Compile Include="Mapping\MssMsgInfoTypes\CycleMsgInfo.cs" />
+    <Compile Include="Mapping\MssMsgInfoTypes\LFOMsgInfo.cs" />
+    <Compile Include="Mapping\MssMsgInfoTypes\LFOToggleMsgInfo.cs" />
+    <Compile Include="Mapping\MssMsgInfoTypes\MidiMsgInfo.cs" />
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\MidiMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\MssMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mapping\MssMsgInfoTypes\NoteOffMsgInfo.cs" />
+    <Compile Include="Mapping\MssMsgInfoTypes\NoteOnMsgInfo.cs" />
+    <Compile Include="Mapping\MssMsgInfoTypes\PitchBendMsgInfo.cs" />
+    <Compile Include="MssMsgUtil.cs" />
     <Compile Include="MidiProcessors\MidiProcessor.cs" />
     <Compile Include="Mapping\MappingDlg.cs">
       <SubType>Form</SubType>
@@ -87,6 +105,7 @@
     <Compile Include="Framework\PluginCommandStub.cs" />
     <Compile Include="Framework\PluginEditor.cs" />
     <Compile Include="Framework\PluginPrograms.cs" />
+    <Compile Include="Mapping\MssMsgInfoTypes\MssMsgInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

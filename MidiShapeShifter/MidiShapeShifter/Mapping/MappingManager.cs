@@ -76,9 +76,9 @@ namespace MidiShapeShifter.Mapping
             }
         }
 
-        public IEnumerable<MappingEntry> GetAssociatedEntries(MidiHelper.MidiMsg inputMsg) 
+        public IEnumerable<MappingEntry> GetAssociatedEntries(MssMsgUtil.MidiMsg inputMsg) 
         {
-            var associatedEntiresQuery =
+            /*var associatedEntiresQuery =
                 from entry in MappingEntries
                 where entry.inMsgRange.msgType == inputMsg.type &&
                       ValueIsInRange(inputMsg.channel, entry.inMsgRange.bottomChannel, entry.inMsgRange.topChannel) &&
@@ -101,7 +101,8 @@ namespace MidiShapeShifter.Mapping
                 select entry;    
             }
 
-            return associatedEntiresQuery;
+            return associatedEntiresQuery;*/
+            return null;
         }
 
         protected bool ValueIsInRange(int value, int bottomOfRange, int topOfRange) 

@@ -32,24 +32,28 @@
             this.inGroup = new System.Windows.Forms.GroupBox();
             this.inLearnBtn = new System.Windows.Forms.Button();
             this.inOverrideDupsCheckBox = new System.Windows.Forms.CheckBox();
-            this.inParamRangeTextBox = new System.Windows.Forms.TextBox();
-            this.inParamRangeLbl = new System.Windows.Forms.Label();
-            this.inChannelRangeTextBox = new System.Windows.Forms.TextBox();
-            this.inChanelRangeLbl = new System.Windows.Forms.Label();
+            this.inEntryField2TextBox = new System.Windows.Forms.TextBox();
+            this.inEntryField2Lbl = new System.Windows.Forms.Label();
+            this.inEntryField1TextBox = new System.Windows.Forms.TextBox();
+            this.inEntryField1Lbl = new System.Windows.Forms.Label();
             this.inTypeCombo = new System.Windows.Forms.ComboBox();
             this.inTypeLbl = new System.Windows.Forms.Label();
             this.outGroup = new System.Windows.Forms.GroupBox();
             this.outSameAsInCheckBox = new System.Windows.Forms.CheckBox();
             this.outLearnBtn = new System.Windows.Forms.Button();
-            this.outParamRangeTextBox = new System.Windows.Forms.TextBox();
-            this.outParamRangeLbl = new System.Windows.Forms.Label();
-            this.outChannelRangeTextBox = new System.Windows.Forms.TextBox();
-            this.outChannelRangeLbl = new System.Windows.Forms.Label();
+            this.outEntryField2TextBox = new System.Windows.Forms.TextBox();
+            this.outEntryField2Lbl = new System.Windows.Forms.Label();
+            this.outEntryField1TextBox = new System.Windows.Forms.TextBox();
+            this.outEntryField1Lbl = new System.Windows.Forms.Label();
             this.outTypeCombo = new System.Windows.Forms.ComboBox();
             this.outTypeLbl = new System.Windows.Forms.Label();
             this.OkBtn = new System.Windows.Forms.Button();
             this.cancelBtn = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.inEntryField1Combo = new System.Windows.Forms.ComboBox();
+            this.inEntryField2Combo = new System.Windows.Forms.ComboBox();
+            this.outEntryField1Combo = new System.Windows.Forms.ComboBox();
+            this.outEntryField2Combo = new System.Windows.Forms.ComboBox();
             this.inGroup.SuspendLayout();
             this.outGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
@@ -57,12 +61,14 @@
             // 
             // inGroup
             // 
+            this.inGroup.Controls.Add(this.inEntryField2Combo);
+            this.inGroup.Controls.Add(this.inEntryField1Combo);
             this.inGroup.Controls.Add(this.inLearnBtn);
             this.inGroup.Controls.Add(this.inOverrideDupsCheckBox);
-            this.inGroup.Controls.Add(this.inParamRangeTextBox);
-            this.inGroup.Controls.Add(this.inParamRangeLbl);
-            this.inGroup.Controls.Add(this.inChannelRangeTextBox);
-            this.inGroup.Controls.Add(this.inChanelRangeLbl);
+            this.inGroup.Controls.Add(this.inEntryField2TextBox);
+            this.inGroup.Controls.Add(this.inEntryField2Lbl);
+            this.inGroup.Controls.Add(this.inEntryField1TextBox);
+            this.inGroup.Controls.Add(this.inEntryField1Lbl);
             this.inGroup.Controls.Add(this.inTypeCombo);
             this.inGroup.Controls.Add(this.inTypeLbl);
             this.inGroup.Location = new System.Drawing.Point(12, 12);
@@ -92,39 +98,39 @@
             this.inOverrideDupsCheckBox.Text = "Override Duplicates";
             this.inOverrideDupsCheckBox.UseVisualStyleBackColor = true;
             // 
-            // inParamRangeTextBox
+            // inEntryField2TextBox
             // 
-            this.inParamRangeTextBox.Location = new System.Drawing.Point(9, 126);
-            this.inParamRangeTextBox.Name = "inParamRangeTextBox";
-            this.inParamRangeTextBox.Size = new System.Drawing.Size(105, 20);
-            this.inParamRangeTextBox.TabIndex = 5;
-            this.inParamRangeTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.inParamRangeTextBox_Validating);
+            this.inEntryField2TextBox.Location = new System.Drawing.Point(9, 126);
+            this.inEntryField2TextBox.Name = "inEntryField2TextBox";
+            this.inEntryField2TextBox.Size = new System.Drawing.Size(105, 20);
+            this.inEntryField2TextBox.TabIndex = 5;
+            this.inEntryField2TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.inParamRangeTextBox_Validating);
             // 
-            // inParamRangeLbl
+            // inEntryField2Lbl
             // 
-            this.inParamRangeLbl.AutoSize = true;
-            this.inParamRangeLbl.Location = new System.Drawing.Point(6, 110);
-            this.inParamRangeLbl.Name = "inParamRangeLbl";
-            this.inParamRangeLbl.Size = new System.Drawing.Size(75, 13);
-            this.inParamRangeLbl.TabIndex = 4;
-            this.inParamRangeLbl.Text = "Param Range:";
+            this.inEntryField2Lbl.AutoSize = true;
+            this.inEntryField2Lbl.Location = new System.Drawing.Point(6, 110);
+            this.inEntryField2Lbl.Name = "inEntryField2Lbl";
+            this.inEntryField2Lbl.Size = new System.Drawing.Size(75, 13);
+            this.inEntryField2Lbl.TabIndex = 4;
+            this.inEntryField2Lbl.Text = "Param Range:";
             // 
-            // inChannelRangeTextBox
+            // inEntryField1TextBox
             // 
-            this.inChannelRangeTextBox.Location = new System.Drawing.Point(9, 82);
-            this.inChannelRangeTextBox.Name = "inChannelRangeTextBox";
-            this.inChannelRangeTextBox.Size = new System.Drawing.Size(105, 20);
-            this.inChannelRangeTextBox.TabIndex = 3;
-            this.inChannelRangeTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.inChannelRangeTextBox_Validating);
+            this.inEntryField1TextBox.Location = new System.Drawing.Point(9, 82);
+            this.inEntryField1TextBox.Name = "inEntryField1TextBox";
+            this.inEntryField1TextBox.Size = new System.Drawing.Size(105, 20);
+            this.inEntryField1TextBox.TabIndex = 3;
+            this.inEntryField1TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.inChannelRangeTextBox_Validating);
             // 
-            // inChanelRangeLbl
+            // inEntryField1Lbl
             // 
-            this.inChanelRangeLbl.AutoSize = true;
-            this.inChanelRangeLbl.Location = new System.Drawing.Point(6, 66);
-            this.inChanelRangeLbl.Name = "inChanelRangeLbl";
-            this.inChanelRangeLbl.Size = new System.Drawing.Size(84, 13);
-            this.inChanelRangeLbl.TabIndex = 1;
-            this.inChanelRangeLbl.Text = "Channel Range:";
+            this.inEntryField1Lbl.AutoSize = true;
+            this.inEntryField1Lbl.Location = new System.Drawing.Point(6, 66);
+            this.inEntryField1Lbl.Name = "inEntryField1Lbl";
+            this.inEntryField1Lbl.Size = new System.Drawing.Size(84, 13);
+            this.inEntryField1Lbl.TabIndex = 1;
+            this.inEntryField1Lbl.Text = "Channel Range:";
             // 
             // inTypeCombo
             // 
@@ -132,7 +138,7 @@
             this.inTypeCombo.FormattingEnabled = true;
             this.inTypeCombo.Location = new System.Drawing.Point(6, 37);
             this.inTypeCombo.Name = "inTypeCombo";
-            this.inTypeCombo.Size = new System.Drawing.Size(105, 21);
+            this.inTypeCombo.Size = new System.Drawing.Size(108, 21);
             this.inTypeCombo.TabIndex = 2;
             this.inTypeCombo.SelectedIndexChanged += new System.EventHandler(this.inTypeCombo_SelectedIndexChanged);
             // 
@@ -147,12 +153,14 @@
             // 
             // outGroup
             // 
+            this.outGroup.Controls.Add(this.outEntryField2Combo);
+            this.outGroup.Controls.Add(this.outEntryField1Combo);
             this.outGroup.Controls.Add(this.outSameAsInCheckBox);
             this.outGroup.Controls.Add(this.outLearnBtn);
-            this.outGroup.Controls.Add(this.outParamRangeTextBox);
-            this.outGroup.Controls.Add(this.outParamRangeLbl);
-            this.outGroup.Controls.Add(this.outChannelRangeTextBox);
-            this.outGroup.Controls.Add(this.outChannelRangeLbl);
+            this.outGroup.Controls.Add(this.outEntryField2TextBox);
+            this.outGroup.Controls.Add(this.outEntryField2Lbl);
+            this.outGroup.Controls.Add(this.outEntryField1TextBox);
+            this.outGroup.Controls.Add(this.outEntryField1Lbl);
             this.outGroup.Controls.Add(this.outTypeCombo);
             this.outGroup.Controls.Add(this.outTypeLbl);
             this.outGroup.Location = new System.Drawing.Point(153, 12);
@@ -186,41 +194,41 @@
             this.outLearnBtn.Text = "Learn";
             this.outLearnBtn.UseVisualStyleBackColor = true;
             // 
-            // outParamRangeTextBox
+            // outEntryField2TextBox
             // 
-            this.outParamRangeTextBox.Enabled = false;
-            this.outParamRangeTextBox.Location = new System.Drawing.Point(9, 126);
-            this.outParamRangeTextBox.Name = "outParamRangeTextBox";
-            this.outParamRangeTextBox.Size = new System.Drawing.Size(105, 20);
-            this.outParamRangeTextBox.TabIndex = 5;
-            this.outParamRangeTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.outParamRangeTextBox_Validating);
+            this.outEntryField2TextBox.Enabled = false;
+            this.outEntryField2TextBox.Location = new System.Drawing.Point(9, 126);
+            this.outEntryField2TextBox.Name = "outEntryField2TextBox";
+            this.outEntryField2TextBox.Size = new System.Drawing.Size(105, 20);
+            this.outEntryField2TextBox.TabIndex = 5;
+            this.outEntryField2TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.outParamRangeTextBox_Validating);
             // 
-            // outParamRangeLbl
+            // outEntryField2Lbl
             // 
-            this.outParamRangeLbl.AutoSize = true;
-            this.outParamRangeLbl.Location = new System.Drawing.Point(6, 110);
-            this.outParamRangeLbl.Name = "outParamRangeLbl";
-            this.outParamRangeLbl.Size = new System.Drawing.Size(75, 13);
-            this.outParamRangeLbl.TabIndex = 4;
-            this.outParamRangeLbl.Text = "Param Range:";
+            this.outEntryField2Lbl.AutoSize = true;
+            this.outEntryField2Lbl.Location = new System.Drawing.Point(6, 110);
+            this.outEntryField2Lbl.Name = "outEntryField2Lbl";
+            this.outEntryField2Lbl.Size = new System.Drawing.Size(75, 13);
+            this.outEntryField2Lbl.TabIndex = 4;
+            this.outEntryField2Lbl.Text = "Param Range:";
             // 
-            // outChannelRangeTextBox
+            // outEntryField1TextBox
             // 
-            this.outChannelRangeTextBox.Enabled = false;
-            this.outChannelRangeTextBox.Location = new System.Drawing.Point(9, 82);
-            this.outChannelRangeTextBox.Name = "outChannelRangeTextBox";
-            this.outChannelRangeTextBox.Size = new System.Drawing.Size(105, 20);
-            this.outChannelRangeTextBox.TabIndex = 3;
-            this.outChannelRangeTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.outChannelRangeTextBox_Validating);
+            this.outEntryField1TextBox.Enabled = false;
+            this.outEntryField1TextBox.Location = new System.Drawing.Point(9, 82);
+            this.outEntryField1TextBox.Name = "outEntryField1TextBox";
+            this.outEntryField1TextBox.Size = new System.Drawing.Size(105, 20);
+            this.outEntryField1TextBox.TabIndex = 3;
+            this.outEntryField1TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.outChannelRangeTextBox_Validating);
             // 
-            // outChannelRangeLbl
+            // outEntryField1Lbl
             // 
-            this.outChannelRangeLbl.AutoSize = true;
-            this.outChannelRangeLbl.Location = new System.Drawing.Point(6, 66);
-            this.outChannelRangeLbl.Name = "outChannelRangeLbl";
-            this.outChannelRangeLbl.Size = new System.Drawing.Size(84, 13);
-            this.outChannelRangeLbl.TabIndex = 1;
-            this.outChannelRangeLbl.Text = "Channel Range:";
+            this.outEntryField1Lbl.AutoSize = true;
+            this.outEntryField1Lbl.Location = new System.Drawing.Point(6, 66);
+            this.outEntryField1Lbl.Name = "outEntryField1Lbl";
+            this.outEntryField1Lbl.Size = new System.Drawing.Size(84, 13);
+            this.outEntryField1Lbl.TabIndex = 1;
+            this.outEntryField1Lbl.Text = "Channel Range:";
             // 
             // outTypeCombo
             // 
@@ -229,7 +237,7 @@
             this.outTypeCombo.FormattingEnabled = true;
             this.outTypeCombo.Location = new System.Drawing.Point(6, 37);
             this.outTypeCombo.Name = "outTypeCombo";
-            this.outTypeCombo.Size = new System.Drawing.Size(105, 21);
+            this.outTypeCombo.Size = new System.Drawing.Size(108, 21);
             this.outTypeCombo.TabIndex = 2;
             // 
             // outTypeLbl
@@ -267,6 +275,42 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
+            // inEntryField1Combo
+            // 
+            this.inEntryField1Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.inEntryField1Combo.FormattingEnabled = true;
+            this.inEntryField1Combo.Location = new System.Drawing.Point(9, 81);
+            this.inEntryField1Combo.Name = "inEntryField1Combo";
+            this.inEntryField1Combo.Size = new System.Drawing.Size(105, 21);
+            this.inEntryField1Combo.TabIndex = 9;
+            // 
+            // inEntryField2Combo
+            // 
+            this.inEntryField2Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.inEntryField2Combo.FormattingEnabled = true;
+            this.inEntryField2Combo.Location = new System.Drawing.Point(9, 125);
+            this.inEntryField2Combo.Name = "inEntryField2Combo";
+            this.inEntryField2Combo.Size = new System.Drawing.Size(105, 21);
+            this.inEntryField2Combo.TabIndex = 10;
+            // 
+            // outEntryField1Combo
+            // 
+            this.outEntryField1Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.outEntryField1Combo.FormattingEnabled = true;
+            this.outEntryField1Combo.Location = new System.Drawing.Point(6, 81);
+            this.outEntryField1Combo.Name = "outEntryField1Combo";
+            this.outEntryField1Combo.Size = new System.Drawing.Size(108, 21);
+            this.outEntryField1Combo.TabIndex = 11;
+            // 
+            // outEntryField2Combo
+            // 
+            this.outEntryField2Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.outEntryField2Combo.FormattingEnabled = true;
+            this.outEntryField2Combo.Location = new System.Drawing.Point(6, 126);
+            this.outEntryField2Combo.Name = "outEntryField2Combo";
+            this.outEntryField2Combo.Size = new System.Drawing.Size(108, 21);
+            this.outEntryField2Combo.TabIndex = 12;
+            // 
             // MappingDlg
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -295,23 +339,27 @@
         private System.Windows.Forms.GroupBox inGroup;
         private System.Windows.Forms.ComboBox inTypeCombo;
         private System.Windows.Forms.Label inTypeLbl;
-        private System.Windows.Forms.TextBox inChannelRangeTextBox;
-        private System.Windows.Forms.Label inChanelRangeLbl;
-        private System.Windows.Forms.TextBox inParamRangeTextBox;
-        private System.Windows.Forms.Label inParamRangeLbl;
         private System.Windows.Forms.CheckBox inOverrideDupsCheckBox;
         private System.Windows.Forms.Button inLearnBtn;
         private System.Windows.Forms.GroupBox outGroup;
         private System.Windows.Forms.Button outLearnBtn;
-        private System.Windows.Forms.TextBox outParamRangeTextBox;
-        private System.Windows.Forms.Label outParamRangeLbl;
-        private System.Windows.Forms.TextBox outChannelRangeTextBox;
-        private System.Windows.Forms.Label outChannelRangeLbl;
         private System.Windows.Forms.ComboBox outTypeCombo;
         private System.Windows.Forms.Label outTypeLbl;
         private System.Windows.Forms.Button OkBtn;
         private System.Windows.Forms.Button cancelBtn;
         private System.Windows.Forms.ErrorProvider errorProvider;
         private System.Windows.Forms.CheckBox outSameAsInCheckBox;
+        internal System.Windows.Forms.ComboBox inEntryField2Combo;
+        internal System.Windows.Forms.ComboBox inEntryField1Combo;
+        internal System.Windows.Forms.ComboBox outEntryField2Combo;
+        internal System.Windows.Forms.ComboBox outEntryField1Combo;
+        internal System.Windows.Forms.TextBox inEntryField1TextBox;
+        internal System.Windows.Forms.Label inEntryField1Lbl;
+        internal System.Windows.Forms.TextBox inEntryField2TextBox;
+        internal System.Windows.Forms.Label inEntryField2Lbl;
+        internal System.Windows.Forms.TextBox outEntryField2TextBox;
+        internal System.Windows.Forms.Label outEntryField2Lbl;
+        internal System.Windows.Forms.TextBox outEntryField1TextBox;
+        internal System.Windows.Forms.Label outEntryField1Lbl;
     }
 }

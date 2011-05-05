@@ -2,7 +2,7 @@
 
 namespace MidiShapeShifter
 {
-    public static class MidiHelper
+    public static class MssMsgUtil
     {
         //Mss message types include a subset of midi message types as well as some messages that are generated within 
         //Midi Shape Shifter
@@ -11,7 +11,7 @@ namespace MidiShapeShifter
         public static readonly List<string> MssMsgTypeNames = new List<string>(NUM_MSS_MSG_TYPES);
 
         //Static constructor
-        static MidiHelper()
+        static MssMsgUtil()
         {
             MssMsgTypeNames.Insert((int)MssMsgType.NoteOn, "Note On");
             MssMsgTypeNames.Insert((int)MssMsgType.NoteOff, "Note Off");
