@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
+using MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes;
 
 namespace MidiShapeShifter.Mapping
 {
@@ -14,6 +15,9 @@ namespace MidiShapeShifter.Mapping
         public enum FieldType { ChannelField, ParamField };
         public readonly string[] FieldTypeStr = new string[] { "channel", "parameter"};
         protected const string RANGE_EXAMPLE = "\"1\", \"1-5\", or \"All\"";
+
+        protected MssMsgInfoEntryMetadata inMsgMetadata;
+        protected MssMsgInfoEntryMetadata outMsgMetadata;
 
         //This enum is intended to be used to diagnose issues with user input in range fields.
         public enum RangeValidity {ValidRange,              //range is valid
@@ -31,46 +35,19 @@ namespace MidiShapeShifter.Mapping
         {
             InitializeComponent();
 
-            inTypeCombo.Items.AddRange(MssMsgUtil.MssMsgTypeNames.ToArray());
+            inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOn]);
+            inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOff]);
+            inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.CC]);
+            inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.PitchBend]);
+            inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.Aftertouch]);
+            inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.LFO]);
+            inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.Cycle]);
             inTypeCombo.SelectedIndex = 0;
-
-            PopulateOutTypeCombo();
         }
 
-        protected MssMsgUtil.MssMsgType GetMessageTypeFromCombo(ComboBox combo) 
+        public MssMsgUtil.MssMsgType GetMessageTypeFromCombo(ComboBox combo) 
         {
             return (MssMsgUtil.MssMsgType)MssMsgUtil.MssMsgTypeNames.FindIndex(item => item.Equals(combo.Text));
-        }
-
-        protected void PopulateOutTypeCombo()
-        {
-            outTypeCombo.Items.Clear();
-
-            MssMsgUtil.MssMsgType inMsgType = GetMessageTypeFromCombo(inTypeCombo);
-
-            switch (inMsgType)
-            {
-                case MssMsgUtil.MssMsgType.Cycle:
-                {
-                    outTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int) MssMsgUtil.MssMsgType.LFO]);
-                    outSameAsInCheckBox.Checked = false;
-                    outSameAsInCheckBox.Enabled = false;
-                    break;
-                }
-                default:
-                {
-                    outTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOn]);
-                    outTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOff]);
-                    outTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.CC]);
-                    outTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.PitchBend]);
-                    outTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.Aftertouch]);
-                    outSameAsInCheckBox.Enabled = true;
-                    break;
-                }
-            }
-
-            outTypeCombo.SelectedIndex = 0;
-
         }
 
         protected void validateRangeTextBox(TextBox sender, CancelEventArgs e, FieldType fieldType)
@@ -270,40 +247,125 @@ namespace MidiShapeShifter.Mapping
             outLearnBtn.Enabled = enabledStatus;
         }
 
-
-        private void inChannelRangeTextBox_Validating(object sender, CancelEventArgs e)
+        private void inEntryField1TextBox_Validating(object sender, CancelEventArgs e)
         {
-            validateRangeTextBox((TextBox)sender, e, FieldType.ChannelField);
+            inMsgMetadata.ValidateEntryField1();
         }
 
-        private void outChannelRangeTextBox_Validating(object sender, CancelEventArgs e)
+        private void inEntryField1Combo_Validating(object sender, CancelEventArgs e)
         {
-            validateRangeTextBox((TextBox)sender, e, FieldType.ChannelField);
-
+            inMsgMetadata.ValidateEntryField1();
         }
 
-        private void inParamRangeTextBox_Validating(object sender, CancelEventArgs e)
+        private void inEntryField2TextBox_Validating(object sender, CancelEventArgs e)
         {
-            validateRangeTextBox((TextBox)sender, e, FieldType.ParamField);
-
+            inMsgMetadata.ValidateEntryField2();
         }
 
-        private void outParamRangeTextBox_Validating(object sender, CancelEventArgs e)
+        private void inEntryField2Combo_Validating(object sender, CancelEventArgs e)
         {
-            validateRangeTextBox((TextBox)sender, e, FieldType.ParamField);
-
+            inMsgMetadata.ValidateEntryField2();
         }
 
-        private void OkBtn_Validating(object sender, CancelEventArgs e)
+        private void outEntryField1TextBox_Validating(object sender, CancelEventArgs e)
         {
-            //TODO: make sure all fields are valid and set values in mappingEntry
+            outMsgMetadata.ValidateEntryField1();
+        }
 
-            e.Cancel = true;
+        private void outEntryField1Combo_Validating(object sender, CancelEventArgs e)
+        {
+            outMsgMetadata.ValidateEntryField1();
+        }
+
+        private void outEntryField2TextBox_Validating(object sender, CancelEventArgs e)
+        {
+            outMsgMetadata.ValidateEntryField2();
+        }
+
+        private void outEntryField2Combo_Validating(object sender, CancelEventArgs e)
+        {
+            outMsgMetadata.ValidateEntryField2();
         }
 
         private void inTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            PopulateOutTypeCombo();
+            //PopulateOutTypeCombo();
+
+            MsgTypeComboChanged((ComboBox)sender, MappingEntry.IO.Input, ref inMsgMetadata);
         }
+
+        private void outTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MsgTypeComboChanged((ComboBox)sender, MappingEntry.IO.Output, ref outMsgMetadata);
+        }
+
+        protected void MsgTypeComboChanged(ComboBox msgTypeCombo, 
+                                           MappingEntry.IO ioCategory, 
+                                           ref MssMsgInfoEntryMetadata msgMetadata)
+        {
+            MssMsgUtil.MssMsgType msgType = GetMessageTypeFromCombo(msgTypeCombo);
+
+            switch (msgType)
+            {
+                case MssMsgUtil.MssMsgType.NoteOn:
+                    {
+                        msgMetadata = new NoteOnMsgInfoEntryMetadata();
+                        break;
+                    }
+                case MssMsgUtil.MssMsgType.NoteOff:
+                    {
+                        msgMetadata = new NoteOffMsgInfoEntryMetadata();
+                        break;
+                    }
+                case MssMsgUtil.MssMsgType.CC:
+                    {
+                        msgMetadata = new CCMsgInfoEntryMetadata();
+                        break;
+                    }
+                case MssMsgUtil.MssMsgType.PitchBend:
+                    {
+                        msgMetadata = new PitchBendMsgInfoEntryMetadata();
+                        break;
+                    }
+                case MssMsgUtil.MssMsgType.Aftertouch:
+                    {
+                        msgMetadata = new AftertouchMsgInfoEntryMetadata();
+                        break;
+                    }
+                case MssMsgUtil.MssMsgType.Cycle:
+                    {
+                        msgMetadata = new CycleMsgInfoEntryMetadata();
+                        break;
+                    }
+                case MssMsgUtil.MssMsgType.LFO:
+                    {
+                        msgMetadata = new LfoMsgInfoEntryMetadata();
+                        break;
+                    }
+                case MssMsgUtil.MssMsgType.LFOToggle:
+                    {
+                        msgMetadata = new LfoToggleMsgInfoEntryMetadata();
+                        break;
+                    }
+            }
+
+            msgMetadata.Init(this, ioCategory);
+        }
+
+        private void OkBtn_Click(object sender, EventArgs e)
+        {
+            //TODO if same as input is on then don't validate out entry fields.
+
+            bool allFieldsAreValid = inMsgMetadata.ValidateEntryField1();
+            allFieldsAreValid &= inMsgMetadata.ValidateEntryField2();
+            allFieldsAreValid &= outMsgMetadata.ValidateEntryField1();
+            allFieldsAreValid &= outMsgMetadata.ValidateEntryField2();
+
+            if (allFieldsAreValid)
+            {
+                OkBtn.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+        }   
     }
 }

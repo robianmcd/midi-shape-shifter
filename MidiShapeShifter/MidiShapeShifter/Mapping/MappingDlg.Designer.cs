@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.inGroup = new System.Windows.Forms.GroupBox();
+            this.inEntryField2Combo = new System.Windows.Forms.ComboBox();
+            this.inEntryField1Combo = new System.Windows.Forms.ComboBox();
             this.inLearnBtn = new System.Windows.Forms.Button();
             this.inOverrideDupsCheckBox = new System.Windows.Forms.CheckBox();
             this.inEntryField2TextBox = new System.Windows.Forms.TextBox();
@@ -39,6 +41,8 @@
             this.inTypeCombo = new System.Windows.Forms.ComboBox();
             this.inTypeLbl = new System.Windows.Forms.Label();
             this.outGroup = new System.Windows.Forms.GroupBox();
+            this.outEntryField2Combo = new System.Windows.Forms.ComboBox();
+            this.outEntryField1Combo = new System.Windows.Forms.ComboBox();
             this.outSameAsInCheckBox = new System.Windows.Forms.CheckBox();
             this.outLearnBtn = new System.Windows.Forms.Button();
             this.outEntryField2TextBox = new System.Windows.Forms.TextBox();
@@ -50,10 +54,6 @@
             this.OkBtn = new System.Windows.Forms.Button();
             this.cancelBtn = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.inEntryField1Combo = new System.Windows.Forms.ComboBox();
-            this.inEntryField2Combo = new System.Windows.Forms.ComboBox();
-            this.outEntryField1Combo = new System.Windows.Forms.ComboBox();
-            this.outEntryField2Combo = new System.Windows.Forms.ComboBox();
             this.inGroup.SuspendLayout();
             this.outGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
@@ -77,6 +77,26 @@
             this.inGroup.TabIndex = 0;
             this.inGroup.TabStop = false;
             this.inGroup.Text = "In";
+            // 
+            // inEntryField2Combo
+            // 
+            this.inEntryField2Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.inEntryField2Combo.FormattingEnabled = true;
+            this.inEntryField2Combo.Location = new System.Drawing.Point(9, 125);
+            this.inEntryField2Combo.Name = "inEntryField2Combo";
+            this.inEntryField2Combo.Size = new System.Drawing.Size(105, 21);
+            this.inEntryField2Combo.TabIndex = 10;
+            this.inEntryField2Combo.Validating += new System.ComponentModel.CancelEventHandler(this.inEntryField2Combo_Validating);
+            // 
+            // inEntryField1Combo
+            // 
+            this.inEntryField1Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.inEntryField1Combo.FormattingEnabled = true;
+            this.inEntryField1Combo.Location = new System.Drawing.Point(9, 81);
+            this.inEntryField1Combo.Name = "inEntryField1Combo";
+            this.inEntryField1Combo.Size = new System.Drawing.Size(105, 21);
+            this.inEntryField1Combo.TabIndex = 9;
+            this.inEntryField1Combo.Validating += new System.ComponentModel.CancelEventHandler(this.inEntryField1Combo_Validating);
             // 
             // inLearnBtn
             // 
@@ -104,7 +124,7 @@
             this.inEntryField2TextBox.Name = "inEntryField2TextBox";
             this.inEntryField2TextBox.Size = new System.Drawing.Size(105, 20);
             this.inEntryField2TextBox.TabIndex = 5;
-            this.inEntryField2TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.inParamRangeTextBox_Validating);
+            this.inEntryField2TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.inEntryField2TextBox_Validating);
             // 
             // inEntryField2Lbl
             // 
@@ -121,7 +141,7 @@
             this.inEntryField1TextBox.Name = "inEntryField1TextBox";
             this.inEntryField1TextBox.Size = new System.Drawing.Size(105, 20);
             this.inEntryField1TextBox.TabIndex = 3;
-            this.inEntryField1TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.inChannelRangeTextBox_Validating);
+            this.inEntryField1TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.inEntryField1TextBox_Validating);
             // 
             // inEntryField1Lbl
             // 
@@ -170,6 +190,26 @@
             this.outGroup.TabStop = false;
             this.outGroup.Text = "Out";
             // 
+            // outEntryField2Combo
+            // 
+            this.outEntryField2Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.outEntryField2Combo.FormattingEnabled = true;
+            this.outEntryField2Combo.Location = new System.Drawing.Point(6, 126);
+            this.outEntryField2Combo.Name = "outEntryField2Combo";
+            this.outEntryField2Combo.Size = new System.Drawing.Size(108, 21);
+            this.outEntryField2Combo.TabIndex = 12;
+            this.outEntryField2Combo.Validating += new System.ComponentModel.CancelEventHandler(this.outEntryField2Combo_Validating);
+            // 
+            // outEntryField1Combo
+            // 
+            this.outEntryField1Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.outEntryField1Combo.FormattingEnabled = true;
+            this.outEntryField1Combo.Location = new System.Drawing.Point(6, 81);
+            this.outEntryField1Combo.Name = "outEntryField1Combo";
+            this.outEntryField1Combo.Size = new System.Drawing.Size(108, 21);
+            this.outEntryField1Combo.TabIndex = 11;
+            this.outEntryField1Combo.Validating += new System.ComponentModel.CancelEventHandler(this.outEntryField1Combo_Validating);
+            // 
             // outSameAsInCheckBox
             // 
             this.outSameAsInCheckBox.AutoSize = true;
@@ -201,7 +241,7 @@
             this.outEntryField2TextBox.Name = "outEntryField2TextBox";
             this.outEntryField2TextBox.Size = new System.Drawing.Size(105, 20);
             this.outEntryField2TextBox.TabIndex = 5;
-            this.outEntryField2TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.outParamRangeTextBox_Validating);
+            this.outEntryField2TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.outEntryField2TextBox_Validating);
             // 
             // outEntryField2Lbl
             // 
@@ -219,7 +259,7 @@
             this.outEntryField1TextBox.Name = "outEntryField1TextBox";
             this.outEntryField1TextBox.Size = new System.Drawing.Size(105, 20);
             this.outEntryField1TextBox.TabIndex = 3;
-            this.outEntryField1TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.outChannelRangeTextBox_Validating);
+            this.outEntryField1TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.outEntryField1TextBox_Validating);
             // 
             // outEntryField1Lbl
             // 
@@ -233,12 +273,12 @@
             // outTypeCombo
             // 
             this.outTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.outTypeCombo.Enabled = false;
             this.outTypeCombo.FormattingEnabled = true;
             this.outTypeCombo.Location = new System.Drawing.Point(6, 37);
             this.outTypeCombo.Name = "outTypeCombo";
             this.outTypeCombo.Size = new System.Drawing.Size(108, 21);
             this.outTypeCombo.TabIndex = 2;
+            this.outTypeCombo.SelectedIndexChanged += new System.EventHandler(this.outTypeCombo_SelectedIndexChanged);
             // 
             // outTypeLbl
             // 
@@ -251,14 +291,13 @@
             // 
             // OkBtn
             // 
-            this.OkBtn.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OkBtn.Location = new System.Drawing.Point(72, 241);
             this.OkBtn.Name = "OkBtn";
             this.OkBtn.Size = new System.Drawing.Size(75, 23);
             this.OkBtn.TabIndex = 10;
             this.OkBtn.Text = "Ok";
             this.OkBtn.UseVisualStyleBackColor = true;
-            this.OkBtn.Validating += new System.ComponentModel.CancelEventHandler(this.OkBtn_Validating);
+            this.OkBtn.Click += new System.EventHandler(this.OkBtn_Click);
             // 
             // cancelBtn
             // 
@@ -273,43 +312,8 @@
             // 
             // errorProvider
             // 
+            this.errorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errorProvider.ContainerControl = this;
-            // 
-            // inEntryField1Combo
-            // 
-            this.inEntryField1Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.inEntryField1Combo.FormattingEnabled = true;
-            this.inEntryField1Combo.Location = new System.Drawing.Point(9, 81);
-            this.inEntryField1Combo.Name = "inEntryField1Combo";
-            this.inEntryField1Combo.Size = new System.Drawing.Size(105, 21);
-            this.inEntryField1Combo.TabIndex = 9;
-            // 
-            // inEntryField2Combo
-            // 
-            this.inEntryField2Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.inEntryField2Combo.FormattingEnabled = true;
-            this.inEntryField2Combo.Location = new System.Drawing.Point(9, 125);
-            this.inEntryField2Combo.Name = "inEntryField2Combo";
-            this.inEntryField2Combo.Size = new System.Drawing.Size(105, 21);
-            this.inEntryField2Combo.TabIndex = 10;
-            // 
-            // outEntryField1Combo
-            // 
-            this.outEntryField1Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.outEntryField1Combo.FormattingEnabled = true;
-            this.outEntryField1Combo.Location = new System.Drawing.Point(6, 81);
-            this.outEntryField1Combo.Name = "outEntryField1Combo";
-            this.outEntryField1Combo.Size = new System.Drawing.Size(108, 21);
-            this.outEntryField1Combo.TabIndex = 11;
-            // 
-            // outEntryField2Combo
-            // 
-            this.outEntryField2Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.outEntryField2Combo.FormattingEnabled = true;
-            this.outEntryField2Combo.Location = new System.Drawing.Point(6, 126);
-            this.outEntryField2Combo.Name = "outEntryField2Combo";
-            this.outEntryField2Combo.Size = new System.Drawing.Size(108, 21);
-            this.outEntryField2Combo.TabIndex = 12;
             // 
             // MappingDlg
             // 
@@ -337,18 +341,15 @@
         #endregion
 
         private System.Windows.Forms.GroupBox inGroup;
-        private System.Windows.Forms.ComboBox inTypeCombo;
         private System.Windows.Forms.Label inTypeLbl;
         private System.Windows.Forms.CheckBox inOverrideDupsCheckBox;
         private System.Windows.Forms.Button inLearnBtn;
         private System.Windows.Forms.GroupBox outGroup;
         private System.Windows.Forms.Button outLearnBtn;
-        private System.Windows.Forms.ComboBox outTypeCombo;
         private System.Windows.Forms.Label outTypeLbl;
         private System.Windows.Forms.Button OkBtn;
         private System.Windows.Forms.Button cancelBtn;
-        private System.Windows.Forms.ErrorProvider errorProvider;
-        private System.Windows.Forms.CheckBox outSameAsInCheckBox;
+        internal System.Windows.Forms.ErrorProvider errorProvider;
         internal System.Windows.Forms.ComboBox inEntryField2Combo;
         internal System.Windows.Forms.ComboBox inEntryField1Combo;
         internal System.Windows.Forms.ComboBox outEntryField2Combo;
@@ -361,5 +362,8 @@
         internal System.Windows.Forms.Label outEntryField2Lbl;
         internal System.Windows.Forms.TextBox outEntryField1TextBox;
         internal System.Windows.Forms.Label outEntryField1Lbl;
+        internal System.Windows.Forms.ComboBox outTypeCombo;
+        internal System.Windows.Forms.CheckBox outSameAsInCheckBox;
+        internal System.Windows.Forms.ComboBox inTypeCombo;
     }
 }

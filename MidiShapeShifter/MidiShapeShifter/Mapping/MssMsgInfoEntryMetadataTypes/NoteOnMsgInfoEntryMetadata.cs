@@ -6,7 +6,7 @@ using MidiShapeShifter.Mapping.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
 {
-    class NoteOnMsgInfoEntryMetadata : MidiMsgInfoEntryMetadata
+    public class NoteOnMsgInfoEntryMetadata : MidiMsgInfoEntryMetadata
     {
         public override MssMsgInfo CreateMsgInfo()
         {

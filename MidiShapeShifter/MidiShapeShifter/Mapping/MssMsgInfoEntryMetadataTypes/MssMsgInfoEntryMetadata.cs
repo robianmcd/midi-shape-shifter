@@ -8,99 +8,226 @@ using MidiShapeShifter.Mapping.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
 {
-    abstract class MssMsgInfoEntryMetadata
+    public abstract class MssMsgInfoEntryMetadata
     {
         protected MappingEntry.IO ioCatagory;
-        protected EntryFields entryFields;
+        protected MappingDlg mappingDlg;
+
+        //Contains a list of valid output message types when this class is the input type
+        protected List<string> outMssMsgTypeNames = new List<string>();
+
+        //The "Same as Input" checkbox will be enabled iff this class's msg type is selected as input/output and a type
+        //in this list is selected as output/input.
+        protected List<MssMsgUtil.MssMsgType> sameAsInputCompatibleTypes = new List<MssMsgUtil.MssMsgType>();
+
+        protected Label EntryField1Lbl
+        {
+            get
+            { 
+                if (this.ioCatagory == MappingEntry.IO.Input)
+                {
+                    return this.mappingDlg.inEntryField1Lbl;
+                }
+                else if (this.ioCatagory == MappingEntry.IO.Output)
+                {
+                    return this.mappingDlg.outEntryField1Lbl;
+                }
+                else
+                {
+                    Debug.Assert(false);
+                    return null;
+                }
+            }
+        }
+
+        protected Label EntryField2Lbl
+        {
+            get
+            {
+                if (this.ioCatagory == MappingEntry.IO.Input)
+                {
+                    return this.mappingDlg.inEntryField2Lbl;
+                }
+                else if (this.ioCatagory == MappingEntry.IO.Output)
+                {
+                    return this.mappingDlg.outEntryField2Lbl;
+                }
+                else
+                {
+                    Debug.Assert(false);
+                    return null;
+                }
+            }
+        }
+
+        protected abstract Control EntryField1
+        {
+            get;
+        }
+
+        protected abstract Control EntryField2
+        {
+            get;
+        }
 
         //initializes the visable controls on the mapping dialog and the member variables entryFields and ioCategory
         public void Init(MappingDlg mappingDlg, MappingEntry.IO io)
         {
             this.ioCatagory = io;
-            InitEntryFields(mappingDlg);
+            this.mappingDlg = mappingDlg;
 
+            SetMappingDlgEntryFieldsDefaultProperties();
             SetMappingDlgEntryFieldCustomProperties();
-        }
 
-        //Initializes the member variable entryFields
-        protected void InitEntryFields(MappingDlg mappingDlg)
-        {
-            this.entryFields = new EntryFields();
-            if (this.ioCatagory == MappingEntry.IO.Input)
+            InitSameAsInputCompatibleTypes();
+
+            //This variable will contail the type combo box that did not trigger the creation of this class
+            ComboBox otherTypeCombo;
+
+            if (io == MappingEntry.IO.Input)
             {
-                this.entryFields.EntryField1Lbl = mappingDlg.inEntryField1Lbl;
-                this.entryFields.EntryField2Lbl = mappingDlg.inEntryField2Lbl;
-                this.entryFields.EntryField1TextBox = mappingDlg.inEntryField1TextBox;
-                this.entryFields.EntryField2TextBox = mappingDlg.inEntryField2TextBox;
-                this.entryFields.EntryField1Combo = mappingDlg.inEntryField1Combo;
-                this.entryFields.EntryField2Combo = mappingDlg.inEntryField2Combo;
+                InitOutMssMsgTypeNames();
+                mappingDlg.outTypeCombo.Items.Clear();
+                mappingDlg.outTypeCombo.Items.AddRange(outMssMsgTypeNames.ToArray());
+                mappingDlg.outTypeCombo.SelectedIndex = 0;
+
+                otherTypeCombo = mappingDlg.outTypeCombo;
             }
-            else if (this.ioCatagory == MappingEntry.IO.Output)
+            else if (io == MappingEntry.IO.Output)
             {
-                this.entryFields.EntryField1Lbl = mappingDlg.outEntryField1Lbl;
-                this.entryFields.EntryField2Lbl = mappingDlg.outEntryField2Lbl;
-                this.entryFields.EntryField1TextBox = mappingDlg.outEntryField1TextBox;
-                this.entryFields.EntryField2TextBox = mappingDlg.outEntryField2TextBox;
-                this.entryFields.EntryField1Combo = mappingDlg.outEntryField1Combo;
-                this.entryFields.EntryField2Combo = mappingDlg.outEntryField2Combo;
+                otherTypeCombo = mappingDlg.inTypeCombo;
+            } 
+            else
+            {
+                //Unknown IO type
+                Debug.Assert(false);
+                return;
+            }
+
+            MssMsgUtil.MssMsgType otherMsgType = mappingDlg.GetMessageTypeFromCombo(otherTypeCombo);
+            if (sameAsInputCompatibleTypes.Contains(otherMsgType))
+            {
+                mappingDlg.outSameAsInCheckBox.Enabled = true;
             }
             else
             {
-                Debug.Assert(false);
+                mappingDlg.outSameAsInCheckBox.Checked = false;
+                mappingDlg.outSameAsInCheckBox.Enabled = false;
+                
             }
         }
 
         protected void SetMappingDlgEntryFieldsDefaultProperties()
-        { 
-            this.entryFields.EntryField1Lbl.Text = "";
-            this.entryFields.EntryField1Lbl.Visible = false;
+        {
+            Label EntryField1Lbl;
+            Label EntryField2Lbl;
+            TextBox EntryField1TextBox;
+            TextBox EntryField2TextBox;
+            ComboBox EntryField1Combo;
+            ComboBox EntryField2Combo;
 
-            this.entryFields.EntryField2Lbl.Text = "";
-            this.entryFields.EntryField2Lbl.Visible = false;
+            if (this.ioCatagory == MappingEntry.IO.Input)
+            {
+                EntryField1Lbl = this.mappingDlg.inEntryField1Lbl;
+                EntryField2Lbl = this.mappingDlg.inEntryField2Lbl;
+                EntryField1TextBox = this.mappingDlg.inEntryField1TextBox;
+                EntryField2TextBox = this.mappingDlg.inEntryField2TextBox;
+                EntryField1Combo = this.mappingDlg.inEntryField1Combo;
+                EntryField2Combo = this.mappingDlg.inEntryField2Combo;
+            }
+            else if (this.ioCatagory == MappingEntry.IO.Output)
+            {
+                EntryField1Lbl = this.mappingDlg.outEntryField1Lbl;
+                EntryField2Lbl = this.mappingDlg.outEntryField2Lbl;
+                EntryField1TextBox = this.mappingDlg.outEntryField1TextBox;
+                EntryField2TextBox = this.mappingDlg.outEntryField2TextBox;
+                EntryField1Combo = this.mappingDlg.outEntryField1Combo;
+                EntryField2Combo = this.mappingDlg.outEntryField2Combo;
+            }
+            else
+            {
+                Debug.Assert(false);
+                return;
+            }
 
-            this.entryFields.EntryField1TextBox.Text = "";
-            this.entryFields.EntryField1TextBox.Enabled = true;
-            this.entryFields.EntryField1TextBox.Visible = false;
+            EntryField1Lbl.Text = "";
+            EntryField1Lbl.Visible = false;
 
-            this.entryFields.EntryField2TextBox.Text = "";
-            this.entryFields.EntryField2TextBox.Enabled = true;
-            this.entryFields.EntryField2TextBox.Visible = false;
+            EntryField2Lbl.Text = "";
+            EntryField2Lbl.Visible = false;
 
-            this.entryFields.EntryField1Combo.Enabled = true;
-            this.entryFields.EntryField1Combo.Items.Clear();
-            this.entryFields.EntryField1Combo.Visible = false;
+            EntryField1TextBox.Text = "";
+            //EntryField1TextBox.Enabled = true;
+            EntryField1TextBox.Visible = false;
 
-            this.entryFields.EntryField2Combo.Enabled = true;
-            this.entryFields.EntryField2Combo.Items.Clear();
-            this.entryFields.EntryField2Combo.Visible = false;
+            EntryField2TextBox.Text = "";
+            //EntryField2TextBox.Enabled = true;
+            EntryField2TextBox.Visible = false;
+
+            //EntryField1Combo.Enabled = true;
+            EntryField1Combo.Items.Clear();
+            EntryField1Combo.Visible = false;
+
+            //EntryField2Combo.Enabled = true;
+            EntryField2Combo.Items.Clear();
+            EntryField2Combo.Visible = false;
         }
 
-        //set the properties of all the the controls in the entryFields member variable whose properties should differ 
+        protected virtual void InitOutMssMsgTypeNames()
+        {
+            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOn]);
+            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOff]);
+            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.CC]);
+            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.PitchBend]);
+            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.Aftertouch]);
+            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.LFOToggle]);
+        }
+
+        protected virtual void InitSameAsInputCompatibleTypes()
+        { 
+
+        }
+
+        //set the properties of all the the controls in the mapping dialog whose properties should differ 
         //from the default properties set in SetMappingDlgEntryFieldsDefaultProperties().
         protected abstract void SetMappingDlgEntryFieldCustomProperties();
 
         //this can be left not overridden if entry 1 is a combo box and needs no validation.
-        public virtual bool ValidateEntryField1() 
+        public bool ValidateEntryField1() 
         {
+            string errorMsg;
+            bool fieldIsValid;
+            fieldIsValid = IsEntryField1Valid(out errorMsg);
+        
+            mappingDlg.errorProvider.SetError(EntryField1, errorMsg);
+
+            return fieldIsValid;
+        }
+
+        public virtual bool IsEntryField1Valid(out string errorMessage)
+        {
+            errorMessage = "";
             return true;
         }
 
         //this can be left not overridden if entry 2 is a combo box and needs no validation.
-        public virtual bool ValidateEntryField2()
+        public bool ValidateEntryField2()
         {
+            string errorMsg;
+            bool fieldIsValid;
+            fieldIsValid = IsEntryField2Valid(out errorMsg);
+
+            mappingDlg.errorProvider.SetError(EntryField2, errorMsg);
+
+            return fieldIsValid;
+        }
+
+        public virtual bool IsEntryField2Valid(out string errorMessage)
+        {
+            errorMessage = "";
             return true;
         }
 
         public abstract MssMsgInfo CreateMsgInfo();
-        
-        public class EntryFields
-        {
-            public Label EntryField1Lbl;
-            public Label EntryField2Lbl;
-            public TextBox EntryField1TextBox;
-            public TextBox EntryField2TextBox;
-            public ComboBox EntryField1Combo;
-            public ComboBox EntryField2Combo;
-        }
     }
 }

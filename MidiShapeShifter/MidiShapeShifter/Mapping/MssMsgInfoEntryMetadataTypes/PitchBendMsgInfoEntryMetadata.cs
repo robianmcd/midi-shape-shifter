@@ -6,7 +6,7 @@ using MidiShapeShifter.Mapping.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
 {
-    class PitchBendMsgInfoEntryMetadata : MidiMsgInfoEntryMetadata
+    public class PitchBendMsgInfoEntryMetadata : MidiMsgInfoEntryMetadata
     {
         public override MssMsgInfo CreateMsgInfo()
         {

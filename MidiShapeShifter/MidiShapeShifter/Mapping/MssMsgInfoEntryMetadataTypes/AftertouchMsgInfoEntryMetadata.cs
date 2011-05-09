@@ -6,7 +6,7 @@ using MidiShapeShifter.Mapping.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
 {
-    class AftertouchMsgInfoEntryMetadata : MidiMsgInfoEntryMetadata
+    public class AftertouchMsgInfoEntryMetadata : MidiMsgInfoEntryMetadata
     {
         public override MssMsgInfo CreateMsgInfo()
         {
