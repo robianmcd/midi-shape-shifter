@@ -93,10 +93,10 @@ namespace MidiShapeShifter.UI
 
         private void addBtn_Click(object sender, System.EventArgs e)
         {
-            MappingDlg mapDlg = new MappingDlg();
+            MappingDlg mapDlg = new MappingDlg(new MappingEntry());
             if (mapDlg.ShowDialog(this) == DialogResult.OK)
             {
-                ActiveMapping = mapDlg.mappingEntry.Clone();
+                ActiveMapping = mapDlg.mappingEntry;
                 ActiveMapping.priority = mappingListView.Items.Count;
                 AddEntryToListView(ActiveMapping);
             }
@@ -109,14 +109,13 @@ namespace MidiShapeShifter.UI
                 return;
             }
 
-            MappingDlg mapDlg = new MappingDlg();
+            MappingDlg mapDlg = new MappingDlg(ActiveMapping);
             
-            mapDlg.mappingEntry = ActiveMapping.Clone();
             mapDlg.useMappingEntryForDefaultValues = true;
 
             if (mapDlg.ShowDialog(this) == DialogResult.OK)
             {
-                ActiveMapping = mapDlg.mappingEntry.Clone();
+
             }
         }
 

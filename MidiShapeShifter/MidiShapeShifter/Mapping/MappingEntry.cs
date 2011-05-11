@@ -7,7 +7,7 @@ using MidiShapeShifter.Mapping.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mapping
 {
-    public class MappingEntry : ICloneable
+    public class MappingEntry
     {
         public enum EquationInputMode { Text, Preset };
         public enum IO { Input, Output };
@@ -34,17 +34,6 @@ namespace MidiShapeShifter.Mapping
         { 
         
         }
-
-        object ICloneable.Clone()
-        {
-            return this.Clone();
-        }
-
-        public MappingEntry Clone()
-        {
-            return (MappingEntry)this.MemberwiseClone();
-        }
-
 
         public string GetReadableMsgType(IO ioCategory)
         {

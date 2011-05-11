@@ -7,7 +7,7 @@ namespace MidiShapeShifter
         //Mss message types include a subset of midi message types as well as some messages that are generated within 
         //Midi Shape Shifter
         public enum MssMsgType { NoteOn, NoteOff, CC, PitchBend, Aftertouch, Cycle, LFO, LFOToggle };
-        public const int NUM_MSS_MSG_TYPES = 7;
+        public const int NUM_MSS_MSG_TYPES = 8;
         public static readonly List<string> MssMsgTypeNames = new List<string>(NUM_MSS_MSG_TYPES);
 
         //Static constructor
@@ -29,17 +29,6 @@ namespace MidiShapeShifter
             public int channel;
             public int param1;
             public int param2;
-        }
-
-        //Each instance represents a range of midi messages. For example: All note on message from C1 to C2
-        public struct MidiMsgRange
-        {
-            public MssMsgType msgType;
-            public int topChannel;
-            public int bottomChannel;
-            public int topParam;
-            public int bottomParam;
-
         }
 
         //RANGE_ALL_STR is used to represent a midi message ranges that convere all channels or all parameter values

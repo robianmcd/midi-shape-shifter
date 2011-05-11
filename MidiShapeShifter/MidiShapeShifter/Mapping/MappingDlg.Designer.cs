@@ -87,6 +87,7 @@
             this.inEntryField2Combo.Size = new System.Drawing.Size(105, 21);
             this.inEntryField2Combo.TabIndex = 10;
             this.inEntryField2Combo.Validating += new System.ComponentModel.CancelEventHandler(this.inEntryField2Combo_Validating);
+            this.inEntryField2Combo.TextChanged += new System.EventHandler(this.inEntryField2Combo_TextChanged);
             // 
             // inEntryField1Combo
             // 
@@ -97,6 +98,7 @@
             this.inEntryField1Combo.Size = new System.Drawing.Size(105, 21);
             this.inEntryField1Combo.TabIndex = 9;
             this.inEntryField1Combo.Validating += new System.ComponentModel.CancelEventHandler(this.inEntryField1Combo_Validating);
+            this.inEntryField1Combo.SelectedValueChanged += new System.EventHandler(this.inEntryField1Combo_SelectedValueChanged);
             // 
             // inLearnBtn
             // 
@@ -124,6 +126,7 @@
             this.inEntryField2TextBox.Name = "inEntryField2TextBox";
             this.inEntryField2TextBox.Size = new System.Drawing.Size(105, 20);
             this.inEntryField2TextBox.TabIndex = 5;
+            this.inEntryField2TextBox.TextChanged += new System.EventHandler(this.inEntryField2TextBox_TextChanged);
             this.inEntryField2TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.inEntryField2TextBox_Validating);
             // 
             // inEntryField2Lbl
@@ -141,6 +144,7 @@
             this.inEntryField1TextBox.Name = "inEntryField1TextBox";
             this.inEntryField1TextBox.Size = new System.Drawing.Size(105, 20);
             this.inEntryField1TextBox.TabIndex = 3;
+            this.inEntryField1TextBox.TextChanged += new System.EventHandler(this.inEntryField1TextBox_TextChanged);
             this.inEntryField1TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.inEntryField1TextBox_Validating);
             // 
             // inEntryField1Lbl
@@ -194,7 +198,7 @@
             // 
             this.outEntryField2Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.outEntryField2Combo.FormattingEnabled = true;
-            this.outEntryField2Combo.Location = new System.Drawing.Point(6, 126);
+            this.outEntryField2Combo.Location = new System.Drawing.Point(6, 125);
             this.outEntryField2Combo.Name = "outEntryField2Combo";
             this.outEntryField2Combo.Size = new System.Drawing.Size(108, 21);
             this.outEntryField2Combo.TabIndex = 12;
@@ -213,8 +217,6 @@
             // outSameAsInCheckBox
             // 
             this.outSameAsInCheckBox.AutoSize = true;
-            this.outSameAsInCheckBox.Checked = true;
-            this.outSameAsInCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.outSameAsInCheckBox.Location = new System.Drawing.Point(9, 157);
             this.outSameAsInCheckBox.Name = "outSameAsInCheckBox";
             this.outSameAsInCheckBox.Size = new System.Drawing.Size(94, 17);
@@ -236,7 +238,6 @@
             // 
             // outEntryField2TextBox
             // 
-            this.outEntryField2TextBox.Enabled = false;
             this.outEntryField2TextBox.Location = new System.Drawing.Point(9, 126);
             this.outEntryField2TextBox.Name = "outEntryField2TextBox";
             this.outEntryField2TextBox.Size = new System.Drawing.Size(105, 20);
@@ -254,7 +255,6 @@
             // 
             // outEntryField1TextBox
             // 
-            this.outEntryField1TextBox.Enabled = false;
             this.outEntryField1TextBox.Location = new System.Drawing.Point(9, 82);
             this.outEntryField1TextBox.Name = "outEntryField1TextBox";
             this.outEntryField1TextBox.Size = new System.Drawing.Size(105, 20);

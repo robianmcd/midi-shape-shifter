@@ -28,21 +28,24 @@ namespace MidiShapeShifter.Mapping
                                    InvalidInOutRangeRatio,  //ratio between in/out range size is not 1 to n, n to n, or n to 1
                                    UnexpectedError };
 
-        public MappingEntry mappingEntry = new MappingEntry();
+        public MappingEntry mappingEntry;
         public bool useMappingEntryForDefaultValues = false;
 
-        public MappingDlg()
+        public MappingDlg(MappingEntry mappingEntry)
         {
             InitializeComponent();
+            this.mappingEntry = mappingEntry;
 
-            inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOn]);
-            inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOff]);
-            inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.CC]);
-            inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.PitchBend]);
-            inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.Aftertouch]);
-            inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.LFO]);
-            inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.Cycle]);
-            inTypeCombo.SelectedIndex = 0;
+            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOn]);
+            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOff]);
+            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.CC]);
+            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.PitchBend]);
+            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.Aftertouch]);
+            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.LFO]);
+            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.Cycle]);
+            this.inTypeCombo.SelectedIndex = 0;
+
+            this.outSameAsInCheckBox.Checked = true;
         }
 
         public MssMsgUtil.MssMsgType GetMessageTypeFromCombo(ComboBox combo) 
@@ -50,192 +53,15 @@ namespace MidiShapeShifter.Mapping
             return (MssMsgUtil.MssMsgType)MssMsgUtil.MssMsgTypeNames.FindIndex(item => item.Equals(combo.Text));
         }
 
-        protected void validateRangeTextBox(TextBox sender, CancelEventArgs e, FieldType fieldType)
-        {
-            errorProvider.SetError((Control)sender, "");
+        /*msg = "You must enter a " + FieldTypeStr[(int)fieldType] + " range. Eg. " + RANGE_EXAMPLE + ".";
 
-            int rangeBottom;
-            int rangeTop;
-            RangeValidity rangeValidity =
-                GetRangeFromString(sender.Text, fieldType, out rangeBottom, out rangeTop);
-            if (rangeValidity != RangeValidity.ValidRange)
-            {
-                errorProvider.SetError((Control)sender, GetRangeValidityMessage(rangeValidity, fieldType));
-            }
-        }
+        msg = "The size of the output range must be 1 or the same as the size of the input range.";
 
-        protected string GetRangeValidityMessage(RangeValidity rangeValidity, FieldType fieldType) 
-        {
-            String msg = "";
-            switch (rangeValidity) 
-            {
-                case RangeValidity.EmptyRange:
-                    {
-                        msg = "You must enter a " + FieldTypeStr[(int)fieldType] + " range. Eg. " + RANGE_EXAMPLE + ".";
-                        break;
-                    }
-                case RangeValidity.InvalidInOutRangeRatio:
-                    {
-                        msg = "The size of the output range must be 1 or the same as the size of the input range.";
-                        break;
-                    }
-                case RangeValidity.InvalidRangeFormat:
-                    {
-                        msg = "The range must be formatted in a way similar to one of the following examples: " + 
-                            RANGE_EXAMPLE + ".";
-                        break;
-                    }
-                case RangeValidity.OutOfChannelRange:
-                    {
-                        msg = "Channel values must be between 1 and 16.";
-                        break;
-                    }
-                case RangeValidity.OutOfParamRange:
-                    {
-                        msg = "Parameter values must be between 0 and 127.";
-                        break;
-                    }
-                default:
-                    {
-                        Debug.Assert(false);
-                        break;
-                    }
-            }
-            return msg;
-        }
+        msg = "The range must be formatted in a way similar to one of the following examples: " + RANGE_EXAMPLE + ".";
 
-        protected RangeValidity GetRangeFromTextBox(TextBox rangeTextBox, FieldType fieldType,
-                                          out int rangeBottom, out int rangeTop)
-        {
-            RangeValidity rangeValidity = GetRangeFromString(rangeTextBox.Text, fieldType, out rangeBottom, out rangeTop);
-            
-            if (rangeValidity != RangeValidity.ValidRange) {
-                errorProvider.SetError((Control)rangeTextBox, GetRangeValidityMessage(rangeValidity, fieldType));                
-            }
+        msg = "Channel values must be between 1 and 16.";
 
-            return rangeValidity;
-        }
-
-        protected RangeValidity GetRangeFromString(string rangeStr, FieldType fieldType, 
-                                          out int rangeBottom, out int rangeTop)
-        {
-            //TODO needs to handle note ranges like C1-D5 or A-1-D-1
-
-            bool validRangeStructure;
-            RangeValidity rangeValidity = RangeValidity.ValidRange;
-            int singleChannelRange;
-            rangeStr = rangeStr.Trim();
-
-            //Parse rangeStr to pull out the top and bottom of the range and set validRangeStructure.
-            //This if statement doesn't need to deal with ensuring the the bottom and top of the range are actually valid
-            //param or channel values
-            if (rangeStr.Equals(""))
-            {
-                rangeBottom = MssMsgUtil.RANGE_INVALID;
-                rangeTop = MssMsgUtil.RANGE_INVALID;
-                rangeValidity = RangeValidity.EmptyRange;
-                validRangeStructure = false;
-            }
-            else if (rangeStr.Equals(MssMsgUtil.RANGE_ALL_STR, StringComparison.OrdinalIgnoreCase))
-            {
-                if (fieldType == FieldType.ChannelField)
-                {
-                    rangeBottom = MssMsgUtil.MIN_CHANNEL;
-                    rangeTop = MssMsgUtil.MAX_CHANNEL;
-                }
-                else if (fieldType == FieldType.ParamField)
-                {
-                    rangeBottom = MssMsgUtil.MIN_PARAM;
-                    rangeTop = MssMsgUtil.MAX_PARAM;
-                }
-                else
-                {
-                    //Unknown field type
-                    Debug.Assert(false);
-                    rangeBottom = MssMsgUtil.RANGE_INVALID;
-                    rangeTop = MssMsgUtil.RANGE_INVALID;
-                    return RangeValidity.UnexpectedError;
-                }
-                validRangeStructure = true;
-            }
-            else if (int.TryParse(rangeStr.Trim(), out singleChannelRange))
-            {
-                rangeBottom = singleChannelRange;
-                rangeTop = singleChannelRange;
-                validRangeStructure = true;
-            }
-            else
-            {
-
-                string[] rangeArr = rangeStr.Split('-');
-                if (rangeArr.Length != 2)
-                {
-                    rangeBottom = MssMsgUtil.RANGE_INVALID;
-                    rangeTop = MssMsgUtil.RANGE_INVALID;
-                    validRangeStructure = false;
-                    rangeValidity = RangeValidity.InvalidRangeFormat;
-                }
-                else 
-                {
-                    
-                    bool rangeIsInts = int.TryParse(rangeArr[0].Trim(), out rangeBottom);
-                    rangeIsInts &= int.TryParse(rangeArr[1].Trim(), out rangeTop);
-                    if (rangeIsInts)
-                    {
-                        validRangeStructure = true;
-                    }
-                    else
-                    {
-                        rangeBottom = MssMsgUtil.RANGE_INVALID;
-                        rangeTop = MssMsgUtil.RANGE_INVALID;
-                        validRangeStructure = false;
-                        rangeValidity = RangeValidity.InvalidRangeFormat;                     
-                    }
-                }
-            }
-
-            //swap the top and bottom of the range if the bottom is greater then the top
-            if (rangeBottom > rangeTop) {
-                int rangeBottomBackup = rangeBottom;
-                rangeBottom = rangeTop;
-                rangeTop = rangeBottomBackup;
-            }
-
-            //check if rangeBottom and rangeTop make a valid range and set validRange
-            if (validRangeStructure == true)
-            {
-                if (fieldType == FieldType.ChannelField)
-                {
-                    if (MssMsgUtil.isValidChannel(rangeBottom) && MssMsgUtil.isValidChannel(rangeTop))
-                    {
-                        rangeValidity = RangeValidity.ValidRange;
-                    }
-                    else
-                    {
-                        rangeValidity = RangeValidity.OutOfChannelRange;    
-                    }
-                }
-                else if (fieldType == FieldType.ParamField)
-                {
-                    if (MssMsgUtil.isValidParamValue(rangeBottom) && MssMsgUtil.isValidParamValue(rangeTop))
-                    {
-                        rangeValidity = RangeValidity.ValidRange;
-                    }
-                    else
-                    {
-                        rangeValidity = RangeValidity.OutOfParamRange;
-                    }
-                }
-                else
-                {
-                    //Unknown field type
-                    Debug.Assert(false);
-                    return RangeValidity.UnexpectedError;
-                }
-            }
-
-            return rangeValidity;
-        }
+        msg = "Parameter values must be between 0 and 127.";*/
 
         private void outSameAsInCheckBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -245,6 +71,21 @@ namespace MidiShapeShifter.Mapping
             outEntryField2TextBox.Enabled = enabledStatus;
             outEntryField1TextBox.Enabled = enabledStatus;
             outLearnBtn.Enabled = enabledStatus;
+
+            if (enabledStatus == false)
+            {
+                //we cannot just set the outTypeCombo's selected index to the same as in inTypeCombo's selected index
+                //because they may will not contain all of the same items.
+                MssMsgUtil.MssMsgType inType = GetMessageTypeFromCombo(this.inTypeCombo);
+                string inTypeName = MssMsgUtil.MssMsgTypeNames[(int)inType];
+                this.outTypeCombo.SelectedIndex = this.outTypeCombo.FindStringExact(inTypeName);
+
+                this.outEntryField1TextBox.Text = this.inEntryField1TextBox.Text;
+                this.outEntryField1Combo.SelectedIndex = this.inEntryField1Combo.SelectedIndex;
+                this.outEntryField2TextBox.Text = this.inEntryField2TextBox.Text;
+                this.outEntryField2Combo.SelectedIndex = this.inEntryField2Combo.SelectedIndex;
+                
+            }
         }
 
         private void inEntryField1TextBox_Validating(object sender, CancelEventArgs e)
@@ -289,9 +130,16 @@ namespace MidiShapeShifter.Mapping
 
         private void inTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //PopulateOutTypeCombo();
-
             MsgTypeComboChanged((ComboBox)sender, MappingEntry.IO.Input, ref inMsgMetadata);
+
+            if (this.outSameAsInCheckBox.Checked == true)
+            {
+                //we cannot just set the outTypeCombo's selected index to the same as in inTypeCombo's selected index
+                //because they may will not contain all of the same items.
+                MssMsgUtil.MssMsgType inType = GetMessageTypeFromCombo((ComboBox)sender);
+                string inTypeName = MssMsgUtil.MssMsgTypeNames[(int)inType];
+                this.outTypeCombo.SelectedIndex = this.outTypeCombo.FindStringExact(inTypeName);
+            }
         }
 
         private void outTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
@@ -354,17 +202,56 @@ namespace MidiShapeShifter.Mapping
 
         private void OkBtn_Click(object sender, EventArgs e)
         {
-            //TODO if same as input is on then don't validate out entry fields.
-
             bool allFieldsAreValid = inMsgMetadata.ValidateEntryField1();
             allFieldsAreValid &= inMsgMetadata.ValidateEntryField2();
-            allFieldsAreValid &= outMsgMetadata.ValidateEntryField1();
-            allFieldsAreValid &= outMsgMetadata.ValidateEntryField2();
+
+            if (this.outSameAsInCheckBox.Checked == false)
+            {
+                allFieldsAreValid &= outMsgMetadata.ValidateEntryField1();
+                allFieldsAreValid &= outMsgMetadata.ValidateEntryField2();
+            }
 
             if (allFieldsAreValid)
             {
+                //doesn't work if same as output is on
+                mappingEntry.inMssMsgInfo = this.inMsgMetadata.CreateMsgInfo();
+                mappingEntry.outMssMsgInfo = this.outMsgMetadata.CreateMsgInfo();
+                mappingEntry.overrideDuplicates = this.inOverrideDupsCheckBox.Checked;
+
                 OkBtn.DialogResult = DialogResult.OK;
                 this.Close();
+            }
+        }
+
+        private void inEntryField1TextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (this.outSameAsInCheckBox.Checked == true)
+            {
+                this.outEntryField1TextBox.Text = ((TextBox)sender).Text;
+            }
+        }
+
+        private void inEntryField1Combo_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (this.outSameAsInCheckBox.Checked == true)
+            {
+                this.outEntryField1Combo.SelectedIndex = ((ComboBox)sender).SelectedIndex;
+            }
+        }
+
+        private void inEntryField2TextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (this.outSameAsInCheckBox.Checked == true)
+            {
+                this.outEntryField2TextBox.Text = ((TextBox)sender).Text;
+            }
+        }
+
+        private void inEntryField2Combo_TextChanged(object sender, EventArgs e)
+        {
+            if (this.outSameAsInCheckBox.Checked == true)
+            {
+                this.outEntryField2Combo.SelectedIndex = ((ComboBox)sender).SelectedIndex;
             }
         }   
     }
