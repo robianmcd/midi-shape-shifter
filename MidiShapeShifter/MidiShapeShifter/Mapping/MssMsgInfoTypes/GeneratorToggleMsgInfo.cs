@@ -5,13 +5,13 @@ using System.Text;
 
 namespace MidiShapeShifter.Mapping.MssMsgInfoTypes
 {
-    public class LFOMsgInfo : MssMsgInfo
+    public class GeneratorToggleMsgInfo : MssMsgInfo
     {
         public override MssMsgUtil.MssMsgType mssMsgType
         {
             get
             {
-                return MssMsgUtil.MssMsgType.LFO;
+                return MssMsgUtil.MssMsgType.GeneratorToggle;
             }
         }
 

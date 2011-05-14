@@ -2,8 +2,10 @@
 using Jacobi.Vst.Framework;
 using System.Collections.Generic;
 using LBSoft.IndustrialCtrls.Knobs;
+
 using MidiShapeShifter;
 using MidiShapeShifter.Mapping;
+using MidiShapeShifter.Generator;
 
 namespace MidiShapeShifter.UI
 {
@@ -91,7 +93,7 @@ namespace MidiShapeShifter.UI
             presetParam1Value.Text = System.Math.Round((double) presetParam1Knob.Value, 2).ToString();
         }
 
-        private void addBtn_Click(object sender, System.EventArgs e)
+        private void addMappingBtn_Click(object sender, System.EventArgs e)
         {
             MappingDlg mapDlg = new MappingDlg(new MappingEntry());
             if (mapDlg.ShowDialog(this) == DialogResult.OK)
@@ -102,7 +104,7 @@ namespace MidiShapeShifter.UI
             }
         }
 
-        private void editBtn_Click(object sender, System.EventArgs e)
+        private void editMappingBtn_Click(object sender, System.EventArgs e)
         {
             if (ActiveMapping == null)
             {
@@ -127,6 +129,15 @@ namespace MidiShapeShifter.UI
             }
 
             mappingListView.SelectedItems[0].Index;*/
+        }
+
+        private void addGeneratorBtn_Click(object sender, System.EventArgs e)
+        {
+            GeneratorDlg genDlg = new GeneratorDlg();
+            if (genDlg.ShowDialog() == DialogResult.OK)
+            { 
+                
+            }
         }
     }
 }

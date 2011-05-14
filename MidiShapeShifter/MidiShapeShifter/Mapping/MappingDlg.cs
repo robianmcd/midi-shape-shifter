@@ -40,9 +40,9 @@ namespace MidiShapeShifter.Mapping
             this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOff]);
             this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.CC]);
             this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.PitchBend]);
-            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.Aftertouch]);
-            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.LFO]);
-            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.Cycle]);
+            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.PolyAftertouch]);
+            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.ChanAftertouch]);
+            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.Generator]);
             this.inTypeCombo.SelectedIndex = 0;
 
             this.outSameAsInCheckBox.Checked = true;
@@ -175,24 +175,19 @@ namespace MidiShapeShifter.Mapping
                         msgMetadata = new PitchBendMsgInfoEntryMetadata();
                         break;
                     }
-                case MssMsgUtil.MssMsgType.Aftertouch:
+                case MssMsgUtil.MssMsgType.PolyAftertouch:
                     {
-                        msgMetadata = new AftertouchMsgInfoEntryMetadata();
+                        msgMetadata = new PolyAftertouchMsgInfoEntryMetadata();
                         break;
                     }
-                case MssMsgUtil.MssMsgType.Cycle:
+                case MssMsgUtil.MssMsgType.Generator:
                     {
-                        msgMetadata = new CycleMsgInfoEntryMetadata();
+                        msgMetadata = new GeneratorMsgInfoEntryMetadata();
                         break;
                     }
-                case MssMsgUtil.MssMsgType.LFO:
+                case MssMsgUtil.MssMsgType.GeneratorToggle:
                     {
-                        msgMetadata = new LfoMsgInfoEntryMetadata();
-                        break;
-                    }
-                case MssMsgUtil.MssMsgType.LFOToggle:
-                    {
-                        msgMetadata = new LfoToggleMsgInfoEntryMetadata();
+                        msgMetadata = new GeneratorToggleMsgInfoEntryMetadata();
                         break;
                     }
             }

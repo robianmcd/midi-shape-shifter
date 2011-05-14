@@ -179,8 +179,9 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
             this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOff]);
             this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.CC]);
             this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.PitchBend]);
-            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.Aftertouch]);
-            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.LFOToggle]);
+            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.PolyAftertouch]);
+            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.ChanAftertouch]);
+            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.GeneratorToggle]);
         }
 
         protected virtual void InitSameAsInputCompatibleTypes()

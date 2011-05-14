@@ -6,11 +6,11 @@ using MidiShapeShifter.Mapping.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
 {
-    public class AftertouchMsgInfoEntryMetadata : MidiMsgInfoEntryMetadata
+    public class PolyAftertouchMsgInfoEntryMetadata : MidiMsgInfoEntryMetadata
     {
         public override MssMsgInfo CreateMsgInfo()
         {
-            AftertouchMsgInfo midiMsgInfo = new AftertouchMsgInfo();
+            PolyAftertouchMsgInfo midiMsgInfo = new PolyAftertouchMsgInfo();
             InitializeMidiMsgInfo(midiMsgInfo);
             return midiMsgInfo;
         }

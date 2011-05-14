@@ -5,13 +5,13 @@ using System.Text;
 
 namespace MidiShapeShifter.Mapping.MssMsgInfoTypes
 {
-    public class AftertouchMsgInfo : MidiMsgInfo
+    public class PolyAftertouchMsgInfo : MidiMsgInfo
     {
         public override MssMsgUtil.MssMsgType mssMsgType
         {
             get
             {
-                return MssMsgUtil.MssMsgType.Aftertouch;
+                return MssMsgUtil.MssMsgType.PolyAftertouch;
             }
         }
 

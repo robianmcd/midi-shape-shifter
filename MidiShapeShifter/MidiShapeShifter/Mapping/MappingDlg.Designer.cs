@@ -328,7 +328,7 @@
             this.Name = "MappingDlg";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = "MappingDlg";
+            this.Text = "Mapping Editor";
             this.inGroup.ResumeLayout(false);
             this.inGroup.PerformLayout();
             this.outGroup.ResumeLayout(false);

@@ -6,7 +6,7 @@ namespace MidiShapeShifter
     {
         //Mss message types include a subset of midi message types as well as some messages that are generated within 
         //Midi Shape Shifter
-        public enum MssMsgType { NoteOn, NoteOff, CC, PitchBend, Aftertouch, Cycle, LFO, LFOToggle };
+        public enum MssMsgType { NoteOn, NoteOff, CC, PitchBend, PolyAftertouch, ChanAftertouch, Generator, GeneratorToggle };
         public const int NUM_MSS_MSG_TYPES = 8;
         public static readonly List<string> MssMsgTypeNames = new List<string>(NUM_MSS_MSG_TYPES);
 
@@ -17,10 +17,10 @@ namespace MidiShapeShifter
             MssMsgTypeNames.Insert((int)MssMsgType.NoteOff, "Note Off");
             MssMsgTypeNames.Insert((int)MssMsgType.CC, "CC");
             MssMsgTypeNames.Insert((int)MssMsgType.PitchBend, "Pitch Bend");
-            MssMsgTypeNames.Insert((int)MssMsgType.Aftertouch, "Aftertouch");
-            MssMsgTypeNames.Insert((int)MssMsgType.Cycle, "Cycle");
-            MssMsgTypeNames.Insert((int)MssMsgType.LFO, "LFO");
-            MssMsgTypeNames.Insert((int)MssMsgType.LFOToggle, "LFO Toggle");
+            MssMsgTypeNames.Insert((int)MssMsgType.PolyAftertouch, "Poly Afto");
+            MssMsgTypeNames.Insert((int)MssMsgType.ChanAftertouch, "Chan Afto");
+            MssMsgTypeNames.Insert((int)MssMsgType.Generator, "Generator");
+            MssMsgTypeNames.Insert((int)MssMsgType.GeneratorToggle, "Gen. Toggle");
         }
 
         public struct MidiMsg 

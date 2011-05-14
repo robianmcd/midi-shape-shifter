@@ -5,13 +5,13 @@ using System.Text;
 
 namespace MidiShapeShifter.Mapping.MssMsgInfoTypes
 {
-    public class CycleMsgInfo : MssMsgInfo
+    class ChanAftertouchMsgInfo : MidiMsgInfo
     {
         public override MssMsgUtil.MssMsgType mssMsgType
         {
-            get 
+            get
             {
-                return MssMsgUtil.MssMsgType.Cycle;
+                return MssMsgUtil.MssMsgType.ChanAftertouch;
             }
         }
 

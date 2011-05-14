@@ -8,7 +8,7 @@ using MidiShapeShifter.Mapping.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
 {
-    public class LfoMsgInfoEntryMetadata : MssMsgInfoEntryMetadata
+    public class GeneratorMsgInfoEntryMetadata : MssMsgInfoEntryMetadata
     {
         protected override Control EntryField1
         {
@@ -18,12 +18,9 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
                 {
                     return this.mappingDlg.inEntryField1Combo;
                 }
-                else if (this.ioCatagory == MappingEntry.IO.Output)
-                {
-                    return this.mappingDlg.outEntryField1TextBox;
-                }
                 else
                 {
+                    //Cannot output to generator
                     Debug.Assert(false);
                     return null;
                 }
@@ -41,14 +38,16 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
         protected override void SetMappingDlgEntryFieldCustomProperties()
         {
             this.EntryField1Lbl.Visible = true;
-            this.EntryField1Lbl.Text = "LFO Name:";
+            this.EntryField1Lbl.Text = "Generator Name:";
 
             this.EntryField1.Visible = true;
         }
 
         public override MssMsgInfo CreateMsgInfo()
         {
-            return null;
+            GeneratorMsgInfo generatorMsgInfo = new GeneratorMsgInfo();
+            //TODO: Initialize generatorMsgInfo
+            return generatorMsgInfo;
         }
     }
 }

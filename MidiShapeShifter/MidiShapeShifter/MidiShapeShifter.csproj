@@ -69,23 +69,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\AftertouchMsgInfoEntryMetadata.cs" />
+    <Compile Include="Generator\GeneratorDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Generator\GeneratorDlg.Designer.cs">
+      <DependentUpon>GeneratorDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\ChanAftertouchMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\PolyAftertouchMsgInfoEntryMetadata.cs" />
     <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\CCMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\CycleMsgInfoEntryMetadata.cs" />
     <Compile Include="Framework\DummyAudioHandler.cs" />
     <Compile Include="Mapping\EntryFieldInterpretingUtils.cs" />
-    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\LfoToggleMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\LfoMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\GeneratorToggleMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\GeneratorMsgInfoEntryMetadata.cs" />
     <Compile Include="Mapping\MappingEntry.cs" />
     <Compile Include="Mapping\MappingManager.cs" />
     <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\NoteOffMsgInfoEntryMetadata.cs" />
     <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\NoteOnMsgInfoEntryMetadata.cs" />
     <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\PitchBendMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mapping\MssMsgInfoTypes\AftertouchMsgInfo.cs" />
+    <Compile Include="Mapping\MssMsgInfoTypes\ChanAftertouchMsgInfo.cs" />
+    <Compile Include="Mapping\MssMsgInfoTypes\PolyAftertouchMsgInfo.cs" />
     <Compile Include="Mapping\MssMsgInfoTypes\CCMsgInfo.cs" />
-    <Compile Include="Mapping\MssMsgInfoTypes\CycleMsgInfo.cs" />
-    <Compile Include="Mapping\MssMsgInfoTypes\LFOMsgInfo.cs" />
-    <Compile Include="Mapping\MssMsgInfoTypes\LFOToggleMsgInfo.cs" />
+    <Compile Include="Mapping\MssMsgInfoTypes\GeneratorMsgInfo.cs" />
+    <Compile Include="Mapping\MssMsgInfoTypes\GeneratorToggleMsgInfo.cs" />
     <Compile Include="Mapping\MssMsgInfoTypes\MidiMsgInfo.cs" />
     <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\MidiMsgInfoEntryMetadata.cs" />
     <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\MssMsgInfoEntryMetadata.cs" />
@@ -120,6 +126,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Generator\GeneratorDlg.resx">
+      <DependentUpon>GeneratorDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

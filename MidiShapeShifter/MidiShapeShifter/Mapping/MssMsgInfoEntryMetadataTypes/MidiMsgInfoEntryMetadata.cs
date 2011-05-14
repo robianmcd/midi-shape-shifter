@@ -145,6 +145,7 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
 
         protected void InitializeMidiMsgInfo(MidiMsgInfo midiMsgInfo)
         {
+            //TODO: Ensure that these member variables have been initialized.
             midiMsgInfo.Initialize(this.chanRangeBottom, this.chanRangeTop, this.paramRangeBottom, this.paramRangeTop);
         }
 
@@ -154,7 +155,7 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
             this.sameAsInputCompatibleTypes.Add(MssMsgUtil.MssMsgType.NoteOff);
             this.sameAsInputCompatibleTypes.Add(MssMsgUtil.MssMsgType.CC);
             this.sameAsInputCompatibleTypes.Add(MssMsgUtil.MssMsgType.PitchBend);
-            this.sameAsInputCompatibleTypes.Add(MssMsgUtil.MssMsgType.Aftertouch);
+            this.sameAsInputCompatibleTypes.Add(MssMsgUtil.MssMsgType.PolyAftertouch);
         }
     }
 }

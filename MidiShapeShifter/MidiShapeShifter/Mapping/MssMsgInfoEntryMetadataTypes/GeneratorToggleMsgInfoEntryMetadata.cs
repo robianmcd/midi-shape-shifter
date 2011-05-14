@@ -8,7 +8,7 @@ using MidiShapeShifter.Mapping.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
 {
-    public class LfoToggleMsgInfoEntryMetadata : MssMsgInfoEntryMetadata
+    public class GeneratorToggleMsgInfoEntryMetadata : MssMsgInfoEntryMetadata
     {
 
         protected override Control EntryField1
@@ -21,7 +21,7 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
                 }
                 else
                 {
-                    //LFO Toggle messages cannot be selected for input
+                    //Generator Toggle messages cannot be selected for input
                     Debug.Assert(false);
                     return null;
                 }
@@ -39,13 +39,15 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
         protected override void SetMappingDlgEntryFieldCustomProperties()
         {
             this.EntryField1Lbl.Visible = true;
-            this.EntryField1Lbl.Text = "LFO Name:";
+            this.EntryField1Lbl.Text = "Generator Name:";
             this.EntryField1.Visible = true;
         }
 
         public override MssMsgInfo CreateMsgInfo()
         {
-            return null;
+            GeneratorToggleMsgInfo genToggleMsgInfo = new GeneratorToggleMsgInfo();
+            //TODO: Initialize genToggleMsgInfo
+            return genToggleMsgInfo;
         }
     }
 }

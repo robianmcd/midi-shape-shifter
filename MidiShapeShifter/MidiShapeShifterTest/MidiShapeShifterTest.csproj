@@ -49,7 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MappingManagerTest.cs" />
+    <Compile Include="Mapping\MappingManagerTest.cs" />
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

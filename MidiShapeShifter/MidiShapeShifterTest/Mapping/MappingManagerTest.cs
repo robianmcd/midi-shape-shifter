@@ -6,7 +6,7 @@ using NUnit.Framework;
 using MidiShapeShifter;
 using MidiShapeShifter.Mapping;
 
-namespace MidiShapeShifterTest
+namespace MidiShapeShifterTest.Mapping
 {
     [TestFixture]
     public class MappingManagerTest
