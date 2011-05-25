@@ -180,6 +180,33 @@ namespace MidiShapeShifterTest.Mapping
         }
 
         [Test]
+        public void GetAssociatedEntries_MsgMatchesFirstTwoEntriesAndOverrideDuplicatesIsTrueForTheThirdEntry_FirstTwoEntriesAreReturned()
+        {
+            MappingManager mappingMgr = Factory_MappingManager_Default();
+
+            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 1, 16, 0, 127);
+            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 1, 8, 0, 64);
+            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 7, 16, 60, 127);
+            mappingEntry3.OverrideDuplicates = true;
+
+            mappingMgr.AddMappingEntry(mappingEntry1);
+            mappingMgr.AddMappingEntry(mappingEntry2);
+            mappingMgr.AddMappingEntry(mappingEntry3);
+
+            MssMsg msg = Factory_MssMsg_InitializedValues(
+                DEFAULT_MSG_TYPE, /*matches all*/
+                7, /*matches all*/
+                10, /*only matches entries 1 and 2*/
+                100 /*doesn't need to match anything*/);
+
+            var matchingEntries = mappingMgr.GetAssociatedEntries(msg);
+
+            Assert.IsTrue(matchingEntries.Contains<MappingEntry>(mappingEntry1));
+            Assert.IsTrue(matchingEntries.Contains<MappingEntry>(mappingEntry2));
+            Assert.IsFalse(matchingEntries.Contains<MappingEntry>(mappingEntry3));
+        }
+
+        [Test]
         public void GetAssociatedEntries_MultipleMatches_AllMatchingEntriesAreReturned()
         {
             TestCase_GetAssociatedEntries_ManagerWithThreeOverlappingEntriesThatMatchAMsg(
