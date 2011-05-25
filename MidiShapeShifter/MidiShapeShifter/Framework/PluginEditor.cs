@@ -15,7 +15,7 @@ namespace MidiShapeShifter.Framework
     /// When you do not implement a custom editor, 
     /// your Parameters will be displayed in an editor provided by the host.
     /// </remarks>
-    internal sealed class PluginEditor : IVstPluginEditor
+    public class PluginEditor : IVstPluginEditor
     {
         private Plugin _plugin;
         private WinFormsControlWrapper<PluginEditorView> _view;
@@ -24,6 +24,7 @@ namespace MidiShapeShifter.Framework
         {
             _plugin = plugin;
             _view = new WinFormsControlWrapper<PluginEditorView>();
+            _view.SafeInstance.Init(plugin);
         }
 
         public Rectangle Bounds

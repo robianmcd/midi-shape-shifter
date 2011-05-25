@@ -9,7 +9,7 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
 {
     class ChanAftertouchMsgInfoEntryMetadata : MidiMsgInfoEntryMetadata
     {
-        public override MssMsgInfo CreateMsgInfo()
+        protected override MssMsgInfo CreateMsgInfoFromValidatedFields()
         {
             ChanAftertouchMsgInfo midiMsgInfo = new ChanAftertouchMsgInfo();
             InitializeMidiMsgInfo(midiMsgInfo);

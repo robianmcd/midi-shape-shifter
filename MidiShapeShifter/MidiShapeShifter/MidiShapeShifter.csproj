@@ -76,6 +76,7 @@
       <DependentUpon>GeneratorDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\ChanAftertouchMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\Factory_MssMsgInfoEntryMetadata.cs" />
     <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\PolyAftertouchMsgInfoEntryMetadata.cs" />
     <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\CCMsgInfoEntryMetadata.cs" />
     <Compile Include="Framework\DummyAudioHandler.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\NoteOnMsgInfoEntryMetadata.cs" />
     <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\PitchBendMsgInfoEntryMetadata.cs" />
     <Compile Include="Mapping\MssMsgInfoTypes\ChanAftertouchMsgInfo.cs" />
+    <Compile Include="Mapping\MssMsgInfoTypes\Factory_MssMsgInfo.cs" />
     <Compile Include="Mapping\MssMsgInfoTypes\PolyAftertouchMsgInfo.cs" />
     <Compile Include="Mapping\MssMsgInfoTypes\CCMsgInfo.cs" />
     <Compile Include="Mapping\MssMsgInfoTypes\GeneratorMsgInfo.cs" />
@@ -98,6 +100,7 @@
     <Compile Include="Mapping\MssMsgInfoTypes\NoteOffMsgInfo.cs" />
     <Compile Include="Mapping\MssMsgInfoTypes\NoteOnMsgInfo.cs" />
     <Compile Include="Mapping\MssMsgInfoTypes\PitchBendMsgInfo.cs" />
+    <Compile Include="MssMsg.cs" />
     <Compile Include="MssMsgUtil.cs" />
     <Compile Include="MidiProcessors\MidiProcessor.cs" />
     <Compile Include="Mapping\MappingDlg.cs">
@@ -179,9 +182,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\images\imgUpGrey.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MssMsgTypes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

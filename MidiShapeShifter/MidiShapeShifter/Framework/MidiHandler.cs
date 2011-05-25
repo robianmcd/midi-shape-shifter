@@ -8,7 +8,7 @@ namespace MidiShapeShifter.Framework
     /// <summary>
     /// This object performs midi processing for your plugin.
     /// </summary>
-    internal sealed class MidiHandler : IVstMidiProcessor, IVstPluginMidiSource
+    public class MidiHandler : IVstMidiProcessor, IVstPluginMidiSource
     {
         private Plugin _plugin;
         internal MidiProcessor processor {get; private set;}
@@ -59,6 +59,22 @@ namespace MidiShapeShifter.Framework
 
         public void ProcessCurrentEvents()
         {
+            IVstHostSequencer midiHostSeq = _plugin.Host.GetInstance<IVstHostSequencer>();
+            VstTimeInfo timeInfo = midiHostSeq.GetTime(VstTimeInfoFlags.AutomationReading);
+            VstTimeInfo timeInfo2 = midiHostSeq.GetTime(VstTimeInfoFlags.AutomationWriting);
+            VstTimeInfo timeInfo3 = midiHostSeq.GetTime(VstTimeInfoFlags.BarStartPositionValid);
+            VstTimeInfo timeInfo4 = midiHostSeq.GetTime(VstTimeInfoFlags.ClockValid);
+            VstTimeInfo timeInfo5 = midiHostSeq.GetTime(VstTimeInfoFlags.CyclePositionValid);
+            VstTimeInfo timeInfo6 = midiHostSeq.GetTime(VstTimeInfoFlags.NanoSecondsValid);
+            VstTimeInfo timeInfo7 = midiHostSeq.GetTime(VstTimeInfoFlags.PpqPositionValid);
+            VstTimeInfo timeInfo8 = midiHostSeq.GetTime(VstTimeInfoFlags.SmpteValid);
+            VstTimeInfo timeInfo9 = midiHostSeq.GetTime(VstTimeInfoFlags.TempoValid);
+            VstTimeInfo timeInfo10 = midiHostSeq.GetTime(VstTimeInfoFlags.TimeSignatureValid);
+            VstTimeInfo timeInfo11 = midiHostSeq.GetTime(VstTimeInfoFlags.TransportChanged);
+            VstTimeInfo timeInfo12 = midiHostSeq.GetTime(VstTimeInfoFlags.TransportCycleActive);
+            VstTimeInfo timeInfo13 = midiHostSeq.GetTime(VstTimeInfoFlags.TransportPlaying);
+            VstTimeInfo timeInfo14 = midiHostSeq.GetTime(VstTimeInfoFlags.TransportRecording);
+
             if (CurrentEvents == null || CurrentEvents.Count == 0) return;
 
             // a plugin must implement IVstPluginMidiSource or this call will throw an exception.
@@ -76,7 +92,30 @@ namespace MidiShapeShifter.Framework
                     {
                         VstMidiEvent midiEvent = (VstMidiEvent)evnt;
 
-                        midiEvent = processor.ProcessEvent(midiEvent);
+                        MssMsg mssMsg = new MssMsg();
+                        MssMsgUtil.MssMsgType msgType = MssMsgUtil.GetMssTypeFromMidiData(midiEvent.Data);
+
+                        if (msgType == MssMsgUtil.MssMsgType.Unsupported)
+                        {
+                            outEvents.Add(evnt);
+                            continue;
+                        }
+
+                        mssMsg.Data1 = (int) midiEvent.Data[0] & 0x0F;
+
+                        if (msgType == MssMsgUtil.MssMsgType.PitchBend)
+                        {
+                            mssMsg.Data3 = System.BitConverter.ToInt32(midiEvent.Data, 1/*skips the status byte*/);
+                        }
+                        else
+                        {
+                            mssMsg.Data2 = (int)midiEvent.Data[1];
+                            mssMsg.Data3 = (int)midiEvent.Data[2];
+                        }
+
+                        mssMsg = processor.ProcessMssMsg(mssMsg);
+
+                        //TODO: convert back into a VstMidiEvent
 
                         outEvents.Add(midiEvent);
                     }

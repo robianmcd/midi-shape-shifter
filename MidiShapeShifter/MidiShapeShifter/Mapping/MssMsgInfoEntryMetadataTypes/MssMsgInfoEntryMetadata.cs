@@ -13,6 +13,9 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
         protected MappingEntry.IO ioCatagory;
         protected MappingDlg mappingDlg;
 
+        protected bool entryField1IsValid = false;
+        protected bool entryField2IsValid = false;
+
         //Contains a list of valid output message types when this class is the input type
         protected List<string> outMssMsgTypeNames = new List<string>();
 
@@ -197,12 +200,11 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
         public bool ValidateEntryField1() 
         {
             string errorMsg;
-            bool fieldIsValid;
-            fieldIsValid = IsEntryField1Valid(out errorMsg);
+            this.entryField1IsValid = IsEntryField1Valid(out errorMsg);
         
             mappingDlg.errorProvider.SetError(EntryField1, errorMsg);
 
-            return fieldIsValid;
+            return this.entryField1IsValid;
         }
 
         public virtual bool IsEntryField1Valid(out string errorMessage)
@@ -215,12 +217,11 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
         public bool ValidateEntryField2()
         {
             string errorMsg;
-            bool fieldIsValid;
-            fieldIsValid = IsEntryField2Valid(out errorMsg);
+            this.entryField2IsValid = IsEntryField2Valid(out errorMsg);
 
             mappingDlg.errorProvider.SetError(EntryField2, errorMsg);
 
-            return fieldIsValid;
+            return this.entryField2IsValid;
         }
 
         public virtual bool IsEntryField2Valid(out string errorMessage)
@@ -229,6 +230,33 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
             return true;
         }
 
-        public abstract MssMsgInfo CreateMsgInfo();
+        //Precondition: The entry fields must have valid content (but ValidateEntryField#() does not need to have been 
+        //called)
+        public MssMsgInfo CreateMsgInfo()
+        {
+            if (this.entryField1IsValid == false)
+            {
+                ValidateEntryField1();
+            }
+
+            if (this.entryField2IsValid == false)
+            {
+                ValidateEntryField2();
+            }
+
+            if (this.entryField1IsValid == true && this.entryField2IsValid == true)
+            {
+                return CreateMsgInfoFromValidatedFields();
+            }
+            else
+            {
+                //The precondition was not met
+                Debug.Assert(false);
+                return null;
+            }
+        }
+
+        //Precondition: ValidateEntryField#() must have been called and returned true for all fields
+        protected abstract MssMsgInfo CreateMsgInfoFromValidatedFields();
     }
 }

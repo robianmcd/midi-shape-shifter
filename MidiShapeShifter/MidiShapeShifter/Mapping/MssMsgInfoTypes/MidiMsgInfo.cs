@@ -57,5 +57,12 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoTypes
                 }
             }
         }
+
+        public override bool MatchesMssMsg(MssMsg mssMsg)
+        {
+            return mssMsg.Type == this.mssMsgType && 
+                mssMsg.Data1 >= this.chanRangeBottom && mssMsg.Data1 <= this.chanRangeTop &&
+                mssMsg.Data2 >= this.paramRangeBottom && mssMsg.Data2 <= this.paramRangeTop;
+        }
     }
 }

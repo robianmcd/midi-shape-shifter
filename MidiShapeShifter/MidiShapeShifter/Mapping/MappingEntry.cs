@@ -12,23 +12,19 @@ namespace MidiShapeShifter.Mapping
         public enum EquationInputMode { Text, Preset };
         public enum IO { Input, Output };
 
-        public MssMsgInfo inMssMsgInfo;
-        public MssMsgInfo outMssMsgInfo;
+        public MssMsgInfo InMssMsgInfo;
+        public MssMsgInfo OutMssMsgInfo;
 
-        //If there are multiple mapping entries with overlapping input ranges then a single midi message can 
-        //generate several messages. This can be disabled by setting the override duplicates flag to true
-        public bool overrideDuplicates;
+        //If there are multiple mapping entries with overlapping input ranges then a single mss message can 
+        //generate several messages. This can be disabled by setting the override duplicates flag to true.
+        //If there are two mapping entries with an overlapping inMsgRange and overrideDuplicates is set to 
+        //true, then the one closer to the top of the mapping list box overrides the other.
+        public bool OverrideDuplicates;
 
-        //specifies the order in which the override duplicates flags are considered. For example if there are two
-        //mapping entries with an overlapping inMsgRange and overrideDuplicates is set to true, then the one 
-        //with a priority closer to 0 will override the other. This priority also corresponds to the index of an 
-        //entry in the listbox it is displayed in. Each entry should have a unique priority.
-        public int priority;
-
-        public EquationInputMode inputMode;
-        public string equation;
-        public int presetIndex;
-        public double[] presetParamValues = new double[4];
+        public EquationInputMode EqInputMode;
+        public string Equation;
+        public int PresetIndex;
+        public double[] PresetParamValues = new double[4];
 
         public MappingEntry() 
         { 
@@ -39,11 +35,11 @@ namespace MidiShapeShifter.Mapping
         {
             if (ioCategory == IO.Input)
             {
-                return MssMsgUtil.MssMsgTypeNames[(int)this.inMssMsgInfo.mssMsgType];
+                return MssMsgUtil.MssMsgTypeNames[(int)this.InMssMsgInfo.mssMsgType];
             }
             else if (ioCategory == IO.Output)
             {
-                return MssMsgUtil.MssMsgTypeNames[(int)this.inMssMsgInfo.mssMsgType];
+                return MssMsgUtil.MssMsgTypeNames[(int)this.InMssMsgInfo.mssMsgType];
             }
             else
             {
@@ -55,7 +51,7 @@ namespace MidiShapeShifter.Mapping
 
         public string GetReadableOverrideDuplicates()
         {
-            if (this.overrideDuplicates == true)
+            if (this.OverrideDuplicates == true)
             {
                 return "Yes";
             }

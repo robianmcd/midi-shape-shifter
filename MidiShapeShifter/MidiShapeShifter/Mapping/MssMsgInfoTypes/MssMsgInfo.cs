@@ -21,5 +21,7 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoTypes
         {
             get;
         }
+
+        public abstract bool MatchesMssMsg(MssMsg mssMsg);
     }
 }

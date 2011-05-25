@@ -8,7 +8,7 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
 {
     public class PolyAftertouchMsgInfoEntryMetadata : MidiMsgInfoEntryMetadata
     {
-        public override MssMsgInfo CreateMsgInfo()
+        protected override MssMsgInfo CreateMsgInfoFromValidatedFields()
         {
             PolyAftertouchMsgInfo midiMsgInfo = new PolyAftertouchMsgInfo();
             InitializeMidiMsgInfo(midiMsgInfo);

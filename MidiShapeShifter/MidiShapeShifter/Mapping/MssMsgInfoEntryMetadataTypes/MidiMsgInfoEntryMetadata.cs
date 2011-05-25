@@ -17,6 +17,7 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
         protected int chanRangeTop;
 
 
+
         protected override Control EntryField1
         {
             get
@@ -143,9 +144,9 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
             return validRange;
         }
 
+        //Precondition: ValidateEntryField#() must have been called and returned true for all fields
         protected void InitializeMidiMsgInfo(MidiMsgInfo midiMsgInfo)
         {
-            //TODO: Ensure that these member variables have been initialized.
             midiMsgInfo.Initialize(this.chanRangeBottom, this.chanRangeTop, this.paramRangeBottom, this.paramRangeTop);
         }
 

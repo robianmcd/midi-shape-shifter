@@ -8,7 +8,7 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes
 {
     public class NoteOffMsgInfoEntryMetadata : MidiMsgInfoEntryMetadata
     {
-        public override MssMsgInfo CreateMsgInfo()
+        protected override MssMsgInfo CreateMsgInfoFromValidatedFields()
         {
             NoteOffMsgInfo midiMsgInfo = new NoteOffMsgInfo();
             InitializeMidiMsgInfo(midiMsgInfo);

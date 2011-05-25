@@ -220,7 +220,7 @@
             this.outSameAsInCheckBox.Location = new System.Drawing.Point(9, 157);
             this.outSameAsInCheckBox.Name = "outSameAsInCheckBox";
             this.outSameAsInCheckBox.Size = new System.Drawing.Size(94, 17);
-            this.outSameAsInCheckBox.TabIndex = 9;
+            this.outSameAsInCheckBox.TabIndex = 8;
             this.outSameAsInCheckBox.Text = "Same as Input";
             this.outSameAsInCheckBox.UseVisualStyleBackColor = true;
             this.outSameAsInCheckBox.CheckedChanged += new System.EventHandler(this.outSameAsInCheckBox_CheckedChanged);
@@ -232,7 +232,7 @@
             this.outLearnBtn.Location = new System.Drawing.Point(29, 185);
             this.outLearnBtn.Name = "outLearnBtn";
             this.outLearnBtn.Size = new System.Drawing.Size(75, 23);
-            this.outLearnBtn.TabIndex = 8;
+            this.outLearnBtn.TabIndex = 9;
             this.outLearnBtn.Text = "Learn";
             this.outLearnBtn.UseVisualStyleBackColor = true;
             // 
@@ -329,6 +329,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Mapping Editor";
+            this.Load += new System.EventHandler(this.MappingDlg_Load);
             this.inGroup.ResumeLayout(false);
             this.inGroup.PerformLayout();
             this.outGroup.ResumeLayout(false);

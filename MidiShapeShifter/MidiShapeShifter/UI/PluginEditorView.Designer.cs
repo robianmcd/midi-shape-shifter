@@ -34,6 +34,7 @@
             this.presetParam1Knob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
             this.presetParam1Value = new System.Windows.Forms.Label();
             this.curveGroup = new System.Windows.Forms.GroupBox();
+            this.equationBookBtn = new System.Windows.Forms.Button();
             this.presetParam4Title = new System.Windows.Forms.Label();
             this.presetParam4Value = new System.Windows.Forms.Label();
             this.presetParam4Knob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
@@ -86,21 +87,20 @@
             this.outParamsColHeader = new System.Windows.Forms.ColumnHeader();
             this.overrideColHeader = new System.Windows.Forms.ColumnHeader();
             this.mappingGroupBox = new System.Windows.Forms.GroupBox();
-            this.generatorGroupBox = new System.Windows.Forms.GroupBox();
-            this.generatorListView = new System.Windows.Forms.ListView();
-            this.generaotrNameColHeader = new System.Windows.Forms.ColumnHeader();
-            this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            this.addGeneratorBtn = new System.Windows.Forms.Button();
-            this.editGeneratorBtn = new System.Windows.Forms.Button();
-            this.removeGeneratorBtn = new System.Windows.Forms.Button();
-            this.equationBookBtn = new System.Windows.Forms.Button();
             this.moveMappingDownBtn = new System.Windows.Forms.Button();
             this.moveMappingUpBtn = new System.Windows.Forms.Button();
             this.addMappingBtn = new System.Windows.Forms.Button();
             this.editMappingBtn = new System.Windows.Forms.Button();
             this.deleteMappingBtn = new System.Windows.Forms.Button();
+            this.generatorGroupBox = new System.Windows.Forms.GroupBox();
+            this.generatorListView = new System.Windows.Forms.ListView();
+            this.generaotrNameColHeader = new System.Windows.Forms.ColumnHeader();
+            this.addGeneratorBtn = new System.Windows.Forms.Button();
+            this.editGeneratorBtn = new System.Windows.Forms.Button();
+            this.removeGeneratorBtn = new System.Windows.Forms.Button();
+            this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.curveGroup.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.mappingGroupBox.SuspendLayout();
@@ -178,6 +178,17 @@
             this.curveGroup.TabIndex = 6;
             this.curveGroup.TabStop = false;
             this.curveGroup.Text = "Curve Shape";
+            // 
+            // equationBookBtn
+            // 
+            this.equationBookBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgNotebookBlue;
+            this.equationBookBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.equationBookBtn.Location = new System.Drawing.Point(242, 21);
+            this.equationBookBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.equationBookBtn.Name = "equationBookBtn";
+            this.equationBookBtn.Size = new System.Drawing.Size(24, 24);
+            this.equationBookBtn.TabIndex = 9;
+            this.equationBookBtn.UseVisualStyleBackColor = true;
             // 
             // presetParam4Title
             // 
@@ -378,6 +389,7 @@
             this.groupBox1.Controls.Add(this.variableATitle);
             this.groupBox1.Controls.Add(this.variableAKnob);
             this.groupBox1.Location = new System.Drawing.Point(5, 344);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(351, 140);
             this.groupBox1.TabIndex = 7;
@@ -691,6 +703,7 @@
             this.outParamsColHeader,
             this.overrideColHeader});
             this.mappingListView.Font = new System.Drawing.Font("Arial", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mappingListView.FullRowSelect = true;
             this.mappingListView.HideSelection = false;
             this.mappingListView.Location = new System.Drawing.Point(8, 16);
             this.mappingListView.MultiSelect = false;
@@ -704,12 +717,12 @@
             // inTypeColHeader
             // 
             this.inTypeColHeader.Text = "In Type";
-            this.inTypeColHeader.Width = 52;
+            this.inTypeColHeader.Width = 57;
             // 
             // inChannelsColHeader
             // 
             this.inChannelsColHeader.Text = "Chans";
-            this.inChannelsColHeader.Width = 45;
+            this.inChannelsColHeader.Width = 40;
             // 
             // inParamsColHeader
             // 
@@ -719,12 +732,12 @@
             // outTypeColHeader
             // 
             this.outTypeColHeader.Text = "Out Type";
-            this.outTypeColHeader.Width = 52;
+            this.outTypeColHeader.Width = 57;
             // 
             // outChannelsColHeader
             // 
             this.outChannelsColHeader.Text = "Chans";
-            this.outChannelsColHeader.Width = 45;
+            this.outChannelsColHeader.Width = 40;
             // 
             // outParamsColHeader
             // 
@@ -734,7 +747,7 @@
             // overrideColHeader
             // 
             this.overrideColHeader.Text = "Override";
-            this.overrideColHeader.Width = 50;
+            this.overrideColHeader.Width = 49;
             // 
             // mappingGroupBox
             // 
@@ -750,113 +763,6 @@
             this.mappingGroupBox.TabIndex = 14;
             this.mappingGroupBox.TabStop = false;
             this.mappingGroupBox.Text = "Mapping Entries";
-            // 
-            // generatorGroupBox
-            // 
-            this.generatorGroupBox.Controls.Add(this.generatorListView);
-            this.generatorGroupBox.Controls.Add(this.addGeneratorBtn);
-            this.generatorGroupBox.Controls.Add(this.editGeneratorBtn);
-            this.generatorGroupBox.Controls.Add(this.removeGeneratorBtn);
-            this.generatorGroupBox.Location = new System.Drawing.Point(5, 205);
-            this.generatorGroupBox.Name = "generatorGroupBox";
-            this.generatorGroupBox.Size = new System.Drawing.Size(351, 133);
-            this.generatorGroupBox.TabIndex = 15;
-            this.generatorGroupBox.TabStop = false;
-            this.generatorGroupBox.Text = "Generators";
-            // 
-            // generatorListView
-            // 
-            this.generatorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.generaotrNameColHeader});
-            this.generatorListView.Font = new System.Drawing.Font("Arial", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.generatorListView.HideSelection = false;
-            this.generatorListView.Location = new System.Drawing.Point(8, 16);
-            this.generatorListView.MultiSelect = false;
-            this.generatorListView.Name = "generatorListView";
-            this.generatorListView.Size = new System.Drawing.Size(337, 84);
-            this.generatorListView.TabIndex = 13;
-            this.generatorListView.UseCompatibleStateImageBehavior = false;
-            this.generatorListView.View = System.Windows.Forms.View.Details;
-            // 
-            // generaotrNameColHeader
-            // 
-            this.generaotrNameColHeader.Text = "Name";
-            this.generaotrNameColHeader.Width = 52;
-            // 
-            // toolStrip
-            // 
-            this.toolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(236)))));
-            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
-            this.toolStripButton2});
-            this.toolStrip.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(641, 25);
-            this.toolStrip.TabIndex = 16;
-            this.toolStrip.Text = "Tool Strip";
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = global::MidiShapeShifter.Properties.Resources.imgOpenBlue;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "openToolStripBtn";
-            // 
-            // toolStripButton2
-            // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton2.Image = global::MidiShapeShifter.Properties.Resources.imgSaveBlue;
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "saveToolStripBtn";
-            // 
-            // addGeneratorBtn
-            // 
-            this.addGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgAddBlue;
-            this.addGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.addGeneratorBtn.Location = new System.Drawing.Point(8, 103);
-            this.addGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.addGeneratorBtn.Name = "addGeneratorBtn";
-            this.addGeneratorBtn.Size = new System.Drawing.Size(24, 24);
-            this.addGeneratorBtn.TabIndex = 8;
-            this.addGeneratorBtn.UseVisualStyleBackColor = true;
-            this.addGeneratorBtn.Click += new System.EventHandler(this.addGeneratorBtn_Click);
-            // 
-            // editGeneratorBtn
-            // 
-            this.editGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgEditBlue;
-            this.editGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.editGeneratorBtn.Location = new System.Drawing.Point(56, 103);
-            this.editGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.editGeneratorBtn.Name = "editGeneratorBtn";
-            this.editGeneratorBtn.Size = new System.Drawing.Size(24, 24);
-            this.editGeneratorBtn.TabIndex = 10;
-            this.editGeneratorBtn.UseVisualStyleBackColor = true;
-            // 
-            // removeGeneratorBtn
-            // 
-            this.removeGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDeleteBlue;
-            this.removeGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.removeGeneratorBtn.Location = new System.Drawing.Point(32, 103);
-            this.removeGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.removeGeneratorBtn.Name = "removeGeneratorBtn";
-            this.removeGeneratorBtn.Size = new System.Drawing.Size(24, 24);
-            this.removeGeneratorBtn.TabIndex = 9;
-            this.removeGeneratorBtn.UseVisualStyleBackColor = true;
-            // 
-            // equationBookBtn
-            // 
-            this.equationBookBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgNotebookBlue;
-            this.equationBookBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.equationBookBtn.Location = new System.Drawing.Point(242, 21);
-            this.equationBookBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.equationBookBtn.Name = "equationBookBtn";
-            this.equationBookBtn.Size = new System.Drawing.Size(24, 24);
-            this.equationBookBtn.TabIndex = 9;
-            this.equationBookBtn.UseVisualStyleBackColor = true;
             // 
             // moveMappingDownBtn
             // 
@@ -914,6 +820,103 @@
             this.deleteMappingBtn.Size = new System.Drawing.Size(24, 24);
             this.deleteMappingBtn.TabIndex = 9;
             this.deleteMappingBtn.UseVisualStyleBackColor = true;
+            // 
+            // generatorGroupBox
+            // 
+            this.generatorGroupBox.Controls.Add(this.generatorListView);
+            this.generatorGroupBox.Controls.Add(this.addGeneratorBtn);
+            this.generatorGroupBox.Controls.Add(this.editGeneratorBtn);
+            this.generatorGroupBox.Controls.Add(this.removeGeneratorBtn);
+            this.generatorGroupBox.Location = new System.Drawing.Point(5, 205);
+            this.generatorGroupBox.Name = "generatorGroupBox";
+            this.generatorGroupBox.Size = new System.Drawing.Size(351, 133);
+            this.generatorGroupBox.TabIndex = 15;
+            this.generatorGroupBox.TabStop = false;
+            this.generatorGroupBox.Text = "Generators";
+            // 
+            // generatorListView
+            // 
+            this.generatorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.generaotrNameColHeader});
+            this.generatorListView.Font = new System.Drawing.Font("Arial", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.generatorListView.FullRowSelect = true;
+            this.generatorListView.HideSelection = false;
+            this.generatorListView.Location = new System.Drawing.Point(8, 16);
+            this.generatorListView.MultiSelect = false;
+            this.generatorListView.Name = "generatorListView";
+            this.generatorListView.Size = new System.Drawing.Size(337, 84);
+            this.generatorListView.TabIndex = 13;
+            this.generatorListView.UseCompatibleStateImageBehavior = false;
+            this.generatorListView.View = System.Windows.Forms.View.Details;
+            // 
+            // generaotrNameColHeader
+            // 
+            this.generaotrNameColHeader.Text = "Name";
+            this.generaotrNameColHeader.Width = 52;
+            // 
+            // addGeneratorBtn
+            // 
+            this.addGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgAddBlue;
+            this.addGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.addGeneratorBtn.Location = new System.Drawing.Point(8, 103);
+            this.addGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.addGeneratorBtn.Name = "addGeneratorBtn";
+            this.addGeneratorBtn.Size = new System.Drawing.Size(24, 24);
+            this.addGeneratorBtn.TabIndex = 8;
+            this.addGeneratorBtn.UseVisualStyleBackColor = true;
+            this.addGeneratorBtn.Click += new System.EventHandler(this.addGeneratorBtn_Click);
+            // 
+            // editGeneratorBtn
+            // 
+            this.editGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgEditBlue;
+            this.editGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.editGeneratorBtn.Location = new System.Drawing.Point(56, 103);
+            this.editGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.editGeneratorBtn.Name = "editGeneratorBtn";
+            this.editGeneratorBtn.Size = new System.Drawing.Size(24, 24);
+            this.editGeneratorBtn.TabIndex = 10;
+            this.editGeneratorBtn.UseVisualStyleBackColor = true;
+            // 
+            // removeGeneratorBtn
+            // 
+            this.removeGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDeleteBlue;
+            this.removeGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.removeGeneratorBtn.Location = new System.Drawing.Point(32, 103);
+            this.removeGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.removeGeneratorBtn.Name = "removeGeneratorBtn";
+            this.removeGeneratorBtn.Size = new System.Drawing.Size(24, 24);
+            this.removeGeneratorBtn.TabIndex = 9;
+            this.removeGeneratorBtn.UseVisualStyleBackColor = true;
+            // 
+            // toolStrip
+            // 
+            this.toolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(236)))));
+            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton1,
+            this.toolStripButton2});
+            this.toolStrip.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip.Name = "toolStrip";
+            this.toolStrip.Size = new System.Drawing.Size(641, 25);
+            this.toolStrip.TabIndex = 16;
+            this.toolStrip.Text = "Tool Strip";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = global::MidiShapeShifter.Properties.Resources.imgOpenBlue;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "openToolStripBtn";
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = global::MidiShapeShifter.Properties.Resources.imgSaveBlue;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton2.Text = "saveToolStripBtn";
             // 
             // PluginEditorView
             // 

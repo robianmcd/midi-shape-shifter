@@ -6,7 +6,7 @@ namespace MidiShapeShifter.Framework
     /// <summary>
     /// This object manages the Plugin programs and its parameters.
     /// </summary>
-    internal sealed class PluginPrograms : VstPluginProgramsBase
+    public class PluginPrograms : VstPluginProgramsBase
     {
         private Plugin _plugin;
 

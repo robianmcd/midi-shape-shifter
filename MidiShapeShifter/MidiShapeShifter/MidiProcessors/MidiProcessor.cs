@@ -80,7 +80,7 @@ namespace MidiShapeShifter.MidiProcessors
             _plugin.Opened -= new System.EventHandler(Plugin_Opened);
         }
 
-        internal VstMidiEvent ProcessEvent(VstMidiEvent midiEvent)
+        internal MssMsg ProcessMssMsg(MssMsg mssMsg)
         {
             throw new System.NotImplementedException();
         }

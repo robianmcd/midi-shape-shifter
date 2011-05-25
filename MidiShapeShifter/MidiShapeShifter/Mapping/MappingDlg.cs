@@ -153,44 +153,7 @@ namespace MidiShapeShifter.Mapping
         {
             MssMsgUtil.MssMsgType msgType = GetMessageTypeFromCombo(msgTypeCombo);
 
-            switch (msgType)
-            {
-                case MssMsgUtil.MssMsgType.NoteOn:
-                    {
-                        msgMetadata = new NoteOnMsgInfoEntryMetadata();
-                        break;
-                    }
-                case MssMsgUtil.MssMsgType.NoteOff:
-                    {
-                        msgMetadata = new NoteOffMsgInfoEntryMetadata();
-                        break;
-                    }
-                case MssMsgUtil.MssMsgType.CC:
-                    {
-                        msgMetadata = new CCMsgInfoEntryMetadata();
-                        break;
-                    }
-                case MssMsgUtil.MssMsgType.PitchBend:
-                    {
-                        msgMetadata = new PitchBendMsgInfoEntryMetadata();
-                        break;
-                    }
-                case MssMsgUtil.MssMsgType.PolyAftertouch:
-                    {
-                        msgMetadata = new PolyAftertouchMsgInfoEntryMetadata();
-                        break;
-                    }
-                case MssMsgUtil.MssMsgType.Generator:
-                    {
-                        msgMetadata = new GeneratorMsgInfoEntryMetadata();
-                        break;
-                    }
-                case MssMsgUtil.MssMsgType.GeneratorToggle:
-                    {
-                        msgMetadata = new GeneratorToggleMsgInfoEntryMetadata();
-                        break;
-                    }
-            }
+            msgMetadata = Factory_MssMsgInfoEntryMetadata.Create(msgType);
 
             msgMetadata.Init(this, ioCategory);
         }
@@ -208,12 +171,11 @@ namespace MidiShapeShifter.Mapping
 
             if (allFieldsAreValid)
             {
-                //doesn't work if same as output is on
-                mappingEntry.inMssMsgInfo = this.inMsgMetadata.CreateMsgInfo();
-                mappingEntry.outMssMsgInfo = this.outMsgMetadata.CreateMsgInfo();
-                mappingEntry.overrideDuplicates = this.inOverrideDupsCheckBox.Checked;
+                mappingEntry.InMssMsgInfo = this.inMsgMetadata.CreateMsgInfo();
+                mappingEntry.OutMssMsgInfo = this.outMsgMetadata.CreateMsgInfo();
+                mappingEntry.OverrideDuplicates = this.inOverrideDupsCheckBox.Checked;
 
-                OkBtn.DialogResult = DialogResult.OK;
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
         }
@@ -248,6 +210,11 @@ namespace MidiShapeShifter.Mapping
             {
                 this.outEntryField2Combo.SelectedIndex = ((ComboBox)sender).SelectedIndex;
             }
+        }
+
+        private void MappingDlg_Load(object sender, EventArgs e)
+        {
+
         }   
     }
 }

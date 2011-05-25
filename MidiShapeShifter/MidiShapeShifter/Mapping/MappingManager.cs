@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace MidiShapeShifter.Mapping
 {
+    //This class is responsible for storing and interpreting MappingEntries
     public class MappingManager
     {
-        private List<MappingEntry> _mappingEntries = new List<MappingEntry>();
-        public List<MappingEntry> MappingEntries { 
+        protected List<MappingEntry> mappingEntries = new List<MappingEntry>();
+        /*public List<MappingEntry> MappingEntries { 
             get 
             {
                 return _mappingEntries;
@@ -17,79 +20,111 @@ namespace MidiShapeShifter.Mapping
             {
                 _mappingEntries = value;
             } 
+        }*/
+
+        public void AddMappingEntry(MappingEntry newEntry) 
+        {
+            mappingEntries.Add(newEntry);
         }
 
-        public bool AddMappingEntry(MappingEntry newEntry) 
+        public void RemoveMappingEntry(int index) 
         {
-            //TODO: Valadate newEntry
-
-            MappingEntries.Add(newEntry);
-            return true;
-        }
-
-        public bool removeMappingEntry(int priorityIndex) 
-        {
-            bool entryFound = false;
-
-            foreach (MappingEntry entry in MappingEntries) 
+            if (index >= 0 && index < mappingEntries.Count)
             {
-                if (entry.priority == priorityIndex)
-                {
-                    MappingEntries.Remove(entry);
-                    entryFound = true;
-                }
-                else if (entryFound)
-                {
-                    entry.priority--;
-                }
-            }
-
-            return entryFound;
-        }
-
-
-        public bool MoveEntryUp(int index) 
-        {
-            if (index >= 1 && index < MappingEntries.Count)
-            {
-                MappingEntries[index].priority--;
-                MappingEntries[index - 1].priority++;
-                return true;
+                mappingEntries.RemoveAt(index);
             }
             else
             {
-                return false;
+                //invalid index
+                Debug.Assert(false);
             }
         }
 
-        public bool MoveEntryDown(int index)
+        public MappingEntry GetMappingEntry(int index)
         {
-            if (index >= 0 && index < MappingEntries.Count - 1)
+            if (index >= 0 && index < mappingEntries.Count)
             {
-                MappingEntries[index].priority++;
-                MappingEntries[index + 1].priority--; 
-                return true;
+                return mappingEntries[index];
             }
             else
             {
-                return false;
+                //invalid index
+                Debug.Assert(false);
+                return null;
             }
         }
 
-        public IEnumerable<MappingEntry> GetAssociatedEntries(MssMsgUtil.MidiMsg inputMsg) 
+        public int GetNumEntries()
         {
-            /*var associatedEntiresQuery =
-                from entry in MappingEntries
-                where entry.inMsgRange.msgType == inputMsg.type &&
-                      ValueIsInRange(inputMsg.channel, entry.inMsgRange.bottomChannel, entry.inMsgRange.topChannel) &&
-                      ValueIsInRange(inputMsg.param1, entry.inMsgRange.bottomParam, entry.inMsgRange.topParam)
+            return mappingEntries.Count;
+        }
+
+        public void MoveEntryUp(int index) 
+        {
+            if (index >= 1 && index < mappingEntries.Count)
+            {
+                MappingEntry tempEntry = mappingEntries[index];
+                mappingEntries[index] = mappingEntries[index - 1];
+                mappingEntries[index - 1] = tempEntry;
+            }
+            else
+            {
+                //invalid index
+                Debug.Assert(false);
+            }
+        }
+
+        public void MoveEntryDown(int index)
+        {
+            if (index >= 0 && index < mappingEntries.Count - 1)
+            {
+                MappingEntry tempEntry = mappingEntries[index];
+                mappingEntries[index] = mappingEntries[index + 1];
+                mappingEntries[index + 1] = tempEntry;
+            }
+            else
+            {
+                //invalid index
+                Debug.Assert(false);
+            }
+        }
+
+        public ListViewItem GetListViewRow(int index)
+        { 
+            if (index >= 0 && index < mappingEntries.Count)
+            {
+                MappingEntry entry = mappingEntries[index];
+                ListViewItem mappingItem = new ListViewItem(entry.GetReadableMsgType(MappingEntry.IO.Input));
+                mappingItem.SubItems.Add(entry.InMssMsgInfo.Field1);
+                mappingItem.SubItems.Add(entry.InMssMsgInfo.Field2);
+
+                mappingItem.SubItems.Add(entry.GetReadableMsgType(MappingEntry.IO.Output));
+                mappingItem.SubItems.Add(entry.OutMssMsgInfo.Field1);
+                mappingItem.SubItems.Add(entry.OutMssMsgInfo.Field2);
+
+                mappingItem.SubItems.Add(entry.GetReadableOverrideDuplicates());
+
+                return mappingItem;
+            }
+            else
+            {
+                //invalid index
+                Debug.Assert(false);
+                return null;
+            }
+        }
+
+        public IEnumerable<MappingEntry> GetAssociatedEntries(MssMsg inputMsg) 
+        {
+            var associatedEntiresQuery =
+                from entry in mappingEntries
+                where entry.InMssMsgInfo.MatchesMssMsg(inputMsg)
                 select entry;
 
             //deal with input overrides
             var inputOverrideEntriesQuery =
                 from entry in associatedEntiresQuery
-                where entry.overrideDuplicates == true
-                orderby entry.priority ascending
+                where entry.OverrideDuplicates == true
                 select entry;
 
             var inputOverrideEntriesList = inputOverrideEntriesQuery.ToList();
@@ -97,17 +132,11 @@ namespace MidiShapeShifter.Mapping
             {
                 associatedEntiresQuery =
                 from entry in associatedEntiresQuery
-                where entry.priority == inputOverrideEntriesList[0].priority
-                select entry;    
+                where entry == inputOverrideEntriesList[0]
+                select entry;
             }
 
-            return associatedEntiresQuery;*/
-            return null;
-        }
-
-        protected bool ValueIsInRange(int value, int bottomOfRange, int topOfRange) 
-        {
-            return (value >= bottomOfRange && value <= topOfRange);
+            return associatedEntiresQuery;
         }
     }
 }

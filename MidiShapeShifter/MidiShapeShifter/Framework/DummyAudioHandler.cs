@@ -7,7 +7,7 @@ namespace MidiShapeShifter.Framework
     /// <summary>
     /// This object is a dummy AudioProcessor only to be able to output Midi during the Audio processing cycle.
     /// </summary>
-    internal sealed class DummyAudioHandler : VstPluginAudioProcessorBase
+    public class DummyAudioHandler : VstPluginAudioProcessorBase
     {
         // some defaults
         private static readonly int AudioInputCount = 2;

@@ -1,19 +1,22 @@
 ﻿using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
+using MidiShapeShifter.Mapping;
 
 namespace MidiShapeShifter.Framework
 {
     /// <summary>
     /// The Plugin root object.
     /// </summary>
-    internal sealed class Plugin : VstPluginWithInterfaceManagerBase
+    public class Plugin : VstPluginWithInterfaceManagerBase
     {
         private static readonly int UniquePluginId = new FourCharacterCode("1132").ToInt32();
         private static readonly string PluginName = "Midi Shape Shifter";
         private static readonly string ProductName = "Midi Shape Shifter";
         private static readonly string VendorName = "SpeqSoft";
         private static readonly int PluginVersion = 1;
+
+        public MappingManager mappingManager = new MappingManager();
 
         /// <summary>
         /// Initializes the one an only instance of the Plugin root object.

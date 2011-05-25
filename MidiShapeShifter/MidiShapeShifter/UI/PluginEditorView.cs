@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using LBSoft.IndustrialCtrls.Knobs;
 
 using MidiShapeShifter;
+using MidiShapeShifter.Framework;
 using MidiShapeShifter.Mapping;
 using MidiShapeShifter.Generator;
 
@@ -21,6 +22,8 @@ namespace MidiShapeShifter.UI
             public Label[] valueDisplays;
         }
 
+        protected Plugin plugin;
+
         public VariableParamsInfo variableParamsInfo;
         public MappingEntry ActiveMapping = null;
 
@@ -32,6 +35,11 @@ namespace MidiShapeShifter.UI
             variableParamsInfo.maxTextBoxes = new TextBox[NUM_VARIABLE_PARAMS] { variableAMax, variableBMax, variableCMax, variableDMax };
             variableParamsInfo.minTextBoxes = new TextBox[NUM_VARIABLE_PARAMS] { variableAMin, variableBMin, variableCMin, variableDMin };
             variableParamsInfo.valueDisplays = new Label[NUM_VARIABLE_PARAMS] { variableAValue, variableBValue, variableCValue, variableDValue };
+        }
+
+        public void Init(Plugin plugin)
+        {
+            this.plugin = plugin;
         }
 
         internal bool InitializeVariableParameters(List<VstParameterManager> parameters)
@@ -75,10 +83,19 @@ namespace MidiShapeShifter.UI
             //knob.Tag = paramMgr;
         }
 
-        protected void AddEntryToListView(MappingEntry entry) 
+        protected void AddEntryToMappingListView(MappingEntry entry) 
         {
-            ListViewItem inTypeItem = new ListViewItem();
-            //TODO: finish this
+            ListViewItem mappingItem = new ListViewItem(entry.GetReadableMsgType(MappingEntry.IO.Input));
+            mappingItem.SubItems.Add(entry.InMssMsgInfo.Field1);
+            mappingItem.SubItems.Add(entry.InMssMsgInfo.Field2);
+
+            mappingItem.SubItems.Add(entry.GetReadableMsgType(MappingEntry.IO.Output));
+            mappingItem.SubItems.Add(entry.OutMssMsgInfo.Field1);
+            mappingItem.SubItems.Add(entry.OutMssMsgInfo.Field2);
+
+            mappingItem.SubItems.Add(entry.GetReadableOverrideDuplicates());
+
+            mappingListView.Items.Add(mappingItem);
         }
 
         private void lbKnob_KnobChangeValue(object sender, LBSoft.IndustrialCtrls.Knobs.LBKnobEventArgs e) {
@@ -99,8 +116,10 @@ namespace MidiShapeShifter.UI
             if (mapDlg.ShowDialog(this) == DialogResult.OK)
             {
                 ActiveMapping = mapDlg.mappingEntry;
-                ActiveMapping.priority = mappingListView.Items.Count;
-                AddEntryToListView(ActiveMapping);
+
+                this.plugin.mappingManager.AddMappingEntry(mapDlg.mappingEntry);
+                int newestEntryIndex = this.plugin.mappingManager.GetNumEntries() - 1;
+                mappingListView.Items.Add(this.plugin.mappingManager.GetListViewRow(newestEntryIndex));
             }
         }
 
