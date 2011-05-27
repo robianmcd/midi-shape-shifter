@@ -69,44 +69,44 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Generator\GeneratorDlg.cs">
+    <Compile Include="Mss\Generator\GeneratorDlg.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Generator\GeneratorDlg.Designer.cs">
+    <Compile Include="Mss\Generator\GeneratorDlg.Designer.cs">
       <DependentUpon>GeneratorDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\ChanAftertouchMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\Factory_MssMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\PolyAftertouchMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\CCMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\ChanAftertouchMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\Factory_MssMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\PolyAftertouchMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\CCMsgInfoEntryMetadata.cs" />
     <Compile Include="Framework\DummyAudioHandler.cs" />
-    <Compile Include="Mapping\EntryFieldInterpretingUtils.cs" />
-    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\GeneratorToggleMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\GeneratorMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mapping\MappingEntry.cs" />
-    <Compile Include="Mapping\MappingManager.cs" />
-    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\NoteOffMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\NoteOnMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\PitchBendMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mapping\MssMsgInfoTypes\ChanAftertouchMsgInfo.cs" />
-    <Compile Include="Mapping\MssMsgInfoTypes\Factory_MssMsgInfo.cs" />
-    <Compile Include="Mapping\MssMsgInfoTypes\PolyAftertouchMsgInfo.cs" />
-    <Compile Include="Mapping\MssMsgInfoTypes\CCMsgInfo.cs" />
-    <Compile Include="Mapping\MssMsgInfoTypes\GeneratorMsgInfo.cs" />
-    <Compile Include="Mapping\MssMsgInfoTypes\GeneratorToggleMsgInfo.cs" />
-    <Compile Include="Mapping\MssMsgInfoTypes\MidiMsgInfo.cs" />
-    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\MidiMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mapping\MssMsgInfoEntryMetadataTypes\MssMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mapping\MssMsgInfoTypes\NoteOffMsgInfo.cs" />
-    <Compile Include="Mapping\MssMsgInfoTypes\NoteOnMsgInfo.cs" />
-    <Compile Include="Mapping\MssMsgInfoTypes\PitchBendMsgInfo.cs" />
-    <Compile Include="MssMsg.cs" />
-    <Compile Include="MssMsgUtil.cs" />
+    <Compile Include="Mss\Mapping\EntryFieldInterpretingUtils.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\GeneratorToggleMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\GeneratorMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MappingEntry.cs" />
+    <Compile Include="Mss\Mapping\MappingManager.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\NoteOffMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\NoteOnMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\PitchBendMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoTypes\ChanAftertouchMsgInfo.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoTypes\Factory_MssMsgInfo.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoTypes\PolyAftertouchMsgInfo.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoTypes\CCMsgInfo.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoTypes\GeneratorMsgInfo.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoTypes\GeneratorToggleMsgInfo.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoTypes\MidiMsgInfo.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\MidiMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\MssMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoTypes\NoteOffMsgInfo.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoTypes\NoteOnMsgInfo.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoTypes\PitchBendMsgInfo.cs" />
+    <Compile Include="Mss\MssMsg.cs" />
+    <Compile Include="Mss\MssMsgUtil.cs" />
     <Compile Include="MidiProcessors\MidiProcessor.cs" />
-    <Compile Include="Mapping\MappingDlg.cs">
+    <Compile Include="Mss\Mapping\MappingDlg.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Mapping\MappingDlg.Designer.cs">
+    <Compile Include="Mss\Mapping\MappingDlg.Designer.cs">
       <DependentUpon>MappingDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="Framework\MidiHandler.cs" />
@@ -114,22 +114,22 @@
     <Compile Include="Framework\PluginCommandStub.cs" />
     <Compile Include="Framework\PluginEditor.cs" />
     <Compile Include="Framework\PluginPrograms.cs" />
-    <Compile Include="Mapping\MssMsgInfoTypes\MssMsgInfo.cs" />
+    <Compile Include="Mss\Mapping\MssMsgInfoTypes\MssMsgInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UI\PluginEditorView.cs">
+    <Compile Include="Mss\UI\PluginEditorView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\PluginEditorView.Designer.cs">
+    <Compile Include="Mss\UI\PluginEditorView.Designer.cs">
       <DependentUpon>PluginEditorView.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Generator\GeneratorDlg.resx">
+    <EmbeddedResource Include="Mss\Generator\GeneratorDlg.resx">
       <DependentUpon>GeneratorDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -138,11 +138,11 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Mapping\MappingDlg.resx">
+    <EmbeddedResource Include="Mss\Mapping\MappingDlg.resx">
       <DependentUpon>MappingDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\PluginEditorView.resx">
+    <EmbeddedResource Include="Mss\UI\PluginEditorView.resx">
       <DependentUpon>PluginEditorView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

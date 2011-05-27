@@ -6,9 +6,9 @@ using System.Diagnostics;
 
 using NUnit.Framework;
 
-using MidiShapeShifter;
-using MidiShapeShifter.Mapping;
-using MidiShapeShifter.Mapping.MssMsgInfoTypes;
+using MidiShapeShifter.Mss;
+using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.Mapping.MssMsgInfoTypes;
 
 
 

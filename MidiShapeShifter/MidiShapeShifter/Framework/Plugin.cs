@@ -1,7 +1,7 @@
 ﻿using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
-using MidiShapeShifter.Mapping;
+using MidiShapeShifter.Mss.Mapping;
 
 namespace MidiShapeShifter.Framework
 {

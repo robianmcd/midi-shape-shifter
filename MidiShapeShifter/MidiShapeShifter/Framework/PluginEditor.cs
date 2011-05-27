@@ -3,7 +3,7 @@ using System.Drawing;
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Common;
-using MidiShapeShifter.UI;
+using MidiShapeShifter.Mss.UI;
 using System.Collections.Generic;
 
 namespace MidiShapeShifter.Framework

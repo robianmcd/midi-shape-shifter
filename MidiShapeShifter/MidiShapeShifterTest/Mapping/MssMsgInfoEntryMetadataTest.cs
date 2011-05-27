@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
-using MidiShapeShifter.Mapping;
-using MidiShapeShifter.Mapping.MssMsgInfoEntryMetadataTypes;
+using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes;
 
 namespace MidiShapeShifterTest.Mapping
 {
