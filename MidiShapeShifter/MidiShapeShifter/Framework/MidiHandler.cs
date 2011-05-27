@@ -1,4 +1,5 @@
-﻿using Jacobi.Vst.Core;
+﻿using System.Collections.Generic;
+using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
 using MidiShapeShifter.MidiProcessors;
@@ -113,7 +114,8 @@ namespace MidiShapeShifter.Framework
                             mssMsg.Data3 = (int)midiEvent.Data[2];
                         }
 
-                        mssMsg = processor.ProcessMssMsg(mssMsg);
+                        List<MssMsg> outMessages = new List<MssMsg>();
+                        outMessages = processor.ProcessMssMsg(mssMsg);
 
                         //TODO: convert back into a VstMidiEvent
 
