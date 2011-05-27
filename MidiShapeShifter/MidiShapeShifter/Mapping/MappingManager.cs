@@ -7,26 +7,28 @@ using System.Windows.Forms;
 
 namespace MidiShapeShifter.Mapping
 {
-    //This class is responsible for storing and interpreting MappingEntries
+
+    /// <summary>
+    ///     The MappingManager is responsible for storing, retrieving and interpreting MappingEntry objects.
+    /// </summary>
     public class MappingManager
     {
+        /// <summary>
+        ///     List that stores all of the MappingEntry objects. The mapping list box on the main GUI is basically a 
+        ///     visualization of this list.
+        /// </summary>
         protected List<MappingEntry> mappingEntries = new List<MappingEntry>();
-        /*public List<MappingEntry> MappingEntries { 
-            get 
-            {
-                return _mappingEntries;
-            } 
-            private set 
-            {
-                _mappingEntries = value;
-            } 
-        }*/
 
         public void AddMappingEntry(MappingEntry newEntry) 
         {
             mappingEntries.Add(newEntry);
         }
 
+
+        /// <remarks>
+        ///     Precondition: <paramref name="index"/> must be a valid index in the MappingManager's list of 
+        ///     MappingEntry objects.
+        /// </remarks>
         public void RemoveMappingEntry(int index) 
         {
             if (index >= 0 && index < mappingEntries.Count)
@@ -40,6 +42,11 @@ namespace MidiShapeShifter.Mapping
             }
         }
 
+
+        /// <remarks>
+        ///     Precondition: <paramref name="index"/> must be a valid index in the MappingManager's list of 
+        ///     MappingEntry objects.
+        /// </remarks>
         public MappingEntry GetMappingEntry(int index)
         {
             if (index >= 0 && index < mappingEntries.Count)
@@ -59,6 +66,19 @@ namespace MidiShapeShifter.Mapping
             return mappingEntries.Count;
         }
 
+        /// <summary>
+        ///     Moves the MappingEntry specified by <paramref name="index"/> up one element in the list.
+        /// </summary>
+        /// <remarks>
+        ///     The order of MappingEntry objects in the list can affect which MappingEntry objects are returned by 
+        ///     GetAssociatedEntries().
+        ///     
+        ///     Precondition: <paramref name="index"/> must be a valid index in the MappingManager's list of 
+        ///     MappingEntry objects. 
+        ///     
+        ///     Precondition: <paramref name="index"/> cannot refer to the first element of the list as this element 
+        ///     cannot move any further up.
+        /// </remarks>
         public void MoveEntryUp(int index) 
         {
             if (index >= 1 && index < mappingEntries.Count)
@@ -74,6 +94,19 @@ namespace MidiShapeShifter.Mapping
             }
         }
 
+        /// <summary>
+        ///     Moves the MappingEntry specified by <paramref name="index"/> down one element in the list.
+        /// </summary>
+        /// <remarks>
+        ///     The order of <see cref="MappingEntry"/> objects in the list can affect which MappingEntry objects are 
+        ///     returned by GetAssociatedEntries().
+        ///     
+        ///     Precondition: <paramref name="index"/> must be a valid index in the MappingManager's list of 
+        ///     MappingEntry objects.  
+        ///     
+        ///     Precondition: <paramref name="index"/> cannot refer to the last element of the list as this element 
+        ///     cannot move any further down.
+        /// </remarks>
         public void MoveEntryDown(int index)
         {
             if (index >= 0 && index < mappingEntries.Count - 1)
@@ -89,6 +122,11 @@ namespace MidiShapeShifter.Mapping
             }
         }
 
+        /// <summary>
+        ///     Creates a ListViewItem based on the MappingEntry specified by <paramref name="index"/>. This 
+        ///     ListViewItem is intended to be used in the PluginEditorView's mapping list box.
+        /// </summary>
+        /// <returns>The ListViewItem representation of a MappingEntry</returns>
         public ListViewItem GetListViewRow(int index)
         { 
             if (index >= 0 && index < mappingEntries.Count)
@@ -114,6 +152,17 @@ namespace MidiShapeShifter.Mapping
             }
         }
 
+        /// <summary>
+        ///     Queries the MappingEntry objects in the MappingManager and returns each one that matches InMssMsgInfo 
+        ///     <paramref name="inputMsg"/>. For example, if the MappingManager contained a MappingEntry whose 
+        ///     InMssMsgInfo described a range of NoteOn MIDI messages, then that MappingEntry would be returned if 
+        ///     <paramref name="inputMsg"/> was a NoteOn message that fell into InMssMsgInfo's range.
+        ///     
+        ///     If multiple MappingEntry objects match <paramref name="inputMsg"/> and one or more has OverrideDuplicates set
+        ///     to true then the one with the lowest index will be returned.
+        /// </summary>
+        /// <param name="inputMsg">MssMsg to query the MappingManager with.</param>
+        /// <returns>An enumeration of MappingEntry objects that match <paramref name="inputMsg"/>.</returns>
         public IEnumerable<MappingEntry> GetAssociatedEntries(MssMsg inputMsg) 
         {
             var associatedEntiresQuery =
