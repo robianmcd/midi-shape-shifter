@@ -30,10 +30,5 @@ namespace MidiShapeShifter.Mapping.MssMsgInfoTypes
                 return "";
             }
         }
-
-        public override bool MatchesMssMsg(MssMsg mssMsg)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
