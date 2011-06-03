@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MidiShapeShifter.Framework.Plugin" Collapsed="true">
+    <Position X="3.75" Y="1.75" Width="1.5" />
+    <AssociationLine Name="MssHub" Type="MidiShapeShifter.Mss.MssComponentHub" FixedFromPoint="true">
+      <Path>
+        <Point X="4.438" Y="2.441" />
+        <Point X="4.438" Y="4.25" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="vstParameters" Type="MidiShapeShifter.Framework.VstParameters" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.125" Y="2.441" />
+        <Point X="5.125" Y="3.046" />
+        <Point X="7.25" Y="3.046" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="AudioHandler" Type="MidiShapeShifter.Framework.DummyAudioHandler" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.188" Y="2.441" />
+        <Point X="4.188" Y="3.643" />
+        <Point X="2" Y="3.643" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="MidiHandler" Type="MidiShapeShifter.Framework.MidiHandler" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.938" Y="2.441" />
+        <Point X="3.938" Y="2.812" />
+        <Point X="2" Y="2.812" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="PluginEditor" Type="MidiShapeShifter.Framework.PluginEditor" FixedFromPoint="true">
+      <Path>
+        <Point X="5.25" Y="2.188" />
+        <Point X="7.25" Y="2.188" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.058" Y="-0.242" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="PluginPrograms" Type="MidiShapeShifter.Framework.PluginPrograms" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.75" Y="2.441" />
+        <Point X="4.75" Y="3.917" />
+        <Point X="7.25" Y="3.917" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>BAAAAIAAAAAGAAAAEABABAAAAAAEAAAAAAwKABEIAAQ=</HashCode>
+      <FileName>Framework\Plugin.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="MssHub" />
+      <Field Name="vstParameters" />
+      <Property Name="AudioHandler" />
+      <Property Name="MidiHandler" />
+      <Property Name="PluginEditor" />
+      <Property Name="PluginPrograms" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MidiShapeShifter.Mss.MssComponentHub" Collapsed="true">
+    <Position X="3.5" Y="4.25" Width="1.75" />
+    <AssociationLine Name="MappingMgr" Type="MidiShapeShifter.Mss.Mapping.MappingManager" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.25" Y="4.625" />
+        <Point X="6.167" Y="4.625" />
+        <Point X="6.167" Y="6.062" />
+        <Point X="6.75" Y="6.062" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.027" Y="-0.242" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="MssParameters" Type="MidiShapeShifter.Mss.MssParameters" ManuallyRouted="true">
+      <Path>
+        <Point X="5.25" Y="4.423" />
+        <Point X="7.5" Y="4.423" />
+        <Point X="7.5" Y="5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="MssMsgProcessor" Type="MidiShapeShifter.Mss.MssMsgProcessor" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.312" Y="4.812" />
+        <Point X="4.312" Y="5.187" />
+        <Point X="3.875" Y="5.187" />
+        <Point X="3.875" Y="6.5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.102" Y="0.048" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="PluginEditorView" Type="MidiShapeShifter.Mss.UI.PluginEditorView" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.5" Y="4.5" />
+        <Point X="2.125" Y="4.5" />
+        <Point X="2.125" Y="6.5" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAEAAAEgAgBAAAAAAAgAAAAAACAEBKABAAAAA=</HashCode>
+      <FileName>Mss\MssComponentHub.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MappingMgr" />
+      <Property Name="MssParameters" />
+      <Property Name="MssMsgProcessor" />
+      <Property Name="PluginEditorView" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MidiShapeShifter.Mss.Mapping.MappingManager" Collapsed="true">
+    <Position X="6.75" Y="5.75" Width="1.5" />
+    <AssociationLine Name="mappingEntries" Type="MidiShapeShifter.Mss.Mapping.MappingEntry" FixedFromPoint="true">
+      <Path>
+        <Point X="7.5" Y="6.312" />
+        <Point X="7.5" Y="6.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAYAAAKAAAAAAAAAEAAAEAAACAAAgAAAAAACAAAAA=</HashCode>
+      <FileName>Mss\Mapping\MappingManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="mappingEntries" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MidiShapeShifter.Mss.MssParameters" Collapsed="true">
+    <Position X="6.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAEAQACYQCAAAAAAAAAgAACCACQACA=</HashCode>
+      <FileName>Mss\MssParameters.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MidiShapeShifter.Mss.MssMsgProcessor" Collapsed="true">
+    <Position X="3" Y="6.5" Width="1.5" />
+    <AssociationLine Name="mssHub" Type="MidiShapeShifter.Mss.MssComponentHub" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.812" Y="6.5" />
+        <Point X="3.812" Y="5.146" />
+        <Point X="4.25" Y="5.146" />
+        <Point X="4.25" Y="4.812" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAwA=</HashCode>
+      <FileName>Mss\MssMsgProcessor.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mssHub" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MidiShapeShifter.Mss.UI.PluginEditorView" Collapsed="true">
+    <Position X="1" Y="6.5" Width="1.5" />
+    <AssociationLine Name="mssHub" Type="MidiShapeShifter.Mss.MssComponentHub" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.188" Y="6.5" />
+        <Point X="2.188" Y="4.562" />
+        <Point X="3.5" Y="4.562" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.1" Y="-0.242" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QFAMIEGAFyYAE4ERAhKBBkgOgAABRbBalSFCACIAAhE=</HashCode>
+      <FileName>Mss\UI\PluginEditorView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mssHub" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Jacobi.Vst.Framework.Plugin.VstPluginWithInterfaceManagerBase" Collapsed="true">
+    <Position X="3.25" Y="0.75" Width="2.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MidiShapeShifter.Mss.Mapping.MappingEntry" Collapsed="true">
+    <Position X="6.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAABAEAAAAABEAAAAAAcAAAE=</HashCode>
+      <FileName>Mss\Mapping\MappingEntry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MidiShapeShifter.Framework.VstParameters" Collapsed="true">
+    <Position X="7.25" Y="2.75" Width="1.5" />
+    <AssociationLine Name="plugin" Type="MidiShapeShifter.Framework.Plugin" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.25" Y="3.125" />
+        <Point X="5.062" Y="3.125" />
+        <Point X="5.062" Y="2.441" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.721" Y="0.079" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAgAAAIEAAACAAAABBAAhQAAAAAACAAAAAgA=</HashCode>
+      <FileName>Framework\VstParameters.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="plugin" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MidiShapeShifter.Framework.DummyAudioHandler" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <AssociationLine Name="_plugin" Type="MidiShapeShifter.Framework.Plugin" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2" Y="3.688" />
+        <Point X="4.25" Y="3.688" />
+        <Point X="4.25" Y="2.441" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.112" Y="0.558" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAQAQAAAAAAAAAAAgAAAAAAEAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Framework\DummyAudioHandler.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_plugin" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MidiShapeShifter.Framework.MidiHandler" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <AssociationLine Name="_plugin" Type="MidiShapeShifter.Framework.Plugin" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2" Y="2.875" />
+        <Point X="4" Y="2.875" />
+        <Point X="4" Y="2.441" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AASAAAAAAAAAAAAAQgAAAAAAAAAhABAAAAAAAQAAAAA=</HashCode>
+      <FileName>Framework\MidiHandler.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_plugin" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MidiShapeShifter.Framework.PluginEditor" Collapsed="true">
+    <Position X="7.25" Y="2" Width="1.5" />
+    <AssociationLine Name="_plugin" Type="MidiShapeShifter.Framework.Plugin" FixedFromPoint="true">
+      <Path>
+        <Point X="7.25" Y="2.125" />
+        <Point X="5.25" Y="2.125" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAoAAAAggAAAAAgAAgAAAAAAAAAACAAgA=</HashCode>
+      <FileName>Framework\PluginEditor.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_plugin" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MidiShapeShifter.Framework.PluginPrograms" Collapsed="true">
+    <Position X="7.25" Y="3.5" Width="1.5" />
+    <AssociationLine Name="_plugin" Type="MidiShapeShifter.Framework.Plugin" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.25" Y="4" />
+        <Point X="4.688" Y="4" />
+        <Point X="4.688" Y="2.441" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.794" Y="0.86" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>ABAQAAAEAAAAAAAAIAAAAAAAIAAgAAAgAAAAgAAAAAA=</HashCode>
+      <FileName>Framework\PluginPrograms.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_plugin" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

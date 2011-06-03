@@ -186,6 +186,7 @@
     <None Include="Resources\images\imgUpBlue.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Class Diagrams\HighLevelStructure.cd" />
     <None Include="Resources\images\imgUpGrey.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

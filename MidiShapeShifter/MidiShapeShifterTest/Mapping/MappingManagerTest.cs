@@ -29,8 +29,6 @@ namespace MidiShapeShifterTest.Mapping
         [Test]
         public void AddMappingEntry_SingleEntry_SuccessfullyAdded()
         {
-            //MssMsg mssMsg = new MssMsg(MssMsgUtil.MssMsgType.NoteOn, 1/*chan 1*/, 12/*C0*/, 100/*vel 100*/);
-
             MappingManager mappingMgr = Factory_MappingManager_Default();
             MappingEntry mappingEntry = Factory_MappingEntry_Basic();
 

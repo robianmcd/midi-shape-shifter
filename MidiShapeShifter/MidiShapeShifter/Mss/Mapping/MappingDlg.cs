@@ -10,23 +10,14 @@ using MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
+    /// <summary>
+    /// MappingDlg is a dialog used to create and edit MssMsg mappings.
+    /// </summary>
     public partial class MappingDlg : Form
     {
-        public enum FieldType { ChannelField, ParamField };
-        public readonly string[] FieldTypeStr = new string[] { "channel", "parameter"};
-        protected const string RANGE_EXAMPLE = "\"1\", \"1-5\", or \"All\"";
 
         protected MssMsgInfoEntryMetadata inMsgMetadata;
         protected MssMsgInfoEntryMetadata outMsgMetadata;
-
-        //This enum is intended to be used to diagnose issues with user input in range fields.
-        public enum RangeValidity {ValidRange,              //range is valid
-                                   EmptyRange,              //range has not been entered
-                                   OutOfChannelRange,       //range contains a value less then 1 or greater then 16
-                                   OutOfParamRange,         //range contains a value less then 0 or greater then 127
-                                   InvalidRangeFormat,      //range is not in a format like "1", "1-5" or "All"
-                                   InvalidInOutRangeRatio,  //ratio between in/out range size is not 1 to n, n to n, or n to 1
-                                   UnexpectedError };
 
         public MappingEntry mappingEntry;
         public bool useMappingEntryForDefaultValues = false;
@@ -52,16 +43,6 @@ namespace MidiShapeShifter.Mss.Mapping
         {
             return (MssMsgUtil.MssMsgType)MssMsgUtil.MssMsgTypeNames.FindIndex(item => item.Equals(combo.Text));
         }
-
-        /*msg = "You must enter a " + FieldTypeStr[(int)fieldType] + " range. Eg. " + RANGE_EXAMPLE + ".";
-
-        msg = "The size of the output range must be 1 or the same as the size of the input range.";
-
-        msg = "The range must be formatted in a way similar to one of the following examples: " + RANGE_EXAMPLE + ".";
-
-        msg = "Channel values must be between 1 and 16.";
-
-        msg = "Parameter values must be between 0 and 127.";*/
 
         private void outSameAsInCheckBox_CheckedChanged(object sender, EventArgs e)
         {

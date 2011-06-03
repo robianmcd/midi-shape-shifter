@@ -6,6 +6,9 @@ using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss
 {
+    /// <summary>
+    ///     There is a unique MssParameterID for each parameter which is used to distinguish between parameters.
+    /// </summary>
     public enum MssParameterID { VariableA, VariableB, VariableC, VariableD, Preset1, Preset2, Preset3, Preset4 };
 
     public delegate void ParameterNameChangedEventHandler(MssParameterID paramId, string name);
@@ -13,16 +16,33 @@ namespace MidiShapeShifter.Mss
     public delegate void ParameterMinValueChangedEventHandler(MssParameterID paramId, int minValue);
     public delegate void ParameterMaxValueChangedEventHandler(MssParameterID paramId, int maxValue);
 
+    /// <summary>
+    ///     MssParameters stores information about all of the parameters in Midi Shape Shifter. An instance of 
+    ///     MssParameterInfo is mapped to a unique id for each parameter. MssParameters provides events that other 
+    ///     classes can subscribe to if they want to be notified of changes to parameter information.
+    /// </summary>
     public class MssParameters
     {
+        //These events will be thrown whenever a parameter is modified
         public event ParameterNameChangedEventHandler ParameterNameChanged;
         public event ParameterValueChangedEventHandler ParameterValueChanged;
         public event ParameterMinValueChangedEventHandler ParameterMinValueChanged;
         public event ParameterMaxValueChangedEventHandler ParameterMaxValueChanged;
 
-        protected Dictionary<MssParameterID, MssParameterInfo> paramDict = new Dictionary<MssParameterID, MssParameterInfo>();
+        /// <summary>
+        ///     Stores all of the information about each parameter.
+        /// </summary>
+        protected Dictionary<MssParameterID, MssParameterInfo> paramDict;
 
         public MssParameters()
+        {
+            paramDict = new Dictionary<MssParameterID, MssParameterInfo>();
+        }
+
+        /// <summary>
+        ///     Populates paramDict with default info about each parameter
+        /// </summary>
+        public void Init()
         {
             const double DEFAULT_PRAM_VALUE = 0;
             const int DEFAULT_PRAM_MIN_VALUE = 0;
@@ -35,7 +55,7 @@ namespace MidiShapeShifter.Mss
 
             MssParameterInfo tempParameterInfo;
 
-            //Populate paramDict
+            //Populate paramDict with default values for each parameter
             tempParameterInfo = defaultParameterInfo.Clone();
             tempParameterInfo.Name = "A";
             this.paramDict.Add(MssParameterID.VariableA, tempParameterInfo);
@@ -69,7 +89,6 @@ namespace MidiShapeShifter.Mss
             tempParameterInfo.Name = "Preset4";
             this.paramDict.Add(MssParameterID.Preset4, tempParameterInfo);
         }
-
 
 
         public string GetParameterName(MssParameterID parameterId)

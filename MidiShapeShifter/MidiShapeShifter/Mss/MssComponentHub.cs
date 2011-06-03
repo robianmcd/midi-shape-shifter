@@ -13,6 +13,12 @@ using System.Windows.Forms;
 
 namespace MidiShapeShifter.Mss
 {
+    /// <summary>
+    ///     MssComponentHub manages all aspects of the plugin that do not rely on the jacobi framework. This class and 
+    ///     all of its members do not have any references to the Jacobi framework or classes in the 
+    ///     MidiShapeShifter.Framework namespace. This will make it much easier to extend this plugin to other 
+    ///     frameworks or to a standalone application.
+    /// </summary>
     public class MssComponentHub
     {
         [DllImport("user32.dll")]
@@ -42,6 +48,14 @@ namespace MidiShapeShifter.Mss
             _mappingMgr = new MappingManager();
             _mssParameters = new MssParameters();
             _mssMsgProcessor = new MssMsgProcessor(this);
+        }
+
+        /// <summary>
+        ///     Initialized members
+        /// </summary>
+        public void Init()
+        {
+            _mssParameters.Init();
         }
 
         public void OpenPluginEditor(IntPtr hWnd)

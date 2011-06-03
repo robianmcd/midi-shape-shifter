@@ -196,7 +196,6 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
         //from the default properties set in SetMappingDlgEntryFieldsDefaultProperties().
         protected abstract void SetMappingDlgEntryFieldCustomProperties();
 
-        //this can be left not overridden if entry 1 is a combo box and needs no validation.
         public bool ValidateEntryField1() 
         {
             string errorMsg;
@@ -207,13 +206,13 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             return this.entryField1IsValid;
         }
 
+        //this can be left not overridden if entry 1 is a combo box and needs no validation.
         public virtual bool IsEntryField1Valid(out string errorMessage)
         {
             errorMessage = "";
             return true;
         }
 
-        //this can be left not overridden if entry 2 is a combo box and needs no validation.
         public bool ValidateEntryField2()
         {
             string errorMsg;
@@ -224,6 +223,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             return this.entryField2IsValid;
         }
 
+        //this can be left not overridden if entry 2 is a combo box and needs no validation.
         public virtual bool IsEntryField2Valid(out string errorMessage)
         {
             errorMessage = "";
