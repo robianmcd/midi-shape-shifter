@@ -2,7 +2,6 @@
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
-using MidiShapeShifter.MidiProcessors;
 using MidiShapeShifter.Mss;
 
 namespace MidiShapeShifter.Framework
@@ -13,12 +12,12 @@ namespace MidiShapeShifter.Framework
     public class MidiHandler : IVstMidiProcessor, IVstPluginMidiSource
     {
         private Plugin _plugin;
-        internal MidiProcessor processor {get; private set;}
+        internal MssMsgProcessor processor {get; private set;}
 
         public MidiHandler(Plugin plugin)
         {
             _plugin = plugin;
-            processor = new MidiProcessor(plugin);
+            processor = _plugin.MssHub.MssMsgProcessor;
 
             // for most host midi output is expected during the audio processing cycle.
             SyncWithAudioProcessor = true;

@@ -142,7 +142,7 @@
             this.presetParam1Knob.Style = LBSoft.IndustrialCtrls.Knobs.LBKnob.KnobStyle.Circular;
             this.presetParam1Knob.TabIndex = 2;
             this.presetParam1Knob.Value = 0F;
-            this.presetParam1Knob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.presetParam1Knob_KnobChangeValue);
+            this.presetParam1Knob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.lbKnob_KnobChangeValue);
             // 
             // presetParam1Value
             // 
@@ -229,6 +229,7 @@
             this.presetParam4Knob.Style = LBSoft.IndustrialCtrls.Knobs.LBKnob.KnobStyle.Circular;
             this.presetParam4Knob.TabIndex = 14;
             this.presetParam4Knob.Value = 0F;
+            this.presetParam4Knob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.lbKnob_KnobChangeValue);
             // 
             // presetParam3Title
             // 
@@ -269,6 +270,7 @@
             this.presetParam3Knob.Style = LBSoft.IndustrialCtrls.Knobs.LBKnob.KnobStyle.Circular;
             this.presetParam3Knob.TabIndex = 11;
             this.presetParam3Knob.Value = 0F;
+            this.presetParam3Knob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.lbKnob_KnobChangeValue);
             // 
             // presetParam2Title
             // 
@@ -309,6 +311,7 @@
             this.presetParam2Knob.Style = LBSoft.IndustrialCtrls.Knobs.LBKnob.KnobStyle.Circular;
             this.presetParam2Knob.TabIndex = 8;
             this.presetParam2Knob.Value = 0F;
+            this.presetParam2Knob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.lbKnob_KnobChangeValue);
             // 
             // presetParam1Title
             // 
@@ -469,6 +472,7 @@
             this.variableDKnob.Style = LBSoft.IndustrialCtrls.Knobs.LBKnob.KnobStyle.Circular;
             this.variableDKnob.TabIndex = 38;
             this.variableDKnob.Value = 0F;
+            this.variableDKnob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.lbKnob_KnobChangeValue);
             // 
             // variableCMinLbl
             // 
@@ -543,6 +547,7 @@
             this.variableCKnob.Style = LBSoft.IndustrialCtrls.Knobs.LBKnob.KnobStyle.Circular;
             this.variableCKnob.TabIndex = 31;
             this.variableCKnob.Value = 0F;
+            this.variableCKnob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.lbKnob_KnobChangeValue);
             // 
             // variableBMinLbl
             // 
@@ -617,6 +622,7 @@
             this.variableBKnob.Style = LBSoft.IndustrialCtrls.Knobs.LBKnob.KnobStyle.Circular;
             this.variableBKnob.TabIndex = 24;
             this.variableBKnob.Value = 0F;
+            this.variableBKnob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.lbKnob_KnobChangeValue);
             // 
             // variableAMinLbl
             // 
@@ -691,6 +697,7 @@
             this.variableAKnob.Style = LBSoft.IndustrialCtrls.Knobs.LBKnob.KnobStyle.Circular;
             this.variableAKnob.TabIndex = 17;
             this.variableAKnob.Value = 0F;
+            this.variableAKnob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.lbKnob_KnobChangeValue);
             // 
             // mappingListView
             // 

@@ -1,6 +1,8 @@
 ﻿using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
+
+using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Mapping;
 
 namespace MidiShapeShifter.Framework
@@ -10,13 +12,15 @@ namespace MidiShapeShifter.Framework
     /// </summary>
     public class Plugin : VstPluginWithInterfaceManagerBase
     {
+        //TODO: Register an actual code for this
         private static readonly int UniquePluginId = new FourCharacterCode("1132").ToInt32();
         private static readonly string PluginName = "Midi Shape Shifter";
         private static readonly string ProductName = "Midi Shape Shifter";
         private static readonly string VendorName = "SpeqSoft";
         private static readonly int PluginVersion = 1;
 
-        public MappingManager mappingManager = new MappingManager();
+        public MssComponentHub MssHub;
+        protected VstParameters vstParameters;
 
         /// <summary>
         /// Initializes the one an only instance of the Plugin root object.
@@ -29,7 +33,12 @@ namespace MidiShapeShifter.Framework
                 // initial delay: number of samples your plugin lags behind.
                 0,
                 UniquePluginId)
-        { }
+        {
+            this.MssHub = new MssComponentHub();
+
+            this.vstParameters = new VstParameters(this);
+            this.vstParameters.Init(this.MssHub);
+        }
 
         /// <summary>
         /// Gets the audio processor object.
@@ -78,7 +87,6 @@ namespace MidiShapeShifter.Framework
                 return new DummyAudioHandler(this);
             }
 
-            // TODO: implement a thread-safe wrapper.
             return base.CreateAudioProcessor(instance); 
         }
 
@@ -95,7 +103,6 @@ namespace MidiShapeShifter.Framework
                 return new MidiHandler(this);
             }
 
-            // TODO: implement a thread-safe wrapper.
             return base.CreateMidiProcessor(instance);
         }
 
@@ -124,7 +131,6 @@ namespace MidiShapeShifter.Framework
                 return new PluginEditor(this);
             }
 
-            // TODO: implement a thread-safe wrapper.
             return base.CreateEditor(instance);
         }
 

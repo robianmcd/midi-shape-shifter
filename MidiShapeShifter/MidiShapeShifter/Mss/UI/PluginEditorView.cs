@@ -3,6 +3,7 @@ using Jacobi.Vst.Framework;
 using System.Collections.Generic;
 using LBSoft.IndustrialCtrls.Knobs;
 
+using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Framework;
 using MidiShapeShifter.Mss.Mapping;
@@ -13,75 +14,105 @@ namespace MidiShapeShifter.Mss.UI
     public partial class PluginEditorView : UserControl
     {
         public const int NUM_VARIABLE_PARAMS = 4;
-        public const int NUM_PRESET_PARAMS = 4; 
+        public const int NUM_PRESET_PARAMS = 4;
 
-        public struct VariableParamsInfo { 
+        public TwoWayDictionary<MssParameterID, LBKnob> ParameterValueKnobControlDict = new TwoWayDictionary<MssParameterID, LBKnob>();
+        public TwoWayDictionary<MssParameterID, Label> ParameterValueLabelControlDict = new TwoWayDictionary<MssParameterID, Label>();
+        public TwoWayDictionary<MssParameterID, TextBox> ParameterMaxValueControlDict = new TwoWayDictionary<MssParameterID, TextBox>();
+        public TwoWayDictionary<MssParameterID, TextBox> ParameterMinValueControlDict = new TwoWayDictionary<MssParameterID, TextBox>();
+        public TwoWayDictionary<MssParameterID, Label> ParameterNameControlDict = new TwoWayDictionary<MssParameterID, Label>();
+
+        public struct VariableParamControls { 
             public LBKnob[] knobs;
             public TextBox[] maxTextBoxes;
             public TextBox[] minTextBoxes;
             public Label[] valueDisplays;
         }
 
-        protected Plugin plugin;
+        protected MssComponentHub mssHub;
 
-        public VariableParamsInfo variableParamsInfo;
         public MappingEntry ActiveMapping = null;
 
         public PluginEditorView()
         {
             InitializeComponent();
+            PopulateControlDictionaries();
 
-            variableParamsInfo.knobs = new LBKnob[NUM_VARIABLE_PARAMS] { variableAKnob, variableBKnob, variableCKnob, variableDKnob };
-            variableParamsInfo.maxTextBoxes = new TextBox[NUM_VARIABLE_PARAMS] { variableAMax, variableBMax, variableCMax, variableDMax };
-            variableParamsInfo.minTextBoxes = new TextBox[NUM_VARIABLE_PARAMS] { variableAMin, variableBMin, variableCMin, variableDMin };
-            variableParamsInfo.valueDisplays = new Label[NUM_VARIABLE_PARAMS] { variableAValue, variableBValue, variableCValue, variableDValue };
         }
 
-        public void Init(Plugin plugin)
+        public void Init(MssComponentHub mssHub)
         {
-            this.plugin = plugin;
+            this.mssHub = mssHub;
+            
+            this.mssHub.MssParameters.ParameterValueChanged += new ParameterValueChangedEventHandler(MssParameters_ValueChanged);
+            this.mssHub.MssParameters.ParameterNameChanged += new ParameterNameChangedEventHandler(MssParameters_NameChanged);
+            this.mssHub.MssParameters.ParameterMinValueChanged += new ParameterMinValueChangedEventHandler(MssParameters_MinValueChanged);
+            this.mssHub.MssParameters.ParameterMaxValueChanged += new ParameterMaxValueChangedEventHandler(MssParameters_MaxValueChanged);
+
         }
 
-        internal bool InitializeVariableParameters(List<VstParameterManager> parameters)
+        protected void PopulateControlDictionaries()
         {
-            if (parameters == null || parameters.Count < NUM_VARIABLE_PARAMS)
-            {
-                return false;
-            }
+            ParameterValueKnobControlDict.Add(MssParameterID.VariableA, this.variableAKnob);
+            ParameterValueKnobControlDict.Add(MssParameterID.VariableB, this.variableBKnob);
+            ParameterValueKnobControlDict.Add(MssParameterID.VariableC, this.variableCKnob);
+            ParameterValueKnobControlDict.Add(MssParameterID.VariableD, this.variableDKnob);
+            ParameterValueKnobControlDict.Add(MssParameterID.Preset1, this.presetParam1Knob);
+            ParameterValueKnobControlDict.Add(MssParameterID.Preset2, this.presetParam2Knob);
+            ParameterValueKnobControlDict.Add(MssParameterID.Preset3, this.presetParam3Knob);
+            ParameterValueKnobControlDict.Add(MssParameterID.Preset4, this.presetParam4Knob);
 
-            for (int i = 0; i < NUM_VARIABLE_PARAMS; i++ )
-            {
-                //TODO: The binding should also get a property changed notification on the ActiveParameter property, 
-                //indicating it should release the old instance and bind to the new.
-                variableParamsInfo.knobs[i].DataBindings.Add("Value", parameters[i], "ActiveParameter.Value");
-                variableParamsInfo.knobs[i].KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(lbKnob_KnobChangeValue);
-                variableParamsInfo.knobs[i].Tag = parameters[i];
-            }
+            ParameterValueLabelControlDict.Add(MssParameterID.VariableA, this.variableAValue);
+            ParameterValueLabelControlDict.Add(MssParameterID.VariableB, this.variableBValue);
+            ParameterValueLabelControlDict.Add(MssParameterID.VariableC, this.variableCValue);
+            ParameterValueLabelControlDict.Add(MssParameterID.VariableD, this.variableDValue);
+            ParameterValueLabelControlDict.Add(MssParameterID.Preset1, this.presetParam1Value);
+            ParameterValueLabelControlDict.Add(MssParameterID.Preset2, this.presetParam2Value);
+            ParameterValueLabelControlDict.Add(MssParameterID.Preset3, this.presetParam3Value);
+            ParameterValueLabelControlDict.Add(MssParameterID.Preset4, this.presetParam4Value);
 
-            return true;
+            ParameterMinValueControlDict.Add(MssParameterID.VariableA, this.variableAMin);
+            ParameterMinValueControlDict.Add(MssParameterID.VariableB, this.variableBMin);
+            ParameterMinValueControlDict.Add(MssParameterID.VariableC, this.variableCMin);
+            ParameterMinValueControlDict.Add(MssParameterID.VariableD, this.variableDMin);
+
+            ParameterMaxValueControlDict.Add(MssParameterID.VariableA, this.variableAMax);
+            ParameterMaxValueControlDict.Add(MssParameterID.VariableB, this.variableBMax);
+            ParameterMaxValueControlDict.Add(MssParameterID.VariableC, this.variableCMax);
+            ParameterMaxValueControlDict.Add(MssParameterID.VariableD, this.variableDMax);
+
+            ParameterNameControlDict.Add(MssParameterID.VariableA, this.variableATitle);
+            ParameterNameControlDict.Add(MssParameterID.VariableB, this.variableBTitle);
+            ParameterNameControlDict.Add(MssParameterID.VariableC, this.variableCTitle);
+            ParameterNameControlDict.Add(MssParameterID.VariableD, this.variableDTitle);
+            ParameterNameControlDict.Add(MssParameterID.Preset1, this.presetParam1Title);
+            ParameterNameControlDict.Add(MssParameterID.Preset2, this.presetParam2Title);
+            ParameterNameControlDict.Add(MssParameterID.Preset3, this.presetParam3Title);
+            ParameterNameControlDict.Add(MssParameterID.Preset4, this.presetParam4Title);
+
         }
 
-        private void BindParameter(VstParameterManager paramMgr)
-        {
-            // NOTE: This code works best with integer parameter values.
-            if (paramMgr.ParameterInfo.IsStepIntegerValid)
-            {
-                //knob.StepValue
-//                knob.LargeChange = paramMgr.ParameterInfo.LargeStepInteger;
-  //              knob.SmallChange = paramMgr.ParameterInfo.StepInteger;
-            }
+        //private void BindParameter(VstParameterManager paramMgr)
+        //{
+        //    // NOTE: This code works best with integer parameter values.
+        //    if (paramMgr.ParameterInfo.IsStepIntegerValid)
+        //    {
+        //        knob.StepValue
+        //        knob.LargeChange = paramMgr.ParameterInfo.LargeStepInteger;
+        //        knob.SmallChange = paramMgr.ParameterInfo.StepInteger;
+        //    }
 
-            if (paramMgr.ParameterInfo.IsMinMaxIntegerValid)
-            {
-    //            knob.Minimum = paramMgr.ParameterInfo.MinInteger;
-      //          knob.Maximum = paramMgr.ParameterInfo.MaxInteger;
-            }
+        //    if (paramMgr.ParameterInfo.IsMinMaxIntegerValid)
+        //    {
+        //        knob.Minimum = paramMgr.ParameterInfo.MinInteger;
+        //        knob.Maximum = paramMgr.ParameterInfo.MaxInteger;
+        //    }
 
-            // use databinding for VstParameter/Manager changed notifications.
+        //     use databinding for VstParameter/Manager changed notifications.
         //    knob.DataBindings.Add("Value", paramMgr, "ActiveParameter.Value");
-          //  knob.ValueChanged += new System.EventHandler(TrackBar_ValueChanged);
-            //knob.Tag = paramMgr;
-        }
+        //    knob.ValueChanged += new System.EventHandler(TrackBar_ValueChanged);
+        //    knob.Tag = paramMgr;
+        //}
 
         protected void AddEntryToMappingListView(MappingEntry entry) 
         {
@@ -95,19 +126,32 @@ namespace MidiShapeShifter.Mss.UI
 
             mappingItem.SubItems.Add(entry.GetReadableOverrideDuplicates());
 
-            mappingListView.Items.Add(mappingItem);
+            this.mappingListView.Items.Add(mappingItem);
         }
 
+        //TODO: add handlers like this for changes to max and min value text boxes
         private void lbKnob_KnobChangeValue(object sender, LBSoft.IndustrialCtrls.Knobs.LBKnobEventArgs e) {
-            var knob = (LBKnob)sender;
-            var paramMgr = (VstParameterManager)knob.Tag;
+            LBKnob knob = (LBKnob)sender;
+            MssParameterID paramId;
+            ParameterValueKnobControlDict.TryGetLeftByRight(out paramId, knob);
 
-            paramMgr.ActiveParameter.Value = knob.Value;
-        }
+
+            Label parameterValueDisplay;
+            if (ParameterValueLabelControlDict.TryGetRightByLeft(paramId, out parameterValueDisplay) == true)
+            {
+                parameterValueDisplay.Text = FormatRawValue((double)knob.Value);
+            }
             
-        private void presetParam1Knob_KnobChangeValue(object sender, LBSoft.IndustrialCtrls.Knobs.LBKnobEventArgs e)
+
+            if (this.mssHub.MssParameters.GetParameterValue(paramId) != knob.Value)
+            {
+                this.mssHub.MssParameters.SetParameterValue(paramId, knob.Value);
+            }
+        }
+        
+        protected string FormatRawValue(double value)
         {
-            presetParam1Value.Text = System.Math.Round((double) presetParam1Knob.Value, 2).ToString();
+            return System.Math.Round(value, 2).ToString();
         }
 
         private void addMappingBtn_Click(object sender, System.EventArgs e)
@@ -116,10 +160,11 @@ namespace MidiShapeShifter.Mss.UI
             if (mapDlg.ShowDialog(this) == DialogResult.OK)
             {
                 ActiveMapping = mapDlg.mappingEntry;
+                MappingManager mappingMgr = this.mssHub.MappingMgr;
 
-                this.plugin.mappingManager.AddMappingEntry(mapDlg.mappingEntry);
-                int newestEntryIndex = this.plugin.mappingManager.GetNumEntries() - 1;
-                mappingListView.Items.Add(this.plugin.mappingManager.GetListViewRow(newestEntryIndex));
+                mappingMgr.AddMappingEntry(mapDlg.mappingEntry);
+                int newestEntryIndex = mappingMgr.GetNumEntries() - 1;
+                this.mappingListView.Items.Add(mappingMgr.GetListViewRow(newestEntryIndex));
             }
         }
 
@@ -158,5 +203,65 @@ namespace MidiShapeShifter.Mss.UI
                 
             }
         }
+
+
+        private void MssParameters_NameChanged(MssParameterID paramId, string name)
+        {
+            Label paramNameLabel;
+            if (ParameterNameControlDict.TryGetRightByLeft(paramId, out paramNameLabel) == true)
+            {
+                if (paramNameLabel.Text != name)
+                {
+                    paramNameLabel.Text = name;
+                }
+            }
+        }
+
+        private void MssParameters_ValueChanged(MssParameterID paramId, double value)
+        {
+            LBKnob knob;
+            if (ParameterValueKnobControlDict.TryGetRightByLeft(paramId, out knob) == true)
+            {
+                if (knob.Value != value)
+                {
+                    knob.Value = (float)value;
+                }
+            }
+
+            Label parameterValueLabel;
+            if (ParameterValueLabelControlDict.TryGetRightByLeft(paramId, out parameterValueLabel) == true)
+            {
+                string valueAsString = FormatRawValue(value);
+                if (parameterValueLabel.Text != valueAsString)
+                {
+                    parameterValueLabel.Text = valueAsString;
+                }
+            }
+        }
+
+        private void MssParameters_MinValueChanged(MssParameterID paramId, int minValue)
+        {
+            TextBox minValueTextBox;
+            if (ParameterMinValueControlDict.TryGetRightByLeft(paramId, out minValueTextBox) == true)
+            {
+                if (minValueTextBox.Text != minValue.ToString())
+                {
+                    minValueTextBox.Text = minValue.ToString();
+                }
+            }
+        }
+
+        private void MssParameters_MaxValueChanged(MssParameterID paramId, int maxValue)
+        {
+            TextBox maxValueTextBox;
+            if (ParameterMaxValueControlDict.TryGetRightByLeft(paramId, out maxValueTextBox) == true)
+            {
+                if (maxValueTextBox.Text != maxValue.ToString())
+                {
+                    maxValueTextBox.Text = maxValue.ToString();
+                }
+            }
+        }
+
     }
 }

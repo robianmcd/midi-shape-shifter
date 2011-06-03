@@ -18,23 +18,20 @@ namespace MidiShapeShifter.Framework
     public class PluginEditor : IVstPluginEditor
     {
         private Plugin _plugin;
-        private WinFormsControlWrapper<PluginEditorView> _view;
 
         public PluginEditor(Plugin plugin)
         {
             _plugin = plugin;
-            _view = new WinFormsControlWrapper<PluginEditorView>();
-            _view.SafeInstance.Init(plugin);
         }
 
         public Rectangle Bounds
         {
-            get { return _view.Bounds; }
+            get { return _plugin.MssHub.PluginEditorView.Bounds; }
         }
 
         public void Close()
         {
-            _view.Close();
+            _plugin.MssHub.ClosePluginEditor();
         }
 
         public void KeyDown(byte ascii, VstVirtualKey virtualKey, VstModifierKeys modifers)
@@ -54,15 +51,15 @@ namespace MidiShapeShifter.Framework
             // make a list of parameters to pass to the dlg.
             var paramList = new List<VstParameterManager>()
                 {
-                    _plugin.MidiHandler.processor.VariableAMgr,
+                    /*_plugin.MidiHandler.processor.VariableAMgr,
                     _plugin.MidiHandler.processor.VariableBMgr,
                     _plugin.MidiHandler.processor.VariableCMgr,
-                    _plugin.MidiHandler.processor.VariableDMgr
+                    _plugin.MidiHandler.processor.VariableDMgr*/
                 };
 
-            _view.SafeInstance.InitializeVariableParameters(paramList);
+            //_view.SafeInstance.InitializeVariableParameters(paramList);
 
-            _view.Open(hWnd);
+            _plugin.MssHub.OpenPluginEditor(hWnd);
         }
 
         public void ProcessIdle()
