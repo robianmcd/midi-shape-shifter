@@ -11,7 +11,7 @@ using MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes;
 namespace MidiShapeShifter.Mss.Mapping
 {
     /// <summary>
-    /// MappingDlg is a dialog used to create and edit MssMsg mappings.
+    ///     MappingDlg is a dialog used to create and edit MssMsg mappings.
     /// </summary>
     public partial class MappingDlg : Form
     {
@@ -19,13 +19,16 @@ namespace MidiShapeShifter.Mss.Mapping
         protected MssMsgInfoEntryMetadata inMsgMetadata;
         protected MssMsgInfoEntryMetadata outMsgMetadata;
 
-        public MappingEntry mappingEntry;
-        public bool useMappingEntryForDefaultValues = false;
+        /// <summary>
+        ///     mappingEntry is passed into this dialog through the Init() method. It can be used to determine the 
+        ///     default values for all of the entry fields. If the dialog exits with DialogResult.OK then mappingEntry 
+        ///     is populated based on data from the entry fields.
+        /// </summary>
+        public MappingEntry mappingEntry {get; private set;}
 
-        public MappingDlg(MappingEntry mappingEntry)
+        public MappingDlg()
         {
             InitializeComponent();
-            this.mappingEntry = mappingEntry;
 
             this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOn]);
             this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOff]);
@@ -39,6 +42,28 @@ namespace MidiShapeShifter.Mss.Mapping
             this.outSameAsInCheckBox.Checked = true;
         }
 
+        /// <summary>
+        ///     Initializes this MappingDlg. Init() must be called for this MappingDlg to work correctly.
+        /// </summary>
+        /// <param name="mappingEntry"> MappingEntry instance to use for the mappingEntry member variable.</param>
+        /// <param name="useMappingEntryForDefaultValues"> 
+        ///     If true, use the data in <paramref name="mappingEntry"/> to populate the entry fields.
+        /// </param>
+        public void Init(MappingEntry mappingEntry, bool useMappingEntryForDefaultValues)
+        {
+            this.mappingEntry = mappingEntry;
+            
+            if (useMappingEntryForDefaultValues == true)
+            {
+                //TODO: initialize entry fields
+            }
+
+        }
+
+        /// <summary>
+        ///     Gets the MssMsgType associated with the current selection in the ComboBox specified by 
+        ///     <paramref name="combo"/>.
+        /// </summary>
         public MssMsgUtil.MssMsgType GetMessageTypeFromCombo(ComboBox combo) 
         {
             return (MssMsgUtil.MssMsgType)MssMsgUtil.MssMsgTypeNames.FindIndex(item => item.Equals(combo.Text));
@@ -53,7 +78,7 @@ namespace MidiShapeShifter.Mss.Mapping
             outEntryField1TextBox.Enabled = enabledStatus;
             outLearnBtn.Enabled = enabledStatus;
 
-            if (enabledStatus == false)
+            if (((CheckBox)sender).Checked == true)
             {
                 //we cannot just set the outTypeCombo's selected index to the same as in inTypeCombo's selected index
                 //because they may will not contain all of the same items.

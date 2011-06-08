@@ -156,7 +156,9 @@ namespace MidiShapeShifter.Mss.UI
 
         private void addMappingBtn_Click(object sender, System.EventArgs e)
         {
-            MappingDlg mapDlg = new MappingDlg(new MappingEntry());
+            MappingDlg mapDlg = new MappingDlg();
+            mapDlg.Init(new MappingEntry(), false);
+
             if (mapDlg.ShowDialog(this) == DialogResult.OK)
             {
                 ActiveMapping = mapDlg.mappingEntry;
@@ -175,9 +177,9 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
-            MappingDlg mapDlg = new MappingDlg(ActiveMapping);
+            MappingDlg mapDlg = new MappingDlg();
+            mapDlg.Init(ActiveMapping, true);
             
-            mapDlg.useMappingEntryForDefaultValues = true;
 
             if (mapDlg.ShowDialog(this) == DialogResult.OK)
             {

@@ -73,23 +73,23 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             this.EntryField2.Visible = true;
         }
 
-        public override bool IsEntryField1Valid(out string errorMsg)
+        public override bool StoreContentIfEntryField1IsValid(out string errorMsg)
         {
             string userInput = this.EntryField1.Text;
-            return ValidateRangeField(userInput, MssMsgUtil.MIN_CHANNEL, MssMsgUtil.MAX_CHANNEL, 
+            return StoreContentIfRangeFieldIsValid(userInput, MssMsgUtil.MIN_CHANNEL, MssMsgUtil.MAX_CHANNEL, 
                                       ref this.chanRangeBottom, ref this.chanRangeTop, out errorMsg);
             
         }
 
-        public override bool IsEntryField2Valid(out string errorMsg)
+        public override bool StoreContentIfEntryField2IsValid(out string errorMsg)
         {
             string userInput = this.EntryField2.Text;
-            return ValidateRangeField(userInput, MssMsgUtil.MIN_PARAM, MssMsgUtil.MAX_PARAM,
+            return StoreContentIfRangeFieldIsValid(userInput, MssMsgUtil.MIN_PARAM, MssMsgUtil.MAX_PARAM,
                                       ref this.paramRangeBottom, ref this.paramRangeTop, out errorMsg);
 
         }
 
-        public virtual bool ValidateRangeField(string userInput, int minValue, int maxValue,
+        public virtual bool StoreContentIfRangeFieldIsValid(string userInput, int minValue, int maxValue,
                                                ref int rangeBottom, ref int rangeTop, out string errorMsg)
         {
             int singleRangeValue;

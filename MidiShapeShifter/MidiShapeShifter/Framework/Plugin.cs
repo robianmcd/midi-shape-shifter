@@ -35,6 +35,7 @@ namespace MidiShapeShifter.Framework
                 UniquePluginId)
         {
             this.MssHub = new MssComponentHub();
+            this.MssHub.Init();
 
             this.vstParameters = new VstParameters(this);
             this.vstParameters.Init(this.MssHub);

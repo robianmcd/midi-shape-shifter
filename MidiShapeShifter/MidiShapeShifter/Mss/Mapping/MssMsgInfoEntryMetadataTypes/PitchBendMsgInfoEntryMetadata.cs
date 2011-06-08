@@ -8,7 +8,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
 {
     public class PitchBendMsgInfoEntryMetadata : MidiMsgInfoEntryMetadata
     {
-        protected override MssMsgInfo CreateMsgInfoFromValidatedFields()
+        protected override MssMsgInfo CreateMsgInfoFromStoredContent()
         {
             PitchBendMsgInfo midiMsgInfo = new PitchBendMsgInfo();
             InitializeMidiMsgInfo(midiMsgInfo);

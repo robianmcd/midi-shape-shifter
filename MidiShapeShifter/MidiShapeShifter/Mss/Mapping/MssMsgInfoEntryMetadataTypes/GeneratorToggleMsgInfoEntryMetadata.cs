@@ -43,11 +43,16 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             this.EntryField1.Visible = true;
         }
 
-        protected override MssMsgInfo CreateMsgInfoFromValidatedFields()
+        protected override MssMsgInfo CreateMsgInfoFromStoredContent()
         {
             GeneratorToggleMsgInfo genToggleMsgInfo = new GeneratorToggleMsgInfo();
             //TODO: Initialize genToggleMsgInfo
             return genToggleMsgInfo;
+        }
+
+        protected override void InitSameAsInputCompatibleTypes()
+        {
+
         }
     }
 }

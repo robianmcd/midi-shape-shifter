@@ -5,6 +5,9 @@ using System.Text;
 
 namespace MidiShapeShifter.Mss
 {
+    /// <summary>
+    ///     A representation of a parameter in Midi Shape Shifter.
+    /// </summary>
     public class MssParameterInfo
     {
         public string Name;

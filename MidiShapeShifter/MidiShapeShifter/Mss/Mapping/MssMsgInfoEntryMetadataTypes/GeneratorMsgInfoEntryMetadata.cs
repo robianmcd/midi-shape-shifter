@@ -43,11 +43,16 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             this.EntryField1.Visible = true;
         }
 
-        protected override MssMsgInfo CreateMsgInfoFromValidatedFields()
+        protected override MssMsgInfo CreateMsgInfoFromStoredContent()
         {
             GeneratorMsgInfo generatorMsgInfo = new GeneratorMsgInfo();
             //TODO: Initialize generatorMsgInfo
             return generatorMsgInfo;
+        }
+
+        protected override void InitSameAsInputCompatibleTypes()
+        {
+            
         }
     }
 }

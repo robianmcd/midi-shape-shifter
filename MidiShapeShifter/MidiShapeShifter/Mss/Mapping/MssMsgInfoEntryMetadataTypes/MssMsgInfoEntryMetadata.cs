@@ -8,10 +8,26 @@ using MidiShapeShifter.Mss.Mapping.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
 {
+    /// <summary>
+    ///     This class is tightly coupled with the class MappingDlg. In the mapping dialog the user can select an MSS 
+    ///     message type for input and output. The users selection for these will greatly affect how the rest of the 
+    ///     information is entered and stored. This class and the ones implimenting it are responsible for implimenting
+    ///     the logic that is specific to the selection of input and output type. Since the user can make a seperate 
+    ///     selection for input and output type, an instance of this calss is only associated with either input or 
+    ///     output.
+    /// </summary>
     public abstract class MssMsgInfoEntryMetadata
     {
+        /// <summary>
+        ///     Specifies wheather this is associated with the input or output entry fields.
+        /// </summary>
         protected MappingEntry.IO ioCatagory;
+
+        /// <summary>
+        ///     The MappingDlg that this is associated with.
+        /// </summary>
         protected MappingDlg mappingDlg;
+
 
         protected bool entryField1IsValid = false;
         protected bool entryField2IsValid = false;
@@ -23,6 +39,9 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
         //in this list is selected as output/input.
         protected List<MssMsgUtil.MssMsgType> sameAsInputCompatibleTypes = new List<MssMsgUtil.MssMsgType>();
 
+        /// <summary>
+        ///     The label associated with the first entry field.
+        /// </summary>
         protected Label EntryField1Lbl
         {
             get
@@ -43,6 +62,9 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             }
         }
 
+        /// <summary>
+        ///     The label associated with the second entry field.
+        /// </summary>
         protected Label EntryField2Lbl
         {
             get
@@ -63,17 +85,28 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             }
         }
 
+        /// <summary>
+        ///     The control that is the first entry field.
+        /// </summary>
         protected abstract Control EntryField1
         {
             get;
         }
 
+        /// <summary>
+        ///     The control that is the second entry field.
+        /// </summary>
         protected abstract Control EntryField2
         {
             get;
         }
 
-        //initializes the visable controls on the mapping dialog and the member variables entryFields and ioCategory
+        /// <summary>
+        ///     Initializes this MssMsgInfoEntryMetadata and sets the default properties for controls on the mapping 
+        ///     dialog
+        /// </summary>
+        /// <param name="mappingDlg">The mapping dialog this is associated with</param>
+        /// <param name="io">Specifies wheather this associated with the input or output entry fields.</param>
         public void Init(MappingDlg mappingDlg, MappingEntry.IO io)
         {
             this.ioCatagory = io;
@@ -83,18 +116,22 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             SetMappingDlgEntryFieldCustomProperties();
 
             InitSameAsInputCompatibleTypes();
+            InitOutMssMsgTypeNames();
 
-            //This variable will contail the type combo box that did not trigger the creation of this class
+
+            //Contains the type combo box that did not trigger the creation of this class
             ComboBox otherTypeCombo;
 
+            //For each MSS message type selected for input there are only a subset of MSS message types that are 
+            //considered valid output. When the input type changes then the output combo box must be repopulated
             if (io == MappingEntry.IO.Input)
             {
-                InitOutMssMsgTypeNames();
-                mappingDlg.outTypeCombo.Items.Clear();
-                mappingDlg.outTypeCombo.Items.AddRange(outMssMsgTypeNames.ToArray());
-                mappingDlg.outTypeCombo.SelectedIndex = 0;
-
                 otherTypeCombo = mappingDlg.outTypeCombo;
+
+                otherTypeCombo.Items.Clear();
+                otherTypeCombo.Items.AddRange(outMssMsgTypeNames.ToArray());
+                //This will cause the output MssMsgInfoEntryMetadata to be created.
+                otherTypeCombo.SelectedIndex = 0;
             }
             else if (io == MappingEntry.IO.Output)
             {
@@ -108,6 +145,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             }
 
             MssMsgUtil.MssMsgType otherMsgType = mappingDlg.GetMessageTypeFromCombo(otherTypeCombo);
+            //Checks if it makes sence to use the values from the input entry fields in the output entry fields
             if (sameAsInputCompatibleTypes.Contains(otherMsgType))
             {
                 mappingDlg.outSameAsInCheckBox.Enabled = true;
@@ -120,6 +158,9 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             }
         }
 
+        /// <summary>
+        ///     Sets the entry fields so that they are all blank and invisable.
+        /// </summary>
         protected void SetMappingDlgEntryFieldsDefaultProperties()
         {
             Label EntryField1Lbl;
@@ -160,24 +201,24 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             EntryField2Lbl.Visible = false;
 
             EntryField1TextBox.Text = "";
-            //EntryField1TextBox.Enabled = true;
             EntryField1TextBox.Visible = false;
 
             EntryField2TextBox.Text = "";
-            //EntryField2TextBox.Enabled = true;
             EntryField2TextBox.Visible = false;
 
-            //EntryField1Combo.Enabled = true;
             EntryField1Combo.Items.Clear();
             EntryField1Combo.Visible = false;
 
-            //EntryField2Combo.Enabled = true;
             EntryField2Combo.Items.Clear();
             EntryField2Combo.Visible = false;
         }
 
+        /// <summary>
+        ///     Initializes outMssMsgTypeNames so that it contains all MSS message types that are valid for output.
+        /// </summary>
         protected virtual void InitOutMssMsgTypeNames()
         {
+            //Default set of valid output types.
             this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOn]);
             this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOff]);
             this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.CC]);
@@ -187,76 +228,127 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.GeneratorToggle]);
         }
 
-        protected virtual void InitSameAsInputCompatibleTypes()
-        { 
+        /// <summary>
+        ///     Initializes sameAsInputCompatibleTypes so that it contains all MSS message types that use the same 
+        ///     entry fields as the MSS message type associated with the class that impliments this.
+        /// </summary>
+        protected abstract void InitSameAsInputCompatibleTypes();
 
-        }
-
-        //set the properties of all the the controls in the mapping dialog whose properties should differ 
-        //from the default properties set in SetMappingDlgEntryFieldsDefaultProperties().
+        /// <summary>
+        ///     Sets the properties of all the the controls in the mapping dialog whose properties should differ
+        ///     from the default properties set in SetMappingDlgEntryFieldsDefaultProperties().
+        /// </summary>
         protected abstract void SetMappingDlgEntryFieldCustomProperties();
 
+        /// <summary>
+        ///     Determines wheather entry field 1 contains valid user input. If it does not then the mapping dialog's 
+        ///     error provider will be alerted.
+        /// </summary>
+        /// <returns>True if entry field 1 contains valid user input.</returns>
         public bool ValidateEntryField1() 
         {
             string errorMsg;
-            this.entryField1IsValid = IsEntryField1Valid(out errorMsg);
+            this.entryField1IsValid = StoreContentIfEntryField1IsValid(out errorMsg);
         
             mappingDlg.errorProvider.SetError(EntryField1, errorMsg);
 
             return this.entryField1IsValid;
         }
 
-        //this can be left not overridden if entry 1 is a combo box and needs no validation.
-        public virtual bool IsEntryField1Valid(out string errorMessage)
+        /// <summary>
+        ///     Stores the relavent content from entry field 1 if it contains valid user input. 
+        /// </summary>
+        /// <remarks>
+        ///     This method should be overridden in a child class unless the child class does not use entry field 1.
+        /// </remarks>
+        /// <param name="errorMessage"> 
+        ///     Contains the empty string if entry field 1 contains valid user input. Othewise errorMessage contains a 
+        ///     message describing why the user input was not valid.
+        /// </param>
+        /// <returns>True if entry field 1 contains valid user input</returns>
+        public virtual bool StoreContentIfEntryField1IsValid(out string errorMessage)
         {
             errorMessage = "";
             return true;
         }
 
+        /// <summary>
+        ///     Determines wheather entry field 2 contains valid user input. If it does not then the mapping dialog's 
+        ///     error provider will be alerted.
+        /// </summary>
+        /// <returns>True if entry field 2 contains valid user input.</returns>
         public bool ValidateEntryField2()
         {
             string errorMsg;
-            this.entryField2IsValid = IsEntryField2Valid(out errorMsg);
+            this.entryField2IsValid = StoreContentIfEntryField2IsValid(out errorMsg);
 
             mappingDlg.errorProvider.SetError(EntryField2, errorMsg);
 
             return this.entryField2IsValid;
         }
 
-        //this can be left not overridden if entry 2 is a combo box and needs no validation.
-        public virtual bool IsEntryField2Valid(out string errorMessage)
+        /// <summary>
+        ///     Stores the relavent content from entry field 2 if it contains valid user input. 
+        /// </summary>
+        /// <remarks>
+        ///     This method should be overridden in a child class unless the child class does not use entry field 2.
+        /// </remarks>
+        /// <param name="errorMessage"> 
+        ///     Contains the empty string if entry field 2 contains valid user input. Othewise errorMessage contains a 
+        ///     message describing why the user input was not valid.
+        /// </param>
+        /// <returns>True if entry field 1 contains valid user input</returns>
+        public virtual bool StoreContentIfEntryField2IsValid(out string errorMessage)
         {
             errorMessage = "";
             return true;
         }
 
-        //Precondition: The entry fields must have valid content (but ValidateEntryField#() does not need to have been 
-        //called)
+        /// <summary>
+        ///     Creates an instance of MssMsgInfo, populating it with information from the mapping dialog.
+        /// </summary>
+        /// <remarks>Precondition: The entry fields must contain valid user input.</remarks>
+        /// <returns>The newly created MssMsgInfo instance.</returns>
         public MssMsgInfo CreateMsgInfo()
         {
             if (this.entryField1IsValid == false)
             {
-                ValidateEntryField1();
+                string dummyErrMsg;
+                this.entryField1IsValid = StoreContentIfEntryField1IsValid(out dummyErrMsg);
+
+                //The precondition has been violated
+                Debug.Assert(this.entryField1IsValid);
             }
 
             if (this.entryField2IsValid == false)
             {
-                ValidateEntryField2();
+                string dummyErrMsg;
+                this.entryField2IsValid = StoreContentIfEntryField2IsValid(out dummyErrMsg);
+
+                //The precondition has been violated
+                Debug.Assert(this.entryField2IsValid);
             }
 
             if (this.entryField1IsValid == true && this.entryField2IsValid == true)
             {
-                return CreateMsgInfoFromValidatedFields();
+                return CreateMsgInfoFromStoredContent();
             }
             else
             {
-                //The precondition was not met
-                Debug.Assert(false);
+                //The precondition was not met. We don't need to assert false here though because one of the previous
+                //Asserts will have already been hit.
                 return null;
             }
         }
 
-        //Precondition: ValidateEntryField#() must have been called and returned true for all fields
-        protected abstract MssMsgInfo CreateMsgInfoFromValidatedFields();
+        /// <summary>
+        ///     Creates an instance of MssMsgInfo, populating it with information that was stored when 
+        ///     StoreContentIfEntryField#IsValid() was called.
+        /// </summary>
+        /// <remarks>
+        ///     Precondition: StoreContentIfEntryField#IsValid() must have been called and returned true for all fields.
+        /// </remarks>
+        /// <returns>The newly created MssMsgInfo instance.</returns>
+        protected abstract MssMsgInfo CreateMsgInfoFromStoredContent();
     }
 }
