@@ -21,7 +21,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
         /// <summary>
         ///     Specifies wheather this is associated with the input or output entry fields.
         /// </summary>
-        protected MappingEntry.IO ioCatagory;
+        protected IoType ioCatagory;
 
         /// <summary>
         ///     The MappingDlg that this is associated with.
@@ -46,11 +46,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
         {
             get
             { 
-                if (this.ioCatagory == MappingEntry.IO.Input)
+                if (this.ioCatagory == IoType.Input)
                 {
                     return this.mappingDlg.inEntryField1Lbl;
                 }
-                else if (this.ioCatagory == MappingEntry.IO.Output)
+                else if (this.ioCatagory == IoType.Output)
                 {
                     return this.mappingDlg.outEntryField1Lbl;
                 }
@@ -69,11 +69,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
         {
             get
             {
-                if (this.ioCatagory == MappingEntry.IO.Input)
+                if (this.ioCatagory == IoType.Input)
                 {
                     return this.mappingDlg.inEntryField2Lbl;
                 }
-                else if (this.ioCatagory == MappingEntry.IO.Output)
+                else if (this.ioCatagory == IoType.Output)
                 {
                     return this.mappingDlg.outEntryField2Lbl;
                 }
@@ -107,7 +107,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
         /// </summary>
         /// <param name="mappingDlg">The mapping dialog this is associated with</param>
         /// <param name="io">Specifies wheather this associated with the input or output entry fields.</param>
-        public void Init(MappingDlg mappingDlg, MappingEntry.IO io)
+        public void Init(MappingDlg mappingDlg, IoType io)
         {
             this.ioCatagory = io;
             this.mappingDlg = mappingDlg;
@@ -124,7 +124,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
 
             //For each MSS message type selected for input there are only a subset of MSS message types that are 
             //considered valid output. When the input type changes then the output combo box must be repopulated
-            if (io == MappingEntry.IO.Input)
+            if (io == IoType.Input)
             {
                 otherTypeCombo = mappingDlg.outTypeCombo;
 
@@ -133,7 +133,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
                 //This will cause the output MssMsgInfoEntryMetadata to be created.
                 otherTypeCombo.SelectedIndex = 0;
             }
-            else if (io == MappingEntry.IO.Output)
+            else if (io == IoType.Output)
             {
                 otherTypeCombo = mappingDlg.inTypeCombo;
             } 
@@ -170,7 +170,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             ComboBox EntryField1Combo;
             ComboBox EntryField2Combo;
 
-            if (this.ioCatagory == MappingEntry.IO.Input)
+            if (this.ioCatagory == IoType.Input)
             {
                 EntryField1Lbl = this.mappingDlg.inEntryField1Lbl;
                 EntryField2Lbl = this.mappingDlg.inEntryField2Lbl;
@@ -179,7 +179,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
                 EntryField1Combo = this.mappingDlg.inEntryField1Combo;
                 EntryField2Combo = this.mappingDlg.inEntryField2Combo;
             }
-            else if (this.ioCatagory == MappingEntry.IO.Output)
+            else if (this.ioCatagory == IoType.Output)
             {
                 EntryField1Lbl = this.mappingDlg.outEntryField1Lbl;
                 EntryField2Lbl = this.mappingDlg.outEntryField2Lbl;

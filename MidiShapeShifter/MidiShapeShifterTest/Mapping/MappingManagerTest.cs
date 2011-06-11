@@ -17,10 +17,8 @@ namespace MidiShapeShifterTest.Mapping
     [TestFixture]
     public class MappingManagerTest
     {
-
+        
         protected const bool DEFAULT_OVERRIDE_DUPLICATES = false;
-        protected const MappingEntry.EquationInputMode DEFAULT_EQ_INPUT_MODE = MappingEntry.EquationInputMode.Text;
-        protected const string DEFAULT_EQUATION = "x";
         protected const MssMsgUtil.MssMsgType DEFAULT_MSG_TYPE = MssMsgUtil.MssMsgType.NoteOn;
         //useful for when you need to test two message types that do not match. Other types do not need to be tested here
         //because MappingManager should not have any logic specific to a particular type.
@@ -264,9 +262,6 @@ namespace MidiShapeShifterTest.Mapping
             mapEntry.InMssMsgInfo = inMsgInfo;
             mapEntry.OutMssMsgInfo = outMsgInfo;
             mapEntry.OverrideDuplicates = DEFAULT_OVERRIDE_DUPLICATES;
-            mapEntry.EqInputMode = DEFAULT_EQ_INPUT_MODE;
-            mapEntry.Equation = DEFAULT_EQUATION;
-
             return mapEntry;
         }
 

@@ -136,7 +136,7 @@ namespace MidiShapeShifter.Mss.Mapping
 
         private void inTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MsgTypeComboChanged((ComboBox)sender, MappingEntry.IO.Input, ref inMsgMetadata);
+            MsgTypeComboChanged((ComboBox)sender, IoType.Input, ref inMsgMetadata);
 
             if (this.outSameAsInCheckBox.Checked == true)
             {
@@ -150,11 +150,11 @@ namespace MidiShapeShifter.Mss.Mapping
 
         private void outTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MsgTypeComboChanged((ComboBox)sender, MappingEntry.IO.Output, ref outMsgMetadata);
+            MsgTypeComboChanged((ComboBox)sender, IoType.Output, ref outMsgMetadata);
         }
 
         protected void MsgTypeComboChanged(ComboBox msgTypeCombo, 
-                                           MappingEntry.IO ioCategory, 
+                                           IoType ioCategory, 
                                            ref MssMsgInfoEntryMetadata msgMetadata)
         {
             MssMsgUtil.MssMsgType msgType = GetMessageTypeFromCombo(msgTypeCombo);

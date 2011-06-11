@@ -45,10 +45,10 @@
             this.presetParam2Value = new System.Windows.Forms.Label();
             this.presetParam2Knob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
             this.presetParam1Title = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.radioCurvePreset = new System.Windows.Forms.RadioButton();
-            this.radioCurveEquation = new System.Windows.Forms.RadioButton();
+            this.curvePresetCombo = new System.Windows.Forms.ComboBox();
+            this.curveEquationTextBox = new System.Windows.Forms.TextBox();
+            this.curveShapePresetRadio = new System.Windows.Forms.RadioButton();
+            this.curveShapeEquationRadio = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.variableDMinLbl = new System.Windows.Forms.Label();
             this.variableDMin = new System.Windows.Forms.TextBox();
@@ -166,12 +166,12 @@
             this.curveGroup.Controls.Add(this.presetParam2Value);
             this.curveGroup.Controls.Add(this.presetParam2Knob);
             this.curveGroup.Controls.Add(this.presetParam1Title);
-            this.curveGroup.Controls.Add(this.comboBox1);
+            this.curveGroup.Controls.Add(this.curvePresetCombo);
             this.curveGroup.Controls.Add(this.presetParam1Value);
-            this.curveGroup.Controls.Add(this.textBox1);
+            this.curveGroup.Controls.Add(this.curveEquationTextBox);
             this.curveGroup.Controls.Add(this.presetParam1Knob);
-            this.curveGroup.Controls.Add(this.radioCurvePreset);
-            this.curveGroup.Controls.Add(this.radioCurveEquation);
+            this.curveGroup.Controls.Add(this.curveShapePresetRadio);
+            this.curveGroup.Controls.Add(this.curveShapeEquationRadio);
             this.curveGroup.Location = new System.Drawing.Point(362, 313);
             this.curveGroup.Name = "curveGroup";
             this.curveGroup.Size = new System.Drawing.Size(273, 171);
@@ -323,43 +323,46 @@
             this.presetParam1Title.Text = "Param1";
             this.presetParam1Title.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // comboBox1
+            // curvePresetCombo
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(88, 56);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(178, 21);
-            this.comboBox1.TabIndex = 3;
+            this.curvePresetCombo.FormattingEnabled = true;
+            this.curvePresetCombo.Location = new System.Drawing.Point(88, 56);
+            this.curvePresetCombo.Name = "curvePresetCombo";
+            this.curvePresetCombo.Size = new System.Drawing.Size(178, 21);
+            this.curvePresetCombo.TabIndex = 3;
             // 
-            // textBox1
+            // curveEquationTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(88, 25);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(151, 20);
-            this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "Normalize(LFO(Sine, 1, 2))";
+            this.curveEquationTextBox.Location = new System.Drawing.Point(88, 25);
+            this.curveEquationTextBox.Name = "curveEquationTextBox";
+            this.curveEquationTextBox.Size = new System.Drawing.Size(151, 20);
+            this.curveEquationTextBox.TabIndex = 2;
+            this.curveEquationTextBox.Text = "Normalize(LFO(Sine, 1, 2))";
+            this.curveEquationTextBox.TextChanged += new System.EventHandler(this.curveEquationTextBox_TextChanged);
             // 
-            // radioCurvePreset
+            // curveShapePresetRadio
             // 
-            this.radioCurvePreset.AutoSize = true;
-            this.radioCurvePreset.Location = new System.Drawing.Point(15, 60);
-            this.radioCurvePreset.Name = "radioCurvePreset";
-            this.radioCurvePreset.Size = new System.Drawing.Size(58, 17);
-            this.radioCurvePreset.TabIndex = 1;
-            this.radioCurvePreset.TabStop = true;
-            this.radioCurvePreset.Text = "Preset:";
-            this.radioCurvePreset.UseVisualStyleBackColor = true;
+            this.curveShapePresetRadio.AutoSize = true;
+            this.curveShapePresetRadio.Location = new System.Drawing.Point(15, 60);
+            this.curveShapePresetRadio.Name = "curveShapePresetRadio";
+            this.curveShapePresetRadio.Size = new System.Drawing.Size(58, 17);
+            this.curveShapePresetRadio.TabIndex = 1;
+            this.curveShapePresetRadio.TabStop = true;
+            this.curveShapePresetRadio.Text = "Preset:";
+            this.curveShapePresetRadio.UseVisualStyleBackColor = true;
+            this.curveShapePresetRadio.CheckedChanged += new System.EventHandler(this.CurveShapeRadio_CheckedChanged);
             // 
-            // radioCurveEquation
+            // curveShapeEquationRadio
             // 
-            this.radioCurveEquation.AutoSize = true;
-            this.radioCurveEquation.Location = new System.Drawing.Point(15, 28);
-            this.radioCurveEquation.Name = "radioCurveEquation";
-            this.radioCurveEquation.Size = new System.Drawing.Size(70, 17);
-            this.radioCurveEquation.TabIndex = 0;
-            this.radioCurveEquation.TabStop = true;
-            this.radioCurveEquation.Text = "Equation:";
-            this.radioCurveEquation.UseVisualStyleBackColor = true;
+            this.curveShapeEquationRadio.AutoSize = true;
+            this.curveShapeEquationRadio.Location = new System.Drawing.Point(15, 28);
+            this.curveShapeEquationRadio.Name = "curveShapeEquationRadio";
+            this.curveShapeEquationRadio.Size = new System.Drawing.Size(70, 17);
+            this.curveShapeEquationRadio.TabIndex = 0;
+            this.curveShapeEquationRadio.TabStop = true;
+            this.curveShapeEquationRadio.Text = "Equation:";
+            this.curveShapeEquationRadio.UseVisualStyleBackColor = true;
+            this.curveShapeEquationRadio.CheckedChanged += new System.EventHandler(this.CurveShapeRadio_CheckedChanged);
             // 
             // groupBox1
             // 
@@ -957,11 +960,11 @@
         private LBSoft.IndustrialCtrls.Knobs.LBKnob presetParam1Knob;
         private System.Windows.Forms.Label presetParam1Value;
         private System.Windows.Forms.GroupBox curveGroup;
-        private System.Windows.Forms.RadioButton radioCurvePreset;
-        private System.Windows.Forms.RadioButton radioCurveEquation;
+        private System.Windows.Forms.RadioButton curveShapePresetRadio;
+        private System.Windows.Forms.RadioButton curveShapeEquationRadio;
         private System.Windows.Forms.Label presetParam1Title;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ComboBox curvePresetCombo;
+        private System.Windows.Forms.TextBox curveEquationTextBox;
         private System.Windows.Forms.Label presetParam4Title;
         private System.Windows.Forms.Label presetParam4Value;
         private LBSoft.IndustrialCtrls.Knobs.LBKnob presetParam4Knob;

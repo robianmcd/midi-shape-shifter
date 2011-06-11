@@ -1,6 +1,9 @@
 ﻿using System.Windows.Forms;
-using Jacobi.Vst.Framework;
 using System.Collections.Generic;
+using System.Diagnostics;
+
+using Jacobi.Vst.Framework;
+
 using LBSoft.IndustrialCtrls.Knobs;
 
 using MidiShapeShifter.CSharpUtil;
@@ -21,13 +24,6 @@ namespace MidiShapeShifter.Mss.UI
         public TwoWayDictionary<MssParameterID, TextBox> ParameterMaxValueControlDict = new TwoWayDictionary<MssParameterID, TextBox>();
         public TwoWayDictionary<MssParameterID, TextBox> ParameterMinValueControlDict = new TwoWayDictionary<MssParameterID, TextBox>();
         public TwoWayDictionary<MssParameterID, Label> ParameterNameControlDict = new TwoWayDictionary<MssParameterID, Label>();
-
-        public struct VariableParamControls { 
-            public LBKnob[] knobs;
-            public TextBox[] maxTextBoxes;
-            public TextBox[] minTextBoxes;
-            public Label[] valueDisplays;
-        }
 
         protected MssComponentHub mssHub;
 
@@ -89,38 +85,15 @@ namespace MidiShapeShifter.Mss.UI
             ParameterNameControlDict.Add(MssParameterID.Preset2, this.presetParam2Title);
             ParameterNameControlDict.Add(MssParameterID.Preset3, this.presetParam3Title);
             ParameterNameControlDict.Add(MssParameterID.Preset4, this.presetParam4Title);
-
         }
-
-        //private void BindParameter(VstParameterManager paramMgr)
-        //{
-        //    // NOTE: This code works best with integer parameter values.
-        //    if (paramMgr.ParameterInfo.IsStepIntegerValid)
-        //    {
-        //        knob.StepValue
-        //        knob.LargeChange = paramMgr.ParameterInfo.LargeStepInteger;
-        //        knob.SmallChange = paramMgr.ParameterInfo.StepInteger;
-        //    }
-
-        //    if (paramMgr.ParameterInfo.IsMinMaxIntegerValid)
-        //    {
-        //        knob.Minimum = paramMgr.ParameterInfo.MinInteger;
-        //        knob.Maximum = paramMgr.ParameterInfo.MaxInteger;
-        //    }
-
-        //     use databinding for VstParameter/Manager changed notifications.
-        //    knob.DataBindings.Add("Value", paramMgr, "ActiveParameter.Value");
-        //    knob.ValueChanged += new System.EventHandler(TrackBar_ValueChanged);
-        //    knob.Tag = paramMgr;
-        //}
 
         protected void AddEntryToMappingListView(MappingEntry entry) 
         {
-            ListViewItem mappingItem = new ListViewItem(entry.GetReadableMsgType(MappingEntry.IO.Input));
+            ListViewItem mappingItem = new ListViewItem(entry.GetReadableMsgType(IoType.Input));
             mappingItem.SubItems.Add(entry.InMssMsgInfo.Field1);
             mappingItem.SubItems.Add(entry.InMssMsgInfo.Field2);
 
-            mappingItem.SubItems.Add(entry.GetReadableMsgType(MappingEntry.IO.Output));
+            mappingItem.SubItems.Add(entry.GetReadableMsgType(IoType.Output));
             mappingItem.SubItems.Add(entry.OutMssMsgInfo.Field1);
             mappingItem.SubItems.Add(entry.OutMssMsgInfo.Field2);
 
@@ -139,7 +112,7 @@ namespace MidiShapeShifter.Mss.UI
             Label parameterValueDisplay;
             if (ParameterValueLabelControlDict.TryGetRightByLeft(paramId, out parameterValueDisplay) == true)
             {
-                parameterValueDisplay.Text = FormatRawValue((double)knob.Value);
+                parameterValueDisplay.Text = FormatRawParameterValue((double)knob.Value);
             }
             
 
@@ -149,9 +122,38 @@ namespace MidiShapeShifter.Mss.UI
             }
         }
         
-        protected string FormatRawValue(double value)
+        protected string FormatRawParameterValue(double value)
         {
             return System.Math.Round(value, 2).ToString();
+        }
+
+        protected void ActiveMappingChanged()
+        {
+            if (ActiveMapping.CurveShapeEntryInfo.EqInputMode == EquationInputMode.Text)
+            {
+                this.curveShapeEquationRadio.Checked = true;
+            }
+            else if (ActiveMapping.CurveShapeEntryInfo.EqInputMode == EquationInputMode.Preset)
+            {
+                this.curveShapePresetRadio.Checked = true;
+            }
+            else
+            {
+                //Unknown EquationInputMode
+                Debug.Assert(false);
+            }
+
+            this.curveEquationTextBox.Text = ActiveMapping.CurveShapeEntryInfo.Equation;
+            this.curvePresetCombo.SelectedIndex = ActiveMapping.CurveShapeEntryInfo.PresetIndex;
+
+            this.presetParam1Knob.Value = (float)ActiveMapping.CurveShapeEntryInfo.PresetParamValues[0];
+            this.presetParam2Knob.Value = (float)ActiveMapping.CurveShapeEntryInfo.PresetParamValues[1];
+            this.presetParam3Knob.Value = (float)ActiveMapping.CurveShapeEntryInfo.PresetParamValues[2];
+            this.presetParam4Knob.Value = (float)ActiveMapping.CurveShapeEntryInfo.PresetParamValues[3];
+            this.presetParam1Value.Text = FormatRawParameterValue(ActiveMapping.CurveShapeEntryInfo.PresetParamValues[0]);
+            this.presetParam2Value.Text = FormatRawParameterValue(ActiveMapping.CurveShapeEntryInfo.PresetParamValues[1]);
+            this.presetParam3Value.Text = FormatRawParameterValue(ActiveMapping.CurveShapeEntryInfo.PresetParamValues[2]);
+            this.presetParam4Value.Text = FormatRawParameterValue(ActiveMapping.CurveShapeEntryInfo.PresetParamValues[3]);
         }
 
         private void addMappingBtn_Click(object sender, System.EventArgs e)
@@ -189,12 +191,15 @@ namespace MidiShapeShifter.Mss.UI
 
         private void mappingListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            /*if (mappingListView.SelectedItems.Count != 1)
+            if (mappingListView.SelectedItems.Count == 0)
             {
+                //TODO: nothing is selected
                 return;
             }
-
-            mappingListView.SelectedItems[0].Index;*/
+            
+            ActiveMapping = this.mssHub.MappingMgr.GetMappingEntry(mappingListView.SelectedItems[0].Index);
+            ActiveMappingChanged();
+            
         }
 
         private void addGeneratorBtn_Click(object sender, System.EventArgs e)
@@ -233,7 +238,7 @@ namespace MidiShapeShifter.Mss.UI
             Label parameterValueLabel;
             if (ParameterValueLabelControlDict.TryGetRightByLeft(paramId, out parameterValueLabel) == true)
             {
-                string valueAsString = FormatRawValue(value);
+                string valueAsString = FormatRawParameterValue(value);
                 if (parameterValueLabel.Text != valueAsString)
                 {
                     parameterValueLabel.Text = valueAsString;
@@ -263,6 +268,28 @@ namespace MidiShapeShifter.Mss.UI
                     maxValueTextBox.Text = maxValue.ToString();
                 }
             }
+        }
+
+        private void CurveShapeRadio_CheckedChanged(object sender, System.EventArgs e)
+        {
+            bool equationInputMode = this.curveShapeEquationRadio.Checked;
+
+            curveEquationTextBox.Enabled = equationInputMode;
+
+
+            bool presetInputMode = this.curveShapePresetRadio.Checked;
+
+            curvePresetCombo.Enabled = presetInputMode;
+            presetParam1Knob.Enabled = presetInputMode;
+            presetParam2Knob.Enabled = presetInputMode;
+            presetParam3Knob.Enabled = presetInputMode;
+            presetParam4Knob.Enabled = presetInputMode;
+
+        }
+
+        private void curveEquationTextBox_TextChanged(object sender, System.EventArgs e)
+        {
+
         }
 
     }

@@ -14,7 +14,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
         {
             get
             {
-                if (this.ioCatagory == MappingEntry.IO.Input)
+                if (this.ioCatagory == IoType.Input)
                 {
                     return this.mappingDlg.inEntryField1Combo;
                 }

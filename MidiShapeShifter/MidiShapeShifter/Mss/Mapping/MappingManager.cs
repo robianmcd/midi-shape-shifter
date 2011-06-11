@@ -132,11 +132,11 @@ namespace MidiShapeShifter.Mss.Mapping
             if (index >= 0 && index < mappingEntries.Count)
             {
                 MappingEntry entry = mappingEntries[index];
-                ListViewItem mappingItem = new ListViewItem(entry.GetReadableMsgType(MappingEntry.IO.Input));
+                ListViewItem mappingItem = new ListViewItem(entry.GetReadableMsgType(IoType.Input));
                 mappingItem.SubItems.Add(entry.InMssMsgInfo.Field1);
                 mappingItem.SubItems.Add(entry.InMssMsgInfo.Field2);
 
-                mappingItem.SubItems.Add(entry.GetReadableMsgType(MappingEntry.IO.Output));
+                mappingItem.SubItems.Add(entry.GetReadableMsgType(IoType.Output));
                 mappingItem.SubItems.Add(entry.OutMssMsgInfo.Field1);
                 mappingItem.SubItems.Add(entry.OutMssMsgInfo.Field2);
 

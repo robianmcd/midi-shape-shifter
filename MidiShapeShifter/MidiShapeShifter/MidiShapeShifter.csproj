@@ -77,6 +77,7 @@
     <Compile Include="Mss\Generator\GeneratorDlg.Designer.cs">
       <DependentUpon>GeneratorDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mss\Mapping\CurveShapeEntryInfo.cs" />
     <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\ChanAftertouchMsgInfoEntryMetadata.cs" />
     <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\Factory_MssMsgInfoEntryMetadata.cs" />
     <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\PolyAftertouchMsgInfoEntryMetadata.cs" />
