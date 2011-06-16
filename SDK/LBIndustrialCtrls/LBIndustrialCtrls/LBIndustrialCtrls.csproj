@@ -166,4 +166,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "$(TargetDir)..\..\..\..\..\MidiShapeShifter\lib\$(TargetFileName)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

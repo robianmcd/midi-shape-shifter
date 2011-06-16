@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C# Express 2008
+# Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{AA498353-353F-46AE-B5D5-96A88CBEA6ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LBIndustrialCtrls", "LBIndustrialCtrls\LBIndustrialCtrls.csproj", "{B4218BC9-9736-42B9-BC99-7903FDBEBA28}"

@@ -77,7 +77,8 @@
     <Compile Include="Mss\Generator\GeneratorDlg.Designer.cs">
       <DependentUpon>GeneratorDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="Mss\Mapping\CurveShapeEntryInfo.cs" />
+    <Compile Include="Mss\ICurveShapeInfoContainer.cs" />
+    <Compile Include="Mss\CurveShapeInfo.cs" />
     <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\ChanAftertouchMsgInfoEntryMetadata.cs" />
     <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\Factory_MssMsgInfoEntryMetadata.cs" />
     <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\PolyAftertouchMsgInfoEntryMetadata.cs" />
@@ -104,6 +105,8 @@
     <Compile Include="Mss\Mapping\MssMsgInfoTypes\NoteOnMsgInfo.cs" />
     <Compile Include="Mss\Mapping\MssMsgInfoTypes\PitchBendMsgInfo.cs" />
     <Compile Include="Mss\MssComponentHub.cs" />
+    <Compile Include="Mss\MssEvaluator.cs" />
+    <Compile Include="Mss\MssEvent.cs" />
     <Compile Include="Mss\MssMsg.cs" />
     <Compile Include="Mss\MssMsgProcessor.cs" />
     <Compile Include="Mss\MssMsgUtil.cs" />
@@ -121,6 +124,7 @@
     <Compile Include="Mss\Mapping\MssMsgInfoTypes\MssMsgInfo.cs" />
     <Compile Include="Mss\MssParameterInfo.cs" />
     <Compile Include="Mss\MssParameters.cs" />
+    <Compile Include="Mss\VirtualHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -199,11 +203,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>mkdir "$(ProjectDir)\vst-dist"
-mkdir "$(ProjectDir)\vst-dist\$(Configuration)"
-Set vstDir="$(ProjectDir)\vst-dist\$(Configuration)"
-copy "$(TargetPath)" "%25vstDir%25\$(TargetName).net.vstdll"
-copy "$(TargetDir)$(TargetName).pdb" "%25vstDir%25\$(TargetName).net.pdb"
-copy "$(TargetDir)\Jacobi.Vst.Interop.dll" "%25vstDir%25\$(TargetFileName)"</PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetPath)" "$(TargetDir)\$(TargetName)ForTests.dll"
+copy "$(TargetPath)" "$(TargetDir)\$(TargetName).net.vstdll"
+copy "$(TargetDir)\Jacobi.Vst.Interop.dll" "$(TargetDir)\$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
