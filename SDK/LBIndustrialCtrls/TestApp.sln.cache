@@ -40,11 +40,11 @@
     <AspNetConfiguration>$(Configuration)</AspNetConfiguration>
   </PropertyGroup>
   <PropertyGroup>
-    <SolutionDir>C:\Rob\repos\midi-shape-shifter\SDK\LBIndustrialCtrls\</SolutionDir>
+    <SolutionDir>C:\Rob\Dropbox\Repos\midi-shape-shifter\SDK\LBIndustrialCtrls\</SolutionDir>
     <SolutionExt>.sln</SolutionExt>
     <SolutionFileName>TestApp.sln</SolutionFileName>
     <SolutionName>TestApp</SolutionName>
-    <SolutionPath>C:\Rob\repos\midi-shape-shifter\SDK\LBIndustrialCtrls\TestApp.sln</SolutionPath>
+    <SolutionPath>C:\Rob\Dropbox\Repos\midi-shape-shifter\SDK\LBIndustrialCtrls\TestApp.sln</SolutionPath>
   </PropertyGroup>
   <PropertyGroup>
     <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)' == '' and '$(MSBuildToolsVersion)' == '2.0'">v2.0</TargetFrameworkVersion>
