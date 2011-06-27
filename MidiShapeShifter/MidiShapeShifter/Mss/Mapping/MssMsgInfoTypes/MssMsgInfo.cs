@@ -7,7 +7,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoTypes
 {
     abstract public class MssMsgInfo
     {
-        public abstract MssMsgUtil.MssMsgType mssMsgType
+        public abstract MssMsgType mssMsgType
         {
             get;
         }

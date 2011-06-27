@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MidiShapeShifter.Mss.Mapping
+namespace MidiShapeShifter.Mss
 {
 
     /// <summary>
@@ -13,9 +13,9 @@ namespace MidiShapeShifter.Mss.Mapping
     public enum EquationInputMode { Text, Preset };
 
     /// <summary>
-    ///     Contains information about a curve shape and how it is being entered.
+    ///     Contains information about a curve's shape and how it is being entered.
     /// </summary>
-    public class CurveShapeEntryInfo
+    public class CurveShapeInfo
     {
         public const EquationInputMode DEFAULT_EQUATION_INPUT_MODE = EquationInputMode.Text;
         public const string DEFAULT_EQUATION = "x";

@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PluginEditorView));
-            this.zedGraphControl1 = new ZedGraph.ZedGraphControl();
+            this.mainGraphControl = new ZedGraph.ZedGraphControl();
             this.presetParam1Knob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
             this.presetParam1Value = new System.Windows.Forms.Label();
             this.curveGroup = new System.Windows.Forms.GroupBox();
@@ -108,19 +108,19 @@
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // zedGraphControl1
+            // mainGraphControl
             // 
-            this.zedGraphControl1.Location = new System.Drawing.Point(362, 35);
-            this.zedGraphControl1.Name = "zedGraphControl1";
-            this.zedGraphControl1.ScrollGrace = 0;
-            this.zedGraphControl1.ScrollMaxX = 0;
-            this.zedGraphControl1.ScrollMaxY = 0;
-            this.zedGraphControl1.ScrollMaxY2 = 0;
-            this.zedGraphControl1.ScrollMinX = 0;
-            this.zedGraphControl1.ScrollMinY = 0;
-            this.zedGraphControl1.ScrollMinY2 = 0;
-            this.zedGraphControl1.Size = new System.Drawing.Size(275, 275);
-            this.zedGraphControl1.TabIndex = 1;
+            this.mainGraphControl.Location = new System.Drawing.Point(362, 35);
+            this.mainGraphControl.Name = "mainGraphControl";
+            this.mainGraphControl.ScrollGrace = 0;
+            this.mainGraphControl.ScrollMaxX = 0;
+            this.mainGraphControl.ScrollMaxY = 0;
+            this.mainGraphControl.ScrollMaxY2 = 0;
+            this.mainGraphControl.ScrollMinX = 0;
+            this.mainGraphControl.ScrollMinY = 0;
+            this.mainGraphControl.ScrollMinY2 = 0;
+            this.mainGraphControl.Size = new System.Drawing.Size(275, 275);
+            this.mainGraphControl.TabIndex = 1;
             // 
             // presetParam1Knob
             // 
@@ -936,11 +936,12 @@
             this.Controls.Add(this.generatorGroupBox);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.curveGroup);
-            this.Controls.Add(this.zedGraphControl1);
+            this.Controls.Add(this.mainGraphControl);
             this.Controls.Add(this.mappingGroupBox);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "PluginEditorView";
             this.Size = new System.Drawing.Size(641, 488);
+            this.Load += new System.EventHandler(this.PluginEditorView_Load);
             this.curveGroup.ResumeLayout(false);
             this.curveGroup.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -956,7 +957,7 @@
 
         #endregion
 
-        private ZedGraph.ZedGraphControl zedGraphControl1;
+        private ZedGraph.ZedGraphControl mainGraphControl;
         private LBSoft.IndustrialCtrls.Knobs.LBKnob presetParam1Knob;
         private System.Windows.Forms.Label presetParam1Value;
         private System.Windows.Forms.GroupBox curveGroup;

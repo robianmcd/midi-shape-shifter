@@ -7,11 +7,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoTypes
 {
     public class PitchBendMsgInfo : MidiMsgInfo
     {
-        public override MssMsgUtil.MssMsgType mssMsgType
+        public override MssMsgType mssMsgType
         {
             get
             {
-                return MssMsgUtil.MssMsgType.PitchBend;
+                return MssMsgType.PitchBend;
             }
         }
     }

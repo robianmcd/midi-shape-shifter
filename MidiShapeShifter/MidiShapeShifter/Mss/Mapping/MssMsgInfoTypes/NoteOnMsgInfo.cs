@@ -7,11 +7,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoTypes
 {
     public class NoteOnMsgInfo : MidiMsgInfo
     {
-        public override MssMsgUtil.MssMsgType mssMsgType
+        public override MssMsgType mssMsgType
         {
             get
             {
-                return MssMsgUtil.MssMsgType.NoteOn;
+                return MssMsgType.NoteOn;
             }
         }
     }

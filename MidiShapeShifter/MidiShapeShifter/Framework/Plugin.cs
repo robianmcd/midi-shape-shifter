@@ -29,7 +29,7 @@ namespace MidiShapeShifter.Framework
             : base(PluginName,
             new VstProductInfo(ProductName, VendorName, PluginVersion),
                 VstPluginCategory.Effect,
-                VstPluginCapabilities.NoSoundInStop,
+                VstPluginCapabilities.ReceiveTimeInfo,
                 // initial delay: number of samples your plugin lags behind.
                 0,
                 UniquePluginId)
@@ -81,8 +81,6 @@ namespace MidiShapeShifter.Framework
         /// <returns>Returns null when not supported by the plugin.</returns>
         protected override IVstPluginAudioProcessor CreateAudioProcessor(IVstPluginAudioProcessor instance)
         {
-            if (!MidiHandler.SyncWithAudioProcessor) return null;
-
             if (instance == null)
             {
                 return new DummyAudioHandler(this);

@@ -7,11 +7,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoTypes
 {
     public class PolyAftertouchMsgInfo : MidiMsgInfo
     {
-        public override MssMsgUtil.MssMsgType mssMsgType
+        public override MssMsgType mssMsgType
         {
             get
             {
-                return MssMsgUtil.MssMsgType.PolyAftertouch;
+                return MssMsgType.PolyAftertouch;
             }
         }
 

@@ -2,6 +2,8 @@
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
 
+using MidiShapeShifter.CSharpUtil;
+
 namespace MidiShapeShifter.Framework
 {
     /// <summary>
@@ -32,14 +34,12 @@ namespace MidiShapeShifter.Framework
         /// <param name="outChannels">Never null.</param>
         public override void Process(VstAudioBuffer[] inChannels, VstAudioBuffer[] outChannels)
         {
+            double cycleEndTimestampInMs = TimeUtil.GetTimestampInMs();
+
             // calling the base class transfers input samples to the output channels unchanged (bypass).
             base.Process(inChannels, outChannels);
 
-            // check to see if we need to output midi here
-            if (_plugin.MidiHandler.SyncWithAudioProcessor)
-            {
-                _plugin.MidiHandler.ProcessCurrentEvents();
-            }
+            _plugin.MidiHandler.OnAudioProcessingCycleEnd(cycleEndTimestampInMs);
         }
     }
 }

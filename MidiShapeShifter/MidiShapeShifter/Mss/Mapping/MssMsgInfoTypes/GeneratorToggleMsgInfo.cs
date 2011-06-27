@@ -7,11 +7,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoTypes
 {
     public class GeneratorToggleMsgInfo : MssMsgInfo
     {
-        public override MssMsgUtil.MssMsgType mssMsgType
+        public override MssMsgType mssMsgType
         {
             get
             {
-                return MssMsgUtil.MssMsgType.GeneratorToggle;
+                return MssMsgType.GeneratorToggle;
             }
         }
 

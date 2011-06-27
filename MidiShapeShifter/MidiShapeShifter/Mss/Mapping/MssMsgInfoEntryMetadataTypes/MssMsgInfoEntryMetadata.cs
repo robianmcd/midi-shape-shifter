@@ -37,7 +37,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
 
         //The "Same as Input" checkbox will be enabled iff this class's msg type is selected as input/output and a type
         //in this list is selected as output/input.
-        protected List<MssMsgUtil.MssMsgType> sameAsInputCompatibleTypes = new List<MssMsgUtil.MssMsgType>();
+        protected List<MssMsgType> sameAsInputCompatibleTypes = new List<MssMsgType>();
 
         /// <summary>
         ///     The label associated with the first entry field.
@@ -144,7 +144,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
                 return;
             }
 
-            MssMsgUtil.MssMsgType otherMsgType = mappingDlg.GetMessageTypeFromCombo(otherTypeCombo);
+            MssMsgType otherMsgType = mappingDlg.GetMessageTypeFromCombo(otherTypeCombo);
             //Checks if it makes sence to use the values from the input entry fields in the output entry fields
             if (sameAsInputCompatibleTypes.Contains(otherMsgType))
             {
@@ -219,13 +219,13 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
         protected virtual void InitOutMssMsgTypeNames()
         {
             //Default set of valid output types.
-            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOn]);
-            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOff]);
-            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.CC]);
-            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.PitchBend]);
-            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.PolyAftertouch]);
-            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.ChanAftertouch]);
-            this.outMssMsgTypeNames.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.GeneratorToggle]);
+            this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.NoteOn]);
+            this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.NoteOff]);
+            this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.CC]);
+            this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.PitchBend]);
+            this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.PolyAftertouch]);
+            this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.ChanAftertouch]);
+            this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.GeneratorToggle]);
         }
 
         /// <summary>

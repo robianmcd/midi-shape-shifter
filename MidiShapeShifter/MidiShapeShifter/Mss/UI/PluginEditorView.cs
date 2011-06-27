@@ -1,16 +1,21 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Diagnostics;
-
-using Jacobi.Vst.Framework;
-
-using LBSoft.IndustrialCtrls.Knobs;
+using System.Drawing;
 
 using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Framework;
 using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.Generator;
+
+using LBSoft.IndustrialCtrls.Knobs;
+
+using ZedGraph;
+
+//Winforms and ZedGraphs both define Label
+using Label = System.Windows.Forms.Label;
 
 namespace MidiShapeShifter.Mss.UI
 {
@@ -19,11 +24,18 @@ namespace MidiShapeShifter.Mss.UI
         public const int NUM_VARIABLE_PARAMS = 4;
         public const int NUM_PRESET_PARAMS = 4;
 
+        public const int NUM_GRAPH_POINTS = 128;
+        public static readonly double[] GRAPH_X_VAULES = new double[NUM_GRAPH_POINTS];
+
+        protected const string GRAPH_MAIN_CURVE_LABEL = "Main Curve";
+
         public TwoWayDictionary<MssParameterID, LBKnob> ParameterValueKnobControlDict = new TwoWayDictionary<MssParameterID, LBKnob>();
         public TwoWayDictionary<MssParameterID, Label> ParameterValueLabelControlDict = new TwoWayDictionary<MssParameterID, Label>();
         public TwoWayDictionary<MssParameterID, TextBox> ParameterMaxValueControlDict = new TwoWayDictionary<MssParameterID, TextBox>();
         public TwoWayDictionary<MssParameterID, TextBox> ParameterMinValueControlDict = new TwoWayDictionary<MssParameterID, TextBox>();
         public TwoWayDictionary<MssParameterID, Label> ParameterNameControlDict = new TwoWayDictionary<MssParameterID, Label>();
+
+        protected MssEvaluator evaluator;
 
         protected MssComponentHub mssHub;
 
@@ -34,6 +46,16 @@ namespace MidiShapeShifter.Mss.UI
             InitializeComponent();
             PopulateControlDictionaries();
 
+            evaluator = new MssEvaluator();
+        }
+
+        //static constructor
+        static PluginEditorView()
+        {
+            for (int i = 0; i < NUM_GRAPH_POINTS; i++)
+            {
+                GRAPH_X_VAULES[i] = (1.0 / (NUM_GRAPH_POINTS - 1)) * i;
+            }
         }
 
         public void Init(MssComponentHub mssHub)
@@ -87,19 +109,17 @@ namespace MidiShapeShifter.Mss.UI
             ParameterNameControlDict.Add(MssParameterID.Preset4, this.presetParam4Title);
         }
 
-        protected void AddEntryToMappingListView(MappingEntry entry) 
+        protected void RefreshMappingListView()
         {
-            ListViewItem mappingItem = new ListViewItem(entry.GetReadableMsgType(IoType.Input));
-            mappingItem.SubItems.Add(entry.InMssMsgInfo.Field1);
-            mappingItem.SubItems.Add(entry.InMssMsgInfo.Field2);
+            this.mappingListView.Items.Clear();
 
-            mappingItem.SubItems.Add(entry.GetReadableMsgType(IoType.Output));
-            mappingItem.SubItems.Add(entry.OutMssMsgInfo.Field1);
-            mappingItem.SubItems.Add(entry.OutMssMsgInfo.Field2);
+            MappingManager mappingMgr = this.mssHub.MappingMgr;
 
-            mappingItem.SubItems.Add(entry.GetReadableOverrideDuplicates());
+            for (int i = 0; i < mappingMgr.GetNumEntries(); i++)
+            {
+                this.mappingListView.Items.Add(mappingMgr.GetListViewRow(i));
 
-            this.mappingListView.Items.Add(mappingItem);
+            }
         }
 
         //TODO: add handlers like this for changes to max and min value text boxes
@@ -129,11 +149,11 @@ namespace MidiShapeShifter.Mss.UI
 
         protected void ActiveMappingChanged()
         {
-            if (ActiveMapping.CurveShapeEntryInfo.EqInputMode == EquationInputMode.Text)
+            if (ActiveMapping.CurveShapeInfo.EqInputMode == EquationInputMode.Text)
             {
                 this.curveShapeEquationRadio.Checked = true;
             }
-            else if (ActiveMapping.CurveShapeEntryInfo.EqInputMode == EquationInputMode.Preset)
+            else if (ActiveMapping.CurveShapeInfo.EqInputMode == EquationInputMode.Preset)
             {
                 this.curveShapePresetRadio.Checked = true;
             }
@@ -143,17 +163,17 @@ namespace MidiShapeShifter.Mss.UI
                 Debug.Assert(false);
             }
 
-            this.curveEquationTextBox.Text = ActiveMapping.CurveShapeEntryInfo.Equation;
-            this.curvePresetCombo.SelectedIndex = ActiveMapping.CurveShapeEntryInfo.PresetIndex;
+            this.curveEquationTextBox.Text = ActiveMapping.CurveShapeInfo.Equation;
+            this.curvePresetCombo.SelectedIndex = ActiveMapping.CurveShapeInfo.PresetIndex;
 
-            this.presetParam1Knob.Value = (float)ActiveMapping.CurveShapeEntryInfo.PresetParamValues[0];
-            this.presetParam2Knob.Value = (float)ActiveMapping.CurveShapeEntryInfo.PresetParamValues[1];
-            this.presetParam3Knob.Value = (float)ActiveMapping.CurveShapeEntryInfo.PresetParamValues[2];
-            this.presetParam4Knob.Value = (float)ActiveMapping.CurveShapeEntryInfo.PresetParamValues[3];
-            this.presetParam1Value.Text = FormatRawParameterValue(ActiveMapping.CurveShapeEntryInfo.PresetParamValues[0]);
-            this.presetParam2Value.Text = FormatRawParameterValue(ActiveMapping.CurveShapeEntryInfo.PresetParamValues[1]);
-            this.presetParam3Value.Text = FormatRawParameterValue(ActiveMapping.CurveShapeEntryInfo.PresetParamValues[2]);
-            this.presetParam4Value.Text = FormatRawParameterValue(ActiveMapping.CurveShapeEntryInfo.PresetParamValues[3]);
+            this.presetParam1Knob.Value = (float)ActiveMapping.CurveShapeInfo.PresetParamValues[0];
+            this.presetParam2Knob.Value = (float)ActiveMapping.CurveShapeInfo.PresetParamValues[1];
+            this.presetParam3Knob.Value = (float)ActiveMapping.CurveShapeInfo.PresetParamValues[2];
+            this.presetParam4Knob.Value = (float)ActiveMapping.CurveShapeInfo.PresetParamValues[3];
+            this.presetParam1Value.Text = FormatRawParameterValue(ActiveMapping.CurveShapeInfo.PresetParamValues[0]);
+            this.presetParam2Value.Text = FormatRawParameterValue(ActiveMapping.CurveShapeInfo.PresetParamValues[1]);
+            this.presetParam3Value.Text = FormatRawParameterValue(ActiveMapping.CurveShapeInfo.PresetParamValues[2]);
+            this.presetParam4Value.Text = FormatRawParameterValue(ActiveMapping.CurveShapeInfo.PresetParamValues[3]);
         }
 
         private void addMappingBtn_Click(object sender, System.EventArgs e)
@@ -185,7 +205,7 @@ namespace MidiShapeShifter.Mss.UI
 
             if (mapDlg.ShowDialog(this) == DialogResult.OK)
             {
-
+                RefreshMappingListView();
             }
         }
 
@@ -272,6 +292,23 @@ namespace MidiShapeShifter.Mss.UI
 
         private void CurveShapeRadio_CheckedChanged(object sender, System.EventArgs e)
         {
+            EquationInputMode newInputMode;
+
+            if (this.curveShapeEquationRadio.Checked == true)
+            {
+                newInputMode = EquationInputMode.Text;
+            }
+            else if (this.curveShapePresetRadio.Checked == true)
+            {
+                newInputMode = EquationInputMode.Preset;
+            }
+            else
+            {
+                //Unknown input mode
+                Debug.Assert(false);
+                return;
+            }
+
             bool equationInputMode = this.curveShapeEquationRadio.Checked;
 
             curveEquationTextBox.Enabled = equationInputMode;
@@ -285,11 +322,66 @@ namespace MidiShapeShifter.Mss.UI
             presetParam3Knob.Enabled = presetInputMode;
             presetParam4Knob.Enabled = presetInputMode;
 
+
+            ActiveMapping.CurveShapeInfo.EqInputMode = newInputMode;
         }
 
         private void curveEquationTextBox_TextChanged(object sender, System.EventArgs e)
         {
+            string expressionString = ((TextBox)sender).Text;
+            double[] GraphYValues;
 
+            if (this.evaluator.EvaluateMultipleInputValues(expressionString, GRAPH_X_VAULES, out GraphYValues) == true)
+            {
+
+                ActiveMapping.CurveShapeInfo.Equation = expressionString;
+
+                LineItem mainCurve = GetMainCurve();
+                mainCurve.Points = new PointPairList(GRAPH_X_VAULES, GraphYValues);
+
+                this.mainGraphControl.Invalidate();
+            }
+            else
+            {
+
+            }
+
+        }
+
+        private void PluginEditorView_Load(object sender, EventArgs e)
+        {
+            InitiaizeGraph();
+        }
+
+        protected void InitiaizeGraph()
+        {
+            // get a reference to the GraphPane
+            GraphPane pane = this.mainGraphControl.GraphPane;
+
+            // Set the Titles
+            pane.Title.Text = "";
+
+            pane.XAxis.Title.Text = "Input";
+            pane.XAxis.Scale.Min = 0;
+            pane.XAxis.Scale.Max = 1;
+
+            pane.YAxis.Title.Text = "Output";
+            pane.YAxis.Scale.Min = 0;
+            pane.YAxis.Scale.Max = 1;
+
+
+            LineItem mainCurve = new LineItem(GRAPH_MAIN_CURVE_LABEL);
+            mainCurve.Color = Color.Blue;
+            mainCurve.Label.IsVisible = false;
+            mainCurve.Symbol.IsVisible = false;
+
+            pane.CurveList.Add(mainCurve);
+        }
+
+        protected LineItem GetMainCurve()
+        {
+            GraphPane pane = this.mainGraphControl.GraphPane;
+            return (LineItem) pane.CurveList.Find(curveItem => curveItem.Label.Text == GRAPH_MAIN_CURVE_LABEL);
         }
 
     }

@@ -42,12 +42,13 @@ namespace MidiShapeShifter.Mss
             } 
         }
 
+        protected List<MssEvent> mssEventsForHost = new List<MssEvent>();
 
         public MssComponentHub()
         {
             _mappingMgr = new MappingManager();
             _mssParameters = new MssParameters();
-            _mssMsgProcessor = new MssMsgProcessor(this);
+            _mssMsgProcessor = new MssMsgProcessor(MappingMgr);
         }
 
         /// <summary>
@@ -85,6 +86,29 @@ namespace MidiShapeShifter.Mss
                 this._pluginEditorView.Init(this);
                 this._pluginEditorView.CreateControl();
             }
+        }
+
+        public void HandleIncomingMssEvent(MssEvent unprocessedEvent)
+        {
+            List<MssMsg> mssMessages = this.MssMsgProcessor.ProcessMssMsg(unprocessedEvent.mssMsg);
+
+            foreach(MssMsg mssMsg in mssMessages)
+            {
+                MssEvent processedEvent = new MssEvent();
+                processedEvent.mssMsg = mssMsg;
+                processedEvent.timestamp = unprocessedEvent.timestamp;
+                this.mssEventsForHost.Add(processedEvent);
+            }
+        }
+
+        public List<MssEvent> TransferMssEventsForHost()
+        {
+            List<MssEvent> eventsToTransfer = new List<MssEvent>(this.mssEventsForHost.Count);
+            eventsToTransfer.AddRange(this.mssEventsForHost);
+
+            this.mssEventsForHost.Clear();
+
+            return eventsToTransfer;
         }
     }
 }

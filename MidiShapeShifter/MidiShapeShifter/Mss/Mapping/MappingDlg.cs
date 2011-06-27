@@ -30,13 +30,13 @@ namespace MidiShapeShifter.Mss.Mapping
         {
             InitializeComponent();
 
-            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOn]);
-            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.NoteOff]);
-            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.CC]);
-            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.PitchBend]);
-            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.PolyAftertouch]);
-            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.ChanAftertouch]);
-            this.inTypeCombo.Items.Add(MssMsgUtil.MssMsgTypeNames[(int)MssMsgUtil.MssMsgType.Generator]);
+            this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.NoteOn]);
+            this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.NoteOff]);
+            this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.CC]);
+            this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.PitchBend]);
+            this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.PolyAftertouch]);
+            this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.ChanAftertouch]);
+            this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.Generator]);
             this.inTypeCombo.SelectedIndex = 0;
 
             this.outSameAsInCheckBox.Checked = true;
@@ -64,9 +64,9 @@ namespace MidiShapeShifter.Mss.Mapping
         ///     Gets the MssMsgType associated with the current selection in the ComboBox specified by 
         ///     <paramref name="combo"/>.
         /// </summary>
-        public MssMsgUtil.MssMsgType GetMessageTypeFromCombo(ComboBox combo) 
+        public MssMsgType GetMessageTypeFromCombo(ComboBox combo) 
         {
-            return (MssMsgUtil.MssMsgType)MssMsgUtil.MssMsgTypeNames.FindIndex(item => item.Equals(combo.Text));
+            return (MssMsgType)MssMsg.MssMsgTypeNames.FindIndex(item => item.Equals(combo.Text));
         }
 
         private void outSameAsInCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -82,8 +82,8 @@ namespace MidiShapeShifter.Mss.Mapping
             {
                 //we cannot just set the outTypeCombo's selected index to the same as in inTypeCombo's selected index
                 //because they may will not contain all of the same items.
-                MssMsgUtil.MssMsgType inType = GetMessageTypeFromCombo(this.inTypeCombo);
-                string inTypeName = MssMsgUtil.MssMsgTypeNames[(int)inType];
+                MssMsgType inType = GetMessageTypeFromCombo(this.inTypeCombo);
+                string inTypeName = MssMsg.MssMsgTypeNames[(int)inType];
                 this.outTypeCombo.SelectedIndex = this.outTypeCombo.FindStringExact(inTypeName);
 
                 this.outEntryField1TextBox.Text = this.inEntryField1TextBox.Text;
@@ -142,8 +142,8 @@ namespace MidiShapeShifter.Mss.Mapping
             {
                 //we cannot just set the outTypeCombo's selected index to the same as in inTypeCombo's selected index
                 //because they may will not contain all of the same items.
-                MssMsgUtil.MssMsgType inType = GetMessageTypeFromCombo((ComboBox)sender);
-                string inTypeName = MssMsgUtil.MssMsgTypeNames[(int)inType];
+                MssMsgType inType = GetMessageTypeFromCombo((ComboBox)sender);
+                string inTypeName = MssMsg.MssMsgTypeNames[(int)inType];
                 this.outTypeCombo.SelectedIndex = this.outTypeCombo.FindStringExact(inTypeName);
             }
         }
@@ -157,7 +157,7 @@ namespace MidiShapeShifter.Mss.Mapping
                                            IoType ioCategory, 
                                            ref MssMsgInfoEntryMetadata msgMetadata)
         {
-            MssMsgUtil.MssMsgType msgType = GetMessageTypeFromCombo(msgTypeCombo);
+            MssMsgType msgType = GetMessageTypeFromCombo(msgTypeCombo);
 
             msgMetadata = Factory_MssMsgInfoEntryMetadata.Create(msgType);
 
@@ -180,6 +180,8 @@ namespace MidiShapeShifter.Mss.Mapping
                 mappingEntry.InMssMsgInfo = this.inMsgMetadata.CreateMsgInfo();
                 mappingEntry.OutMssMsgInfo = this.outMsgMetadata.CreateMsgInfo();
                 mappingEntry.OverrideDuplicates = this.inOverrideDupsCheckBox.Checked;
+
+                mappingEntry.CurveShapeInfo = new CurveShapeInfo();
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();

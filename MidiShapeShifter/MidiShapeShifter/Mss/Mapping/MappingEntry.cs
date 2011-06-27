@@ -16,7 +16,7 @@ namespace MidiShapeShifter.Mss.Mapping
     ///     2. Information about how to modify incomeing MSS messages. OnMssMsgInfo is used to map the incoming MSS 
     ///         message's type, data1, and data2. The equation is used to map the incoming MSS message's data3.
     /// </summary>
-    public class MappingEntry
+    public class MappingEntry : ICurveShapeInfoContainer
     {
         /// <summary>
         ///     Specifies which MSS messages will be accepted for input as well as additional information about the 
@@ -41,7 +41,8 @@ namespace MidiShapeShifter.Mss.Mapping
         /// <summary>
         ///     Contains information about the curve shape for this mapping and how it is being entered.
         /// </summary>
-        public CurveShapeEntryInfo CurveShapeEntryInfo;
+        public CurveShapeInfo CurveShapeInfo { get; set; }
+        //public CurveShapeInfo CurveShapeInfo;
 
 
         public MappingEntry() 
@@ -57,11 +58,11 @@ namespace MidiShapeShifter.Mss.Mapping
         {
             if (ioCategory == IoType.Input)
             {
-                return MssMsgUtil.MssMsgTypeNames[(int)this.InMssMsgInfo.mssMsgType];
+                return MssMsg.MssMsgTypeNames[(int)this.InMssMsgInfo.mssMsgType];
             }
             else if (ioCategory == IoType.Output)
             {
-                return MssMsgUtil.MssMsgTypeNames[(int)this.OutMssMsgInfo.mssMsgType];
+                return MssMsg.MssMsgTypeNames[(int)this.OutMssMsgInfo.mssMsgType];
             }
             else
             {

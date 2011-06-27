@@ -19,10 +19,10 @@ namespace MidiShapeShifterTest.Mapping
     {
         
         protected const bool DEFAULT_OVERRIDE_DUPLICATES = false;
-        protected const MssMsgUtil.MssMsgType DEFAULT_MSG_TYPE = MssMsgUtil.MssMsgType.NoteOn;
+        protected const MssMsgType DEFAULT_MSG_TYPE = MssMsgType.NoteOn;
         //useful for when you need to test two message types that do not match. Other types do not need to be tested here
         //because MappingManager should not have any logic specific to a particular type.
-        protected const MssMsgUtil.MssMsgType SECONDARY_MSG_TYPE = MssMsgUtil.MssMsgType.CC;
+        protected const MssMsgType SECONDARY_MSG_TYPE = MssMsgType.CC;
 
         [Test]
         public void AddMappingEntry_SingleEntry_SuccessfullyAdded()
@@ -241,7 +241,7 @@ namespace MidiShapeShifterTest.Mapping
 
 
         protected MappingEntry Factory_MappingEntry_MapsIdenticalMidiMsgInfos(
-            MssMsgUtil.MssMsgType msgType, 
+            MssMsgType msgType, 
             int chanRangeBottom, int chanRamgeTop, 
             int paramRangeBottom, int paramRangeTop)
         {
@@ -265,7 +265,7 @@ namespace MidiShapeShifterTest.Mapping
             return mapEntry;
         }
 
-        protected MssMsg Factory_MssMsg_InitializedValues(MssMsgUtil.MssMsgType msgType, int data1, int data2, int data3)
+        protected MssMsg Factory_MssMsg_InitializedValues(MssMsgType msgType, int data1, int data2, int data3)
         {
             return new MssMsg(msgType, data1, data2, data3);
         }

@@ -152,11 +152,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
 
         protected override void InitSameAsInputCompatibleTypes()
         {
-            this.sameAsInputCompatibleTypes.Add(MssMsgUtil.MssMsgType.NoteOn);
-            this.sameAsInputCompatibleTypes.Add(MssMsgUtil.MssMsgType.NoteOff);
-            this.sameAsInputCompatibleTypes.Add(MssMsgUtil.MssMsgType.CC);
-            this.sameAsInputCompatibleTypes.Add(MssMsgUtil.MssMsgType.PitchBend);
-            this.sameAsInputCompatibleTypes.Add(MssMsgUtil.MssMsgType.PolyAftertouch);
+            this.sameAsInputCompatibleTypes.Add(MssMsgType.NoteOn);
+            this.sameAsInputCompatibleTypes.Add(MssMsgType.NoteOff);
+            this.sameAsInputCompatibleTypes.Add(MssMsgType.CC);
+            this.sameAsInputCompatibleTypes.Add(MssMsgType.PitchBend);
+            this.sameAsInputCompatibleTypes.Add(MssMsgType.PolyAftertouch);
         }
     }
 }

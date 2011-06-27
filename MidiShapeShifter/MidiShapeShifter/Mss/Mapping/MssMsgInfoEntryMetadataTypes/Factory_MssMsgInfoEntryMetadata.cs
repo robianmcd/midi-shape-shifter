@@ -8,43 +8,43 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
 {
     static class Factory_MssMsgInfoEntryMetadata
     {
-        public static MssMsgInfoEntryMetadata Create(MssMsgUtil.MssMsgType type)
+        public static MssMsgInfoEntryMetadata Create(MssMsgType type)
         {
             MssMsgInfoEntryMetadata msgMetadata;
 
             switch (type)
             {
-                case MssMsgUtil.MssMsgType.NoteOn:
+                case MssMsgType.NoteOn:
                     {
                         msgMetadata = new NoteOnMsgInfoEntryMetadata();
                         break;
                     }
-                case MssMsgUtil.MssMsgType.NoteOff:
+                case MssMsgType.NoteOff:
                     {
                         msgMetadata = new NoteOffMsgInfoEntryMetadata();
                         break;
                     }
-                case MssMsgUtil.MssMsgType.CC:
+                case MssMsgType.CC:
                     {
                         msgMetadata = new CCMsgInfoEntryMetadata();
                         break;
                     }
-                case MssMsgUtil.MssMsgType.PitchBend:
+                case MssMsgType.PitchBend:
                     {
                         msgMetadata = new PitchBendMsgInfoEntryMetadata();
                         break;
                     }
-                case MssMsgUtil.MssMsgType.PolyAftertouch:
+                case MssMsgType.PolyAftertouch:
                     {
                         msgMetadata = new PolyAftertouchMsgInfoEntryMetadata();
                         break;
                     }
-                case MssMsgUtil.MssMsgType.Generator:
+                case MssMsgType.Generator:
                     {
                         msgMetadata = new GeneratorMsgInfoEntryMetadata();
                         break;
                     }
-                case MssMsgUtil.MssMsgType.GeneratorToggle:
+                case MssMsgType.GeneratorToggle:
                     {
                         msgMetadata = new GeneratorToggleMsgInfoEntryMetadata();
                         break;
