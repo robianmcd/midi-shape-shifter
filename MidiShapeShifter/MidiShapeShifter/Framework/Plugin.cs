@@ -1,4 +1,6 @@
-﻿using Jacobi.Vst.Core;
+﻿using System.Diagnostics;
+
+using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
 
@@ -37,8 +39,10 @@ namespace MidiShapeShifter.Framework
             this.MssHub = new MssComponentHub();
             this.MssHub.Init();
 
-            this.vstParameters = new VstParameters(this);
-            this.vstParameters.Init(this.MssHub);
+            this.vstParameters = new VstParameters();
+            this.vstParameters.Init(this.MssHub.MssParameters, this.PluginPrograms);
+
+            this.Opened += new System.EventHandler(Plugin_Opened);
         }
 
         /// <summary>
@@ -83,7 +87,9 @@ namespace MidiShapeShifter.Framework
         {
             if (instance == null)
             {
-                return new DummyAudioHandler(this);
+                DummyAudioHandler newDummpAudioHandler = new DummyAudioHandler();
+                newDummpAudioHandler.Init(this.MssHub.HostInfoReceiver);
+                return newDummpAudioHandler;
             }
 
             return base.CreateAudioProcessor(instance); 
@@ -99,7 +105,9 @@ namespace MidiShapeShifter.Framework
         {
             if (instance == null)
             {
-                return new MidiHandler(this);
+                MidiHandler newMidiHandler = new MidiHandler();
+                newMidiHandler.Init(this.MssHub.DryMssEventReceiver, this.MssHub.WetMssEventEchoer);
+                return newMidiHandler;
             }
 
             return base.CreateMidiProcessor(instance);
@@ -143,10 +151,20 @@ namespace MidiShapeShifter.Framework
         {
             if (instance == null)
             {
-                return new PluginPrograms(this);
+                return new PluginPrograms();
             }
 
             return base.CreatePrograms(instance);
+        }
+
+
+        private void Plugin_Opened(object sender, System.EventArgs e)
+        {
+            //Anything associated with Plugin.Host must be set up in this even handler and not in the constructor 
+            //becasue Plugin.Host is null when the constructor is called.
+            Debug.Assert(this.Host != null);
+            this.MidiHandler.InitVstHost(this.Host);
+            this.vstParameters.InitHostAutomation(this.Host);
         }
     }
 }

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 
-using MidiShapeShifter.Mss.Mapping;
-using MidiShapeShifter.Mss.UI;
-
 using System.Drawing;
 using System.Windows.Forms;
 
+using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.UI;
+using MidiShapeShifter.Mss.Relays;
 
 namespace MidiShapeShifter.Mss
 {
@@ -24,14 +24,25 @@ namespace MidiShapeShifter.Mss
         [DllImport("user32.dll")]
         public static extern IntPtr SetParent(IntPtr child, IntPtr newParent);
 
-        protected MappingManager _mappingMgr;
-        public MappingManager MappingMgr { get { return this._mappingMgr; } }
+        protected SendMssEventsToHostTrigger sendEventsToHostTrigger;
+        protected DryMssEventHandler dryMssEventHandler;
+        //TODO: this is only temporarily public while the GUI is still using it directly
+        public MappingManager mappingMgr;
+        
+        protected DryMssEventRelay _dryMssEventRelay;
+        public IDryMssEventReceiver DryMssEventReceiver { get { return this._dryMssEventRelay; } }
+        public IDryMssEventEchoer DryMssEventEchoer { get { return this._dryMssEventRelay; } }
+
+        protected WetMssEventRelay _wetMssEventRelay;
+        public IWetMssEventReceiver WetMssEventReceiver { get { return this._wetMssEventRelay; } }
+        public IWetMssEventEchoer WetMssEventEchoer { get { return this._wetMssEventRelay; } }
+
+        protected HostInfoRelay _hostInfoRelay;
+        public IHostInfoReceiver HostInfoReceiver { get { return this._hostInfoRelay; } }
+        public IHostInfoEchoer HostInfoEchoer { get { return this._hostInfoRelay; } }
 
         protected MssParameters _mssParameters;
         public MssParameters MssParameters { get { return this._mssParameters; } }
-
-        protected MssMsgProcessor _mssMsgProcessor;
-        public MssMsgProcessor MssMsgProcessor { get { return this._mssMsgProcessor; } }
 
         protected PluginEditorView _pluginEditorView;
         public PluginEditorView PluginEditorView { 
@@ -42,13 +53,19 @@ namespace MidiShapeShifter.Mss
             } 
         }
 
-        protected List<MssEvent> mssEventsForHost = new List<MssEvent>();
-
         public MssComponentHub()
         {
-            _mappingMgr = new MappingManager();
+            sendEventsToHostTrigger = new SendMssEventsToHostTrigger();
+            dryMssEventHandler = new DryMssEventHandler();
+            mappingMgr = new MappingManager();
+
+            _dryMssEventRelay = new DryMssEventRelay();
+            _wetMssEventRelay = new WetMssEventRelay();
+            _hostInfoRelay = new HostInfoRelay();
+
             _mssParameters = new MssParameters();
-            _mssMsgProcessor = new MssMsgProcessor(MappingMgr);
+
+            
         }
 
         /// <summary>
@@ -57,6 +74,9 @@ namespace MidiShapeShifter.Mss
         public void Init()
         {
             _mssParameters.Init();
+
+            sendEventsToHostTrigger.Init(this.HostInfoEchoer, this.WetMssEventReceiver);
+            dryMssEventHandler.Init(this.DryMssEventEchoer, this.WetMssEventReceiver, this.mappingMgr);
         }
 
         public void OpenPluginEditor(IntPtr hWnd)
@@ -83,32 +103,9 @@ namespace MidiShapeShifter.Mss
             if (this._pluginEditorView == null)
             {
                 this._pluginEditorView = new PluginEditorView();
-                this._pluginEditorView.Init(this);
+                this._pluginEditorView.Init(this.MssParameters, this.mappingMgr, this.DryMssEventEchoer);
                 this._pluginEditorView.CreateControl();
             }
-        }
-
-        public void HandleIncomingMssEvent(MssEvent unprocessedEvent)
-        {
-            List<MssMsg> mssMessages = this.MssMsgProcessor.ProcessMssMsg(unprocessedEvent.mssMsg);
-
-            foreach(MssMsg mssMsg in mssMessages)
-            {
-                MssEvent processedEvent = new MssEvent();
-                processedEvent.mssMsg = mssMsg;
-                processedEvent.timestamp = unprocessedEvent.timestamp;
-                this.mssEventsForHost.Add(processedEvent);
-            }
-        }
-
-        public List<MssEvent> TransferMssEventsForHost()
-        {
-            List<MssEvent> eventsToTransfer = new List<MssEvent>(this.mssEventsForHost.Count);
-            eventsToTransfer.AddRange(this.mssEventsForHost);
-
-            this.mssEventsForHost.Clear();
-
-            return eventsToTransfer;
         }
     }
 }

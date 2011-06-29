@@ -48,17 +48,6 @@ namespace MidiShapeShifter.Framework
 
         public void Open(IntPtr hWnd)
         {
-            // make a list of parameters to pass to the dlg.
-            var paramList = new List<VstParameterManager>()
-                {
-                    /*_plugin.MidiHandler.processor.VariableAMgr,
-                    _plugin.MidiHandler.processor.VariableBMgr,
-                    _plugin.MidiHandler.processor.VariableCMgr,
-                    _plugin.MidiHandler.processor.VariableDMgr*/
-                };
-
-            //_view.SafeInstance.InitializeVariableParameters(paramList);
-
             _plugin.MssHub.OpenPluginEditor(hWnd);
         }
 

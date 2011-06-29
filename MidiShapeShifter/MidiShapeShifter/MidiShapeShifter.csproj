@@ -69,7 +69,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CSharpUtil\TimeUtil.cs" />
     <Compile Include="CSharpUtil\TwoWayDictionary.cs" />
     <Compile Include="Framework\VstParameters.cs" />
     <Compile Include="Mss\Generator\GeneratorDlg.cs">
@@ -125,6 +124,17 @@
     <Compile Include="Mss\Mapping\MssMsgInfoTypes\MssMsgInfo.cs" />
     <Compile Include="Mss\MssParameterInfo.cs" />
     <Compile Include="Mss\MssParameters.cs" />
+    <Compile Include="Mss\Relays\DryMssEventRelay.cs" />
+    <Compile Include="Mss\Relays\IDryMssEventEchoer.cs" />
+    <Compile Include="Mss\Relays\IDryMssEventReceiver.cs" />
+    <Compile Include="Mss\Relays\IHostInfoEchoer.cs" />
+    <Compile Include="Mss\Relays\IHostInfoReceiver.cs" />
+    <Compile Include="Mss\Relays\HostInfoRelay.cs" />
+    <Compile Include="Mss\Relays\IWetMssEventEchoer.cs" />
+    <Compile Include="Mss\Relays\IWetMssEventReceiver.cs" />
+    <Compile Include="Mss\Relays\WetMssEventRelay.cs" />
+    <Compile Include="Mss\SendMssEventsToHostTrigger.cs" />
+    <Compile Include="Mss\DryMssEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

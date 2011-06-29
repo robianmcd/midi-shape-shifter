@@ -8,16 +8,12 @@ namespace MidiShapeShifter.Framework
     /// </summary>
     public class PluginPrograms : VstPluginProgramsBase
     {
-        private Plugin _plugin;
-
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
         /// <param name="plugin">A reference to the plugin root object.</param>
-        public PluginPrograms(Plugin plugin)
+        public PluginPrograms()
         {
-            _plugin = plugin;
-
             ParameterCategories = new VstParameterCategoryCollection();
             ParameterInfos = new VstParameterInfoCollection();
         }

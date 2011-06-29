@@ -16,11 +16,16 @@ namespace MidiShapeShifter.Mss
     {
         protected MappingManager mappingMgr;
 
-        public MssMsgProcessor(MappingManager mappingMgr)
+        public MssMsgProcessor()
+        {
+
+        }
+
+        public void Init(MappingManager mappingMgr)
         {
             Debug.Assert(mappingMgr != null);
 
-            this.mappingMgr = mappingMgr;
+            this.mappingMgr = mappingMgr;            
         }
 
         /// <summary>

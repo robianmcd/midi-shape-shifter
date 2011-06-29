@@ -113,7 +113,10 @@ namespace MidiShapeShifter.Mss
             }
 
             paramDict[parameterId].Name = name;
-            ParameterNameChanged(parameterId, name);
+            if (ParameterNameChanged != null)
+            {
+                ParameterNameChanged(parameterId, name);
+            }
         }
 
 
@@ -140,7 +143,10 @@ namespace MidiShapeShifter.Mss
             }
 
             paramDict[parameterId].Value = value;
-            ParameterValueChanged(parameterId, value);
+            if (ParameterValueChanged != null)
+            {
+                ParameterValueChanged(parameterId, value);
+            }
         }
 
 
@@ -167,7 +173,10 @@ namespace MidiShapeShifter.Mss
             }
 
             paramDict[parameterId].MinValue = minValue;
-            ParameterMinValueChanged(parameterId, minValue);
+            if (ParameterMinValueChanged != null)
+            {
+                ParameterMinValueChanged(parameterId, minValue);
+            }
         }
 
 
@@ -194,7 +203,10 @@ namespace MidiShapeShifter.Mss
             }
 
             paramDict[parameterId].MaxValue = maxValue;
-            ParameterMaxValueChanged(parameterId, maxValue);
+            if (ParameterMaxValueChanged != null)
+            {
+                ParameterMaxValueChanged(parameterId, maxValue);
+            }
         }
     }
 }

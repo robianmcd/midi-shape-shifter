@@ -16,32 +16,38 @@ namespace MidiShapeShifter.Framework
     {
         protected const string DEFAULT_PARAMETER_CATEGORY_NAME = "Parameter";
 
-        protected Plugin plugin;
-        protected MssComponentHub mssHub;
+        protected PluginPrograms pluginPrograms;
+        protected MssParameters mssParameters;
 
         public TwoWayDictionary<MssParameterID, VstParameterManager> VstParameterManagerDict = new TwoWayDictionary<MssParameterID, VstParameterManager>();
 
-        public VstParameters(Plugin plugin)
+        public VstParameters()
         {
-            this.plugin = plugin;
-
-            this.plugin.Opened += new System.EventHandler(Plugin_Opened);
         }
 
-        public void Init(MssComponentHub mssHub)
+        public void Init(MssParameters mssParameters, PluginPrograms pluginPrograms)
         {
-            Debug.Assert(mssHub != null && mssHub.MssParameters != null);
-            this.mssHub = mssHub;
-            
+            this.mssParameters = mssParameters;
+            this.pluginPrograms = pluginPrograms;
+
             InitializeVstParams();
 
-            this.mssHub.MssParameters.ParameterValueChanged += new ParameterValueChangedEventHandler(MssParameters_ValueChanged);
-            this.mssHub.MssParameters.ParameterNameChanged += new ParameterNameChangedEventHandler(MssParameters_NameChanged);
-            this.mssHub.MssParameters.ParameterMinValueChanged += new ParameterMinValueChangedEventHandler(MssParameters_MinValueChanged);
-            this.mssHub.MssParameters.ParameterMaxValueChanged += new ParameterMaxValueChangedEventHandler(MssParameters_MaxValueChanged);
+            this.mssParameters.ParameterValueChanged += new ParameterValueChangedEventHandler(MssParameters_ValueChanged);
+            this.mssParameters.ParameterNameChanged += new ParameterNameChangedEventHandler(MssParameters_NameChanged);
+            this.mssParameters.ParameterMinValueChanged += new ParameterMinValueChangedEventHandler(MssParameters_MinValueChanged);
+            this.mssParameters.ParameterMaxValueChanged += new ParameterMaxValueChangedEventHandler(MssParameters_MaxValueChanged);
         }
 
-        public void InitializeVstParams()
+        //This cannot be done during Init() because the IVstHost is still null
+        public void InitHostAutomation(IVstHost vstHost)
+        {
+            foreach (VstParameterManager paramMgr in VstParameterManagerDict.RightKeys)
+            {
+                paramMgr.HostAutomation = vstHost.GetInstance<IVstHostAutomation>();
+            }
+        }
+
+        protected void InitializeVstParams()
         {
             //itterate over each MssParameterID
             foreach(MssParameterID paramId in MssParameterID.GetValues(typeof(MssParameterID)))
@@ -56,14 +62,14 @@ namespace MidiShapeShifter.Framework
 
         protected VstParameterInfo MssToVstParameterInfo(MssParameterID paramId)
         {
-            MssParameters mssParameters = this.mssHub.MssParameters;
+            MssParameters mssParameters = this.mssParameters;
 
             // all parameter definitions are added to a central list.
-            VstParameterInfoCollection parameterInfos = this.plugin.PluginPrograms.ParameterInfos;
+            VstParameterInfoCollection parameterInfos = this.pluginPrograms.ParameterInfos;
 
             // retrieve the category for all variable parameters.
             VstParameterCategory paramCategory =
-                this.plugin.PluginPrograms.GetParameterCategory(DEFAULT_PARAMETER_CATEGORY_NAME);
+                this.pluginPrograms.GetParameterCategory(DEFAULT_PARAMETER_CATEGORY_NAME);
 
             // Variable parameter
             VstParameterInfo paramInfo = new VstParameterInfo();
@@ -86,18 +92,6 @@ namespace MidiShapeShifter.Framework
             return paramInfo;
         }
 
-        private void Plugin_Opened(object sender, System.EventArgs e)
-        {
-            //Host automation must be set up in this even handler and not in the constructor becasue plugin.Host is 
-            //null when the constructor is called.
-            foreach (VstParameterManager paramMgr in VstParameterManagerDict.RightKeys)
-            {
-                paramMgr.HostAutomation = this.plugin.Host.GetInstance<IVstHostAutomation>();
-            }
-
-            this.plugin.Opened -= new System.EventHandler(Plugin_Opened);
-        }
-
         private void VstParameterManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             VstParameterManager paramMgr = (VstParameterManager)sender;
@@ -114,7 +108,7 @@ namespace MidiShapeShifter.Framework
             MssParameterID paramID;
             VstParameterManagerDict.TryGetLeftByRight(out paramID, changedParam.Info.ParameterManager);
 
-            this.mssHub.MssParameters.SetParameterValue(paramID, changedParam.Value);
+            this.mssParameters.SetParameterValue(paramID, changedParam.Value);
         }
 
         private void MssParameters_NameChanged(MssParameterID paramId, string name)

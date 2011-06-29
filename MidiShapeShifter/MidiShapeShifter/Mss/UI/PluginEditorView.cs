@@ -5,10 +5,11 @@ using System.Diagnostics;
 using System.Drawing;
 
 using MidiShapeShifter.CSharpUtil;
-using MidiShapeShifter.Mss;
 using MidiShapeShifter.Framework;
+using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.Generator;
+using MidiShapeShifter.Mss.Relays;
 
 using LBSoft.IndustrialCtrls.Knobs;
 
@@ -37,7 +38,10 @@ namespace MidiShapeShifter.Mss.UI
 
         protected MssEvaluator evaluator;
 
-        protected MssComponentHub mssHub;
+        //Injected dependencies
+        protected MssParameters mssParameters;
+        protected MappingManager mappingMgr;
+        protected IDryMssEventEchoer dryMssEventEchoer;
 
         public MappingEntry ActiveMapping = null;
 
@@ -58,14 +62,16 @@ namespace MidiShapeShifter.Mss.UI
             }
         }
 
-        public void Init(MssComponentHub mssHub)
+        public void Init(MssParameters mssParameters, MappingManager mappingMgr, IDryMssEventEchoer dryMssEventEchoer)
         {
-            this.mssHub = mssHub;
-            
-            this.mssHub.MssParameters.ParameterValueChanged += new ParameterValueChangedEventHandler(MssParameters_ValueChanged);
-            this.mssHub.MssParameters.ParameterNameChanged += new ParameterNameChangedEventHandler(MssParameters_NameChanged);
-            this.mssHub.MssParameters.ParameterMinValueChanged += new ParameterMinValueChangedEventHandler(MssParameters_MinValueChanged);
-            this.mssHub.MssParameters.ParameterMaxValueChanged += new ParameterMaxValueChangedEventHandler(MssParameters_MaxValueChanged);
+            this.mssParameters = mssParameters;
+            this.mappingMgr = mappingMgr;
+            this.dryMssEventEchoer = dryMssEventEchoer;
+
+            this.mssParameters.ParameterValueChanged += new ParameterValueChangedEventHandler(MssParameters_ValueChanged);
+            this.mssParameters.ParameterNameChanged += new ParameterNameChangedEventHandler(MssParameters_NameChanged);
+            this.mssParameters.ParameterMinValueChanged += new ParameterMinValueChangedEventHandler(MssParameters_MinValueChanged);
+            this.mssParameters.ParameterMaxValueChanged += new ParameterMaxValueChangedEventHandler(MssParameters_MaxValueChanged);
 
         }
 
@@ -113,7 +119,7 @@ namespace MidiShapeShifter.Mss.UI
         {
             this.mappingListView.Items.Clear();
 
-            MappingManager mappingMgr = this.mssHub.MappingMgr;
+            MappingManager mappingMgr = this.mappingMgr;
 
             for (int i = 0; i < mappingMgr.GetNumEntries(); i++)
             {
@@ -136,9 +142,9 @@ namespace MidiShapeShifter.Mss.UI
             }
             
 
-            if (this.mssHub.MssParameters.GetParameterValue(paramId) != knob.Value)
+            if (this.mssParameters.GetParameterValue(paramId) != knob.Value)
             {
-                this.mssHub.MssParameters.SetParameterValue(paramId, knob.Value);
+                this.mssParameters.SetParameterValue(paramId, knob.Value);
             }
         }
         
@@ -184,7 +190,7 @@ namespace MidiShapeShifter.Mss.UI
             if (mapDlg.ShowDialog(this) == DialogResult.OK)
             {
                 ActiveMapping = mapDlg.mappingEntry;
-                MappingManager mappingMgr = this.mssHub.MappingMgr;
+                MappingManager mappingMgr = this.mappingMgr;
 
                 mappingMgr.AddMappingEntry(mapDlg.mappingEntry);
                 int newestEntryIndex = mappingMgr.GetNumEntries() - 1;
@@ -217,7 +223,7 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
             
-            ActiveMapping = this.mssHub.MappingMgr.GetMappingEntry(mappingListView.SelectedItems[0].Index);
+            ActiveMapping = this.mappingMgr.GetMappingEntry(mappingListView.SelectedItems[0].Index);
             ActiveMappingChanged();
             
         }

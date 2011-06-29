@@ -3,6 +3,7 @@ using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
 
 using MidiShapeShifter.CSharpUtil;
+using MidiShapeShifter.Mss.Relays;
 
 namespace MidiShapeShifter.Framework
 {
@@ -16,15 +17,19 @@ namespace MidiShapeShifter.Framework
         private static readonly int AudioOutputCount = 2;
         private static readonly int InitialTailSize = 0;
 
-        private Plugin _plugin;
+        protected IHostInfoReceiver hostInfoReceiver;
 
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public DummyAudioHandler(Plugin plugin)
+        public DummyAudioHandler()
             : base(AudioInputCount, AudioOutputCount, InitialTailSize)
         {
-            _plugin = plugin;
+        }
+
+        public void Init(IHostInfoReceiver hostInfoReceiver)
+        {
+            this.hostInfoReceiver = hostInfoReceiver;
         }
 
         /// <summary>
@@ -34,12 +39,12 @@ namespace MidiShapeShifter.Framework
         /// <param name="outChannels">Never null.</param>
         public override void Process(VstAudioBuffer[] inChannels, VstAudioBuffer[] outChannels)
         {
-            double cycleEndTimestampInMs = TimeUtil.GetTimestampInMs();
+            long cycleEndTimestampInTicks = System.DateTime.Now.Ticks;
+
+            this.hostInfoReceiver.ReceiveProcessingCycleEndTimestampInTicks(cycleEndTimestampInTicks);
 
             // calling the base class transfers input samples to the output channels unchanged (bypass).
             base.Process(inChannels, outChannels);
-
-            _plugin.MidiHandler.OnAudioProcessingCycleEnd(cycleEndTimestampInMs);
         }
     }
 }

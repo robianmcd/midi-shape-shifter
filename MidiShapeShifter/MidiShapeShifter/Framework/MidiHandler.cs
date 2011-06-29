@@ -7,6 +7,7 @@ using Jacobi.Vst.Framework.Plugin;
 
 using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss;
+using MidiShapeShifter.Mss.Relays;
 
 namespace MidiShapeShifter.Framework
 {
@@ -15,14 +16,29 @@ namespace MidiShapeShifter.Framework
     /// </summary>
     public class MidiHandler : IVstMidiProcessor, IVstPluginMidiSource
     {
-        protected Plugin _plugin;
-
         protected VstEventCollection outEvents = new VstEventCollection();
 
+        protected IDryMssEventReceiver dryMssEventReceiver;
+        protected IWetMssEventEchoer wetMssEventEchoer;
 
-        public MidiHandler(Plugin plugin)
+        protected IVstHost vstHost;
+
+        public MidiHandler()
         {
-            _plugin = plugin;
+        }
+
+        public void Init(IDryMssEventReceiver dryMssEventReceiver, IWetMssEventEchoer wetMssEventEchoer)
+        {
+            this.dryMssEventReceiver = dryMssEventReceiver;
+
+            this.wetMssEventEchoer = wetMssEventEchoer;
+            this.wetMssEventEchoer.EchoingWetMssEvents += new EchoingWetMssEventsEventHandler(IWetMssEventEchoer_EchoingWetMssEvents);
+        }
+
+        //This cannot be done during Init() because the IVstHost is still null
+        public void InitVstHost(IVstHost vstHost)
+        {
+            this.vstHost = vstHost;
         }
 
         public int ChannelCount
@@ -40,10 +56,10 @@ namespace MidiShapeShifter.Framework
         /// </remarks>
         public void Process(VstEventCollection vstEvents)
         {
-            if (vstEvents == null || vstEvents.Count == 0) return;
+            if (vstEvents == null || vstEvents.Count == 0 || this.vstHost == null) return;
 
             // a plugin must implement IVstPluginMidiSource or this call will throw an exception.
-            IVstMidiProcessor midiHost = _plugin.Host.GetInstance<IVstMidiProcessor>();
+            IVstMidiProcessor midiHost = this.vstHost.GetInstance<IVstMidiProcessor>();
 
             // always expect some hosts not to support this.
             if (midiHost != null)
@@ -63,7 +79,7 @@ namespace MidiShapeShifter.Framework
                         }
                         else 
                         {
-                            this._plugin.MssHub.HandleIncomingMssEvent(mssEvent);
+                            this.dryMssEventReceiver.ReceiveDryMssEvent(mssEvent);
                         }
                     }
                     else
@@ -77,7 +93,7 @@ namespace MidiShapeShifter.Framework
 
         /*public void ProcessCurrentEvents()
         {
-            IVstHostSequencer midiHostSeq = _plugin.Host.GetInstance<IVstHostSequencer>();
+            IVstHostSequencer midiHostSeq = this.vstHost.GetInstance<IVstHostSequencer>();
             VstTimeInfoFlags defaultVstTimeFlags = VstTimeInfoFlags.AutomationReading |
                                                    VstTimeInfoFlags.AutomationWriting |
                                                    VstTimeInfoFlags.BarStartPositionValid |
@@ -96,20 +112,22 @@ namespace MidiShapeShifter.Framework
             VstTimeInfo timeInfo = midiHostSeq.GetTime(defaultVstTimeFlags);            
         }*/
 
-        public void OnAudioProcessingCycleEnd(double cycleEndTimestampInMs)
-        {
+        public void IWetMssEventEchoer_EchoingWetMssEvents(List<MssEvent> mssEvents, long processingCycleEndTimeInTicks)
+        { 
+            if (this.vstHost == null) {
+                return;
+            }
+
             // a plugin must implement IVstPluginMidiSource or this call will throw an exception.
-            IVstMidiProcessor midiHost = _plugin.Host.GetInstance<IVstMidiProcessor>();
+            IVstMidiProcessor midiHost = this.vstHost.GetInstance<IVstMidiProcessor>();
 
             // always expect some hosts not to support this.
             if (midiHost != null)
             {
 
-                List<MssEvent> mssEventsForHost = this._plugin.MssHub.TransferMssEventsForHost();
-
-                foreach(MssEvent mssEvent in mssEventsForHost)
+                foreach (MssEvent mssEvent in mssEvents)
                 {
-                    VstMidiEvent midiEvent = ConvertMssEventToVstMidiEvent(mssEvent, cycleEndTimestampInMs);
+                    VstMidiEvent midiEvent = ConvertMssEventToVstMidiEvent(mssEvent, processingCycleEndTimeInTicks);
                     if (midiEvent != null)
                     {
                         this.outEvents.Add(midiEvent);
@@ -125,7 +143,8 @@ namespace MidiShapeShifter.Framework
         protected MssEvent ConvertVstMidiEventToMssEvent(VstMidiEvent midiEvent)
         {
             MssEvent mssEvent = new MssEvent();
-            mssEvent.timestamp = TimeUtil.GetTimestampInMs();
+            //TODO: calculate this
+            mssEvent.timestamp = 0;
 
             MssMsgType msgType = GetMssTypeFromMidiData(midiEvent.Data);
             mssEvent.mssMsg.Type = msgType;
