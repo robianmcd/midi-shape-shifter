@@ -5,10 +5,16 @@ using System.Text;
 
 namespace MidiShapeShifter.Mss
 {
+    /// <summary>
+    ///     Represents an MssMsg that occured at a particular time.
+    /// </summary>
     public class MssEvent
     {
         public MssMsg mssMsg;
-        public double timestamp;
+        /// <summary>
+        ///     The system time that MssMsg occured in ticks
+        /// </summary>
+        public long timestamp;
 
         public MssEvent()
         {

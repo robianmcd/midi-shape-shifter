@@ -26,17 +26,25 @@ namespace MidiShapeShifter.Mss
 
         protected SendMssEventsToHostTrigger sendEventsToHostTrigger;
         protected DryMssEventHandler dryMssEventHandler;
-        //TODO: this is only temporarily public while the GUI is still using it directly
-        public MappingManager mappingMgr;
+        protected MappingManager mappingMgr;
         
+        /// <summary>
+        ///     Passes unprocessed MssEvents from the "Framework" namespace to the "Mss" namespace.
+        /// </summary>
         protected DryMssEventRelay _dryMssEventRelay;
         public IDryMssEventReceiver DryMssEventReceiver { get { return this._dryMssEventRelay; } }
         public IDryMssEventEchoer DryMssEventEchoer { get { return this._dryMssEventRelay; } }
 
+        /// <summary>
+        ///     Passes processed MssEvents from the "Mss" namespace to the "Framework" namespace.
+        /// </summary>
         protected WetMssEventRelay _wetMssEventRelay;
         public IWetMssEventReceiver WetMssEventReceiver { get { return this._wetMssEventRelay; } }
         public IWetMssEventEchoer WetMssEventEchoer { get { return this._wetMssEventRelay; } }
 
+        /// <summary>
+        ///     Passes information about the host from the "Framework" namespace to the "Mss" namespace
+        /// </summary>
         protected HostInfoRelay _hostInfoRelay;
         public IHostInfoReceiver HostInfoReceiver { get { return this._hostInfoRelay; } }
         public IHostInfoEchoer HostInfoEchoer { get { return this._hostInfoRelay; } }
@@ -79,16 +87,21 @@ namespace MidiShapeShifter.Mss
             dryMssEventHandler.Init(this.DryMssEventEchoer, this.WetMssEventReceiver, this.mappingMgr);
         }
 
+        /// <summary>
+        ///     Creates an displays the PluginEditorView.
+        /// </summary>
         public void OpenPluginEditor(IntPtr hWnd)
         {
             EnsurePluginEditorExists();
 
             SetParent(this._pluginEditorView.Handle, hWnd);
 
-            //TODO: Set knobs to correct values. populate stuff
             this._pluginEditorView.Show();
         }
 
+        /// <summary>
+        ///     Hides and disposes of the PluginEditorView.
+        /// </summary>
         public void ClosePluginEditor()
         {
             if (this._pluginEditorView != null)
@@ -98,6 +111,9 @@ namespace MidiShapeShifter.Mss
             }
         }
 
+        /// <summary>
+        ///     Creates and initializes the PluginEditorView if it does not already exist.
+        /// </summary>
         protected void EnsurePluginEditorExists()
         {
             if (this._pluginEditorView == null)

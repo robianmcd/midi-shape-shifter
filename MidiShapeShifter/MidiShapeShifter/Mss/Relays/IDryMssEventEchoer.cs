@@ -5,6 +5,9 @@ namespace MidiShapeShifter.Mss.Relays
 
     public interface IDryMssEventEchoer
     {
+        /// <summary>
+        ///     Sends an unprocessed MssEvent to all subscribers.
+        /// </summary>
         event DryMssEventRecievedEventHandler DryMssEventRecieved;
     }
 }

@@ -9,7 +9,7 @@ namespace MidiShapeShifter.Mss.Relays
 
     public interface IWetMssEventEchoer
     {
-        bool OnlyEchoOnAudioCycleEnd { get; set; }
+        bool OnlyEchoOnProcessingCycleEnd { get; set; }
 
         event EchoingWetMssEventsEventHandler EchoingWetMssEvents;
     }

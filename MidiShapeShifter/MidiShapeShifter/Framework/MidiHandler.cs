@@ -21,6 +21,9 @@ namespace MidiShapeShifter.Framework
         protected IDryMssEventReceiver dryMssEventReceiver;
         protected IWetMssEventEchoer wetMssEventEchoer;
 
+        protected const long UNINITIALIZED_CYCLE_START_TIME = -1;
+        protected long ProcessingCycleStartTime = UNINITIALIZED_CYCLE_START_TIME;
+
         protected IVstHost vstHost;
 
         public MidiHandler()
@@ -127,7 +130,7 @@ namespace MidiShapeShifter.Framework
 
                 foreach (MssEvent mssEvent in mssEvents)
                 {
-                    VstMidiEvent midiEvent = ConvertMssEventToVstMidiEvent(mssEvent, processingCycleEndTimeInTicks);
+                    VstMidiEvent midiEvent = ConvertMssEventToVstMidiEvent(mssEvent);
                     if (midiEvent != null)
                     {
                         this.outEvents.Add(midiEvent);
@@ -137,6 +140,15 @@ namespace MidiShapeShifter.Framework
                 midiHost.Process(outEvents);
                 outEvents.Clear();
             }
+
+            OnProcessingCycleEnd(processingCycleEndTimeInTicks);
+        }
+
+        //This must be called at the end of every processing cycle
+        public void OnProcessingCycleEnd(long previousProcessingCycleEndTimeInTicks)
+        { 
+            //Sets the time that the next processing cycle will start
+            ProcessingCycleStartTime = previousProcessingCycleEndTimeInTicks;
         }
 
         //Can return null if there is no valid conversion
@@ -173,12 +185,12 @@ namespace MidiShapeShifter.Framework
         }
 
         //Can return null if there is no valid conversion
-        protected VstMidiEvent ConvertMssEventToVstMidiEvent(MssEvent mssEvent, double cycleEndTimestampInMs)
+        protected VstMidiEvent ConvertMssEventToVstMidiEvent(MssEvent mssEvent)
         {
-            Debug.Assert(mssEvent.timestamp <= cycleEndTimestampInMs);
+            Debug.Assert(mssEvent.timestamp >= ProcessingCycleStartTime);
 
             //TODO: convert ms into samples
-            int deltaFrames = (int)(cycleEndTimestampInMs - mssEvent.timestamp);
+            int deltaFrames = 0;
 
             byte[] midiData = new byte[3];
 
