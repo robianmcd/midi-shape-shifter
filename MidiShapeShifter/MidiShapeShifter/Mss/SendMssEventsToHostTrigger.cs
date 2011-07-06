@@ -13,17 +13,17 @@ namespace MidiShapeShifter.Mss
     /// </summary>
     public class SendMssEventsToHostTrigger
     {
-        protected IWetMssEventReceiver wetMssEventReceiver;
+        protected IWetMssEventInputPort wetMssEventInputPort;
 
-        public void Init(IHostInfoEchoer hostInfoEchoer, IWetMssEventReceiver wetMssEventReceiver)
+        public void Init(IHostInfoOutputPort hostInfoOutputPort, IWetMssEventInputPort wetMssEventInputPort)
         { 
-            hostInfoEchoer.ProcessingCycleEndTimestampRecieved += new ProcessingCycleEndTimestampRecievedEventHandler(hostInfoEchoer_ProcessingCycleEndTimestampRecieved);
-            this.wetMssEventReceiver = wetMssEventReceiver;
+            hostInfoOutputPort.ProcessingCycleEndTimestampRecieved += new ProcessingCycleEndTimestampRecievedEventHandler(hostInfoOutputPort_ProcessingCycleEndTimestampRecieved);
+            this.wetMssEventInputPort = wetMssEventInputPort;
         }
 
-        protected void hostInfoEchoer_ProcessingCycleEndTimestampRecieved(long cycleEndTimestampInTicks)
+        protected void hostInfoOutputPort_ProcessingCycleEndTimestampRecieved(long cycleEndTimestampInTicks)
         {
-            this.wetMssEventReceiver.OnProcessingCycleEnd(cycleEndTimestampInTicks);
+            this.wetMssEventInputPort.OnProcessingCycleEnd(cycleEndTimestampInTicks);
         }
     }
 }

@@ -17,7 +17,10 @@ namespace MidiShapeShifter.Framework
         private static readonly int AudioOutputCount = 2;
         private static readonly int InitialTailSize = 0;
 
-        protected IHostInfoReceiver hostInfoReceiver;
+        protected IHostInfoInputPort hostInfoInputPort;
+        protected VstTimeInfoTransmitter timeInfoTransmitter;
+
+        protected IVstHost vstHost;
 
         /// <summary>
         /// Default constructor.
@@ -25,11 +28,19 @@ namespace MidiShapeShifter.Framework
         public DummyAudioHandler()
             : base(AudioInputCount, AudioOutputCount, InitialTailSize)
         {
+            timeInfoTransmitter = new VstTimeInfoTransmitter();
         }
 
-        public void Init(IHostInfoReceiver hostInfoReceiver)
+        public void Init(IHostInfoInputPort hostInfoInputPort)
         {
-            this.hostInfoReceiver = hostInfoReceiver;
+            timeInfoTransmitter.Init(hostInfoInputPort);
+            this.hostInfoInputPort = hostInfoInputPort;
+        }
+
+        //This cannot be done during Init() because the IVstHost is still null
+        public void InitVstHost(IVstHost vstHost)
+        {
+            this.vstHost = vstHost;
         }
 
         /// <summary>
@@ -41,7 +52,11 @@ namespace MidiShapeShifter.Framework
         {
             long cycleEndTimestampInTicks = System.DateTime.Now.Ticks;
 
-            this.hostInfoReceiver.ReceiveProcessingCycleEndTimestampInTicks(cycleEndTimestampInTicks);
+            IVstHostSequencer midiHostSeq = this.vstHost.GetInstance<IVstHostSequencer>();
+            VstTimeInfo timeInfo = midiHostSeq.GetTime(VstTimeInfoTransmitter.RequiredTimeInfoFlags);
+
+            this.timeInfoTransmitter.TransmitTimeInfoToRelay(timeInfo);
+            this.hostInfoInputPort.ReceiveProcessingCycleEndTimestampInTicks(cycleEndTimestampInTicks);
 
             // calling the base class transfers input samples to the output channels unchanged (bypass).
             base.Process(inChannels, outChannels);

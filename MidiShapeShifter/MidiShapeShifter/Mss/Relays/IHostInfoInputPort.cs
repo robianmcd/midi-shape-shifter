@@ -5,8 +5,9 @@ using System.Text;
 
 namespace MidiShapeShifter.Mss.Relays
 {
-    public interface IHostInfoReceiver
+    public interface IHostInfoInputPort
     {
         void ReceiveProcessingCycleEndTimestampInTicks(long cycleEndTimeStampInTicks);
+        void ReceiveSampleRate(double sampleRate);
     }
 }

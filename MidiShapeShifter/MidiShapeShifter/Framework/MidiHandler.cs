@@ -18,8 +18,9 @@ namespace MidiShapeShifter.Framework
     {
         protected VstEventCollection outEvents = new VstEventCollection();
 
-        protected IDryMssEventReceiver dryMssEventReceiver;
-        protected IWetMssEventEchoer wetMssEventEchoer;
+        protected IDryMssEventInputPort dryMssEventInputPort;
+        protected IWetMssEventOutputPort wetMssEventOutputPort;
+        protected IHostInfoOutputPort hostInfoOutputPort;
 
         protected const long UNINITIALIZED_CYCLE_START_TIME = -1;
         protected long ProcessingCycleStartTime = UNINITIALIZED_CYCLE_START_TIME;
@@ -30,12 +31,14 @@ namespace MidiShapeShifter.Framework
         {
         }
 
-        public void Init(IDryMssEventReceiver dryMssEventReceiver, IWetMssEventEchoer wetMssEventEchoer)
+        public void Init(IDryMssEventInputPort dryMssEventInputPort, IWetMssEventOutputPort wetMssEventOutputPort, IHostInfoOutputPort hostInfoOutputPort)
         {
-            this.dryMssEventReceiver = dryMssEventReceiver;
+            this.dryMssEventInputPort = dryMssEventInputPort;
 
-            this.wetMssEventEchoer = wetMssEventEchoer;
-            this.wetMssEventEchoer.EchoingWetMssEvents += new EchoingWetMssEventsEventHandler(IWetMssEventEchoer_EchoingWetMssEvents);
+            this.wetMssEventOutputPort = wetMssEventOutputPort;
+            this.wetMssEventOutputPort.SendingWetMssEvents += new SendingWetMssEventsEventHandler(IWetMssEventOutputPort_SendingWetMssEvents);
+
+            this.hostInfoOutputPort = hostInfoOutputPort;
         }
 
         //This cannot be done during Init() because the IVstHost is still null
@@ -82,7 +85,7 @@ namespace MidiShapeShifter.Framework
                         }
                         else 
                         {
-                            this.dryMssEventReceiver.ReceiveDryMssEvent(mssEvent);
+                            this.dryMssEventInputPort.ReceiveDryMssEvent(mssEvent);
                         }
                     }
                     else
@@ -115,7 +118,7 @@ namespace MidiShapeShifter.Framework
             VstTimeInfo timeInfo = midiHostSeq.GetTime(defaultVstTimeFlags);            
         }*/
 
-        public void IWetMssEventEchoer_EchoingWetMssEvents(List<MssEvent> mssEvents, long processingCycleEndTimeInTicks)
+        public void IWetMssEventOutputPort_SendingWetMssEvents(List<MssEvent> mssEvents, long processingCycleEndTimeInTicks)
         { 
             if (this.vstHost == null) {
                 return;
@@ -155,8 +158,18 @@ namespace MidiShapeShifter.Framework
         protected MssEvent ConvertVstMidiEventToMssEvent(VstMidiEvent midiEvent)
         {
             MssEvent mssEvent = new MssEvent();
+
             //TODO: calculate this
-            mssEvent.timestamp = 0;
+            if (this.ProcessingCycleStartTime == UNINITIALIZED_CYCLE_START_TIME)
+            {
+                mssEvent.timestamp = System.DateTime.Now.Ticks;
+            }
+            else
+            {
+                Debug.Assert(this.hostInfoOutputPort.SampleRateIsInitialized == true);
+                long ticksOffset = ConvertSamplesToTicks(midiEvent.DeltaFrames, this.hostInfoOutputPort.SampleRate);
+                mssEvent.timestamp = this.ProcessingCycleStartTime + ticksOffset;
+            }
 
             MssMsgType msgType = GetMssTypeFromMidiData(midiEvent.Data);
             mssEvent.mssMsg.Type = msgType;
@@ -187,10 +200,12 @@ namespace MidiShapeShifter.Framework
         //Can return null if there is no valid conversion
         protected VstMidiEvent ConvertMssEventToVstMidiEvent(MssEvent mssEvent)
         {
-            Debug.Assert(mssEvent.timestamp >= ProcessingCycleStartTime);
+            Debug.Assert(mssEvent.timestamp >= this.ProcessingCycleStartTime);
 
-            //TODO: convert ms into samples
-            int deltaFrames = 0;
+            //Calculate delta frames
+            long ticksElapsed = mssEvent.timestamp - this.ProcessingCycleStartTime;
+            Debug.Assert(this.hostInfoOutputPort.SampleRateIsInitialized == true);
+            int deltaFrames = ConvertTicksToSamples(ticksElapsed, this.hostInfoOutputPort.SampleRate);
 
             byte[] midiData = new byte[3];
 
@@ -216,6 +231,20 @@ namespace MidiShapeShifter.Framework
             VstMidiEvent midiEvent = new VstMidiEvent(deltaFrames, 0, 0, midiData, 0, 0);
 
             return midiEvent;
+        }
+
+        protected int ConvertTicksToSamples(long ticks, double sampleRate)
+        {
+            double samplesPerTick = sampleRate / (double)System.TimeSpan.TicksPerSecond;
+
+            return (int)System.Math.Round(ticks * samplesPerTick);
+        }
+
+        protected long ConvertSamplesToTicks(int samples, double sampleRate)
+        {
+            double ticksPerSample = (double)System.TimeSpan.TicksPerSecond / sampleRate;
+
+            return (long)System.Math.Round(samples * ticksPerSample);
         }
 
         protected MssMsgType GetMssTypeFromMidiData(byte[] midiData)

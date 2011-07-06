@@ -1,7 +1,7 @@
 ﻿using System;
 namespace MidiShapeShifter.Mss.Relays
 {
-    public interface IDryMssEventReceiver
+    public interface IDryMssEventInputPort
     {
         void ReceiveDryMssEvent(MssEvent mssEvent);
     }

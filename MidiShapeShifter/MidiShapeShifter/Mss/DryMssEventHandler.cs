@@ -22,7 +22,7 @@ namespace MidiShapeShifter.Mss
         /// <summary>
         ///     Receives MssEvents once they have been processed
         /// </summary>
-        protected IWetMssEventReceiver wetMssEventReceiver;
+        protected IWetMssEventInputPort wetMssEventInputPort;
 
         public DryMssEventHandler()
         {
@@ -33,23 +33,23 @@ namespace MidiShapeShifter.Mss
         ///     Initializes this DryMssEventHandler. Other methods in this class should not be called beofre calling 
         ///     Init().
         /// </summary>
-        /// <param name="dryMssEventEchoer">Sends unprocessed MssEvents from the host.</param>
-        /// <param name="wetMssEventReceiver">Receives processed MssEvents to be sent back to the host</param>
+        /// <param name="dryMssEventOutputPort">Sends unprocessed MssEvents from the host.</param>
+        /// <param name="wetMssEventInputPort">Receives processed MssEvents to be sent back to the host</param>
         /// <param name="mappingMgr">The MappingManager that will be used by mssMsgProcessor</param>
-        public void Init(IDryMssEventEchoer dryMssEventEchoer, IWetMssEventReceiver wetMssEventReceiver, MappingManager mappingMgr)
+        public void Init(IDryMssEventOutputPort dryMssEventOutputPort, IWetMssEventInputPort wetMssEventInputPort, MappingManager mappingMgr)
         {
             this.mssMsgProcessor.Init(mappingMgr);
 
-            this.wetMssEventReceiver = wetMssEventReceiver;
+            this.wetMssEventInputPort = wetMssEventInputPort;
 
-            dryMssEventEchoer.DryMssEventRecieved += new DryMssEventRecievedEventHandler(dryMssEventEchoer_DryMssEventRecieved);
+            dryMssEventOutputPort.DryMssEventRecieved += new DryMssEventRecievedEventHandler(dryMssEventOutputPort_DryMssEventRecieved);
         }
 
         /// <summary>
         ///     Event handler for MssEvents coming
         /// </summary>
         /// <param name="dryMssEvent"></param>
-        protected void dryMssEventEchoer_DryMssEventRecieved(MssEvent dryMssEvent)
+        protected void dryMssEventOutputPort_DryMssEventRecieved(MssEvent dryMssEvent)
         {
             //Process in incoming MssEvent
             List<MssMsg> mssMessages = this.mssMsgProcessor.ProcessMssMsg(dryMssEvent.mssMsg);
@@ -65,7 +65,7 @@ namespace MidiShapeShifter.Mss
             }
 
             //Send the processed MssEvents to the WetMssEventRelay
-            this.wetMssEventReceiver.ReceiveWetMssEventList(wetEventList);
+            this.wetMssEventInputPort.ReceiveWetMssEventList(wetEventList);
         }
     }
 }

@@ -41,7 +41,7 @@ namespace MidiShapeShifter.Mss.UI
         //Injected dependencies
         protected MssParameters mssParameters;
         protected MappingManager mappingMgr;
-        protected IDryMssEventEchoer dryMssEventEchoer;
+        protected IDryMssEventOutputPort dryMssEventOutputPort;
 
         public MappingEntry ActiveMapping = null;
 
@@ -62,11 +62,11 @@ namespace MidiShapeShifter.Mss.UI
             }
         }
 
-        public void Init(MssParameters mssParameters, MappingManager mappingMgr, IDryMssEventEchoer dryMssEventEchoer)
+        public void Init(MssParameters mssParameters, MappingManager mappingMgr, IDryMssEventOutputPort dryMssEventOutputPort)
         {
             this.mssParameters = mssParameters;
             this.mappingMgr = mappingMgr;
-            this.dryMssEventEchoer = dryMssEventEchoer;
+            this.dryMssEventOutputPort = dryMssEventOutputPort;
 
             this.mssParameters.ParameterValueChanged += new ParameterValueChangedEventHandler(MssParameters_ValueChanged);
             this.mssParameters.ParameterNameChanged += new ParameterNameChangedEventHandler(MssParameters_NameChanged);

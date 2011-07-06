@@ -88,7 +88,7 @@ namespace MidiShapeShifter.Framework
             if (instance == null)
             {
                 DummyAudioHandler newDummpAudioHandler = new DummyAudioHandler();
-                newDummpAudioHandler.Init(this.MssHub.HostInfoReceiver);
+                newDummpAudioHandler.Init(this.MssHub.HostInfoInputPort);
                 return newDummpAudioHandler;
             }
 
@@ -106,7 +106,7 @@ namespace MidiShapeShifter.Framework
             if (instance == null)
             {
                 MidiHandler newMidiHandler = new MidiHandler();
-                newMidiHandler.Init(this.MssHub.DryMssEventReceiver, this.MssHub.WetMssEventEchoer);
+                newMidiHandler.Init(this.MssHub.DryMssEventInputPort, this.MssHub.WetMssEventOutputPort, this.MssHub.HostInfoOutputPort);
                 return newMidiHandler;
             }
 
@@ -164,6 +164,7 @@ namespace MidiShapeShifter.Framework
             //becasue Plugin.Host is null when the constructor is called.
             Debug.Assert(this.Host != null);
             this.MidiHandler.InitVstHost(this.Host);
+            this.AudioHandler.InitVstHost(this.Host);
             this.vstParameters.InitHostAutomation(this.Host);
         }
     }

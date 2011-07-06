@@ -10,13 +10,13 @@ namespace MidiShapeShifter.Mss.Relays
     /// </summary>
     /// <remarks>
     ///     This class is used to pass processed MssEvents from the "Mss" namespace to the "Framework" namespace. 
-    ///     Depending on the value of OnlyEchoOnProcessingCycleEnd this class will either echo received events 
-    ///     immeadateally or wait for the end of the next processing cycle to echo the events.
+    ///     Depending on the value of OnlySendOnProcessingCycleEnd this class will either send received events 
+    ///     immeadateally or wait for the end of the next processing cycle to send the events.
     /// </remarks>
-    public class WetMssEventRelay : IWetMssEventReceiver, IWetMssEventEchoer
+    public class WetMssEventRelay : IWetMssEventInputPort, IWetMssEventOutputPort
     {
         protected List<MssEvent> mssEventBuffer = new List<MssEvent>();
-        protected bool _onlyEchoOnProcessingCycleEnd = true;
+        protected bool _onlySendOnProcessingCycleEnd = true;
 
         /// <summary>
         ///     Moves the content of mssEventBuffer into a new list.
@@ -34,18 +34,18 @@ namespace MidiShapeShifter.Mss.Relays
 
 
         /// <summary>
-        ///     Depermines wheather events are echoed immeatateally after they are received or after the end of the 
+        ///     Depermines wheather events are sent immeatateally after they are received or after the end of the 
         ///     next processing cycle.
         /// </summary>
-        public bool OnlyEchoOnProcessingCycleEnd
+        public bool OnlySendOnProcessingCycleEnd
         {
             get
             {
-                return this._onlyEchoOnProcessingCycleEnd;
+                return this._onlySendOnProcessingCycleEnd;
             }
             set
             {
-                this._onlyEchoOnProcessingCycleEnd = value;
+                this._onlySendOnProcessingCycleEnd = value;
             }
         }
 
@@ -54,21 +54,21 @@ namespace MidiShapeShifter.Mss.Relays
             this.mssEventBuffer.AddRange(mssEventList);
 
 
-            if (this.OnlyEchoOnProcessingCycleEnd == false && EchoingWetMssEvents != null)
+            if (this.OnlySendOnProcessingCycleEnd == false && SendingWetMssEvents != null)
             {
-                EchoingWetMssEvents(transferMssEventBufferContentToNewList(), 0);
+                SendingWetMssEvents(transferMssEventBufferContentToNewList(), 0);
             }
         }
 
         
 
-        public event EchoingWetMssEventsEventHandler EchoingWetMssEvents;
+        public event SendingWetMssEventsEventHandler SendingWetMssEvents;
 
         public void OnProcessingCycleEnd(long cycleEndTimeInTicks)
         {
-            if (this.OnlyEchoOnProcessingCycleEnd == true && EchoingWetMssEvents != null)
+            if (this.OnlySendOnProcessingCycleEnd == true && SendingWetMssEvents != null)
             {
-                EchoingWetMssEvents(transferMssEventBufferContentToNewList(), cycleEndTimeInTicks);
+                SendingWetMssEvents(transferMssEventBufferContentToNewList(), cycleEndTimeInTicks);
             }
         }
     }

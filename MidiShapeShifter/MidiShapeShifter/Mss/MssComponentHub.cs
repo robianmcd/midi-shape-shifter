@@ -32,22 +32,22 @@ namespace MidiShapeShifter.Mss
         ///     Passes unprocessed MssEvents from the "Framework" namespace to the "Mss" namespace.
         /// </summary>
         protected DryMssEventRelay _dryMssEventRelay;
-        public IDryMssEventReceiver DryMssEventReceiver { get { return this._dryMssEventRelay; } }
-        public IDryMssEventEchoer DryMssEventEchoer { get { return this._dryMssEventRelay; } }
+        public IDryMssEventInputPort DryMssEventInputPort { get { return this._dryMssEventRelay; } }
+        public IDryMssEventOutputPort DryMssEventOutputPort { get { return this._dryMssEventRelay; } }
 
         /// <summary>
         ///     Passes processed MssEvents from the "Mss" namespace to the "Framework" namespace.
         /// </summary>
         protected WetMssEventRelay _wetMssEventRelay;
-        public IWetMssEventReceiver WetMssEventReceiver { get { return this._wetMssEventRelay; } }
-        public IWetMssEventEchoer WetMssEventEchoer { get { return this._wetMssEventRelay; } }
+        public IWetMssEventInputPort WetMssEventInputPort { get { return this._wetMssEventRelay; } }
+        public IWetMssEventOutputPort WetMssEventOutputPort { get { return this._wetMssEventRelay; } }
 
         /// <summary>
         ///     Passes information about the host from the "Framework" namespace to the "Mss" namespace
         /// </summary>
         protected HostInfoRelay _hostInfoRelay;
-        public IHostInfoReceiver HostInfoReceiver { get { return this._hostInfoRelay; } }
-        public IHostInfoEchoer HostInfoEchoer { get { return this._hostInfoRelay; } }
+        public IHostInfoInputPort HostInfoInputPort { get { return this._hostInfoRelay; } }
+        public IHostInfoOutputPort HostInfoOutputPort { get { return this._hostInfoRelay; } }
 
         protected MssParameters _mssParameters;
         public MssParameters MssParameters { get { return this._mssParameters; } }
@@ -83,8 +83,8 @@ namespace MidiShapeShifter.Mss
         {
             _mssParameters.Init();
 
-            sendEventsToHostTrigger.Init(this.HostInfoEchoer, this.WetMssEventReceiver);
-            dryMssEventHandler.Init(this.DryMssEventEchoer, this.WetMssEventReceiver, this.mappingMgr);
+            sendEventsToHostTrigger.Init(this.HostInfoOutputPort, this.WetMssEventInputPort);
+            dryMssEventHandler.Init(this.DryMssEventOutputPort, this.WetMssEventInputPort, this.mappingMgr);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace MidiShapeShifter.Mss
             if (this._pluginEditorView == null)
             {
                 this._pluginEditorView = new PluginEditorView();
-                this._pluginEditorView.Init(this.MssParameters, this.mappingMgr, this.DryMssEventEchoer);
+                this._pluginEditorView.Init(this.MssParameters, this.mappingMgr, this.DryMssEventOutputPort);
                 this._pluginEditorView.CreateControl();
             }
         }
