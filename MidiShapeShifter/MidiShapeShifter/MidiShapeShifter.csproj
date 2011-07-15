@@ -72,6 +72,7 @@
     <Compile Include="CSharpUtil\TwoWayDictionary.cs" />
     <Compile Include="Framework\VstParameters.cs" />
     <Compile Include="Framework\VstTimeInfoTransmitter.cs" />
+    <Compile Include="Midi\MidiUtil.cs" />
     <Compile Include="Mss\Generator\GeneratorDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,36 +81,38 @@
     </Compile>
     <Compile Include="Mss\ICurveShapeInfoContainer.cs" />
     <Compile Include="Mss\CurveShapeInfo.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\ChanAftertouchMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\Factory_MssMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\PolyAftertouchMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\CCMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\ChanAftertouchMsgRangeEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\Factory_MssMsgRangeEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\PolyAftertouchMsgRangeEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\CCMsgRangeEntryMetadata.cs" />
     <Compile Include="Framework\DummyAudioHandler.cs" />
     <Compile Include="Mss\Mapping\EntryFieldInterpretingUtils.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\GeneratorToggleMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\GeneratorMsgInfoEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\GeneratorToggleMsgRangeEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\GeneratorMsgRangeEntryMetadata.cs" />
     <Compile Include="Mss\Mapping\MappingEntry.cs" />
     <Compile Include="Mss\Mapping\MappingManager.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\NoteOffMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\NoteOnMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\PitchBendMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoTypes\ChanAftertouchMsgInfo.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoTypes\Factory_MssMsgInfo.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoTypes\PolyAftertouchMsgInfo.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoTypes\CCMsgInfo.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoTypes\GeneratorMsgInfo.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoTypes\GeneratorToggleMsgInfo.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoTypes\MidiMsgInfo.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\MidiMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoEntryMetadataTypes\MssMsgInfoEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoTypes\NoteOffMsgInfo.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoTypes\NoteOnMsgInfo.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoTypes\PitchBendMsgInfo.cs" />
+    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\NoteOffMsgRangeEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\NoteOnMsgRangeEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\PitchBendMsgRangeEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\MidiMsgRangeEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\MssMsgRangeEntryMetadata.cs" />
     <Compile Include="Mss\MssComponentHub.cs" />
     <Compile Include="Mss\MssEvaluator.cs" />
     <Compile Include="Mss\MssEvent.cs" />
     <Compile Include="Mss\MssMsg.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\CCMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\ChanAftertouchMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\Factory_MssMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\GeneratorMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\GeneratorToggleMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\MidiMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\MssMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\NoteOffMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\NoteOnMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\PitchBendMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\PolyAftertouchMsgInfo.cs" />
     <Compile Include="Mss\MssMsgProcessor.cs" />
+    <Compile Include="Mss\MssMsgRange.cs" />
     <Compile Include="Mss\MssMsgUtil.cs" />
     <Compile Include="Mss\Mapping\MappingDlg.cs">
       <SubType>Form</SubType>
@@ -122,7 +125,6 @@
     <Compile Include="Framework\PluginCommandStub.cs" />
     <Compile Include="Framework\PluginEditor.cs" />
     <Compile Include="Framework\PluginPrograms.cs" />
-    <Compile Include="Mss\Mapping\MssMsgInfoTypes\MssMsgInfo.cs" />
     <Compile Include="Mss\MssParameterInfo.cs" />
     <Compile Include="Mss\MssParameters.cs" />
     <Compile Include="Mss\Relays\DryMssEventRelay.cs" />

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
-using MidiShapeShifter.Mss.Mapping.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -12,8 +11,8 @@ namespace MidiShapeShifter.Mss.Mapping
 
     /// <summary>
     ///     A MappingEntry stores all information associated with a mapping. This information can be broken down into:
-    ///     1. Information about which MSS messages will be accepted for input by the mapping (eg. InMssMsgInfo)
-    ///     2. Information about how to modify incomeing MSS messages. OnMssMsgInfo is used to map the incoming MSS 
+    ///     1. Information about which MSS messages will be accepted for input by the mapping (eg. InMssMsgRange)
+    ///     2. Information about how to modify incomeing MSS messages. OnMssMsgRange is used to map the incoming MSS 
     ///         message's type, data1, and data2. The equation is used to map the incoming MSS message's data3.
     /// </summary>
     public class MappingEntry : ICurveShapeInfoContainer
@@ -22,13 +21,13 @@ namespace MidiShapeShifter.Mss.Mapping
         ///     Specifies which MSS messages will be accepted for input as well as additional information about the 
         ///     input type
         /// </summary>
-        public MssMsgInfo InMssMsgInfo;
+        public MssMsgRange InMssMsgRange;
 
         /// <summary>
         ///     Specifies the range of messages that can be output as well as additional information about the output 
         ///     type.
         /// </summary>
-        public MssMsgInfo OutMssMsgInfo;
+        public MssMsgRange OutMssMsgRange;
 
         /// <summary>
         ///     If there are multiple mapping entries with overlapping input ranges then a single mss message can
@@ -53,16 +52,16 @@ namespace MidiShapeShifter.Mss.Mapping
         /// <summary>
         ///     Gets a string representing an MssMsgType used by this MappingEntry
         /// </summary>
-        /// <param name="ioCategory">Specifies wheather to use the type from InMssMsgInfo or OutMssMsgInfo</param>
+        /// <param name="ioCategory">Specifies wheather to use the type from InMssMsgRange or OutMssMsgRange</param>
         public string GetReadableMsgType(IoType ioCategory)
         {
             if (ioCategory == IoType.Input)
             {
-                return MssMsg.MssMsgTypeNames[(int)this.InMssMsgInfo.mssMsgType];
+                return MssMsg.MssMsgTypeNames[(int)this.InMssMsgRange.MsgType];
             }
             else if (ioCategory == IoType.Output)
             {
-                return MssMsg.MssMsgTypeNames[(int)this.OutMssMsgInfo.mssMsgType];
+                return MssMsg.MssMsgTypeNames[(int)this.OutMssMsgRange.MsgType];
             }
             else
             {

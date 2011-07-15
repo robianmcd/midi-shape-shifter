@@ -4,60 +4,60 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
-namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
+namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    static class Factory_MssMsgInfoEntryMetadata
+    public class Factory_MssMsgInfo
     {
-        public static MssMsgInfoEntryMetadata Create(MssMsgType type)
+        public static MssMsgInfo Create(MssMsgType msgInfoType)
         {
-            MssMsgInfoEntryMetadata msgMetadata;
+            MssMsgInfo msgInfo;
 
-            switch (type)
+            switch (msgInfoType)
             {
                 case MssMsgType.NoteOn:
                     {
-                        msgMetadata = new NoteOnMsgInfoEntryMetadata();
+                        msgInfo = new NoteOnMsgInfo();
                         break;
                     }
                 case MssMsgType.NoteOff:
                     {
-                        msgMetadata = new NoteOffMsgInfoEntryMetadata();
+                        msgInfo = new NoteOffMsgInfo();
                         break;
                     }
                 case MssMsgType.CC:
                     {
-                        msgMetadata = new CCMsgInfoEntryMetadata();
+                        msgInfo = new CCMsgInfo();
                         break;
                     }
                 case MssMsgType.PitchBend:
                     {
-                        msgMetadata = new PitchBendMsgInfoEntryMetadata();
+                        msgInfo = new PitchBendMsgInfo();
                         break;
                     }
                 case MssMsgType.PolyAftertouch:
                     {
-                        msgMetadata = new PolyAftertouchMsgInfoEntryMetadata();
+                        msgInfo = new PolyAftertouchMsgInfo();
                         break;
                     }
                 case MssMsgType.Generator:
                     {
-                        msgMetadata = new GeneratorMsgInfoEntryMetadata();
+                        msgInfo = new GeneratorMsgInfo();
                         break;
                     }
                 case MssMsgType.GeneratorToggle:
                     {
-                        msgMetadata = new GeneratorToggleMsgInfoEntryMetadata();
+                        msgInfo = new GeneratorToggleMsgInfo();
                         break;
                     }
                 default:
                     {
                         //Unknown type
                         Debug.Assert(false);
-                        msgMetadata = null;
+                        msgInfo = null;
                         break;
                     }
             }
-            return msgMetadata;
+            return msgInfo;
         }
     }
 }

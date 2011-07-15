@@ -8,8 +8,6 @@ using NUnit.Framework;
 
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Mapping;
-using MidiShapeShifter.Mss.Mapping.MssMsgInfoTypes;
-
 
 
 namespace MidiShapeShifterTest.Mapping
@@ -62,8 +60,8 @@ namespace MidiShapeShifterTest.Mapping
         public void MoveEntryUp_MoveBottomEntryUpInManagerThatHasTwoEntries_EntriesAreSwapped()
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
-            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
-            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 2, 2, 3, 3);
+            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
+            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 2, 3, 3);
 
             mappingMgr.AddMappingEntry(mappingEntry1);
             mappingMgr.AddMappingEntry(mappingEntry2);
@@ -78,10 +76,10 @@ namespace MidiShapeShifterTest.Mapping
         public void MoveEntryUp_MoveThirdEntryUpInManagerThatHasFourEntries_OnlyMiddleTwoEntriesAreSwapped()
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
-            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
-            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 2, 2, 0, 0);
-            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 3, 3, 0, 0);
-            MappingEntry mappingEntry4 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 4, 4, 0, 0);
+            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
+            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 2, 0, 0);
+            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 3, 3, 0, 0);
+            MappingEntry mappingEntry4 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 4, 4, 0, 0);
 
             mappingMgr.AddMappingEntry(mappingEntry1);
             mappingMgr.AddMappingEntry(mappingEntry2);
@@ -100,8 +98,8 @@ namespace MidiShapeShifterTest.Mapping
         public void MoveEntryDown_MoveTopEntryDownInManagerThatHasTwoEntries_EntriesAreSwapped()
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
-            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
-            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 2, 2, 3, 3);
+            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
+            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 2, 3, 3);
 
             mappingMgr.AddMappingEntry(mappingEntry1);
             mappingMgr.AddMappingEntry(mappingEntry2);
@@ -116,10 +114,10 @@ namespace MidiShapeShifterTest.Mapping
         public void MoveEntryDown_MoveSecondEntryDownInManagerThatHasFourEntries_OnlyMiddleTwoEntriesAreSwapped()
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
-            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
-            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 2, 2, 0, 0);
-            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 3, 3, 0, 0);
-            MappingEntry mappingEntry4 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 4, 4, 0, 0);
+            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
+            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 2, 0, 0);
+            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 3, 3, 0, 0);
+            MappingEntry mappingEntry4 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 4, 4, 0, 0);
 
             mappingMgr.AddMappingEntry(mappingEntry1);
             mappingMgr.AddMappingEntry(mappingEntry2);
@@ -138,7 +136,7 @@ namespace MidiShapeShifterTest.Mapping
         public void GetAssociatedEntries_MsgMatchesOneEntry_TheAssociatedEntryIsReturned()
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
-            MappingEntry mappingEntry = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 1, 3, 0, 10);
+            MappingEntry mappingEntry = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 3, 0, 10);
             mappingMgr.AddMappingEntry(mappingEntry);
 
             MssMsg msg = Factory_MssMsg_InitializedValues(
@@ -156,9 +154,9 @@ namespace MidiShapeShifterTest.Mapping
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
             
-            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 1, 1, 3, 127);
-            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 2, 16, 2, 2);
-            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(SECONDARY_MSG_TYPE, 1, 1, 2, 2);
+            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 3, 127);
+            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 16, 2, 2);
+            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(SECONDARY_MSG_TYPE, 1, 1, 2, 2);
 
             mappingMgr.AddMappingEntry(mappingEntry1);
             mappingMgr.AddMappingEntry(mappingEntry2);
@@ -180,9 +178,9 @@ namespace MidiShapeShifterTest.Mapping
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
 
-            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 1, 16, 0, 127);
-            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 1, 8, 0, 64);
-            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 7, 16, 60, 127);
+            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 16, 0, 127);
+            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 8, 0, 64);
+            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 7, 16, 60, 127);
             mappingEntry3.OverrideDuplicates = true;
 
             mappingMgr.AddMappingEntry(mappingEntry1);
@@ -235,32 +233,23 @@ namespace MidiShapeShifterTest.Mapping
 
         protected MappingEntry Factory_MappingEntry_Basic()
         {
-            return Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
+            return Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
         }
 
-
-
-        protected MappingEntry Factory_MappingEntry_MapsIdenticalMidiMsgInfos(
+        protected MappingEntry Factory_MappingEntry_MapsIdenticalMidiMsgRanges(
             MssMsgType msgType, 
             int chanRangeBottom, int chanRamgeTop, 
             int paramRangeBottom, int paramRangeTop)
         {
-            MidiMsgInfo inMsgInfo = (MidiMsgInfo)Factory_MssMsgInfo.Create(msgType);
-            MidiMsgInfo outMsgInfo = (MidiMsgInfo)Factory_MssMsgInfo.Create(msgType);
+            MssMsgRange inMsgRange = new MssMsgRange();
+            inMsgRange.InitAllMembers(msgType, chanRangeBottom, chanRamgeTop, paramRangeBottom, paramRangeTop);
 
-            if (inMsgInfo == null || outMsgInfo == null)
-            {
-                //A midi type was not used
-                Debug.Assert(false);
-                return null;
-            }
-
-            inMsgInfo.Initialize(chanRangeBottom, chanRamgeTop, paramRangeBottom, paramRangeTop);
-            outMsgInfo.Initialize(chanRangeBottom, chanRamgeTop, paramRangeBottom, paramRangeTop);
+            MssMsgRange outMsgRange = new MssMsgRange();
+            outMsgRange.InitAllMembers(msgType, chanRangeBottom, chanRamgeTop, paramRangeBottom, paramRangeTop);
 
             MappingEntry mapEntry = new MappingEntry();
-            mapEntry.InMssMsgInfo = inMsgInfo;
-            mapEntry.OutMssMsgInfo = outMsgInfo;
+            mapEntry.InMssMsgRange = inMsgRange;
+            mapEntry.OutMssMsgRange = outMsgRange;
             mapEntry.OverrideDuplicates = DEFAULT_OVERRIDE_DUPLICATES;
             return mapEntry;
         }
@@ -276,11 +265,11 @@ namespace MidiShapeShifterTest.Mapping
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
 
-            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 1, 16, 0, 127);
+            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 16, 0, 127);
             mappingEntry1.OverrideDuplicates = Entry1Override;
-            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 4, 5, 10, 20);
+            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 4, 5, 10, 20);
             mappingEntry2.OverrideDuplicates = Entry2Override;
-            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgInfos(DEFAULT_MSG_TYPE, 5, 5, 15, 15);
+            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 5, 5, 15, 15);
             mappingEntry3.OverrideDuplicates = Entry3Override;
 
             mappingMgr.AddMappingEntry(mappingEntry1);

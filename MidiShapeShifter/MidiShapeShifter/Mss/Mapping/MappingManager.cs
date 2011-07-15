@@ -133,12 +133,12 @@ namespace MidiShapeShifter.Mss.Mapping
             {
                 MappingEntry entry = mappingEntries[index];
                 ListViewItem mappingItem = new ListViewItem(entry.GetReadableMsgType(IoType.Input));
-                mappingItem.SubItems.Add(entry.InMssMsgInfo.Field1);
-                mappingItem.SubItems.Add(entry.InMssMsgInfo.Field2);
+                mappingItem.SubItems.Add(entry.InMssMsgRange.Data1RangeStr);
+                mappingItem.SubItems.Add(entry.InMssMsgRange.Data2RangeStr);
 
                 mappingItem.SubItems.Add(entry.GetReadableMsgType(IoType.Output));
-                mappingItem.SubItems.Add(entry.OutMssMsgInfo.Field1);
-                mappingItem.SubItems.Add(entry.OutMssMsgInfo.Field2);
+                mappingItem.SubItems.Add(entry.OutMssMsgRange.Data1RangeStr);
+                mappingItem.SubItems.Add(entry.OutMssMsgRange.Data2RangeStr);
 
                 mappingItem.SubItems.Add(entry.GetReadableOverrideDuplicates());
 
@@ -153,10 +153,10 @@ namespace MidiShapeShifter.Mss.Mapping
         }
 
         /// <summary>
-        ///     Queries the MappingEntry objects in the MappingManager and returns each one that matches InMssMsgInfo 
+        ///     Queries the MappingEntry objects in the MappingManager and returns each one that matches InMssMsgRange 
         ///     <paramref name="inputMsg"/>. For example, if the MappingManager contained a MappingEntry whose 
-        ///     InMssMsgInfo described a range of NoteOn MIDI messages, then that MappingEntry would be returned if 
-        ///     <paramref name="inputMsg"/> was a NoteOn message that fell into InMssMsgInfo's range.
+        ///     InMssMsgRange described a range of NoteOn MIDI messages, then that MappingEntry would be returned if 
+        ///     <paramref name="inputMsg"/> was a NoteOn message that fell into InMssMsgRange's range.
         ///     
         ///     If multiple MappingEntry objects match <paramref name="inputMsg"/> and one or more has OverrideDuplicates set
         ///     to true then the one with the lowest index will be returned.
@@ -167,7 +167,7 @@ namespace MidiShapeShifter.Mss.Mapping
         {
             var associatedEntiresQuery =
                 from entry in mappingEntries
-                where entry.InMssMsgInfo.MatchesMssMsg(inputMsg)
+                where entry.InMssMsgRange.MsgIsInRange(inputMsg)
                 select entry;
 
             //deal with input overrides

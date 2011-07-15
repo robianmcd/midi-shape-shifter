@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
-using MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes;
+using MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -16,8 +16,8 @@ namespace MidiShapeShifter.Mss.Mapping
     public partial class MappingDlg : Form
     {
 
-        protected MssMsgInfoEntryMetadata inMsgMetadata;
-        protected MssMsgInfoEntryMetadata outMsgMetadata;
+        protected MssMsgRangeEntryMetadata inMsgMetadata;
+        protected MssMsgRangeEntryMetadata outMsgMetadata;
 
         /// <summary>
         ///     mappingEntry is passed into this dialog through the Init() method. It can be used to determine the 
@@ -155,11 +155,11 @@ namespace MidiShapeShifter.Mss.Mapping
 
         protected void MsgTypeComboChanged(ComboBox msgTypeCombo, 
                                            IoType ioCategory, 
-                                           ref MssMsgInfoEntryMetadata msgMetadata)
+                                           ref MssMsgRangeEntryMetadata msgMetadata)
         {
             MssMsgType msgType = GetMessageTypeFromCombo(msgTypeCombo);
 
-            msgMetadata = Factory_MssMsgInfoEntryMetadata.Create(msgType);
+            msgMetadata = Factory_MssMsgRangeEntryMetadata.Create(msgType);
 
             msgMetadata.Init(this, ioCategory);
         }
@@ -177,8 +177,8 @@ namespace MidiShapeShifter.Mss.Mapping
 
             if (allFieldsAreValid)
             {
-                mappingEntry.InMssMsgInfo = this.inMsgMetadata.CreateMsgInfo();
-                mappingEntry.OutMssMsgInfo = this.outMsgMetadata.CreateMsgInfo();
+                mappingEntry.InMssMsgRange = this.inMsgMetadata.GetValidMsgRange();
+                mappingEntry.OutMssMsgRange = this.outMsgMetadata.GetValidMsgRange();
                 mappingEntry.OverrideDuplicates = this.inOverrideDupsCheckBox.Checked;
 
                 mappingEntry.CurveShapeInfo = new CurveShapeInfo();

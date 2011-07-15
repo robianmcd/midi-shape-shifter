@@ -6,7 +6,8 @@ namespace MidiShapeShifter.Mss
     //This class should be refactored into other classes and deleted
     public static class MssMsgUtil
     {
-        
+        public const int UNUSED_MSS_MSG_DATA_VAL = -1;
+
 
         //RANGE_ALL_STR is used to represent a midi message ranges that convere all channels or all parameter values
         public const string RANGE_ALL_STR = "All";

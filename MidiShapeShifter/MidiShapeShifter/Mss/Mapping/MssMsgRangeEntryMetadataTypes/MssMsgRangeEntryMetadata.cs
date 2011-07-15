@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
-using MidiShapeShifter.Mss.Mapping.MssMsgInfoTypes;
 
-namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
+namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 {
     /// <summary>
     ///     This class is tightly coupled with the class MappingDlg. In the mapping dialog the user can select an MSS 
@@ -16,8 +15,10 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
     ///     selection for input and output type, an instance of this calss is only associated with either input or 
     ///     output.
     /// </summary>
-    public abstract class MssMsgInfoEntryMetadata
+    public abstract class MssMsgRangeEntryMetadata
     {
+        public abstract MssMsgType MsgType { get; }
+
         /// <summary>
         ///     Specifies wheather this is associated with the input or output entry fields.
         /// </summary>
@@ -31,6 +32,8 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
 
         protected bool entryField1IsValid = false;
         protected bool entryField2IsValid = false;
+
+        protected MssMsgRange msgRange;
 
         //Contains a list of valid output message types when this class is the input type
         protected List<string> outMssMsgTypeNames = new List<string>();
@@ -102,13 +105,16 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
         }
 
         /// <summary>
-        ///     Initializes this MssMsgInfoEntryMetadata and sets the default properties for controls on the mapping 
+        ///     Initializes this MssMsgRangeEntryMetadata and sets the default properties for controls on the mapping 
         ///     dialog
         /// </summary>
         /// <param name="mappingDlg">The mapping dialog this is associated with</param>
         /// <param name="io">Specifies wheather this associated with the input or output entry fields.</param>
         public void Init(MappingDlg mappingDlg, IoType io)
         {
+            this.msgRange = new MssMsgRange();
+            this.msgRange.MsgType = this.MsgType;
+
             this.ioCatagory = io;
             this.mappingDlg = mappingDlg;
 
@@ -130,7 +136,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
 
                 otherTypeCombo.Items.Clear();
                 otherTypeCombo.Items.AddRange(outMssMsgTypeNames.ToArray());
-                //This will cause the output MssMsgInfoEntryMetadata to be created.
+                //This will cause the output MssMsgRangeEntryMetadata to be created.
                 otherTypeCombo.SelectedIndex = 0;
             }
             else if (io == IoType.Output)
@@ -248,7 +254,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
         public bool ValidateEntryField1() 
         {
             string errorMsg;
-            this.entryField1IsValid = StoreContentIfEntryField1IsValid(out errorMsg);
+            this.entryField1IsValid = SetData1RangeFromField(out errorMsg);
         
             mappingDlg.errorProvider.SetError(EntryField1, errorMsg);
 
@@ -266,7 +272,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
         ///     message describing why the user input was not valid.
         /// </param>
         /// <returns>True if entry field 1 contains valid user input</returns>
-        public virtual bool StoreContentIfEntryField1IsValid(out string errorMessage)
+        public virtual bool SetData1RangeFromField(out string errorMessage)
         {
             errorMessage = "";
             return true;
@@ -280,7 +286,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
         public bool ValidateEntryField2()
         {
             string errorMsg;
-            this.entryField2IsValid = StoreContentIfEntryField2IsValid(out errorMsg);
+            this.entryField2IsValid = SetData2RangeFromField(out errorMsg);
 
             mappingDlg.errorProvider.SetError(EntryField2, errorMsg);
 
@@ -298,23 +304,18 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
         ///     message describing why the user input was not valid.
         /// </param>
         /// <returns>True if entry field 1 contains valid user input</returns>
-        public virtual bool StoreContentIfEntryField2IsValid(out string errorMessage)
+        public virtual bool SetData2RangeFromField(out string errorMessage)
         {
             errorMessage = "";
             return true;
         }
 
-        /// <summary>
-        ///     Creates an instance of MssMsgInfo, populating it with information from the mapping dialog.
-        /// </summary>
-        /// <remarks>Precondition: The entry fields must contain valid user input.</remarks>
-        /// <returns>The newly created MssMsgInfo instance.</returns>
-        public MssMsgInfo CreateMsgInfo()
-        {
+        public MssMsgRange GetValidMsgRange()
+        { 
             if (this.entryField1IsValid == false)
             {
                 string dummyErrMsg;
-                this.entryField1IsValid = StoreContentIfEntryField1IsValid(out dummyErrMsg);
+                this.entryField1IsValid = SetData1RangeFromField(out dummyErrMsg);
 
                 //The precondition has been violated
                 Debug.Assert(this.entryField1IsValid);
@@ -323,7 +324,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             if (this.entryField2IsValid == false)
             {
                 string dummyErrMsg;
-                this.entryField2IsValid = StoreContentIfEntryField2IsValid(out dummyErrMsg);
+                this.entryField2IsValid = SetData2RangeFromField(out dummyErrMsg);
 
                 //The precondition has been violated
                 Debug.Assert(this.entryField2IsValid);
@@ -331,7 +332,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
 
             if (this.entryField1IsValid == true && this.entryField2IsValid == true)
             {
-                return CreateMsgInfoFromStoredContent();
+                return this.msgRange;
             }
             else
             {
@@ -341,14 +342,5 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             }
         }
 
-        /// <summary>
-        ///     Creates an instance of MssMsgInfo, populating it with information that was stored when 
-        ///     StoreContentIfEntryField#IsValid() was called.
-        /// </summary>
-        /// <remarks>
-        ///     Precondition: StoreContentIfEntryField#IsValid() must have been called and returned true for all fields.
-        /// </remarks>
-        /// <returns>The newly created MssMsgInfo instance.</returns>
-        protected abstract MssMsgInfo CreateMsgInfoFromStoredContent();
     }
 }

@@ -5,11 +5,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 
-using MidiShapeShifter.Mss.Mapping.MssMsgInfoTypes;
-
-namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
+namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 {
-    public abstract class MidiMsgInfoEntryMetadata : MssMsgInfoEntryMetadata
+    public abstract class MidiMsgRangeEntryMetadata : MssMsgRangeEntryMetadata
     {
         protected int paramRangeBottom;
         protected int paramRangeTop;
@@ -73,24 +71,41 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             this.EntryField2.Visible = true;
         }
 
-        public override bool StoreContentIfEntryField1IsValid(out string errorMsg)
+        public override bool SetData1RangeFromField(out string errorMsg)
         {
             string userInput = this.EntryField1.Text;
-            return StoreContentIfRangeFieldIsValid(userInput, MssMsgUtil.MIN_CHANNEL, MssMsgUtil.MAX_CHANNEL, 
-                                      ref this.chanRangeBottom, ref this.chanRangeTop, out errorMsg);
-            
+            int rangeBottom;
+            int rangeTop;
+            bool userInputIsValid = GetRangeFromUserInput(userInput, 
+                this.msgRange.MsgInfo.MinData1Value, this.msgRange.MsgInfo.MaxData1Value,
+                out rangeBottom, out rangeTop, 
+                out errorMsg);
+
+            this.msgRange.Data1RangeBottom = rangeBottom;
+            this.msgRange.Data1RangeTop = rangeTop;
+
+            return userInputIsValid;
         }
 
-        public override bool StoreContentIfEntryField2IsValid(out string errorMsg)
+        public override bool SetData2RangeFromField(out string errorMsg)
         {
             string userInput = this.EntryField2.Text;
-            return StoreContentIfRangeFieldIsValid(userInput, MssMsgUtil.MIN_PARAM, MssMsgUtil.MAX_PARAM,
-                                      ref this.paramRangeBottom, ref this.paramRangeTop, out errorMsg);
+            int rangeBottom;
+            int rangeTop;
+            bool userInputIsValid = GetRangeFromUserInput(userInput,
+                this.msgRange.MsgInfo.MinData2Value, this.msgRange.MsgInfo.MaxData2Value,
+                out rangeBottom, out rangeTop,
+                out errorMsg);
+
+            this.msgRange.Data2RangeBottom = rangeBottom;
+            this.msgRange.Data2RangeTop = rangeTop;
+
+            return userInputIsValid;
 
         }
 
-        public virtual bool StoreContentIfRangeFieldIsValid(string userInput, int minValue, int maxValue,
-                                               ref int rangeBottom, ref int rangeTop, out string errorMsg)
+        public virtual bool GetRangeFromUserInput(string userInput, int minValue, int maxValue,
+                                               out int rangeBottom, out int rangeTop, out string errorMsg)
         {
             int singleRangeValue;
             int tempRangeTop;
@@ -108,8 +123,8 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             }
             else if (EntryFieldInterpretingUtils.InterpretAsRangeAllStr(userInput))
             {
-                rangeBottom = minValue;
                 rangeTop = maxValue;
+                rangeBottom = minValue;
                 validFormat = true;
             }
             else if (EntryFieldInterpretingUtils.InterpretAsRange(userInput, out tempRangeTop, out tempRangeBottom))
@@ -121,6 +136,8 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             else
             {
                 errorMsg = "Invalid range format";
+                rangeTop = MssMsgUtil.UNUSED_MSS_MSG_DATA_VAL;
+                rangeBottom = MssMsgUtil.UNUSED_MSS_MSG_DATA_VAL;
                 validFormat = false;
             }
 
@@ -142,12 +159,6 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
             }
 
             return validRange;
-        }
-
-        //Precondition: ValidateEntryField#() must have been called and returned true for all fields
-        protected void InitializeMidiMsgInfo(MidiMsgInfo midiMsgInfo)
-        {
-            midiMsgInfo.Initialize(this.chanRangeBottom, this.chanRangeTop, this.paramRangeBottom, this.paramRangeTop);
         }
 
         protected override void InitSameAsInputCompatibleTypes()

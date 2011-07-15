@@ -55,19 +55,19 @@ namespace MidiShapeShifter.Mss
                     if (mappedData3 >= 0 && mappedData3 <= 127)
                     {
                         //Calculate what mssMsg.Data1 will be mapped to.
-                        int mappedData1 = CalculateLinearMapping(entry.InMssMsgInfo.Data1RangeBottom,
-                                                                 entry.InMssMsgInfo.Data1RangeTop,
-                                                                 entry.OutMssMsgInfo.Data1RangeBottom,
-                                                                 entry.OutMssMsgInfo.Data1RangeTop,
+                        int mappedData1 = CalculateLinearMapping(entry.InMssMsgRange.Data1RangeBottom,
+                                                                 entry.InMssMsgRange.Data1RangeTop,
+                                                                 entry.OutMssMsgRange.Data1RangeBottom,
+                                                                 entry.OutMssMsgRange.Data1RangeTop,
                                                                  mssMsg.Data1);
                         //Calculate what mssMsg.Data2 will be mapped to.
-                        int mappedData2 = CalculateLinearMapping(entry.InMssMsgInfo.Data2RangeBottom,
-                                                                 entry.InMssMsgInfo.Data2RangeTop,
-                                                                 entry.OutMssMsgInfo.Data2RangeBottom,
-                                                                 entry.OutMssMsgInfo.Data2RangeTop,
+                        int mappedData2 = CalculateLinearMapping(entry.InMssMsgRange.Data2RangeBottom,
+                                                                 entry.InMssMsgRange.Data2RangeTop,
+                                                                 entry.OutMssMsgRange.Data2RangeBottom,
+                                                                 entry.OutMssMsgRange.Data2RangeTop,
                                                                  mssMsg.Data2);
 
-                        MssMsg outMsg = new MssMsg(entry.OutMssMsgInfo.mssMsgType, mappedData1, mappedData2, mappedData3);
+                        MssMsg outMsg = new MssMsg(entry.OutMssMsgRange.MsgType, mappedData1, mappedData2, mappedData3);
                         outMessages.Add(outMsg);
                     }
                 }

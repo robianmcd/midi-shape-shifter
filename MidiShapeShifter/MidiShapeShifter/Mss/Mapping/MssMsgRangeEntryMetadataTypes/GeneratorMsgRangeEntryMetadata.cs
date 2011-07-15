@@ -4,24 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Windows.Forms;
-using MidiShapeShifter.Mss.Mapping.MssMsgInfoTypes;
 
-namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
+namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 {
-    public class GeneratorToggleMsgInfoEntryMetadata : MssMsgInfoEntryMetadata
+    public class GeneratorMsgRangeEntryMetadata : MssMsgRangeEntryMetadata
     {
+        public override MssMsgType MsgType
+        {
+            get { return MssMsgType.Generator; }
+        }
 
         protected override Control EntryField1
         {
             get
             {
-                if (this.ioCatagory == IoType.Output)
+                if (this.ioCatagory == IoType.Input)
                 {
-                    return this.mappingDlg.outEntryField1Combo;
+                    return this.mappingDlg.inEntryField1Combo;
                 }
                 else
                 {
-                    //Generator Toggle messages cannot be selected for input
+                    //Cannot output to generator
                     Debug.Assert(false);
                     return null;
                 }
@@ -40,19 +43,13 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgInfoEntryMetadataTypes
         {
             this.EntryField1Lbl.Visible = true;
             this.EntryField1Lbl.Text = "Generator Name:";
-            this.EntryField1.Visible = true;
-        }
 
-        protected override MssMsgInfo CreateMsgInfoFromStoredContent()
-        {
-            GeneratorToggleMsgInfo genToggleMsgInfo = new GeneratorToggleMsgInfo();
-            //TODO: Initialize genToggleMsgInfo
-            return genToggleMsgInfo;
+            this.EntryField1.Visible = true;
         }
 
         protected override void InitSameAsInputCompatibleTypes()
         {
-
+            
         }
     }
 }
