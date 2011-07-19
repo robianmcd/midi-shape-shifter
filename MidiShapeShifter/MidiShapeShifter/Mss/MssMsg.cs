@@ -53,5 +53,15 @@ namespace MidiShapeShifter.Mss
             this.Data2 = data2;
             this.Data3 = data3;
         }
+
+        public override bool Equals(object o) 
+        {
+            MssMsg compareToEvent = (MssMsg)o;
+            return this.Type == compareToEvent.Type &&
+                   this.Data1 == compareToEvent.Data1 &&
+                   this.Data2 == compareToEvent.Data2 &&
+                   this.Data3 == compareToEvent.Data3;
+        }
+
     }
 }

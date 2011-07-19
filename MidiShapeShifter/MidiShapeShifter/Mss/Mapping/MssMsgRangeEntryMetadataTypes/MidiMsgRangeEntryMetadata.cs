@@ -136,8 +136,8 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             else
             {
                 errorMsg = "Invalid range format";
-                rangeTop = MssMsgUtil.UNUSED_MSS_MSG_DATA_VAL;
-                rangeBottom = MssMsgUtil.UNUSED_MSS_MSG_DATA_VAL;
+                rangeTop = MssMsgUtil.UNUSED_MSS_MSG_DATA;
+                rangeBottom = MssMsgUtil.UNUSED_MSS_MSG_DATA;
                 validFormat = false;
             }
 

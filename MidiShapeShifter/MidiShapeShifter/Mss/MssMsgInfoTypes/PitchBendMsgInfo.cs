@@ -16,12 +16,12 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 
         public override int MinData2Value
         {
-            get { return MssMsgUtil.UNUSED_MSS_MSG_DATA_VAL; }
+            get { return MssMsgUtil.UNUSED_MSS_MSG_DATA; }
         }
 
         public override int MaxData2Value
         {
-            get { return MssMsgUtil.UNUSED_MSS_MSG_DATA_VAL; }
+            get { return MssMsgUtil.UNUSED_MSS_MSG_DATA; }
         }
 
         public override int MaxData3Value

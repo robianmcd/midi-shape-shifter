@@ -20,5 +20,11 @@ namespace MidiShapeShifter.Mss
         {
             this.mssMsg = new MssMsg();
         }
+
+        public override bool Equals(object o)
+        {
+            MssEvent compareToEvent = (MssEvent)o;
+            return this.mssMsg.Equals(compareToEvent.mssMsg) && this.timestamp == compareToEvent.timestamp;
+        }
     }
 }
