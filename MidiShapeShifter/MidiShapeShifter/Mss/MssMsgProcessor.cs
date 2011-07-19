@@ -16,9 +16,11 @@ namespace MidiShapeShifter.Mss
     {
         protected MappingManager mappingMgr;
 
+        protected MssEvaluator evaluator;
+
         public MssMsgProcessor()
         {
-
+            this.evaluator = new MssEvaluator();
         }
 
         public void Init(MappingManager mappingMgr)
@@ -47,12 +49,16 @@ namespace MidiShapeShifter.Mss
             {
                 foreach (MappingEntry entry in mappingEntries)
                 {
-                    //TODO: map mssMsg.Data3 to equation
-                    int mappedData3 = 100;
+                    double relativeData3 = (double)mssMsg.Data3 / (double)entry.InMssMsgRange.MsgInfo.MaxData3Value;
+                    double mappedRelativeData3;
+                    this.evaluator.Evaluate(entry.CurveShapeInfo.Equation, relativeData3, out mappedRelativeData3);
+                    int mappedData3 = (int)System.Math.Round(
+                        mappedRelativeData3 * entry.OutMssMsgRange.MsgInfo.MaxData3Value);
 
-                    //If data3 has been mapped outside of the range of MIDI values then this mapping will not output 
-                    //anything
-                    if (mappedData3 >= 0 && mappedData3 <= 127)
+                    //If data3 has been mapped outside of the range of values for its message type then this 
+                    //mapping will not output anything.
+                    if (mappedData3 >= entry.OutMssMsgRange.MsgInfo.MinData3Value && 
+                        mappedData3 <= entry.OutMssMsgRange.MsgInfo.MaxData3Value)
                     {
                         //Calculate what mssMsg.Data1 will be mapped to.
                         int mappedData1 = CalculateLinearMapping(entry.InMssMsgRange.Data1RangeBottom,
@@ -102,11 +108,11 @@ namespace MidiShapeShifter.Mss
             }
             else
             {
-                double percentIntoRange = (ValueToMap - inRangeBottom) / (inRangeTop - inRangeBottom);
+                double percentIntoRange = (double)(ValueToMap - inRangeBottom) / (double)(inRangeTop - inRangeBottom);
                 int outRangeSize = outRangeTop - outRangeBottom;
 
                 //maybe we should round here
-                int outRangeOffset = (int) percentIntoRange * outRangeSize;
+                int outRangeOffset = (int) (percentIntoRange * outRangeSize);
 
                 return outRangeBottom + outRangeOffset;
             }
