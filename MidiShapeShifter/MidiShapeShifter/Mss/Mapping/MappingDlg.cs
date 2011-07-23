@@ -177,11 +177,10 @@ namespace MidiShapeShifter.Mss.Mapping
 
             if (allFieldsAreValid)
             {
-                mappingEntry.InMssMsgRange = this.inMsgMetadata.GetValidMsgRange();
-                mappingEntry.OutMssMsgRange = this.outMsgMetadata.GetValidMsgRange();
-                mappingEntry.OverrideDuplicates = this.inOverrideDupsCheckBox.Checked;
-
-                mappingEntry.CurveShapeInfo = new CurveShapeInfo();
+                mappingEntry.InitAllMembers(this.inMsgMetadata.GetValidMsgRange(),
+                                            this.outMsgMetadata.GetValidMsgRange(),
+                                            this.inOverrideDupsCheckBox.Checked,
+                                            new CurveShapeInfo());
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();

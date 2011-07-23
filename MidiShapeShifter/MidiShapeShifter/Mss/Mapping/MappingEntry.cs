@@ -45,8 +45,17 @@ namespace MidiShapeShifter.Mss.Mapping
 
 
         public MappingEntry() 
-        { 
-        
+        {
+            
+        }
+
+        public void InitAllMembers(MssMsgRange inMsgRange, MssMsgRange outMsgRange,
+                            bool overrideDuplicates, CurveShapeInfo curveShapeInfo)
+        {
+            this.InMssMsgRange = inMsgRange;
+            this.OutMssMsgRange = outMsgRange;
+            this.OverrideDuplicates = overrideDuplicates;
+            this.CurveShapeInfo = curveShapeInfo;
         }
 
         /// <summary>

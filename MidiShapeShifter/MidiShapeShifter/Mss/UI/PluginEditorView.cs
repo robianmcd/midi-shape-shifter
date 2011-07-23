@@ -335,10 +335,10 @@ namespace MidiShapeShifter.Mss.UI
         private void curveEquationTextBox_TextChanged(object sender, System.EventArgs e)
         {
             string expressionString = ((TextBox)sender).Text;
-            double[] GraphYValues;
-
-            if (this.evaluator.EvaluateMultipleInputValues(expressionString, GRAPH_X_VAULES, out GraphYValues) == true)
+            ReturnStatus<double[]> evalReturnStatus = this.evaluator.EvaluateMultipleInputValues(expressionString, GRAPH_X_VAULES);
+            if (evalReturnStatus.IsValid == true)
             {
+                double[] GraphYValues = evalReturnStatus.ReturnVal;
 
                 ActiveMapping.CurveShapeInfo.Equation = expressionString;
 

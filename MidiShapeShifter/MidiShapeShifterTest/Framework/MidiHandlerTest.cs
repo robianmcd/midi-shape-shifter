@@ -174,7 +174,7 @@ namespace MidiShapeShifterTest.Framework
             {
                 MssEvent convertedMssEvent = midiHandler.ConvertVstMidiEventToMssEventWrapper(
                     midiEvent, cycleStartTime, this.hostInfoOutputPort.SampleRate);
-                Assert.IsTrue(mssEvent.Equals(convertedMssEvent));
+                Assert.AreEqual(mssEvent, convertedMssEvent);
             }
             else
             {

@@ -5,53 +5,59 @@ using System.Text;
 
 using NCalc;
 
+using MidiShapeShifter.CSharpUtil;
+
 namespace MidiShapeShifter.Mss
 {
-    public class MssEvaluator
+    public class MssEvaluator : MidiShapeShifter.Mss.IMssEvaluator
     {
         public string LastErrorMsg = "";
 
         //precondition: expressionString is valid
-        public bool Evaluate(string expressionString, double input, out double output)
+        public ReturnStatus<double> Evaluate(string expressionString, double input)
         {
             Expression expression = new Expression(expressionString, EvaluateOptions.IgnoreCase);
             InitializeExpression(expression);
 
-            return EvaluateExpression(expression, input, out output);
+            return EvaluateExpression(expression, input);
         }
 
-        public bool EvaluateMultipleInputValues(string expressionString, double[] inputValues, out double[] outputValues)
+        public ReturnStatus<double[]> EvaluateMultipleInputValues(string expressionString, double[] inputValues)
         {
             Expression expression = new Expression(expressionString, EvaluateOptions.IgnoreCase);
             InitializeExpression(expression);
 
-            outputValues = new double[inputValues.Length];
+            double[] outputValues = new double[inputValues.Length];
             for(int i = 0; i < inputValues.Length; i++)
             {
-                if (EvaluateExpression(expression, inputValues[i], out outputValues[i]) == false)
+                ReturnStatus<double> evalReturnStatus = EvaluateExpression(expression, inputValues[i]);
+                if (evalReturnStatus.IsValid == true)
                 {
-                    return false;
+                    outputValues[i] = evalReturnStatus.ReturnVal;
+                }
+                else
+                {
+                    return new ReturnStatus<double[]>(outputValues, false);
                 }
             }
 
-            return true;
+            return new ReturnStatus<double[]>(outputValues, true);
         }
 
-        private bool EvaluateExpression(Expression expression, double input, out double output)
+        private ReturnStatus<double> EvaluateExpression(Expression expression, double input)
         {
             SetExpressionInput(expression, input);
 
             try
             {
-                output = (double)expression.Evaluate();
-                return true;
+                double output = (double)expression.Evaluate();
+                return new ReturnStatus<double>(output, true);
             }
             catch (Exception exception)
             {
-                output = -1;
                 //TODO: get actual error message
                 this.LastErrorMsg = "error!";
-                return false;
+                return new ReturnStatus<double>(-1, false);
             }
         }
 

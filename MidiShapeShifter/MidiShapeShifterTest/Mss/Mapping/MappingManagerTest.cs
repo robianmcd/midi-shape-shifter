@@ -10,7 +10,7 @@ using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Mapping;
 
 
-namespace MidiShapeShifterTest.Mapping
+namespace MidiShapeShifterTest.Mss.Mapping
 {
     [TestFixture]
     public class MappingManagerTest

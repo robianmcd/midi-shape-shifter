@@ -13,8 +13,7 @@ namespace MidiShapeShifter.Framework
     public class VstTimeInfoTransmitter
     {
         //might need VstTimeInfoFlags.BarStartPositionValid
-        public static readonly VstTimeInfoFlags RequiredTimeInfoFlags = VstTimeInfoFlags.ClockValid |
-                                                                       VstTimeInfoFlags.PpqPositionValid |
+        public static readonly VstTimeInfoFlags RequiredTimeInfoFlags = VstTimeInfoFlags.PpqPositionValid |
                                                                        VstTimeInfoFlags.TempoValid |
                                                                        VstTimeInfoFlags.TimeSignatureValid;
 

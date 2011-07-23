@@ -11,7 +11,7 @@ namespace MidiShapeShifter.Mss.Mapping
     /// <summary>
     ///     The MappingManager is responsible for storing, retrieving and interpreting MappingEntry objects.
     /// </summary>
-    public class MappingManager
+    public class MappingManager : IMappingManager
     {
         /// <summary>
         ///     List that stores all of the MappingEntry objects. The mapping list box on the main GUI is basically a 

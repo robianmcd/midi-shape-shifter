@@ -8,7 +8,7 @@ using NUnit.Framework;
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Mapping;
 
-namespace MidiShapeShifterTest.Mapping
+namespace MidiShapeShifterTest.Mss.Mapping
 {
     [TestFixture]
     class EntryFieldInterpretingUtilsTest

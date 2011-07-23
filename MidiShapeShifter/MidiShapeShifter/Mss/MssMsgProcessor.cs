@@ -4,6 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
+using Ninject;
+
+using MidiShapeShifter.Ioc;
+
+using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Mapping;
 
 namespace MidiShapeShifter.Mss
@@ -14,16 +19,16 @@ namespace MidiShapeShifter.Mss
     /// </summary>
     public class MssMsgProcessor
     {
-        protected MappingManager mappingMgr;
+        protected IMappingManager mappingMgr;
 
-        protected MssEvaluator evaluator;
+        protected IMssEvaluator evaluator;
 
         public MssMsgProcessor()
         {
-            this.evaluator = new MssEvaluator();
+            this.evaluator = IocMgr.Kernal.Get<IMssEvaluator>();
         }
 
-        public void Init(MappingManager mappingMgr)
+        public void Init(IMappingManager mappingMgr)
         {
             Debug.Assert(mappingMgr != null);
 
@@ -50,8 +55,12 @@ namespace MidiShapeShifter.Mss
                 foreach (MappingEntry entry in mappingEntries)
                 {
                     double relativeData3 = (double)mssMsg.Data3 / (double)entry.InMssMsgRange.MsgInfo.MaxData3Value;
-                    double mappedRelativeData3;
-                    this.evaluator.Evaluate(entry.CurveShapeInfo.Equation, relativeData3, out mappedRelativeData3);
+                    ReturnStatus<double> evalReturnStatus = this.evaluator.Evaluate(entry.CurveShapeInfo.Equation, relativeData3);
+
+                    //The return value must be valid because the equation in the mapping entry must be valid.
+                    Debug.Assert(evalReturnStatus.IsValid);
+
+                    double mappedRelativeData3 = evalReturnStatus.ReturnVal;
                     int mappedData3 = (int)System.Math.Round(
                         mappedRelativeData3 * entry.OutMssMsgRange.MsgInfo.MaxData3Value);
 

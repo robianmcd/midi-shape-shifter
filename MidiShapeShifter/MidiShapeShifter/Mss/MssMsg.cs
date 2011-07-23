@@ -17,7 +17,7 @@ namespace MidiShapeShifter.Mss
     ///     that for MSS Messages the message type is limited to types in the MssMsgType enum and for MIDI 
     ///     Messages the message type is limited to types defined in the standard.
     /// </summary>
-    public class MssMsg
+    public class MssMsg : ICloneable
     {
 
 
@@ -63,5 +63,9 @@ namespace MidiShapeShifter.Mss
                    this.Data3 == compareToEvent.Data3;
         }
 
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }
