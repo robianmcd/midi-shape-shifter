@@ -317,8 +317,10 @@
             // 
             // MappingDlg
             // 
+            this.AcceptButton = this.OkBtn;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.cancelBtn;
             this.ClientSize = new System.Drawing.Size(295, 271);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.OkBtn);

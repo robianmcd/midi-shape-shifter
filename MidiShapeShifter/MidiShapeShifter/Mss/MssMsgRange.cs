@@ -142,5 +142,15 @@ namespace MidiShapeShifter.Mss
                 mssMsg.Data1 >= this.Data1RangeBottom && mssMsg.Data1 <= this.Data1RangeTop &&
                 mssMsg.Data2 >= this.Data2RangeBottom && mssMsg.Data2 <= this.Data2RangeTop;
         }
+
+        public override bool Equals(object o)
+        {
+            MssMsgRange compareToRange = (MssMsgRange)o;
+            return this.MsgType == compareToRange.MsgType &&
+                   this.Data1RangeBottom == compareToRange.Data1RangeBottom &&
+                   this.Data1RangeTop == compareToRange.Data1RangeTop &&
+                   this.Data2RangeBottom == compareToRange.Data2RangeBottom &&
+                   this.Data2RangeTop == compareToRange.Data2RangeTop;
+        }
     }
 }

@@ -56,6 +56,16 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             }
         }
 
+        protected override void SetEntryField1FromRange(MssMsgRange msgRange)
+        {
+            EntryField1.Text = msgRange.Data1RangeStr;
+        }
+
+        protected override void SetEntryField2FromRange(MssMsgRange msgRange)
+        {
+            EntryField2.Text = msgRange.Data2RangeStr;
+        }
+
         //set the properties of all the the controls in the entryFields member variable whose properties should differ 
         //from the default properties set in SetMappingDlgEntryFieldsDefaultProperties().
         protected override void SetMappingDlgEntryFieldCustomProperties()

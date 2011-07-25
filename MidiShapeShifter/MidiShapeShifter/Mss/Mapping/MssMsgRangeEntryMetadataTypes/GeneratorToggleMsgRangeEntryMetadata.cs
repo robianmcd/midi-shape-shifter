@@ -39,6 +39,16 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             }
         }
 
+        protected override void SetEntryField1FromRange(MssMsgRange msgRange)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void SetEntryField2FromRange(MssMsgRange msgRange)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void SetMappingDlgEntryFieldCustomProperties()
         {
             this.EntryField1Lbl.Visible = true;

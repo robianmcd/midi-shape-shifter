@@ -37,9 +37,6 @@ namespace MidiShapeShifter.Mss.Mapping
             this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.PolyAftertouch]);
             this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.ChanAftertouch]);
             this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.Generator]);
-            this.inTypeCombo.SelectedIndex = 0;
-
-            this.outSameAsInCheckBox.Checked = true;
         }
 
         /// <summary>
@@ -52,10 +49,25 @@ namespace MidiShapeShifter.Mss.Mapping
         public void Init(MappingEntry mappingEntry, bool useMappingEntryForDefaultValues)
         {
             this.mappingEntry = mappingEntry;
-            
+
             if (useMappingEntryForDefaultValues == true)
             {
-                //TODO: initialize entry fields
+                //Initializes inMsgMetadata and outMsgMetadata
+                this.inTypeCombo.Text = MssMsg.MssMsgTypeNames[(int)this.mappingEntry.InMssMsgRange.MsgType];
+                this.outTypeCombo.Text = MssMsg.MssMsgTypeNames[(int)this.mappingEntry.OutMssMsgRange.MsgType];
+
+                this.inMsgMetadata.UseExistingMsgRange(mappingEntry.InMssMsgRange);
+                this.outMsgMetadata.UseExistingMsgRange(mappingEntry.OutMssMsgRange);
+
+                this.outSameAsInCheckBox.Checked = 
+                    (this.mappingEntry.InMssMsgRange.Equals(this.mappingEntry.OutMssMsgRange));
+            }
+            else
+            {
+                //Initializes inMsgMetadata and outMsgMetadata
+                this.inTypeCombo.SelectedIndex = 0;
+
+                this.outSameAsInCheckBox.Checked = true;
             }
 
         }
@@ -136,7 +148,7 @@ namespace MidiShapeShifter.Mss.Mapping
 
         private void inTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MsgTypeComboChanged((ComboBox)sender, IoType.Input, ref inMsgMetadata);
+            MsgTypeComboChanged((ComboBox)sender, IoType.Input, ref this.inMsgMetadata);
 
             if (this.outSameAsInCheckBox.Checked == true)
             {
@@ -150,7 +162,7 @@ namespace MidiShapeShifter.Mss.Mapping
 
         private void outTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MsgTypeComboChanged((ComboBox)sender, IoType.Output, ref outMsgMetadata);
+            MsgTypeComboChanged((ComboBox)sender, IoType.Output, ref this.outMsgMetadata);
         }
 
         protected void MsgTypeComboChanged(ComboBox msgTypeCombo, 

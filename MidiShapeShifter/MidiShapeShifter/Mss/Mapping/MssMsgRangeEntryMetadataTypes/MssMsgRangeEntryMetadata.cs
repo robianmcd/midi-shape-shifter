@@ -165,6 +165,30 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         }
 
         /// <summary>
+        ///     Set the entry fields associated with this class based on an initialized MssMsgRange.
+        /// </summary>
+        public void UseExistingMsgRange(MssMsgRange msgRange)
+        {
+            this.msgRange = msgRange;
+
+            if (this.EntryField1 != null) 
+            {
+                SetEntryField1FromRange(this.msgRange);
+            }
+
+            if (this.EntryField2 != null)
+            {
+                SetEntryField2FromRange(this.msgRange);
+            }
+        }
+
+        /// <summary>
+        ///     Sets the contents of an entry field based on the state of the supplies MssMsgRange
+        /// </summary>
+        protected abstract void SetEntryField1FromRange(MssMsgRange msgRange);
+        protected abstract void SetEntryField2FromRange(MssMsgRange msgRange);
+
+        /// <summary>
         ///     Sets the entry fields so that they are all blank and invisable.
         /// </summary>
         protected void SetMappingDlgEntryFieldsDefaultProperties()
@@ -256,7 +280,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             string errorMsg;
             this.entryField1IsValid = SetData1RangeFromField(out errorMsg);
         
-            mappingDlg.errorProvider.SetError(EntryField1, errorMsg);
+            mappingDlg.errorProvider.SetError(this.EntryField1, errorMsg);
 
             return this.entryField1IsValid;
         }
@@ -288,7 +312,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             string errorMsg;
             this.entryField2IsValid = SetData2RangeFromField(out errorMsg);
 
-            mappingDlg.errorProvider.SetError(EntryField2, errorMsg);
+            mappingDlg.errorProvider.SetError(this.EntryField2, errorMsg);
 
             return this.entryField2IsValid;
         }
@@ -310,6 +334,10 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             return true;
         }
 
+        /// <summary>
+        ///     Generate the MssMsgRange described by the contents of the entry fields associated with this object.
+        /// </summary>
+        /// <remarks>Precondition: The contents of the entry fields must be valid.</remarks>
         public MssMsgRange GetValidMsgRange()
         { 
             if (this.entryField1IsValid == false)
