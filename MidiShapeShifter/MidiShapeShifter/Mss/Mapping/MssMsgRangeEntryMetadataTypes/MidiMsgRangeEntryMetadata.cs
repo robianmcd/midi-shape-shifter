@@ -178,6 +178,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             this.sameAsInputCompatibleTypes.Add(MssMsgType.CC);
             this.sameAsInputCompatibleTypes.Add(MssMsgType.PitchBend);
             this.sameAsInputCompatibleTypes.Add(MssMsgType.PolyAftertouch);
+            this.sameAsInputCompatibleTypes.Add(MssMsgType.ChanAftertouch);
         }
     }
 }

@@ -39,6 +39,11 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
                         msgInfo = new PolyAftertouchMsgInfo();
                         break;
                     }
+                case MssMsgType.ChanAftertouch:
+                    {
+                        msgInfo = new ChanAftertouchMsgInfo();
+                        break;
+                    }
                 case MssMsgType.Generator:
                     {
                         msgInfo = new GeneratorMsgInfo();

@@ -39,6 +39,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
                         msgMetadata = new PolyAftertouchMsgRangeEntryMetadata();
                         break;
                     }
+                case MssMsgType.ChanAftertouch:
+                    {
+                        msgMetadata = new ChanAftertouchMsgRangeEntryMetadata();
+                        break;
+                    }
                 case MssMsgType.Generator:
                     {
                         msgMetadata = new GeneratorMsgRangeEntryMetadata();

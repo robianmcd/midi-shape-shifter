@@ -714,6 +714,7 @@
             this.overrideColHeader});
             this.mappingListView.Font = new System.Drawing.Font("Arial", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mappingListView.FullRowSelect = true;
+            this.mappingListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.mappingListView.HideSelection = false;
             this.mappingListView.Location = new System.Drawing.Point(8, 16);
             this.mappingListView.MultiSelect = false;
