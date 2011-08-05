@@ -194,7 +194,7 @@ namespace MidiShapeShifter.Framework
 
             //Sets mssEvent's Data1 (midi channel).
             //Adds one because channels in an MssMsg start at 1 but channels in a VstMidiEvent start at 0
-            mssEvent.mssMsg.Data1 = ((int)midiEvent.Data[0] & 0x0F) + 1;
+            mssEvent.mssMsg.Data1 = (midiEvent.Data[0] & 0x0F) + 1;
 
             //Sets mssEvent's Data2 and Data3 (the midi message's data bytes).
             if (msgType == MssMsgType.PitchBend)
@@ -206,12 +206,12 @@ namespace MidiShapeShifter.Framework
                 //TODO: Ensure this conversion actually works.
                 //data1 contains the least significant 7 bits of the pitch bend value and data2 contains the most 
                 //significant 7 bits
-                mssEvent.mssMsg.Data3 = (int) ((midiEvent.Data[2] << 7) + midiEvent.Data[1]);
+                mssEvent.mssMsg.Data3 = (midiEvent.Data[2] << 7) + midiEvent.Data[1];
             }
             else
             {
-                mssEvent.mssMsg.Data2 = (int)midiEvent.Data[1];
-                mssEvent.mssMsg.Data3 = (int)midiEvent.Data[2];
+                mssEvent.mssMsg.Data2 = midiEvent.Data[1];
+                mssEvent.mssMsg.Data3 = midiEvent.Data[2];
             }
 
             return mssEvent;
@@ -243,21 +243,21 @@ namespace MidiShapeShifter.Framework
             }
 
             //subtract 1 becasue channels are 0 based in midi but 1 based in mss
-            byte channelByte = (byte)(mssEvent.mssMsg.Data1 - 1);
+            byte channelByte = (byte)(mssEvent.mssMsg.Data1AsInt - 1);
 
             midiData[0] = (byte) (statusByte | channelByte);
 
             //TODO: ensure case for pitch bend works.
             if (mssEvent.mssMsg.Type == MssMsgType.PitchBend) {
                 //most significant bits
-                int MsbVal = mssEvent.mssMsg.Data3 >> 7;
+                int MsbVal = (mssEvent.mssMsg.Data3AsInt) >> 7;
                 midiData[2] = (byte)MsbVal;
-                midiData[1] = (byte)(mssEvent.mssMsg.Data3 - (MsbVal << 7));
+                midiData[1] = (byte)((mssEvent.mssMsg.Data3AsInt) - (MsbVal << 7));
             }
             else
             {
-                midiData[1] = (byte)mssEvent.mssMsg.Data2;
-                midiData[2] = (byte)mssEvent.mssMsg.Data3;
+                midiData[1] = (byte)mssEvent.mssMsg.Data2AsInt;
+                midiData[2] = (byte)mssEvent.mssMsg.Data3AsInt;
             }
             VstMidiEvent midiEvent = new VstMidiEvent(deltaFrames, 0, 0, midiData, 0, 0);
 

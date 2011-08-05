@@ -102,11 +102,11 @@ namespace MidiShapeShifterTest.Framework
         }
 
         //There is a special case for pitch bend because the second and third byte of a pitch bend's midi data are 
-        //treated as one number in an MssMsg unline other message types.
+        //treated as one number in an MssMsg unlike other message types.
         [Test]
         public void ConvertVstMidiEventToMssEvent_PitchBend_CreatesAssociatedMssEvent()
         {
-            Test_MsgConversion(MssMsgType.NoteOn, 8, 12, 34, false);
+            Test_MsgConversion(MssMsgType.PitchBend, 8, 12, 34, false);
         }
 
         [Test]
@@ -122,11 +122,11 @@ namespace MidiShapeShifterTest.Framework
         }
 
         //There is a special case for pitch bend because the second and third byte of a pitch bend's midi data are 
-        //treated as one number in an MssMsg unline other message types.
+        //treated as one number in an MssMsg unlike other message types.
         [Test]
         public void ConvertMssEventToVstMidiEvent_PitchBend_CreatesAssociatedMssEvent()
         {
-            Test_MsgConversion(MssMsgType.NoteOn, 8, 12, 34, true);
+            Test_MsgConversion(MssMsgType.PitchBend, 8, 12, 34, true);
         }
 
         [Test]
@@ -164,7 +164,15 @@ namespace MidiShapeShifterTest.Framework
             MidiHandlerProtectedWrapper midiHandler = Factory_MidiHandler_Basic();
 
             MssEvent mssEvent = new MssEvent();
-            mssEvent.mssMsg = new MssMsg(msgType, midiChannel, midiParam1, midiParam2);
+
+            if (msgType == MssMsgType.PitchBend)
+            {
+                mssEvent.mssMsg = new MssMsg(msgType, midiChannel, MssMsgUtil.UNUSED_MSS_MSG_DATA, (midiParam2 << 7) + midiParam1);
+            }
+            else
+            {
+                mssEvent.mssMsg = new MssMsg(msgType, midiChannel, midiParam1, midiParam2);
+            }
             mssEvent.timestamp = cycleStartTime + MidiUtil.ConvertSamplesToTicks(deltaFrames, this.hostInfoOutputPort.SampleRate);
 
             byte[] midiData = MidiUtil.CreateMidiData(msgType, midiChannel, (byte)midiParam1, (byte)midiParam2);

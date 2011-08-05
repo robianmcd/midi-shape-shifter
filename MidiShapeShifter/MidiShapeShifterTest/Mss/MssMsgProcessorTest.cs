@@ -166,6 +166,18 @@ namespace MidiShapeShifterTest.Mss
             Test_ProcessMssMsg(inputMsg, matchingEntries, desiredReturnedMsgList, true);
         }
 
+        /// <summary>
+        /// Tests the ProcessMssMsg() method.
+        /// </summary>
+        /// <param name="inputMsg">The message to be precessed</param>
+        /// <param name="matchingEntries">
+        ///     Mapping entries where <paramref name="inputMsg"/> is in the input message range
+        /// </param>
+        /// <param name="desiredReturnedMsgList"> List of that should be returned by ProcessMssMsg() </param>
+        /// <param name="doubleData3"> 
+        ///     Simulates the equation "x*2" in each mapping if true. Simulates the equation "x" in each mapping if 
+        ///     false. 
+        /// </param>
         protected void Test_ProcessMssMsg(MssMsg inputMsg, 
                                          List<MappingEntry> matchingEntries, 
                                          List<MssMsg> desiredReturnedMsgList,

@@ -9,16 +9,16 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
     {
         public abstract MssMsgType MsgType { get; }
 
-        public abstract int MaxData1Value { get; }
-        public abstract int MinData1Value { get; }
-        public abstract int MaxData2Value { get; }
-        public abstract int MinData2Value { get; }
-        public abstract int MaxData3Value { get; }
-        public abstract int MinData3Value { get; }
+        public abstract double MaxData1Value { get; }
+        public abstract double MinData1Value { get; }
+        public abstract double MaxData2Value { get; }
+        public abstract double MinData2Value { get; }
+        public abstract double MaxData3Value { get; }
+        public abstract double MinData3Value { get; }
 
-        public abstract string ConvertData1ToString(int Data1);
-        public abstract string ConvertData2ToString(int Data2);
-        public abstract string ConvertData3ToString(int Data3);
+        public abstract string ConvertData1ToString(double Data1);
+        public abstract string ConvertData2ToString(double Data2);
+        public abstract string ConvertData3ToString(double Data3);
 
         //TODO: Add graph strings
     }

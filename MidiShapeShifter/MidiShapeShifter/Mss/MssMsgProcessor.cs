@@ -70,13 +70,13 @@ namespace MidiShapeShifter.Mss
                         mappedData3 <= entry.OutMssMsgRange.MsgInfo.MaxData3Value)
                     {
                         //Calculate what mssMsg.Data1 will be mapped to.
-                        int mappedData1 = CalculateLinearMapping(entry.InMssMsgRange.Data1RangeBottom,
+                        double mappedData1 = CalculateLinearMapping(entry.InMssMsgRange.Data1RangeBottom,
                                                                  entry.InMssMsgRange.Data1RangeTop,
                                                                  entry.OutMssMsgRange.Data1RangeBottom,
                                                                  entry.OutMssMsgRange.Data1RangeTop,
                                                                  mssMsg.Data1);
                         //Calculate what mssMsg.Data2 will be mapped to.
-                        int mappedData2 = CalculateLinearMapping(entry.InMssMsgRange.Data2RangeBottom,
+                        double mappedData2 = CalculateLinearMapping(entry.InMssMsgRange.Data2RangeBottom,
                                                                  entry.InMssMsgRange.Data2RangeTop,
                                                                  entry.OutMssMsgRange.Data2RangeBottom,
                                                                  entry.OutMssMsgRange.Data2RangeTop,
@@ -105,9 +105,9 @@ namespace MidiShapeShifter.Mss
         ///     A value in the output range that is in the same relitive position that <paramref name="ValueToMap"/> 
         ///     was in the input range.
         /// </returns>
-        protected int CalculateLinearMapping(int inRangeBottom, int inRangeTop,
-                                             int outRangeBottom, int outRangeTop,
-                                             int ValueToMap)
+        protected double CalculateLinearMapping(double inRangeBottom, double inRangeTop,
+                                             double outRangeBottom, double outRangeTop,
+                                             double ValueToMap)
         {
             //if the in range is just a single value then treating it as a range would result in a divide by zero error. 
             //So this case must be handled seperateally.
@@ -117,11 +117,11 @@ namespace MidiShapeShifter.Mss
             }
             else
             {
-                double percentIntoRange = (double)(ValueToMap - inRangeBottom) / (double)(inRangeTop - inRangeBottom);
-                int outRangeSize = outRangeTop - outRangeBottom;
+                double percentIntoRange = (ValueToMap - inRangeBottom) / (inRangeTop - inRangeBottom);
+                double outRangeSize = outRangeTop - outRangeBottom;
 
                 //maybe we should round here
-                int outRangeOffset = (int) (percentIntoRange * outRangeSize);
+                double outRangeOffset = percentIntoRange * outRangeSize;
 
                 return outRangeBottom + outRangeOffset;
             }

@@ -14,17 +14,17 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
             get { return MssMsgType.PitchBend; }
         }
 
-        public override int MinData2Value
+        public override double MinData2Value
         {
             get { return MssMsgUtil.UNUSED_MSS_MSG_DATA; }
         }
 
-        public override int MaxData2Value
+        public override double MaxData2Value
         {
             get { return MssMsgUtil.UNUSED_MSS_MSG_DATA; }
         }
 
-        public override int MaxData3Value
+        public override double MaxData3Value
         {
             get { return MidiUtil.MAX_LARGE_MIDI_PARAM_VAL; }
         }

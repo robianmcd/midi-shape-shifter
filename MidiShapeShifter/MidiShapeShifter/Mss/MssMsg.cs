@@ -38,15 +38,19 @@ namespace MidiShapeShifter.Mss
         }
 
         public MssMsgType Type;
-        //The data member variables can have different meaninds depending on the type. For example if the type is 
+        //The data member variables can have different meanings depending on the type. For example if the type is 
         //noteMessage, data1 is the channel, data2 is the note number and data3 is the velocity.
-        public int Data1;
-        public int Data2;
-        public int Data3;
+        public double Data1;
+        public double Data2;
+        public double Data3;
+
+        public int Data1AsInt { get { return (int)Math.Round(this.Data1); } }
+        public int Data2AsInt { get { return (int)Math.Round(this.Data2); } }
+        public int Data3AsInt { get { return (int)Math.Round(this.Data3); } }
 
         public MssMsg() { }
 
-        public MssMsg(MssMsgType type, int data1, int data2, int data3)
+        public MssMsg(MssMsgType type, double data1, double data2, double data3)
         {
             this.Type = type;
             this.Data1 = data1;

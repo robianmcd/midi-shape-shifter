@@ -47,7 +47,7 @@ namespace MidiShapeShifter.Mss.Mapping
         /// <param name="rangeTop">The higher number in the range.</param>
         /// <param name="rangeBottom">The lower number in the range.</param>
         /// <returns>True if <paramref name="input"/> could be inturpreted as a range of integers.</returns>
-        public static bool InterpretAsRange(string input, out int rangeTop, out int rangeBottom)
+        public static bool InterpretAsRangeOfInts(string input, out int rangeTop, out int rangeBottom)
         {
             bool validRangeStructure;
             input = input.Trim();

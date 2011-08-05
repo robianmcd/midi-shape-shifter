@@ -87,7 +87,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             int rangeBottom;
             int rangeTop;
             bool userInputIsValid = GetRangeFromUserInput(userInput, 
-                this.msgRange.MsgInfo.MinData1Value, this.msgRange.MsgInfo.MaxData1Value,
+                (int)this.msgRange.MsgInfo.MinData1Value, (int)this.msgRange.MsgInfo.MaxData1Value,
                 out rangeBottom, out rangeTop, 
                 out errorMsg);
 
@@ -103,7 +103,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             int rangeBottom;
             int rangeTop;
             bool userInputIsValid = GetRangeFromUserInput(userInput,
-                this.msgRange.MsgInfo.MinData2Value, this.msgRange.MsgInfo.MaxData2Value,
+                (int)this.msgRange.MsgInfo.MinData2Value, (int)this.msgRange.MsgInfo.MaxData2Value,
                 out rangeBottom, out rangeTop,
                 out errorMsg);
 
@@ -137,7 +137,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
                 rangeBottom = minValue;
                 validFormat = true;
             }
-            else if (EntryFieldInterpretingUtils.InterpretAsRange(userInput, out tempRangeTop, out tempRangeBottom))
+            else if (EntryFieldInterpretingUtils.InterpretAsRangeOfInts(userInput, out tempRangeTop, out tempRangeBottom))
             {
                 rangeTop = tempRangeTop; 
                 rangeBottom = tempRangeBottom;

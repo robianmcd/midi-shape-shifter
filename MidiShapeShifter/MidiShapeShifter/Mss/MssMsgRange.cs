@@ -111,7 +111,7 @@ namespace MidiShapeShifter.Mss
         ///     would be 1 but if it was a range of note numbers then minValue would be 0
         /// </param>
         /// <param name="maxValue">Highest value aloud for the type of data in the range.</param>
-        protected string GetRangeString(int rangeBottom, int rangeTop, int minValue, int maxValue)
+        protected string GetRangeString(double rangeBottom, double rangeTop, double minValue, double maxValue)
         {
             if (rangeBottom == MssMsgUtil.UNUSED_MSS_MSG_DATA ||
                    rangeTop == MssMsgUtil.UNUSED_MSS_MSG_DATA) 
