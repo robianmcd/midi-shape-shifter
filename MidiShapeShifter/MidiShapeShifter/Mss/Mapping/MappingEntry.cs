@@ -85,7 +85,12 @@ namespace MidiShapeShifter.Mss.Mapping
         /// </summary>
         public string GetReadableOverrideDuplicates()
         {
-            if (this.OverrideDuplicates == true)
+            return GetReadableBool(this.OverrideDuplicates);
+        }
+
+        protected string GetReadableBool(bool yesNoBool)
+        {
+            if (yesNoBool == true)
             {
                 return "Yes";
             }

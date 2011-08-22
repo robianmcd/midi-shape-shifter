@@ -24,24 +24,37 @@ namespace MidiShapeShifter.Mss
 
         public ReturnStatus<double[]> EvaluateMultipleInputValues(string expressionString, double[] inputValues)
         {
-            Expression expression = new Expression(expressionString, EvaluateOptions.IgnoreCase);
-            InitializeExpression(expression);
-
             double[] outputValues = new double[inputValues.Length];
-            for(int i = 0; i < inputValues.Length; i++)
+            bool outputIsValid;
+
+            //The Exporession constructor throws an exception if the expression string is empty
+            if (expressionString == "")
             {
-                ReturnStatus<double> evalReturnStatus = EvaluateExpression(expression, inputValues[i]);
-                if (evalReturnStatus.IsValid == true)
+                outputIsValid = false;
+            }
+            else
+            {
+
+                Expression expression = new Expression(expressionString, EvaluateOptions.IgnoreCase);
+                InitializeExpression(expression);
+
+                outputIsValid = true;
+                for (int i = 0; i < inputValues.Length; i++)
                 {
-                    outputValues[i] = evalReturnStatus.ReturnVal;
-                }
-                else
-                {
-                    return new ReturnStatus<double[]>(outputValues, false);
+                    ReturnStatus<double> evalReturnStatus = EvaluateExpression(expression, inputValues[i]);
+                    if (evalReturnStatus.IsValid == true)
+                    {
+                        outputValues[i] = evalReturnStatus.ReturnVal;
+                    }
+                    else
+                    {
+                        outputIsValid = false;
+                        break;
+                    }
                 }
             }
 
-            return new ReturnStatus<double[]>(outputValues, true);
+            return new ReturnStatus<double[]>(outputValues, outputIsValid);
         }
 
         private ReturnStatus<double> EvaluateExpression(Expression expression, double input)
@@ -50,7 +63,8 @@ namespace MidiShapeShifter.Mss
 
             try
             {
-                double output = (double)expression.Evaluate();
+                double output = System.Convert.ToDouble(expression.Evaluate());
+
                 return new ReturnStatus<double>(output, true);
             }
             catch (Exception exception)

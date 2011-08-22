@@ -85,6 +85,10 @@
     <Compile Include="Mss\Generator\GeneratorDlg.Designer.cs">
       <DependentUpon>GeneratorDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mss\Generator\GeneratorMappingEntryInfo.cs" />
+    <Compile Include="Mss\Generator\GeneratorMappingEntry.cs" />
+    <Compile Include="Mss\Generator\GeneratorMappingManager.cs" />
+    <Compile Include="Mss\Generator\MssEventGenerator.cs" />
     <Compile Include="Mss\ICurveShapeInfoContainer.cs" />
     <Compile Include="Mss\CurveShapeInfo.cs" />
     <Compile Include="Mss\IMssEvaluator.cs" />
@@ -113,12 +117,15 @@
     <Compile Include="Mss\MssMsgInfoTypes\Factory_MssMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\GeneratorMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\GeneratorToggleMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\GenericRelitivePosMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\MidiMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\MssMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\NoteOffMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\NoteOnMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\PitchBendMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\PolyAftertouchMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\RelBarPeriodPosMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\RelTimePeriodPosMsgInfo.cs" />
     <Compile Include="Mss\MssMsgProcessor.cs" />
     <Compile Include="Mss\MssMsgRange.cs" />
     <Compile Include="Mss\MssMsgUtil.cs" />

@@ -54,6 +54,16 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
                         msgInfo = new GeneratorToggleMsgInfo();
                         break;
                     }
+                case MssMsgType.RelBarPeriodPos:
+                    {
+                        msgInfo = new RelBarPeriodPosMsgInfo();
+                        break;
+                    }
+                case MssMsgType.RelTimePeriodPos:
+                    {
+                        msgInfo = new RelTimePeriodPosMsgInfo();
+                        break;
+                    }
                 default:
                     {
                         //Unknown type

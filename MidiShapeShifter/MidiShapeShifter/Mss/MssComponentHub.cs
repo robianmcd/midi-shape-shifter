@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.UI;
 using MidiShapeShifter.Mss.Relays;
 
@@ -27,6 +28,9 @@ namespace MidiShapeShifter.Mss
         protected SendMssEventsToHostTrigger sendEventsToHostTrigger;
         protected DryMssEventHandler dryMssEventHandler;
         protected MappingManager mappingMgr;
+
+        protected MssEventGenerator mssEventGenrator;
+        protected GeneratorMappingManager genMappingMgr;
         
         /// <summary>
         ///     Passes unprocessed MssEvents from the "Framework" namespace to the "Mss" namespace.
@@ -63,15 +67,18 @@ namespace MidiShapeShifter.Mss
 
         public MssComponentHub()
         {
-            sendEventsToHostTrigger = new SendMssEventsToHostTrigger();
-            dryMssEventHandler = new DryMssEventHandler();
-            mappingMgr = new MappingManager();
+            this.sendEventsToHostTrigger = new SendMssEventsToHostTrigger();
+            this.dryMssEventHandler = new DryMssEventHandler();
+            this.mappingMgr = new MappingManager();
 
-            _dryMssEventRelay = new DryMssEventRelay();
-            _wetMssEventRelay = new WetMssEventRelay();
-            _hostInfoRelay = new HostInfoRelay();
+            this._dryMssEventRelay = new DryMssEventRelay();
+            this._wetMssEventRelay = new WetMssEventRelay();
+            this._hostInfoRelay = new HostInfoRelay();
 
-            _mssParameters = new MssParameters();
+            this.genMappingMgr = new GeneratorMappingManager();
+            this.mssEventGenrator = new MssEventGenerator();
+
+            this._mssParameters = new MssParameters();
 
             
         }
@@ -83,8 +90,12 @@ namespace MidiShapeShifter.Mss
         {
             _mssParameters.Init();
 
-            sendEventsToHostTrigger.Init(this.HostInfoOutputPort, this.WetMssEventInputPort);
-            dryMssEventHandler.Init(this.DryMssEventOutputPort, this.WetMssEventInputPort, this.mappingMgr);
+            this.sendEventsToHostTrigger.Init(this.HostInfoOutputPort, this.WetMssEventInputPort);
+            this.dryMssEventHandler.Init(this.DryMssEventOutputPort, this.WetMssEventInputPort, this.mappingMgr);
+            this.mssEventGenrator.Init(this.HostInfoOutputPort, 
+                                       this.WetMssEventOutputPort, 
+                                       this.DryMssEventInputPort, 
+                                       this.genMappingMgr);
         }
 
         /// <summary>
@@ -119,7 +130,7 @@ namespace MidiShapeShifter.Mss
             if (this._pluginEditorView == null)
             {
                 this._pluginEditorView = new PluginEditorView();
-                this._pluginEditorView.Init(this.MssParameters, this.mappingMgr, this.DryMssEventOutputPort);
+                this._pluginEditorView.Init(this.MssParameters, this.mappingMgr, this.genMappingMgr, this.DryMssEventOutputPort);
                 this._pluginEditorView.CreateControl();
             }
         }

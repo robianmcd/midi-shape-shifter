@@ -36,7 +36,9 @@ namespace MidiShapeShifter.Mss
         /// <param name="dryMssEventOutputPort">Sends unprocessed MssEvents from the host.</param>
         /// <param name="wetMssEventInputPort">Receives processed MssEvents to be sent back to the host</param>
         /// <param name="mappingMgr">The MappingManager that will be used by mssMsgProcessor</param>
-        public void Init(IDryMssEventOutputPort dryMssEventOutputPort, IWetMssEventInputPort wetMssEventInputPort, MappingManager mappingMgr)
+        public void Init(IDryMssEventOutputPort dryMssEventOutputPort, 
+                         IWetMssEventInputPort wetMssEventInputPort, 
+                         MappingManager mappingMgr)
         {
             this.mssMsgProcessor.Init(mappingMgr);
 

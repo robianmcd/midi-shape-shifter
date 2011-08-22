@@ -30,13 +30,26 @@ namespace MidiShapeShifter.Mss.Mapping
         {
             InitializeComponent();
 
-            this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.NoteOn]);
-            this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.NoteOff]);
-            this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.CC]);
-            this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.PitchBend]);
-            this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.PolyAftertouch]);
-            this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.ChanAftertouch]);
-            this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.Generator]);
+            int CurIndex = (int)MssMsgType.NoteOn;
+            this.inTypeCombo.Items.Insert(CurIndex, MssMsg.MssMsgTypeNames[CurIndex]);
+
+            CurIndex = (int)MssMsgType.NoteOff;
+            this.inTypeCombo.Items.Insert(CurIndex, MssMsg.MssMsgTypeNames[CurIndex]);
+
+            CurIndex = (int)MssMsgType.CC;
+            this.inTypeCombo.Items.Insert(CurIndex, MssMsg.MssMsgTypeNames[CurIndex]);
+
+            CurIndex = (int)MssMsgType.PitchBend;
+            this.inTypeCombo.Items.Insert(CurIndex, MssMsg.MssMsgTypeNames[CurIndex]);
+
+            CurIndex = (int)MssMsgType.PolyAftertouch;
+            this.inTypeCombo.Items.Insert(CurIndex, MssMsg.MssMsgTypeNames[CurIndex]);
+
+            CurIndex = (int)MssMsgType.ChanAftertouch;
+            this.inTypeCombo.Items.Insert(CurIndex, MssMsg.MssMsgTypeNames[CurIndex]);
+
+            CurIndex = (int)MssMsgType.Generator;
+            this.inTypeCombo.Items.Insert(CurIndex, MssMsg.MssMsgTypeNames[CurIndex]);
         }
 
         /// <summary>
@@ -189,10 +202,13 @@ namespace MidiShapeShifter.Mss.Mapping
 
             if (allFieldsAreValid)
             {
+                CurveShapeInfo curveInfo = new CurveShapeInfo();
+                curveInfo.InitWithDefaultValues();
+
                 mappingEntry.InitAllMembers(this.inMsgMetadata.GetValidMsgRange(),
                                             this.outMsgMetadata.GetValidMsgRange(),
                                             this.inOverrideDupsCheckBox.Checked,
-                                            new CurveShapeInfo());
+                                            curveInfo);
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();

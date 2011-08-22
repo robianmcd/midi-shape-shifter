@@ -95,9 +95,12 @@
             this.generatorGroupBox = new System.Windows.Forms.GroupBox();
             this.generatorListView = new System.Windows.Forms.ListView();
             this.generaotrNameColHeader = new System.Windows.Forms.ColumnHeader();
+            this.generatorPeriodColHeader = new System.Windows.Forms.ColumnHeader();
+            this.generatorLoopColHeader = new System.Windows.Forms.ColumnHeader();
+            this.generatorIsGeneratingColHeader = new System.Windows.Forms.ColumnHeader();
             this.addGeneratorBtn = new System.Windows.Forms.Button();
             this.editGeneratorBtn = new System.Windows.Forms.Button();
-            this.removeGeneratorBtn = new System.Windows.Forms.Button();
+            this.deleteGeneratorBtn = new System.Windows.Forms.Button();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
@@ -785,6 +788,7 @@
             this.moveMappingDownBtn.Size = new System.Drawing.Size(24, 24);
             this.moveMappingDownBtn.TabIndex = 12;
             this.moveMappingDownBtn.UseVisualStyleBackColor = true;
+            this.moveMappingDownBtn.EnabledChanged += new System.EventHandler(this.moveDownBtn_EnabledChanged);
             // 
             // moveMappingUpBtn
             // 
@@ -796,6 +800,7 @@
             this.moveMappingUpBtn.Size = new System.Drawing.Size(24, 24);
             this.moveMappingUpBtn.TabIndex = 11;
             this.moveMappingUpBtn.UseVisualStyleBackColor = true;
+            this.moveMappingUpBtn.EnabledChanged += new System.EventHandler(this.moveUpBtn_EnabledChanged);
             // 
             // addMappingBtn
             // 
@@ -820,6 +825,7 @@
             this.editMappingBtn.TabIndex = 10;
             this.editMappingBtn.UseVisualStyleBackColor = true;
             this.editMappingBtn.Click += new System.EventHandler(this.editMappingBtn_Click);
+            this.editMappingBtn.EnabledChanged += new System.EventHandler(this.editBtn_EnabledChanged);
             // 
             // deleteMappingBtn
             // 
@@ -831,13 +837,15 @@
             this.deleteMappingBtn.Size = new System.Drawing.Size(24, 24);
             this.deleteMappingBtn.TabIndex = 9;
             this.deleteMappingBtn.UseVisualStyleBackColor = true;
+            this.deleteMappingBtn.Click += new System.EventHandler(this.deleteMappingBtn_Click);
+            this.deleteMappingBtn.EnabledChanged += new System.EventHandler(this.deleteBtn_EnabledChanged);
             // 
             // generatorGroupBox
             // 
             this.generatorGroupBox.Controls.Add(this.generatorListView);
             this.generatorGroupBox.Controls.Add(this.addGeneratorBtn);
             this.generatorGroupBox.Controls.Add(this.editGeneratorBtn);
-            this.generatorGroupBox.Controls.Add(this.removeGeneratorBtn);
+            this.generatorGroupBox.Controls.Add(this.deleteGeneratorBtn);
             this.generatorGroupBox.Location = new System.Drawing.Point(5, 205);
             this.generatorGroupBox.Name = "generatorGroupBox";
             this.generatorGroupBox.Size = new System.Drawing.Size(351, 133);
@@ -848,22 +856,41 @@
             // generatorListView
             // 
             this.generatorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.generaotrNameColHeader});
+            this.generaotrNameColHeader,
+            this.generatorPeriodColHeader,
+            this.generatorLoopColHeader,
+            this.generatorIsGeneratingColHeader});
             this.generatorListView.Font = new System.Drawing.Font("Arial", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.generatorListView.FullRowSelect = true;
             this.generatorListView.HideSelection = false;
-            this.generatorListView.Location = new System.Drawing.Point(8, 16);
+            this.generatorListView.Location = new System.Drawing.Point(8, 19);
             this.generatorListView.MultiSelect = false;
             this.generatorListView.Name = "generatorListView";
             this.generatorListView.Size = new System.Drawing.Size(337, 84);
             this.generatorListView.TabIndex = 13;
             this.generatorListView.UseCompatibleStateImageBehavior = false;
             this.generatorListView.View = System.Windows.Forms.View.Details;
+            this.generatorListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.generatorListView_ItemSelectionChanged);
             // 
             // generaotrNameColHeader
             // 
             this.generaotrNameColHeader.Text = "Name";
-            this.generaotrNameColHeader.Width = 52;
+            this.generaotrNameColHeader.Width = 133;
+            // 
+            // generatorPeriodColHeader
+            // 
+            this.generatorPeriodColHeader.Text = "Period";
+            this.generatorPeriodColHeader.Width = 92;
+            // 
+            // generatorLoopColHeader
+            // 
+            this.generatorLoopColHeader.Text = "Loop";
+            this.generatorLoopColHeader.Width = 50;
+            // 
+            // generatorIsGeneratingColHeader
+            // 
+            this.generatorIsGeneratingColHeader.Text = "Generating";
+            this.generatorIsGeneratingColHeader.Width = 58;
             // 
             // addGeneratorBtn
             // 
@@ -887,17 +914,20 @@
             this.editGeneratorBtn.Size = new System.Drawing.Size(24, 24);
             this.editGeneratorBtn.TabIndex = 10;
             this.editGeneratorBtn.UseVisualStyleBackColor = true;
+            this.editGeneratorBtn.Click += new System.EventHandler(this.editGeneratorBtn_Click);
+            this.editGeneratorBtn.EnabledChanged += new System.EventHandler(this.editBtn_EnabledChanged);
             // 
-            // removeGeneratorBtn
+            // deleteGeneratorBtn
             // 
-            this.removeGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDeleteBlue;
-            this.removeGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.removeGeneratorBtn.Location = new System.Drawing.Point(32, 103);
-            this.removeGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.removeGeneratorBtn.Name = "removeGeneratorBtn";
-            this.removeGeneratorBtn.Size = new System.Drawing.Size(24, 24);
-            this.removeGeneratorBtn.TabIndex = 9;
-            this.removeGeneratorBtn.UseVisualStyleBackColor = true;
+            this.deleteGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDeleteBlue;
+            this.deleteGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.deleteGeneratorBtn.Location = new System.Drawing.Point(32, 103);
+            this.deleteGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.deleteGeneratorBtn.Name = "deleteGeneratorBtn";
+            this.deleteGeneratorBtn.Size = new System.Drawing.Size(24, 24);
+            this.deleteGeneratorBtn.TabIndex = 9;
+            this.deleteGeneratorBtn.UseVisualStyleBackColor = true;
+            this.deleteGeneratorBtn.EnabledChanged += new System.EventHandler(this.deleteBtn_EnabledChanged);
             // 
             // toolStrip
             // 
@@ -1025,10 +1055,13 @@
         private System.Windows.Forms.ColumnHeader generaotrNameColHeader;
         private System.Windows.Forms.Button addGeneratorBtn;
         private System.Windows.Forms.Button editGeneratorBtn;
-        private System.Windows.Forms.Button removeGeneratorBtn;
+        private System.Windows.Forms.Button deleteGeneratorBtn;
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ColumnHeader generatorPeriodColHeader;
+        private System.Windows.Forms.ColumnHeader generatorLoopColHeader;
+        private System.Windows.Forms.ColumnHeader generatorIsGeneratingColHeader;
 
     }
 }

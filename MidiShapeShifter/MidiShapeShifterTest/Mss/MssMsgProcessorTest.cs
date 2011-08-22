@@ -23,10 +23,7 @@ namespace MidiShapeShifterTest.Mss
         static MssMsgProcessorTest()
         {
             DEFAULT_CURVE_SHAPE_INFO = new CurveShapeInfo();
-            DEFAULT_CURVE_SHAPE_INFO.EqInputMode = EquationInputMode.Text;
-            DEFAULT_CURVE_SHAPE_INFO.Equation = "x";
-            DEFAULT_CURVE_SHAPE_INFO.PresetIndex = -1;
-            DEFAULT_CURVE_SHAPE_INFO.PresetParamValues = new double[4];
+            DEFAULT_CURVE_SHAPE_INFO.InitWithDefaultValues();
         }
 
         [Test]

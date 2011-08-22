@@ -17,11 +17,11 @@ namespace MidiShapeShifter.Mss.Mapping
         ///     List that stores all of the MappingEntry objects. The mapping list box on the main GUI is basically a 
         ///     visualization of this list.
         /// </summary>
-        protected List<MappingEntry> mappingEntries = new List<MappingEntry>();
+        protected List<MappingEntry> mappingEntryList = new List<MappingEntry>();
 
         public void AddMappingEntry(MappingEntry newEntry) 
         {
-            mappingEntries.Add(newEntry);
+            mappingEntryList.Add(newEntry);
         }
 
 
@@ -31,9 +31,9 @@ namespace MidiShapeShifter.Mss.Mapping
         /// </remarks>
         public void RemoveMappingEntry(int index) 
         {
-            if (index >= 0 && index < mappingEntries.Count)
+            if (index >= 0 && index < mappingEntryList.Count)
             {
-                mappingEntries.RemoveAt(index);
+                mappingEntryList.RemoveAt(index);
             }
             else
             {
@@ -49,9 +49,9 @@ namespace MidiShapeShifter.Mss.Mapping
         /// </remarks>
         public MappingEntry GetMappingEntry(int index)
         {
-            if (index >= 0 && index < mappingEntries.Count)
+            if (index >= 0 && index < mappingEntryList.Count)
             {
-                return mappingEntries[index];
+                return mappingEntryList[index];
             }
             else
             {
@@ -63,7 +63,7 @@ namespace MidiShapeShifter.Mss.Mapping
 
         public int GetNumEntries()
         {
-            return mappingEntries.Count;
+            return mappingEntryList.Count;
         }
 
         /// <summary>
@@ -81,11 +81,11 @@ namespace MidiShapeShifter.Mss.Mapping
         /// </remarks>
         public void MoveEntryUp(int index) 
         {
-            if (index >= 1 && index < mappingEntries.Count)
+            if (index >= 1 && index < mappingEntryList.Count)
             {
-                MappingEntry tempEntry = mappingEntries[index];
-                mappingEntries[index] = mappingEntries[index - 1];
-                mappingEntries[index - 1] = tempEntry;
+                MappingEntry tempEntry = mappingEntryList[index];
+                mappingEntryList[index] = mappingEntryList[index - 1];
+                mappingEntryList[index - 1] = tempEntry;
             }
             else
             {
@@ -109,11 +109,11 @@ namespace MidiShapeShifter.Mss.Mapping
         /// </remarks>
         public void MoveEntryDown(int index)
         {
-            if (index >= 0 && index < mappingEntries.Count - 1)
+            if (index >= 0 && index < mappingEntryList.Count - 1)
             {
-                MappingEntry tempEntry = mappingEntries[index];
-                mappingEntries[index] = mappingEntries[index + 1];
-                mappingEntries[index + 1] = tempEntry;
+                MappingEntry tempEntry = mappingEntryList[index];
+                mappingEntryList[index] = mappingEntryList[index + 1];
+                mappingEntryList[index + 1] = tempEntry;
             }
             else
             {
@@ -129,9 +129,9 @@ namespace MidiShapeShifter.Mss.Mapping
         /// <returns>The ListViewItem representation of a MappingEntry</returns>
         public ListViewItem GetListViewRow(int index)
         { 
-            if (index >= 0 && index < mappingEntries.Count)
+            if (index >= 0 && index < mappingEntryList.Count)
             {
-                MappingEntry entry = mappingEntries[index];
+                MappingEntry entry = mappingEntryList[index];
                 ListViewItem mappingItem = new ListViewItem(entry.GetReadableMsgType(IoType.Input));
                 mappingItem.SubItems.Add(entry.InMssMsgRange.Data1RangeStr);
                 mappingItem.SubItems.Add(entry.InMssMsgRange.Data2RangeStr);
@@ -166,7 +166,7 @@ namespace MidiShapeShifter.Mss.Mapping
         public IEnumerable<MappingEntry> GetAssociatedEntries(MssMsg inputMsg) 
         {
             var associatedEntiresQuery =
-                from entry in mappingEntries
+                from entry in mappingEntryList
                 where entry.InMssMsgRange.MsgIsInRange(inputMsg)
                 select entry;
 

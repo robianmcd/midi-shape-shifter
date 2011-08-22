@@ -28,10 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.genNameLbl = new System.Windows.Forms.Label();
             this.genNameTextBox = new System.Windows.Forms.TextBox();
-            this.playModeLbl = new System.Windows.Forms.Label();
-            this.playModeCombo = new System.Windows.Forms.ComboBox();
             this.loopCheckBox = new System.Windows.Forms.CheckBox();
             this.periodTypeCombo = new System.Windows.Forms.ComboBox();
             this.periodTypeLbl = new System.Windows.Forms.Label();
@@ -40,6 +39,9 @@
             this.periodTextBox = new System.Windows.Forms.TextBox();
             this.cancelBtn = new System.Windows.Forms.Button();
             this.OkBtn = new System.Windows.Forms.Button();
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.generatingCheckBox = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // genNameLbl
@@ -48,7 +50,7 @@
             this.genNameLbl.Location = new System.Drawing.Point(12, 9);
             this.genNameLbl.Name = "genNameLbl";
             this.genNameLbl.Size = new System.Drawing.Size(88, 13);
-            this.genNameLbl.TabIndex = 2;
+            this.genNameLbl.TabIndex = 0;
             this.genNameLbl.Text = "Generator Name:";
             // 
             // genNameTextBox
@@ -56,36 +58,15 @@
             this.genNameTextBox.Location = new System.Drawing.Point(106, 6);
             this.genNameTextBox.Name = "genNameTextBox";
             this.genNameTextBox.Size = new System.Drawing.Size(105, 20);
-            this.genNameTextBox.TabIndex = 4;
-            // 
-            // playModeLbl
-            // 
-            this.playModeLbl.AutoSize = true;
-            this.playModeLbl.Location = new System.Drawing.Point(12, 35);
-            this.playModeLbl.Name = "playModeLbl";
-            this.playModeLbl.Size = new System.Drawing.Size(60, 13);
-            this.playModeLbl.TabIndex = 5;
-            this.playModeLbl.Text = "Play Mode:";
-            // 
-            // playModeCombo
-            // 
-            this.playModeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.playModeCombo.FormattingEnabled = true;
-            this.playModeCombo.Items.AddRange(new object[] {
-            "Always",
-            "Trigger"});
-            this.playModeCombo.Location = new System.Drawing.Point(106, 32);
-            this.playModeCombo.Name = "playModeCombo";
-            this.playModeCombo.Size = new System.Drawing.Size(105, 21);
-            this.playModeCombo.TabIndex = 10;
+            this.genNameTextBox.TabIndex = 1;
             // 
             // loopCheckBox
             // 
             this.loopCheckBox.AutoSize = true;
-            this.loopCheckBox.Location = new System.Drawing.Point(15, 113);
+            this.loopCheckBox.Location = new System.Drawing.Point(15, 87);
             this.loopCheckBox.Name = "loopCheckBox";
             this.loopCheckBox.Size = new System.Drawing.Size(50, 17);
-            this.loopCheckBox.TabIndex = 11;
+            this.loopCheckBox.TabIndex = 7;
             this.loopCheckBox.Text = "Loop";
             this.loopCheckBox.UseVisualStyleBackColor = true;
             // 
@@ -93,44 +74,46 @@
             // 
             this.periodTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.periodTypeCombo.FormattingEnabled = true;
-            this.periodTypeCombo.Location = new System.Drawing.Point(106, 59);
+            this.periodTypeCombo.Location = new System.Drawing.Point(106, 33);
             this.periodTypeCombo.Name = "periodTypeCombo";
             this.periodTypeCombo.Size = new System.Drawing.Size(105, 21);
-            this.periodTypeCombo.TabIndex = 13;
+            this.periodTypeCombo.TabIndex = 3;
+            this.periodTypeCombo.SelectedIndexChanged += new System.EventHandler(this.periodTypeCombo_SelectedIndexChanged);
             // 
             // periodTypeLbl
             // 
             this.periodTypeLbl.AutoSize = true;
-            this.periodTypeLbl.Location = new System.Drawing.Point(12, 62);
+            this.periodTypeLbl.Location = new System.Drawing.Point(12, 36);
             this.periodTypeLbl.Name = "periodTypeLbl";
             this.periodTypeLbl.Size = new System.Drawing.Size(67, 13);
-            this.periodTypeLbl.TabIndex = 12;
+            this.periodTypeLbl.TabIndex = 2;
             this.periodTypeLbl.Text = "Period Type:";
             // 
             // periodCombo
             // 
             this.periodCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.periodCombo.FormattingEnabled = true;
-            this.periodCombo.Location = new System.Drawing.Point(106, 86);
+            this.periodCombo.Location = new System.Drawing.Point(106, 60);
             this.periodCombo.Name = "periodCombo";
             this.periodCombo.Size = new System.Drawing.Size(105, 21);
-            this.periodCombo.TabIndex = 15;
+            this.periodCombo.TabIndex = 5;
             // 
             // periodLbl
             // 
             this.periodLbl.AutoSize = true;
-            this.periodLbl.Location = new System.Drawing.Point(12, 89);
+            this.periodLbl.Location = new System.Drawing.Point(12, 63);
             this.periodLbl.Name = "periodLbl";
             this.periodLbl.Size = new System.Drawing.Size(40, 13);
-            this.periodLbl.TabIndex = 14;
+            this.periodLbl.TabIndex = 4;
             this.periodLbl.Text = "Period:";
             // 
             // periodTextBox
             // 
-            this.periodTextBox.Location = new System.Drawing.Point(106, 86);
+            this.periodTextBox.Location = new System.Drawing.Point(106, 61);
             this.periodTextBox.Name = "periodTextBox";
             this.periodTextBox.Size = new System.Drawing.Size(105, 20);
-            this.periodTextBox.TabIndex = 16;
+            this.periodTextBox.TabIndex = 6;
+            this.periodTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.periodTextBox_Validating);
             // 
             // cancelBtn
             // 
@@ -139,7 +122,7 @@
             this.cancelBtn.Location = new System.Drawing.Point(106, 136);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
-            this.cancelBtn.TabIndex = 18;
+            this.cancelBtn.TabIndex = 10;
             this.cancelBtn.Text = "Cancel";
             this.cancelBtn.UseVisualStyleBackColor = true;
             // 
@@ -148,15 +131,34 @@
             this.OkBtn.Location = new System.Drawing.Point(25, 136);
             this.OkBtn.Name = "OkBtn";
             this.OkBtn.Size = new System.Drawing.Size(75, 23);
-            this.OkBtn.TabIndex = 17;
+            this.OkBtn.TabIndex = 9;
             this.OkBtn.Text = "Ok";
             this.OkBtn.UseVisualStyleBackColor = true;
+            this.OkBtn.Click += new System.EventHandler(this.OkBtn_Click);
+            // 
+            // errorProvider
+            // 
+            this.errorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errorProvider.ContainerControl = this;
+            // 
+            // generatingCheckBox
+            // 
+            this.generatingCheckBox.AutoSize = true;
+            this.generatingCheckBox.Location = new System.Drawing.Point(15, 107);
+            this.generatingCheckBox.Name = "generatingCheckBox";
+            this.generatingCheckBox.Size = new System.Drawing.Size(122, 17);
+            this.generatingCheckBox.TabIndex = 8;
+            this.generatingCheckBox.Text = "Currently Generating";
+            this.generatingCheckBox.UseVisualStyleBackColor = true;
             // 
             // GeneratorDlg
             // 
+            this.AcceptButton = this.OkBtn;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(223, 172);
+            this.CancelButton = this.cancelBtn;
+            this.ClientSize = new System.Drawing.Size(235, 172);
+            this.Controls.Add(this.generatingCheckBox);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.OkBtn);
             this.Controls.Add(this.periodTextBox);
@@ -165,8 +167,6 @@
             this.Controls.Add(this.periodTypeCombo);
             this.Controls.Add(this.periodTypeLbl);
             this.Controls.Add(this.loopCheckBox);
-            this.Controls.Add(this.playModeCombo);
-            this.Controls.Add(this.playModeLbl);
             this.Controls.Add(this.genNameTextBox);
             this.Controls.Add(this.genNameLbl);
             this.MaximizeBox = false;
@@ -174,6 +174,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Generator Editor";
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -183,8 +184,6 @@
 
         private System.Windows.Forms.Label genNameLbl;
         internal System.Windows.Forms.TextBox genNameTextBox;
-        private System.Windows.Forms.Label playModeLbl;
-        internal System.Windows.Forms.ComboBox playModeCombo;
         private System.Windows.Forms.CheckBox loopCheckBox;
         internal System.Windows.Forms.ComboBox periodTypeCombo;
         private System.Windows.Forms.Label periodTypeLbl;
@@ -193,6 +192,8 @@
         internal System.Windows.Forms.TextBox periodTextBox;
         private System.Windows.Forms.Button cancelBtn;
         private System.Windows.Forms.Button OkBtn;
+        private System.Windows.Forms.ErrorProvider errorProvider;
+        private System.Windows.Forms.CheckBox generatingCheckBox;
 
     }
 }

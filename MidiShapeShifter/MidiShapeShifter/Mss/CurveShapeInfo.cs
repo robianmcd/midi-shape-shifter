@@ -25,23 +25,30 @@ namespace MidiShapeShifter.Mss
         /// <summary>
         ///     Specifies wheather the user is entering the equation as text or using the preset knobs to generate it
         /// </summary>
-        public EquationInputMode EqInputMode = DEFAULT_EQUATION_INPUT_MODE;
+        public EquationInputMode EqInputMode;
 
         /// <summary>
         ///     Equation used to map a MSS message's data3
         /// </summary>
-        public string Equation = DEFAULT_EQUATION;
+        public string Equation;
 
         /// <summary>
         ///     Index if the selected preset
         /// </summary>
-        public int PresetIndex = DEFAULT_PRESET_INDEX;
+        public int PresetIndex;
 
         /// <summary>
         ///     Values of the preset knobs
         /// </summary>
-        public double[] PresetParamValues = new double[4] { DEFAULT_PRESET_VALUE, DEFAULT_PRESET_VALUE, 
-                                                            DEFAULT_PRESET_VALUE, DEFAULT_PRESET_VALUE };
+        public double[] PresetParamValues;
 
+        public void InitWithDefaultValues()
+        {
+            this.EqInputMode = DEFAULT_EQUATION_INPUT_MODE;
+            this.Equation = DEFAULT_EQUATION;
+            this.PresetIndex = DEFAULT_PRESET_INDEX;
+            this.PresetParamValues = new double[4] { DEFAULT_PRESET_VALUE, DEFAULT_PRESET_VALUE, 
+                                                            DEFAULT_PRESET_VALUE, DEFAULT_PRESET_VALUE };
+        }
     }
 }

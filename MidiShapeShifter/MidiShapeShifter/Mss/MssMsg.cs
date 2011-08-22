@@ -5,9 +5,23 @@ using System.Text;
 
 namespace MidiShapeShifter.Mss
 {
-    //Mss message types include a subset of midi message types as well as some messages that are generated within 
-    //Midi Shape Shifter
-    public enum MssMsgType { NoteOn, NoteOff, CC, PitchBend, PolyAftertouch, ChanAftertouch, Generator, GeneratorToggle, Unsupported };
+    //Mss message types include a subset of midi message types as well as some messages that are 
+    //generated within Midi Shape Shifter. Data1 Data2 and Data3 can have a different meaning for 
+    //each message. The following table sumerizes these meanings. NOTE- % values go from 0 to 1.
+    public enum MssMsgType { 
+    //  Type                Data1               Data2                   Data3
+        NoteOn,         //  Channel             Note number             Velocity
+        NoteOff,        //  Channel             Note number             Velocity
+        CC,             //  Channel             Controller number       Controller value
+        PitchBend,      //  Channel             N/A                     Pitch bend value
+        PolyAftertouch, //  Channel             Note number             Pressure
+        ChanAftertouch, //  Channel             N/A                     Pressure
+        Generator,      //  Generator ID        N/A                     % through period
+        GeneratorToggle,//  Generator ID        N/A                     Less then 1 toggles off
+        RelBarPeriodPos,//  N/A                 N/A                     % through beat synced period 
+        RelTimePeriodPos,// N/A                 N/A                     % through timed period 
+        Unsupported     //  N/A                 N/A                     N/A
+    };
 
 
     /// <summary>
@@ -21,7 +35,7 @@ namespace MidiShapeShifter.Mss
     {
 
 
-        public const int NUM_MSS_MSG_TYPES = 8;
+        public const int NUM_MSS_MSG_TYPES = 11;
         public static readonly List<string> MssMsgTypeNames = new List<string>(NUM_MSS_MSG_TYPES);
 
         //Static constructor
@@ -35,6 +49,11 @@ namespace MidiShapeShifter.Mss
             MssMsgTypeNames.Insert((int)MssMsgType.ChanAftertouch, "Chan Afto");
             MssMsgTypeNames.Insert((int)MssMsgType.Generator, "Generator");
             MssMsgTypeNames.Insert((int)MssMsgType.GeneratorToggle, "Gen. Toggle");
+            //The rest of these MssMsgTypeNames are not currently displayed anywhere.
+            MssMsgTypeNames.Insert((int)MssMsgType.RelBarPeriodPos, "Beat Synced Period");
+            MssMsgTypeNames.Insert((int)MssMsgType.RelTimePeriodPos, "Time based Period");
+            MssMsgTypeNames.Insert((int)MssMsgType.Unsupported, "Unsupported");
+
         }
 
         public MssMsgType Type;
