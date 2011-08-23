@@ -129,6 +129,7 @@
             // 
             this.presetParam1Knob.BackColor = System.Drawing.Color.Transparent;
             this.presetParam1Knob.DrawRatio = 0.2F;
+            this.presetParam1Knob.Enabled = false;
             this.presetParam1Knob.IndicatorColor = System.Drawing.Color.Black;
             this.presetParam1Knob.IndicatorOffset = 7F;
             this.presetParam1Knob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("presetParam1Knob.KnobCenter")));
@@ -216,6 +217,7 @@
             // 
             this.presetParam4Knob.BackColor = System.Drawing.Color.Transparent;
             this.presetParam4Knob.DrawRatio = 0.2F;
+            this.presetParam4Knob.Enabled = false;
             this.presetParam4Knob.IndicatorColor = System.Drawing.Color.Black;
             this.presetParam4Knob.IndicatorOffset = 7F;
             this.presetParam4Knob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("presetParam4Knob.KnobCenter")));
@@ -257,6 +259,7 @@
             // 
             this.presetParam3Knob.BackColor = System.Drawing.Color.Transparent;
             this.presetParam3Knob.DrawRatio = 0.2F;
+            this.presetParam3Knob.Enabled = false;
             this.presetParam3Knob.IndicatorColor = System.Drawing.Color.Black;
             this.presetParam3Knob.IndicatorOffset = 7F;
             this.presetParam3Knob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("presetParam3Knob.KnobCenter")));
@@ -298,6 +301,7 @@
             // 
             this.presetParam2Knob.BackColor = System.Drawing.Color.Transparent;
             this.presetParam2Knob.DrawRatio = 0.2F;
+            this.presetParam2Knob.Enabled = false;
             this.presetParam2Knob.IndicatorColor = System.Drawing.Color.Black;
             this.presetParam2Knob.IndicatorOffset = 7F;
             this.presetParam2Knob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("presetParam2Knob.KnobCenter")));
@@ -328,6 +332,7 @@
             // 
             // curvePresetCombo
             // 
+            this.curvePresetCombo.Enabled = false;
             this.curvePresetCombo.FormattingEnabled = true;
             this.curvePresetCombo.Location = new System.Drawing.Point(88, 56);
             this.curvePresetCombo.Name = "curvePresetCombo";
@@ -336,16 +341,17 @@
             // 
             // curveEquationTextBox
             // 
+            this.curveEquationTextBox.Enabled = false;
             this.curveEquationTextBox.Location = new System.Drawing.Point(88, 25);
             this.curveEquationTextBox.Name = "curveEquationTextBox";
             this.curveEquationTextBox.Size = new System.Drawing.Size(151, 20);
             this.curveEquationTextBox.TabIndex = 2;
-            this.curveEquationTextBox.Text = "Normalize(LFO(Sine, 1, 2))";
             this.curveEquationTextBox.TextChanged += new System.EventHandler(this.curveEquationTextBox_TextChanged);
             // 
             // curveShapePresetRadio
             // 
             this.curveShapePresetRadio.AutoSize = true;
+            this.curveShapePresetRadio.Enabled = false;
             this.curveShapePresetRadio.Location = new System.Drawing.Point(15, 60);
             this.curveShapePresetRadio.Name = "curveShapePresetRadio";
             this.curveShapePresetRadio.Size = new System.Drawing.Size(58, 17);
@@ -358,6 +364,7 @@
             // curveShapeEquationRadio
             // 
             this.curveShapeEquationRadio.AutoSize = true;
+            this.curveShapeEquationRadio.Enabled = false;
             this.curveShapeEquationRadio.Location = new System.Drawing.Point(15, 28);
             this.curveShapeEquationRadio.Name = "curveShapeEquationRadio";
             this.curveShapeEquationRadio.Size = new System.Drawing.Size(70, 17);
@@ -927,6 +934,7 @@
             this.deleteGeneratorBtn.Size = new System.Drawing.Size(24, 24);
             this.deleteGeneratorBtn.TabIndex = 9;
             this.deleteGeneratorBtn.UseVisualStyleBackColor = true;
+            this.deleteGeneratorBtn.Click += new System.EventHandler(this.deleteGeneratorBtn_Click);
             this.deleteGeneratorBtn.EnabledChanged += new System.EventHandler(this.deleteBtn_EnabledChanged);
             // 
             // toolStrip

@@ -47,14 +47,15 @@ namespace MidiShapeShifter.Mss.UI
 
         protected enum GraphableEntryType {Mapping, Generator}
 
-        protected int ActiveGraphableEntryIndex = -1;
-        protected GraphableEntryType ActiveGraphableEntryType;
+
+        protected int activeGraphableEntryIndex = -1;
+        protected GraphableEntryType activeGraphableEntryType;
 
         public MappingEntry ActiveGraphableEntry 
         {
             get
             {
-                if (this.ActiveGraphableEntryIndex < 0)
+                if (this.activeGraphableEntryIndex < 0)
                 {
                     return null;
                 }
@@ -62,13 +63,13 @@ namespace MidiShapeShifter.Mss.UI
                 {
                     MappingEntry activeEntry;
 
-                    if (this.ActiveGraphableEntryType == GraphableEntryType.Mapping) 
+                    if (this.activeGraphableEntryType == GraphableEntryType.Mapping) 
                     {
-                        activeEntry = this.mappingMgr.GetMappingEntry(this.ActiveGraphableEntryIndex);
+                        activeEntry = this.mappingMgr.GetMappingEntry(this.activeGraphableEntryIndex);
                     }
-                    else if (this.ActiveGraphableEntryType == GraphableEntryType.Generator)
+                    else if (this.activeGraphableEntryType == GraphableEntryType.Generator)
                     {
-                        activeEntry = this.genMappingMgr.GetGenMappingEntryByIndex(this.ActiveGraphableEntryIndex);
+                        activeEntry = this.genMappingMgr.GetGenMappingEntryByIndex(this.activeGraphableEntryIndex);
                     }
                     else
                     {
@@ -111,7 +112,7 @@ namespace MidiShapeShifter.Mss.UI
             this.mssParameters.ParameterMinValueChanged += new ParameterMinValueChangedEventHandler(MssParameters_MinValueChanged);
             this.mssParameters.ParameterMaxValueChanged += new ParameterMaxValueChangedEventHandler(MssParameters_MaxValueChanged);
 
-            UpdateGraphableEntryButtonsEnabledStatus();
+            ActiveGraphableEntryChanged();
         }
 
         protected void PopulateControlDictionaries()
@@ -159,17 +160,17 @@ namespace MidiShapeShifter.Mss.UI
             bool EnableMappingButtons;
             bool EnableGeneratorButtons;
 
-            if (this.ActiveGraphableEntryIndex < 0) 
+            if (this.activeGraphableEntryIndex < 0) 
             {
                 EnableMappingButtons = false;
                 EnableGeneratorButtons = false;
             }
-            else if (this.ActiveGraphableEntryType == GraphableEntryType.Mapping)
+            else if (this.activeGraphableEntryType == GraphableEntryType.Mapping)
             {
                 EnableMappingButtons = true;
                 EnableGeneratorButtons = false;
             }
-            else if (this.ActiveGraphableEntryType == GraphableEntryType.Generator)
+            else if (this.activeGraphableEntryType == GraphableEntryType.Generator)
             {
                 EnableMappingButtons = false;
                 EnableGeneratorButtons = true;
@@ -262,33 +263,63 @@ namespace MidiShapeShifter.Mss.UI
 
         protected void ActiveGraphableEntryChanged()
         {
-            if (ActiveGraphableEntry.CurveShapeInfo.EqInputMode == EquationInputMode.Text)
+            UpdateCurveShapeControls();
+            UpdateGraphableEntryButtonsEnabledStatus();
+        }
+
+        protected void UpdateCurveShapeControls()
+        {
+            if (this.ActiveGraphableEntry == null)
             {
-                this.curveShapeEquationRadio.Checked = true;
-            }
-            else if (ActiveGraphableEntry.CurveShapeInfo.EqInputMode == EquationInputMode.Preset)
-            {
-                this.curveShapePresetRadio.Checked = true;
+                this.curveShapeEquationRadio.Checked = false;
+                this.curveShapePresetRadio.Checked = false;
+
+                this.curveShapeEquationRadio.Enabled = false;
+                this.curveShapePresetRadio.Enabled = false;
+
+                this.curveEquationTextBox.Text = "";
+                this.curvePresetCombo.SelectedIndex = -1;
+
+                this.presetParam1Knob.Value = 0;
+                this.presetParam2Knob.Value = 0;
+                this.presetParam3Knob.Value = 0;
+                this.presetParam4Knob.Value = 0;
+                this.presetParam1Value.Text = "";
+                this.presetParam2Value.Text = "";
+                this.presetParam3Value.Text = "";
+                this.presetParam4Value.Text = "";
             }
             else
             {
-                //Unknown EquationInputMode
-                Debug.Assert(false);
+                this.curveShapeEquationRadio.Enabled = true;
+                this.curveShapePresetRadio.Enabled = true;
+                
+                if (this.ActiveGraphableEntry.CurveShapeInfo.EqInputMode == EquationInputMode.Text)
+                {
+                    this.curveShapeEquationRadio.Checked = true;
+                }
+                else if (this.ActiveGraphableEntry.CurveShapeInfo.EqInputMode == EquationInputMode.Preset)
+                {
+                    this.curveShapePresetRadio.Checked = true;
+                }
+                else
+                {
+                    //Unknown EquationInputMode
+                    Debug.Assert(false);
+                }
+
+                this.curveEquationTextBox.Text = ActiveGraphableEntry.CurveShapeInfo.Equation;
+                this.curvePresetCombo.SelectedIndex = ActiveGraphableEntry.CurveShapeInfo.PresetIndex;
+
+                this.presetParam1Knob.Value = (float)ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[0];
+                this.presetParam2Knob.Value = (float)ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[1];
+                this.presetParam3Knob.Value = (float)ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[2];
+                this.presetParam4Knob.Value = (float)ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[3];
+                this.presetParam1Value.Text = FormatRawParameterValue(ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[0]);
+                this.presetParam2Value.Text = FormatRawParameterValue(ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[1]);
+                this.presetParam3Value.Text = FormatRawParameterValue(ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[2]);
+                this.presetParam4Value.Text = FormatRawParameterValue(ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[3]);
             }
-
-            this.curveEquationTextBox.Text = ActiveGraphableEntry.CurveShapeInfo.Equation;
-            this.curvePresetCombo.SelectedIndex = ActiveGraphableEntry.CurveShapeInfo.PresetIndex;
-
-            this.presetParam1Knob.Value = (float)ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[0];
-            this.presetParam2Knob.Value = (float)ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[1];
-            this.presetParam3Knob.Value = (float)ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[2];
-            this.presetParam4Knob.Value = (float)ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[3];
-            this.presetParam1Value.Text = FormatRawParameterValue(ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[0]);
-            this.presetParam2Value.Text = FormatRawParameterValue(ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[1]);
-            this.presetParam3Value.Text = FormatRawParameterValue(ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[2]);
-            this.presetParam4Value.Text = FormatRawParameterValue(ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[3]);
-
-            UpdateGraphableEntryButtonsEnabledStatus();
         }
 
         protected bool IgnoreGraphableEntrySelectionChangedHandler = false;
@@ -308,6 +339,7 @@ namespace MidiShapeShifter.Mss.UI
                 IgnoreGraphableEntrySelectionChangedHandler = true;
                 eventArgs.Item.Selected = true;
                 IgnoreGraphableEntrySelectionChangedHandler = false;
+
                 return;
             }
             else
@@ -334,8 +366,8 @@ namespace MidiShapeShifter.Mss.UI
                 IgnoreGraphableEntrySelectionChangedHandler = false;
             }
 
-            ActiveGraphableEntryType = mappingType;
-            ActiveGraphableEntryIndex = modifiedListView.SelectedItems[0].Index;
+            activeGraphableEntryType = mappingType;
+            activeGraphableEntryIndex = modifiedListView.SelectedItems[0].Index;
             ActiveGraphableEntryChanged();
         }
 
@@ -350,8 +382,8 @@ namespace MidiShapeShifter.Mss.UI
 
                 int newestEntryIndex = this.mappingMgr.GetNumEntries() - 1;
 
-                this.ActiveGraphableEntryType = GraphableEntryType.Mapping;
-                this.ActiveGraphableEntryIndex = newestEntryIndex;
+                this.activeGraphableEntryType = GraphableEntryType.Mapping;
+                this.activeGraphableEntryIndex = newestEntryIndex;
 
                 this.mappingListView.Items.Add(this.mappingMgr.GetListViewRow(newestEntryIndex));
                 this.mappingListView.Items[newestEntryIndex].Selected = true;
@@ -360,7 +392,7 @@ namespace MidiShapeShifter.Mss.UI
 
         private void editMappingBtn_Click(object sender, System.EventArgs e)
         {
-            if (ActiveGraphableEntry == null || this.ActiveGraphableEntryType != GraphableEntryType.Mapping)
+            if (ActiveGraphableEntry == null || this.activeGraphableEntryType != GraphableEntryType.Mapping)
             {
                 //The edit button should be disabled if there is no ActiveMapping or if the active 
                 //mapping is not in the mapping list view.
@@ -378,6 +410,32 @@ namespace MidiShapeShifter.Mss.UI
             }
         }
 
+        private void deleteMappingBtn_Click(object sender, EventArgs e)
+        {
+            if (ActiveGraphableEntry == null ||
+                this.activeGraphableEntryType != GraphableEntryType.Mapping)
+            {
+                //The delete button should be disabled if there is no ActiveMapping or if the 
+                //active mapping is not in the mapping list view.
+                Debug.Assert(false);
+                return;
+            }
+
+            this.mappingMgr.RemoveMappingEntry(this.activeGraphableEntryIndex);
+            this.mappingListView.Items[this.activeGraphableEntryIndex].Remove();
+
+            if (this.mappingListView.Items.Count > this.activeGraphableEntryIndex)
+            {
+                //don't need to call ActiveGraphableEntryChanged() because selecting an item 
+                //will trigger it.
+                this.mappingListView.Items[this.activeGraphableEntryIndex].Selected = true;
+            }
+            else
+            {
+                this.activeGraphableEntryIndex = -1;
+                ActiveGraphableEntryChanged();
+            }
+        }
 
         private void mappingListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
@@ -396,17 +454,17 @@ namespace MidiShapeShifter.Mss.UI
                 //Creates a new mapping entry, adds it the the generator mapping manager and sets
                 //it as the active mapping
                 this.genMappingMgr.CreateAndAddEntryFromGenInfo(genDlg.GenInfoResult);
-                this.ActiveGraphableEntryType = GraphableEntryType.Generator;
-                this.ActiveGraphableEntryIndex = this.genMappingMgr.GetNumEntries() - 1;
+                this.activeGraphableEntryType = GraphableEntryType.Generator;
+                this.activeGraphableEntryIndex = this.genMappingMgr.GetNumEntries() - 1;
 
-                this.generatorListView.Items.Add(this.genMappingMgr.GetListViewRow(this.ActiveGraphableEntryIndex));
-                this.generatorListView.Items[this.ActiveGraphableEntryIndex].Selected = true;
+                this.generatorListView.Items.Add(this.genMappingMgr.GetListViewRow(this.activeGraphableEntryIndex));
+                this.generatorListView.Items[this.activeGraphableEntryIndex].Selected = true;
             }
         }
 
         private void editGeneratorBtn_Click(object sender, EventArgs e)
         {
-            if (ActiveGraphableEntry == null || this.ActiveGraphableEntryType != GraphableEntryType.Generator)
+            if (ActiveGraphableEntry == null || this.activeGraphableEntryType != GraphableEntryType.Generator)
             {
                 //The edit button should be disabled if there is no ActiveMapping or if the active 
                 //mapping is not in the generator list view.
@@ -414,7 +472,7 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
             GeneratorMappingEntry activeGenMapping = 
-                this.genMappingMgr.GetGenMappingEntryByIndex(this.ActiveGraphableEntryIndex);
+                this.genMappingMgr.GetGenMappingEntryByIndex(this.activeGraphableEntryIndex);
 
             GeneratorDlg genDlg = new GeneratorDlg();
             genDlg.Init(activeGenMapping.GeneratorInfo);
@@ -487,23 +545,6 @@ namespace MidiShapeShifter.Mss.UI
 
         private void CurveShapeRadio_CheckedChanged(object sender, System.EventArgs e)
         {
-            EquationInputMode newInputMode;
-
-            if (this.curveShapeEquationRadio.Checked == true)
-            {
-                newInputMode = EquationInputMode.Text;
-            }
-            else if (this.curveShapePresetRadio.Checked == true)
-            {
-                newInputMode = EquationInputMode.Preset;
-            }
-            else
-            {
-                //Unknown input mode
-                Debug.Assert(false);
-                return;
-            }
-
             bool equationInputMode = this.curveShapeEquationRadio.Checked;
 
             curveEquationTextBox.Enabled = equationInputMode;
@@ -518,7 +559,27 @@ namespace MidiShapeShifter.Mss.UI
             presetParam4Knob.Enabled = presetInputMode;
 
 
-            ActiveGraphableEntry.CurveShapeInfo.EqInputMode = newInputMode;
+            if (this.ActiveGraphableEntry != null)
+            {
+                EquationInputMode newInputMode;
+
+                if (this.curveShapeEquationRadio.Checked == true)
+                {
+                    newInputMode = EquationInputMode.Text;
+                }
+                else if (this.curveShapePresetRadio.Checked == true)
+                {
+                    newInputMode = EquationInputMode.Preset;
+                }
+                else
+                {
+                    //Unknown input mode
+                    Debug.Assert(false);
+                    return;
+                }
+
+                ActiveGraphableEntry.CurveShapeInfo.EqInputMode = newInputMode;
+            }
         }
 
         private void curveEquationTextBox_TextChanged(object sender, System.EventArgs e)
@@ -538,7 +599,11 @@ namespace MidiShapeShifter.Mss.UI
             }
             else
             {
-
+                if (this.ActiveGraphableEntry == null)
+                {
+                    GetMainCurve().Points = new PointPairList();
+                    this.mainGraphControl.Invalidate();
+                }
             }
 
         }
@@ -582,11 +647,6 @@ namespace MidiShapeShifter.Mss.UI
         private void generatorListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             GraphableEntrySelectionChanged((ListView)sender, GraphableEntryType.Generator, e);
-        }
-
-        private void deleteMappingBtn_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void deleteBtn_EnabledChanged(object sender, EventArgs e)
@@ -650,6 +710,33 @@ namespace MidiShapeShifter.Mss.UI
             {
                 moveDownBtn.BackgroundImage =
                     global::MidiShapeShifter.Properties.Resources.imgDownGrey;
+            }
+        }
+
+        private void deleteGeneratorBtn_Click(object sender, EventArgs e)
+        {
+            if (ActiveGraphableEntry == null ||
+                this.activeGraphableEntryType != GraphableEntryType.Generator)
+            {
+                //The delete button should be disabled if there is no ActiveMapping or if the 
+                //active mapping is not in the mapping list view.
+                Debug.Assert(false);
+                return;
+            }
+
+            this.genMappingMgr.RemoveGenMappingEntry(this.activeGraphableEntryIndex);
+            this.generatorListView.Items[this.activeGraphableEntryIndex].Remove();
+
+            if (this.generatorListView.Items.Count > this.activeGraphableEntryIndex)
+            {
+                //don't need to call ActiveGraphableEntryChanged() because selecting an item 
+                //will trigger it.
+                this.generatorListView.Items[this.activeGraphableEntryIndex].Selected = true;
+            }
+            else
+            {
+                this.activeGraphableEntryIndex = -1;
+                ActiveGraphableEntryChanged();
             }
         }
     }
