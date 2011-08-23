@@ -182,11 +182,12 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
-            //TODO: Enable.disable buttons
             this.deleteMappingBtn.Enabled = EnableMappingButtons;
             this.editMappingBtn.Enabled = EnableMappingButtons;
-            this.moveMappingUpBtn.Enabled = EnableMappingButtons;
-            this.moveMappingDownBtn.Enabled = EnableMappingButtons;
+            this.moveMappingUpBtn.Enabled = EnableMappingButtons && 
+                    this.activeGraphableEntryIndex > 0;
+            this.moveMappingDownBtn.Enabled = EnableMappingButtons && 
+                    this.activeGraphableEntryIndex < this.mappingMgr.GetNumEntries() - 1;
 
             this.deleteGeneratorBtn.Enabled = EnableGeneratorButtons;
             this.editGeneratorBtn.Enabled = EnableGeneratorButtons;
@@ -194,13 +195,6 @@ namespace MidiShapeShifter.Mss.UI
 
         protected void RefreshMappingListView()
         {
-            int selectionBackup = -1;
-
-            if (this.mappingListView.SelectedIndices.Count > 0) 
-            {
-                selectionBackup = this.mappingListView.SelectedIndices[0];
-            }
-
             this.mappingListView.Items.Clear();
 
             for (int i = 0; i < this.mappingMgr.GetNumEntries(); i++)
@@ -208,9 +202,9 @@ namespace MidiShapeShifter.Mss.UI
                 this.mappingListView.Items.Add(this.mappingMgr.GetListViewRow(i));
             }
 
-            if (selectionBackup > -1)
+            if (this.activeGraphableEntryIndex > -1)
             {
-                this.mappingListView.Items[selectionBackup].Selected = true;
+                this.mappingListView.Items[this.activeGraphableEntryIndex].Selected = true;
             }
         }
 
@@ -394,7 +388,7 @@ namespace MidiShapeShifter.Mss.UI
         {
             if (ActiveGraphableEntry == null || this.activeGraphableEntryType != GraphableEntryType.Mapping)
             {
-                //The edit button should be disabled if there is no ActiveMapping or if the active 
+                //The edit button should be disabled if there is no ActiveGraphableEntry or if the active 
                 //mapping is not in the mapping list view.
                 Debug.Assert(false);
                 return;
@@ -415,7 +409,7 @@ namespace MidiShapeShifter.Mss.UI
             if (ActiveGraphableEntry == null ||
                 this.activeGraphableEntryType != GraphableEntryType.Mapping)
             {
-                //The delete button should be disabled if there is no ActiveMapping or if the 
+                //The delete button should be disabled if there is no ActiveGraphableEntry or if the 
                 //active mapping is not in the mapping list view.
                 Debug.Assert(false);
                 return;
@@ -466,7 +460,7 @@ namespace MidiShapeShifter.Mss.UI
         {
             if (ActiveGraphableEntry == null || this.activeGraphableEntryType != GraphableEntryType.Generator)
             {
-                //The edit button should be disabled if there is no ActiveMapping or if the active 
+                //The edit button should be disabled if there is no ActiveGraphableEntry or if the active 
                 //mapping is not in the generator list view.
                 Debug.Assert(false);
                 return;
@@ -718,7 +712,7 @@ namespace MidiShapeShifter.Mss.UI
             if (ActiveGraphableEntry == null ||
                 this.activeGraphableEntryType != GraphableEntryType.Generator)
             {
-                //The delete button should be disabled if there is no ActiveMapping or if the 
+                //The delete button should be disabled if there is no ActiveGraphableEntry or if the 
                 //active mapping is not in the mapping list view.
                 Debug.Assert(false);
                 return;
@@ -738,6 +732,42 @@ namespace MidiShapeShifter.Mss.UI
                 this.activeGraphableEntryIndex = -1;
                 ActiveGraphableEntryChanged();
             }
+        }
+
+        private void moveMappingUpBtn_Click(object sender, EventArgs e)
+        {
+            if (ActiveGraphableEntry == null ||
+                this.activeGraphableEntryType != GraphableEntryType.Mapping ||
+                this.activeGraphableEntryIndex <= 0)
+            {
+                //The move up button should be disabled if there is no ActiveGraphableEntry, 
+                //if the ActiveGraphableEntry is not in the mapping list view or if the 
+                //ActiveGraphableEntry cannot be moved up.
+                Debug.Assert(false);
+                return;
+            }
+
+            this.mappingMgr.MoveEntryUp(this.activeGraphableEntryIndex);
+            this.activeGraphableEntryIndex--;
+            RefreshMappingListView();
+        }
+
+        private void moveMappingDownBtn_Click(object sender, EventArgs e)
+        {
+            if (ActiveGraphableEntry == null ||
+                this.activeGraphableEntryType != GraphableEntryType.Mapping ||
+                this.activeGraphableEntryIndex >= this.mappingMgr.GetNumEntries() - 1)
+            {
+                //The move up button should be disabled if there is no ActiveGraphableEntry, 
+                //if the ActiveGraphableEntry is not in the mapping list view or if the 
+                //ActiveGraphableEntry cannot be moved down.
+                Debug.Assert(false);
+                return;
+            }
+
+            this.mappingMgr.MoveEntryDown(this.activeGraphableEntryIndex);
+            this.activeGraphableEntryIndex++;
+            RefreshMappingListView();
         }
     }
 }

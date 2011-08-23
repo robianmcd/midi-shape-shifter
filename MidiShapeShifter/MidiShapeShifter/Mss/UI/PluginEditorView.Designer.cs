@@ -795,6 +795,7 @@
             this.moveMappingDownBtn.Size = new System.Drawing.Size(24, 24);
             this.moveMappingDownBtn.TabIndex = 12;
             this.moveMappingDownBtn.UseVisualStyleBackColor = true;
+            this.moveMappingDownBtn.Click += new System.EventHandler(this.moveMappingDownBtn_Click);
             this.moveMappingDownBtn.EnabledChanged += new System.EventHandler(this.moveDownBtn_EnabledChanged);
             // 
             // moveMappingUpBtn
@@ -807,6 +808,7 @@
             this.moveMappingUpBtn.Size = new System.Drawing.Size(24, 24);
             this.moveMappingUpBtn.TabIndex = 11;
             this.moveMappingUpBtn.UseVisualStyleBackColor = true;
+            this.moveMappingUpBtn.Click += new System.EventHandler(this.moveMappingUpBtn_Click);
             this.moveMappingUpBtn.EnabledChanged += new System.EventHandler(this.moveUpBtn_EnabledChanged);
             // 
             // addMappingBtn
