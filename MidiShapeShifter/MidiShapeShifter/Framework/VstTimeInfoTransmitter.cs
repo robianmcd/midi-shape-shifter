@@ -30,6 +30,8 @@ namespace MidiShapeShifter.Framework
             Debug.Assert((timeInfo.Flags & RequiredTimeInfoFlags) == RequiredTimeInfoFlags);
 
             this.hostInfoInputPort.ReceiveSampleRate(timeInfo.SampleRate);
+            this.hostInfoInputPort.ReceiveTempo(timeInfo.Tempo);
+
         }
     }
 }

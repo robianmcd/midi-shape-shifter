@@ -4,11 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
+using MidiShapeShifter.Mss.Generator;
+
 namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 {
-    static class Factory_MssMsgRangeEntryMetadata
+    public class Factory_MssMsgRangeEntryMetadata
     {
-        public static MssMsgRangeEntryMetadata Create(MssMsgType type)
+        protected IGeneratorMappingManager genMappingMgr;
+
+        public void Init(IGeneratorMappingManager genMappingMgr)
+        {
+            this.genMappingMgr = genMappingMgr;
+        }
+
+        public MssMsgRangeEntryMetadata Create(MssMsgType type)
         {
             MssMsgRangeEntryMetadata msgMetadata;
 
@@ -46,12 +55,18 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
                     }
                 case MssMsgType.Generator:
                     {
-                        msgMetadata = new GeneratorMsgRangeEntryMetadata();
+                        GeneratorMsgRangeEntryMetadata genMsgMetadata = 
+                                new GeneratorMsgRangeEntryMetadata();
+                        genMsgMetadata.Init(this.genMappingMgr);
+                        msgMetadata = genMsgMetadata;
                         break;
                     }
                 case MssMsgType.GeneratorToggle:
                     {
-                        msgMetadata = new GeneratorToggleMsgRangeEntryMetadata();
+                        GeneratorToggleMsgRangeEntryMetadata genToggleMsgMetadata =
+                                new GeneratorToggleMsgRangeEntryMetadata();
+                        genToggleMsgMetadata.Init(this.genMappingMgr);
+                        msgMetadata = genToggleMsgMetadata;
                         break;
                     }
                 default:

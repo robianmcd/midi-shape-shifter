@@ -13,45 +13,45 @@ namespace MidiShapeShifter.Mss.Generator
     // TODO: comment this calss
     public partial class GeneratorDlg : Form
     {
-        public GeneratorMappingEntryInfo GenInfoResult { get; private set; }
+        public GenEntryConfigInfo GenInfoResult { get; private set; }
 
         public GeneratorDlg()
         {
             InitializeComponent();
 
-            GenInfoResult = new GeneratorMappingEntryInfo();
+            GenInfoResult = new GenEntryConfigInfo();
 
-            foreach (string PeriodTypeName in GeneratorMappingEntryInfo.GenPeriodTypeNames)
+            foreach (string PeriodTypeName in GenEntryConfigInfo.GenPeriodTypeNames)
             {
                 this.periodTypeCombo.Items.Add(PeriodTypeName);
             }
 
-            foreach (string BarsPeriodName in GeneratorMappingEntryInfo.GenBarsPeriodNames)
+            foreach (string BarsPeriodName in GenEntryConfigInfo.GenBarsPeriodNames)
             {
                 this.periodCombo.Items.Add(BarsPeriodName);
             }
         }
 
-        public void Init(GeneratorMappingEntryInfo genInfo)
+        public void Init(GenEntryConfigInfo genInfo)
         {
             this.GenInfoResult.Id = genInfo.Id;
             this.genNameTextBox.Text = genInfo.Name;
-            this.periodTypeCombo.Text = GeneratorMappingEntryInfo.GenPeriodTypeNames[(int)genInfo.PeriodType];
-            this.periodTextBox.Text = genInfo.TimePeriod.ToString();
-            this.periodCombo.Text = GeneratorMappingEntryInfo.GenBarsPeriodNames[(int)genInfo.BarsPeriod];
+            this.periodTypeCombo.Text = GenEntryConfigInfo.GenPeriodTypeNames[(int)genInfo.PeriodType];
+            this.periodTextBox.Text = genInfo.TimePeriodInMs.ToString();
+            this.periodCombo.Text = GenEntryConfigInfo.GenBarsPeriodNames[(int)genInfo.BarsPeriod];
             this.loopCheckBox.Checked = genInfo.Loop;
-            this.generatingCheckBox.Checked = genInfo.IsGenerating;
+            this.enabledCheckBox.Checked = genInfo.Enabled;
         }
 
         protected GenPeriodType GetSelectedPeriodType()
         {
-            return (GenPeriodType)GeneratorMappingEntryInfo.GenPeriodTypeNames.FindIndex(
+            return (GenPeriodType)GenEntryConfigInfo.GenPeriodTypeNames.FindIndex(
                 periodTypeName => periodTypeName.Equals(this.periodTypeCombo.Text));
         }
 
         protected GenBarsPeriod GetSelectedBarsPeriod()
         {
-            return (GenBarsPeriod)GeneratorMappingEntryInfo.GenBarsPeriodNames.FindIndex(
+            return (GenBarsPeriod)GenEntryConfigInfo.GenBarsPeriodNames.FindIndex(
                 BarsPeriodName => BarsPeriodName.Equals(this.periodCombo.Text));
         }
 
@@ -73,7 +73,7 @@ namespace MidiShapeShifter.Mss.Generator
         private void periodTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             GenPeriodType SelectedPeriodType = GetSelectedPeriodType();
-            if (SelectedPeriodType == GenPeriodType.Beats) 
+            if (SelectedPeriodType == GenPeriodType.BeatSynced) 
             {
                 this.periodCombo.Visible = true;
                 this.periodTextBox.Visible = false;
@@ -109,7 +109,7 @@ namespace MidiShapeShifter.Mss.Generator
                 }
                 else
                 {
-                    this.GenInfoResult.TimePeriod = GeneratorMappingEntryInfo.DEFAULT_TIME_PERIOD;
+                    this.GenInfoResult.TimePeriodInMs = GenEntryConfigInfo.DEFAULT_TIME_PERIOD;
                 }
             }
             else
@@ -117,14 +117,14 @@ namespace MidiShapeShifter.Mss.Generator
                 int periodSize;
                 //this should always be able to be parsed as an int because ValidatePeriodTextBox() returned true.
                 int.TryParse(this.periodTextBox.Text.Trim(), out periodSize);
-                this.GenInfoResult.TimePeriod = periodSize;
+                this.GenInfoResult.TimePeriodInMs = periodSize;
             }
 
             this.GenInfoResult.Name = this.genNameTextBox.Text;
             this.GenInfoResult.PeriodType = SelectedPeriodType;
             this.GenInfoResult.BarsPeriod = GetSelectedBarsPeriod();
             this.GenInfoResult.Loop = this.loopCheckBox.Checked;
-            this.GenInfoResult.IsGenerating = this.generatingCheckBox.Checked;
+            this.GenInfoResult.Enabled = this.enabledCheckBox.Checked;
 
             this.DialogResult = DialogResult.OK;
             this.Close();

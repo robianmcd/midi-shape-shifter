@@ -17,7 +17,7 @@ namespace MidiShapeShifter.Mss
 
         public void Init(IHostInfoOutputPort hostInfoOutputPort, IWetMssEventInputPort wetMssEventInputPort)
         { 
-            hostInfoOutputPort.ProcessingCycleEndTimestampRecieved += new ProcessingCycleEndTimestampRecievedEventHandler(hostInfoOutputPort_ProcessingCycleEndTimestampRecieved);
+            hostInfoOutputPort.ProcessingCycleEnd += new ProcessingCycleEndEventHandler(hostInfoOutputPort_ProcessingCycleEndTimestampRecieved);
             this.wetMssEventInputPort = wetMssEventInputPort;
         }
 

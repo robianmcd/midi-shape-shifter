@@ -41,17 +41,17 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 
         public override string ConvertData1ToString(double Data1)
         {
-            throw new NotImplementedException();
+            return Data1.ToString();
         }
 
         public override string ConvertData2ToString(double Data2)
         {
-            throw new NotImplementedException();
+            return Data2.ToString();
         }
 
         public override string ConvertData3ToString(double Data3)
         {
-            throw new NotImplementedException();
+            return Data3.ToString();
         }
     }
 }

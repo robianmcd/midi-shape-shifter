@@ -97,7 +97,7 @@
             this.generaotrNameColHeader = new System.Windows.Forms.ColumnHeader();
             this.generatorPeriodColHeader = new System.Windows.Forms.ColumnHeader();
             this.generatorLoopColHeader = new System.Windows.Forms.ColumnHeader();
-            this.generatorIsGeneratingColHeader = new System.Windows.Forms.ColumnHeader();
+            this.generatorEnabledColHeader = new System.Windows.Forms.ColumnHeader();
             this.addGeneratorBtn = new System.Windows.Forms.Button();
             this.editGeneratorBtn = new System.Windows.Forms.Button();
             this.deleteGeneratorBtn = new System.Windows.Forms.Button();
@@ -868,7 +868,7 @@
             this.generaotrNameColHeader,
             this.generatorPeriodColHeader,
             this.generatorLoopColHeader,
-            this.generatorIsGeneratingColHeader});
+            this.generatorEnabledColHeader});
             this.generatorListView.Font = new System.Drawing.Font("Arial", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.generatorListView.FullRowSelect = true;
             this.generatorListView.HideSelection = false;
@@ -896,10 +896,10 @@
             this.generatorLoopColHeader.Text = "Loop";
             this.generatorLoopColHeader.Width = 50;
             // 
-            // generatorIsGeneratingColHeader
+            // generatorEnabledColHeader
             // 
-            this.generatorIsGeneratingColHeader.Text = "Generating";
-            this.generatorIsGeneratingColHeader.Width = 58;
+            this.generatorEnabledColHeader.Text = "Enabled";
+            this.generatorEnabledColHeader.Width = 58;
             // 
             // addGeneratorBtn
             // 
@@ -1071,7 +1071,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ColumnHeader generatorPeriodColHeader;
         private System.Windows.Forms.ColumnHeader generatorLoopColHeader;
-        private System.Windows.Forms.ColumnHeader generatorIsGeneratingColHeader;
+        private System.Windows.Forms.ColumnHeader generatorEnabledColHeader;
 
     }
 }

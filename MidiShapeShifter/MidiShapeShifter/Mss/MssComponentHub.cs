@@ -8,9 +8,11 @@ using System.Drawing;
 using System.Windows.Forms;
 
 using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes;
 using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.UI;
 using MidiShapeShifter.Mss.Relays;
+using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mss
 {
@@ -56,6 +58,9 @@ namespace MidiShapeShifter.Mss
         protected MssParameters _mssParameters;
         public MssParameters MssParameters { get { return this._mssParameters; } }
 
+        protected Factory_MssMsgRangeEntryMetadata msgEntryMetadataFactory;
+        protected IFactory_MssMsgInfo msgInfoFactory;
+
         protected PluginEditorView _pluginEditorView;
         public PluginEditorView PluginEditorView { 
             get 
@@ -80,7 +85,8 @@ namespace MidiShapeShifter.Mss
 
             this._mssParameters = new MssParameters();
 
-            
+            this.msgEntryMetadataFactory = new Factory_MssMsgRangeEntryMetadata();
+            this.msgInfoFactory = new Factory_MssMsgInfo();
         }
 
         /// <summary>
@@ -88,7 +94,10 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         public void Init()
         {
-            _mssParameters.Init();
+            this.msgEntryMetadataFactory.Init(this.genMappingMgr);
+            this.msgInfoFactory.Init(this.genMappingMgr);
+
+            this._mssParameters.Init();
 
             this.sendEventsToHostTrigger.Init(this.HostInfoOutputPort, this.WetMssEventInputPort);
             this.dryMssEventHandler.Init(this.DryMssEventOutputPort, this.WetMssEventInputPort, this.mappingMgr);

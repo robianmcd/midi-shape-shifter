@@ -6,7 +6,10 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
+
 using MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes;
+using MidiShapeShifter.Mss.MssMsgInfoTypes;
+using MidiShapeShifter.Mss.Generator;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -15,6 +18,9 @@ namespace MidiShapeShifter.Mss.Mapping
     /// </summary>
     public partial class MappingDlg : Form
     {
+
+        public Factory_MssMsgRangeEntryMetadata MsgMetadataFactory;
+        public IFactory_MssMsgInfo MsgInfoFactory;
 
         protected MssMsgRangeEntryMetadata inMsgMetadata;
         protected MssMsgRangeEntryMetadata outMsgMetadata;
@@ -50,6 +56,8 @@ namespace MidiShapeShifter.Mss.Mapping
 
             CurIndex = (int)MssMsgType.Generator;
             this.inTypeCombo.Items.Insert(CurIndex, MssMsg.MssMsgTypeNames[CurIndex]);
+
+            MsgMetadataFactory = new Factory_MssMsgRangeEntryMetadata();
         }
 
         /// <summary>
@@ -59,9 +67,14 @@ namespace MidiShapeShifter.Mss.Mapping
         /// <param name="useMappingEntryForDefaultValues"> 
         ///     If true, use the data in <paramref name="mappingEntry"/> to populate the entry fields.
         /// </param>
-        public void Init(MappingEntry mappingEntry, bool useMappingEntryForDefaultValues)
+        public void Init(MappingEntry mappingEntry, 
+                         bool useMappingEntryForDefaultValues, 
+                         Factory_MssMsgRangeEntryMetadata msgMetadataFactory,
+                         IFactory_MssMsgInfo msgInfoFactory)
         {
             this.mappingEntry = mappingEntry;
+            this.MsgMetadataFactory = msgMetadataFactory;
+            this.MsgInfoFactory = msgInfoFactory;
 
             if (useMappingEntryForDefaultValues == true)
             {
@@ -166,7 +179,7 @@ namespace MidiShapeShifter.Mss.Mapping
             if (this.outSameAsInCheckBox.Checked == true)
             {
                 //we cannot just set the outTypeCombo's selected index to the same as in inTypeCombo's selected index
-                //because they may will not contain all of the same items.
+                //because they may not contain all of the same items.
                 MssMsgType inType = GetMessageTypeFromCombo((ComboBox)sender);
                 string inTypeName = MssMsg.MssMsgTypeNames[(int)inType];
                 this.outTypeCombo.SelectedIndex = this.outTypeCombo.FindStringExact(inTypeName);
@@ -184,9 +197,9 @@ namespace MidiShapeShifter.Mss.Mapping
         {
             MssMsgType msgType = GetMessageTypeFromCombo(msgTypeCombo);
 
-            msgMetadata = Factory_MssMsgRangeEntryMetadata.Create(msgType);
+            msgMetadata = MsgMetadataFactory.Create(msgType);
 
-            msgMetadata.Init(this, ioCategory);
+            msgMetadata.AttachToDlg(this, ioCategory);
         }
 
         private void OkBtn_Click(object sender, EventArgs e)
@@ -205,8 +218,8 @@ namespace MidiShapeShifter.Mss.Mapping
                 CurveShapeInfo curveInfo = new CurveShapeInfo();
                 curveInfo.InitWithDefaultValues();
 
-                mappingEntry.InitAllMembers(this.inMsgMetadata.GetValidMsgRange(),
-                                            this.outMsgMetadata.GetValidMsgRange(),
+                mappingEntry.InitAllMembers(this.inMsgMetadata.CreateValidMsgRange(),
+                                            this.outMsgMetadata.CreateValidMsgRange(),
                                             this.inOverrideDupsCheckBox.Checked,
                                             curveInfo);
 

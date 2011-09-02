@@ -4,11 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
+using MidiShapeShifter.Mss.Generator;
+
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    public class Factory_MssMsgInfo
+    public class Factory_MssMsgInfo : MidiShapeShifter.Mss.MssMsgInfoTypes.IFactory_MssMsgInfo
     {
-        public static MssMsgInfo Create(MssMsgType msgInfoType)
+        protected IGeneratorMappingManager genMappingMgr;
+
+        public void Init(IGeneratorMappingManager genMappingMgr)
+        {
+            this.genMappingMgr = genMappingMgr;
+        }
+
+        public MssMsgInfo Create(MssMsgType msgInfoType)
         {
             MssMsgInfo msgInfo;
 
@@ -46,12 +55,16 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
                     }
                 case MssMsgType.Generator:
                     {
-                        msgInfo = new GeneratorMsgInfo();
+                        GeneratorMsgInfo genMsgInfo = new GeneratorMsgInfo();
+                        genMsgInfo.Init(this.genMappingMgr);
+                        msgInfo = genMsgInfo;
                         break;
                     }
                 case MssMsgType.GeneratorToggle:
                     {
-                        msgInfo = new GeneratorToggleMsgInfo();
+                        GeneratorToggleMsgInfo genToggleMsgInfo = new GeneratorToggleMsgInfo();
+                        genToggleMsgInfo.Init(this.genMappingMgr);
+                        msgInfo = genToggleMsgInfo;
                         break;
                     }
                 case MssMsgType.RelBarPeriodPos:

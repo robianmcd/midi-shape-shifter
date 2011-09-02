@@ -19,7 +19,7 @@ namespace MidiShapeShifter.Mss
     /// </summary>
     public class MssMsgProcessor
     {
-        protected IMappingManager mappingMgr;
+        protected IGraphableMappingManager mappingMgr;
 
         protected IMssEvaluator evaluator;
 
@@ -28,7 +28,7 @@ namespace MidiShapeShifter.Mss
             this.evaluator = IocMgr.Kernal.Get<IMssEvaluator>();
         }
 
-        public void Init(IMappingManager mappingMgr)
+        public void Init(IGraphableMappingManager mappingMgr)
         {
             Debug.Assert(mappingMgr != null);
 

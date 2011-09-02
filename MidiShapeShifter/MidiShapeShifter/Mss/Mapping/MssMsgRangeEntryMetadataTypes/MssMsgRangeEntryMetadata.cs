@@ -110,20 +110,17 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         /// </summary>
         /// <param name="mappingDlg">The mapping dialog this is associated with</param>
         /// <param name="io">Specifies wheather this associated with the input or output entry fields.</param>
-        public void Init(MappingDlg mappingDlg, IoType io)
+        public void AttachToDlg(MappingDlg mappingDlg, IoType io)
         {
             this.msgRange = new MssMsgRange();
+            this.msgRange.Init(mappingDlg.MsgInfoFactory);
             this.msgRange.MsgType = this.MsgType;
 
             this.ioCatagory = io;
             this.mappingDlg = mappingDlg;
 
-            SetMappingDlgEntryFieldsDefaultProperties();
-            SetMappingDlgEntryFieldCustomProperties();
-
             InitSameAsInputCompatibleTypes();
             InitOutMssMsgTypeNames();
-
 
             //Contains the type combo box that did not trigger the creation of this class
             ComboBox otherTypeCombo;
@@ -142,7 +139,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             else if (io == IoType.Output)
             {
                 otherTypeCombo = mappingDlg.inTypeCombo;
-            } 
+            }
             else
             {
                 //Unknown IO type
@@ -160,8 +157,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             {
                 mappingDlg.outSameAsInCheckBox.Checked = false;
                 mappingDlg.outSameAsInCheckBox.Enabled = false;
-                
+
             }
+
+            SetMappingDlgEntryFieldsDefaultProperties();
+            SetMappingDlgEntryFieldCustomProperties();
         }
 
         /// <summary>
@@ -280,7 +280,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             string errorMsg;
             this.entryField1IsValid = SetData1RangeFromField(out errorMsg);
         
-            mappingDlg.errorProvider.SetError(this.EntryField1, errorMsg);
+            //EntryField1 could be null if EntryField1 is not used by the active msg type
+            if (this.EntryField1 != null)
+            {
+                mappingDlg.errorProvider.SetError(this.EntryField1, errorMsg);
+            }
 
             return this.entryField1IsValid;
         }
@@ -312,7 +316,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             string errorMsg;
             this.entryField2IsValid = SetData2RangeFromField(out errorMsg);
 
-            mappingDlg.errorProvider.SetError(this.EntryField2, errorMsg);
+            //EntryField2 could be null if EntryField2 is not used by the active msg type
+            if (this.EntryField2 != null)
+            {
+                mappingDlg.errorProvider.SetError(this.EntryField2, errorMsg);
+            }
 
             return this.entryField2IsValid;
         }
@@ -335,10 +343,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         }
 
         /// <summary>
-        ///     Generate the MssMsgRange described by the contents of the entry fields associated with this object.
+        ///     Generate the MssMsgRange described by the contents of the entry fields associated 
+        ///     with this object.
         /// </summary>
         /// <remarks>Precondition: The contents of the entry fields must be valid.</remarks>
-        public MssMsgRange GetValidMsgRange()
+        public MssMsgRange CreateValidMsgRange()
         { 
             if (this.entryField1IsValid == false)
             {

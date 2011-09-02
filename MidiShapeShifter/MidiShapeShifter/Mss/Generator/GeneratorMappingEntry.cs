@@ -11,25 +11,33 @@ namespace MidiShapeShifter.Mss.Generator
     // TODO: comment this calss
     public class GeneratorMappingEntry : MappingEntry
     {
-        public GeneratorMappingEntryInfo GeneratorInfo;
+        public GenEntryConfigInfo GenConfigInfo;
+        //Stores information about previously generated events. If this is null then 
+        //MssEventGenerator will initialize it at the end of the next processing cycle.
+        public GenEntryHistoryInfo GenHistoryInfo;
+
+        public GeneratorMappingEntry()
+        {
+            this.GenHistoryInfo = new GenEntryHistoryInfo();
+        }
 
         public void InitAllMembers(MssMsgRange inMsgRange, MssMsgRange outMsgRange,
-                            bool overrideDuplicates, CurveShapeInfo curveShapeInfo, GeneratorMappingEntryInfo generatorInfo)
+                            bool overrideDuplicates, CurveShapeInfo curveShapeInfo, GenEntryConfigInfo generatorInfo)
         {
-            this.GeneratorInfo = generatorInfo;
+            this.GenConfigInfo = generatorInfo;
 
             InitAllMembers(inMsgRange, outMsgRange, overrideDuplicates, curveShapeInfo);
         }
 
         public string GetReadablePeriod()
         { 
-            if (this.GeneratorInfo.PeriodType == GenPeriodType.Beats)
+            if (this.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
             {
-                return GeneratorMappingEntryInfo.GenBarsPeriodNames[(int)this.GeneratorInfo.BarsPeriod];
+                return GenEntryConfigInfo.GenBarsPeriodNames[(int)this.GenConfigInfo.BarsPeriod];
             }
-            else if (this.GeneratorInfo.PeriodType == GenPeriodType.Time)
+            else if (this.GenConfigInfo.PeriodType == GenPeriodType.Time)
             {
-                return this.GeneratorInfo.TimePeriod.ToString() + " ms";
+                return this.GenConfigInfo.TimePeriodInMs.ToString() + " ms";
             }
             else
             {
@@ -41,12 +49,12 @@ namespace MidiShapeShifter.Mss.Generator
 
         public string GetReadableLoopStatus()
         {
-            return GetReadableBool(this.GeneratorInfo.Loop);
+            return GetReadableBool(this.GenConfigInfo.Loop);
         }
 
-        public string GetReadableIsGeneratingStatus()
+        public string GetReadableEnabledStatus()
         {
-            return GetReadableBool(this.GeneratorInfo.IsGenerating);
+            return GetReadableBool(this.GenConfigInfo.Enabled);
         }
     }
 }

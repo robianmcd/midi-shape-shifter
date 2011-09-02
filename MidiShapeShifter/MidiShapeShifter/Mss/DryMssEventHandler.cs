@@ -26,7 +26,7 @@ namespace MidiShapeShifter.Mss
 
         public DryMssEventHandler()
         {
-            mssMsgProcessor = new MssMsgProcessor();
+            this.mssMsgProcessor = new MssMsgProcessor();
         }
 
         /// <summary>

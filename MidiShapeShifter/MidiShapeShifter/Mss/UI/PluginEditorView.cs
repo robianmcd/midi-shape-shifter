@@ -9,8 +9,10 @@ using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Framework;
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes;
 using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.Relays;
+using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
 using LBSoft.IndustrialCtrls.Knobs;
 
@@ -51,6 +53,9 @@ namespace MidiShapeShifter.Mss.UI
         protected int activeGraphableEntryIndex = -1;
         protected GraphableEntryType activeGraphableEntryType;
 
+        protected Factory_MssMsgRangeEntryMetadata msgMetadataFactory;
+        protected IFactory_MssMsgInfo msgInfoFactory;
+
         public MappingEntry ActiveGraphableEntry 
         {
             get
@@ -88,7 +93,9 @@ namespace MidiShapeShifter.Mss.UI
             InitializeComponent();
             PopulateControlDictionaries();
 
-            evaluator = new MssEvaluator();
+            this.evaluator = new MssEvaluator();
+            this.msgMetadataFactory = new Factory_MssMsgRangeEntryMetadata();
+            this.msgInfoFactory = new Factory_MssMsgInfo();
         }
 
         //static constructor
@@ -111,6 +118,9 @@ namespace MidiShapeShifter.Mss.UI
             this.mssParameters.ParameterNameChanged += new ParameterNameChangedEventHandler(MssParameters_NameChanged);
             this.mssParameters.ParameterMinValueChanged += new ParameterMinValueChangedEventHandler(MssParameters_MinValueChanged);
             this.mssParameters.ParameterMaxValueChanged += new ParameterMaxValueChangedEventHandler(MssParameters_MaxValueChanged);
+
+            this.msgMetadataFactory.Init(genMappingMgr);
+            this.msgInfoFactory.Init(genMappingMgr);
 
             ActiveGraphableEntryChanged();
         }
@@ -368,7 +378,7 @@ namespace MidiShapeShifter.Mss.UI
         private void addMappingBtn_Click(object sender, System.EventArgs e)
         {
             MappingDlg mapDlg = new MappingDlg();
-            mapDlg.Init(new MappingEntry(), false);
+            mapDlg.Init(new MappingEntry(), false, this.msgMetadataFactory, this.msgInfoFactory);
 
             if (mapDlg.ShowDialog(this) == DialogResult.OK)
             {
@@ -395,7 +405,7 @@ namespace MidiShapeShifter.Mss.UI
             }
 
             MappingDlg mapDlg = new MappingDlg();
-            mapDlg.Init(ActiveGraphableEntry, true);
+            mapDlg.Init(ActiveGraphableEntry, true, this.msgMetadataFactory, this.msgInfoFactory);
             
 
             if (mapDlg.ShowDialog(this) == DialogResult.OK)
@@ -439,7 +449,7 @@ namespace MidiShapeShifter.Mss.UI
         private void addGeneratorBtn_Click(object sender, System.EventArgs e)
         {
             GeneratorDlg genDlg = new GeneratorDlg();
-            GeneratorMappingEntryInfo genInfo = new GeneratorMappingEntryInfo();
+            GenEntryConfigInfo genInfo = new GenEntryConfigInfo();
             genInfo.InitWithDefaultValues();
             genDlg.Init(genInfo);
 
@@ -469,7 +479,7 @@ namespace MidiShapeShifter.Mss.UI
                 this.genMappingMgr.GetGenMappingEntryByIndex(this.activeGraphableEntryIndex);
 
             GeneratorDlg genDlg = new GeneratorDlg();
-            genDlg.Init(activeGenMapping.GeneratorInfo);
+            genDlg.Init(activeGenMapping.GenConfigInfo);
 
 
             if (genDlg.ShowDialog(this) == DialogResult.OK)

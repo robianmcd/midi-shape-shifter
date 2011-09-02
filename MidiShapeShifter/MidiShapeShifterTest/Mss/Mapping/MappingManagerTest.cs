@@ -5,9 +5,11 @@ using System.Text;
 using System.Diagnostics;
 
 using NUnit.Framework;
+using Moq;
 
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
 
 namespace MidiShapeShifterTest.Mss.Mapping
@@ -241,11 +243,15 @@ namespace MidiShapeShifterTest.Mss.Mapping
             int chanRangeBottom, int chanRamgeTop, 
             int paramRangeBottom, int paramRangeTop)
         {
+            var msgInfoFactoryMock = new Mock<IFactory_MssMsgInfo>();
+
             MssMsgRange inMsgRange = new MssMsgRange();
-            inMsgRange.InitAllMembers(msgType, chanRangeBottom, chanRamgeTop, paramRangeBottom, paramRangeTop);
+            inMsgRange.Init(msgInfoFactoryMock.Object);
+            inMsgRange.InitPublicMembers(msgType, chanRangeBottom, chanRamgeTop, paramRangeBottom, paramRangeTop);
 
             MssMsgRange outMsgRange = new MssMsgRange();
-            outMsgRange.InitAllMembers(msgType, chanRangeBottom, chanRamgeTop, paramRangeBottom, paramRangeTop);
+            outMsgRange.Init(msgInfoFactoryMock.Object);
+            outMsgRange.InitPublicMembers(msgType, chanRangeBottom, chanRamgeTop, paramRangeBottom, paramRangeTop);
 
             MappingEntry mapEntry = new MappingEntry();
             mapEntry.InMssMsgRange = inMsgRange;

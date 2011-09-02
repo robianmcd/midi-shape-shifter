@@ -40,7 +40,7 @@
             this.cancelBtn = new System.Windows.Forms.Button();
             this.OkBtn = new System.Windows.Forms.Button();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.generatingCheckBox = new System.Windows.Forms.CheckBox();
+            this.enabledCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
@@ -141,15 +141,15 @@
             this.errorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errorProvider.ContainerControl = this;
             // 
-            // generatingCheckBox
+            // enabledCheckBox
             // 
-            this.generatingCheckBox.AutoSize = true;
-            this.generatingCheckBox.Location = new System.Drawing.Point(15, 107);
-            this.generatingCheckBox.Name = "generatingCheckBox";
-            this.generatingCheckBox.Size = new System.Drawing.Size(122, 17);
-            this.generatingCheckBox.TabIndex = 8;
-            this.generatingCheckBox.Text = "Currently Generating";
-            this.generatingCheckBox.UseVisualStyleBackColor = true;
+            this.enabledCheckBox.AutoSize = true;
+            this.enabledCheckBox.Location = new System.Drawing.Point(15, 107);
+            this.enabledCheckBox.Name = "enabledCheckBox";
+            this.enabledCheckBox.Size = new System.Drawing.Size(65, 17);
+            this.enabledCheckBox.TabIndex = 8;
+            this.enabledCheckBox.Text = "Enabled";
+            this.enabledCheckBox.UseVisualStyleBackColor = true;
             // 
             // GeneratorDlg
             // 
@@ -158,7 +158,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelBtn;
             this.ClientSize = new System.Drawing.Size(235, 172);
-            this.Controls.Add(this.generatingCheckBox);
+            this.Controls.Add(this.enabledCheckBox);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.OkBtn);
             this.Controls.Add(this.periodTextBox);
@@ -193,7 +193,7 @@
         private System.Windows.Forms.Button cancelBtn;
         private System.Windows.Forms.Button OkBtn;
         private System.Windows.Forms.ErrorProvider errorProvider;
-        private System.Windows.Forms.CheckBox generatingCheckBox;
+        private System.Windows.Forms.CheckBox enabledCheckBox;
 
     }
 }

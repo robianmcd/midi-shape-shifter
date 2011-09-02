@@ -36,7 +36,7 @@ namespace MidiShapeShifter.Mss
             set
             {
                 this._msgType = value;
-                this.MsgInfo = Factory_MssMsgInfo.Create(value);
+                this.MsgInfo = this.msgInfoFactory.Create(value);
             }
         }
 
@@ -52,11 +52,18 @@ namespace MidiShapeShifter.Mss
         public int Data2RangeBottom;
         public int Data2RangeTop;
 
+        protected IFactory_MssMsgInfo msgInfoFactory;
+
+        public void Init(IFactory_MssMsgInfo msgInfoFactory)
+        {
+            this.msgInfoFactory = msgInfoFactory;
+        }
+
         /// <summary>
-        ///     Initializes the member varialbes of this class. This method does not need to be called as all required 
-        ///     member variables are public and cal be initialized individually.
+        ///     Initializes the public member varialbes of this class. This method does not need to 
+        ///     be called as the public members can be initialized individually.
         /// </summary>
-        public void InitAllMembers(MssMsgType msgType, 
+        public void InitPublicMembers(MssMsgType msgType, 
                          int data1RangeBottom, int data1RangeTop, 
                          int data2RangeBottom, int data2RangeTop)
         {
@@ -69,12 +76,13 @@ namespace MidiShapeShifter.Mss
         }
 
         /// <summary>
-        ///     Initializes the member varialbes of this class. When this method is used to initialize the class, a 
-        ///     MssMsg will have to match data1 and data2 exactally to fall into this range.
+        ///     Initializes the public member varialbes of this class. When this method is used to 
+        ///     initialize the class, a MssMsg will have to match data1 and data2 exactally to fall
+        ///     into this range.
         /// </summary>
-        public void InitAllMembers(MssMsgType msgType, int data1, int data2)
+        public void InitPublicMembers(MssMsgType msgType, int data1, int data2)
         {
-            InitAllMembers(msgType, data1, data1, data2, data2);
+            InitPublicMembers(msgType, data1, data1, data2, data2);
         }
 
         /// <summary>
@@ -84,8 +92,10 @@ namespace MidiShapeShifter.Mss
         {
             get
             {
-                return GetRangeString(this.Data1RangeBottom, this.Data1RangeTop, 
-                                      this.MsgInfo.MinData1Value, this.MsgInfo.MaxData1Value);
+                return GetRangeString(this.MsgInfo.ConvertData1ToString(this.Data1RangeBottom), 
+                                      this.MsgInfo.ConvertData1ToString(this.Data1RangeTop), 
+                                      this.MsgInfo.ConvertData1ToString(this.MsgInfo.MinData1Value),
+                                      this.MsgInfo.ConvertData1ToString(this.MsgInfo.MaxData1Value));
             }
         }
 
@@ -96,39 +106,45 @@ namespace MidiShapeShifter.Mss
         {
             get
             {
-                return GetRangeString(this.Data2RangeBottom, this.Data2RangeTop,
-                                      this.MsgInfo.MinData2Value, this.MsgInfo.MaxData2Value);
+                return GetRangeString(this.MsgInfo.ConvertData2ToString(this.Data2RangeBottom),
+                                      this.MsgInfo.ConvertData2ToString(this.Data2RangeTop),
+                                      this.MsgInfo.ConvertData2ToString(this.MsgInfo.MinData2Value),
+                                      this.MsgInfo.ConvertData2ToString(this.MsgInfo.MaxData2Value));
             }
         }
 
         /// <summary>
         ///     Builds a string representing a range.
         /// </summary>
-        /// <param name="rangeBottom">Lowest value in the range.</param>
-        /// <param name="rangeTop">Highest value in the range</param>
-        /// <param name="minValue">
-        ///     Lowest value aloud for the type of data in the range. EG. if it is a range of channels then minValues 
-        ///     would be 1 but if it was a range of note numbers then minValue would be 0
+        /// <param name="rangeBottomStr">String representation of the lowest value in the range.</param>
+        /// <param name="rangeTopStr">String representation of the highest value in the range</param>
+        /// <param name="minValueStr">
+        ///     String representation of the lowest value aloud for the type of data in the range. 
+        ///     EG. if it is a range of channels then minValues would be 1 but if it was a range of
+        ///     note numbers then minValue would be 0
         /// </param>
-        /// <param name="maxValue">Highest value aloud for the type of data in the range.</param>
-        protected string GetRangeString(double rangeBottom, double rangeTop, double minValue, double maxValue)
+        /// <param name="maxValueStr">
+        ///     String representation of the highest value aloud for the type of data in the range.
+        /// </param>
+        protected string GetRangeString(string rangeBottomStr, string rangeTopStr, 
+                                        string minValueStr, string maxValueStr)
         {
-            if (rangeBottom == MssMsgUtil.UNUSED_MSS_MSG_DATA ||
-                   rangeTop == MssMsgUtil.UNUSED_MSS_MSG_DATA) 
+            if (rangeBottomStr == MssMsgUtil.UNUSED_MSS_MSG_STRING ||
+                   rangeTopStr == MssMsgUtil.UNUSED_MSS_MSG_STRING) 
             {
-                return "";
+                return MssMsgUtil.UNUSED_MSS_MSG_STRING;
             } 
-            else if (rangeBottom == rangeTop) 
+            else if (rangeBottomStr == rangeTopStr) 
             {
-                return rangeBottom.ToString();
+                return rangeBottomStr;
             }
-            else if (rangeBottom == minValue && rangeTop == maxValue)
+            else if (rangeBottomStr == minValueStr && rangeTopStr == maxValueStr)
             {
                 return MssMsgUtil.RANGE_ALL_STR;
             }
             else
             {
-                return rangeBottom.ToString() + "-" + rangeTop.ToString();                    
+                return rangeBottomStr + "-" + rangeTopStr;                    
             }
         }
 

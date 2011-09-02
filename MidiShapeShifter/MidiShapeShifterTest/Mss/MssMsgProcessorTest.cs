@@ -12,6 +12,8 @@ using Moq;
 using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.MssMsgInfoTypes;
+using MidiShapeShifter.Mss.Generator;
 
 namespace MidiShapeShifterTest.Mss
 {
@@ -234,12 +236,17 @@ namespace MidiShapeShifterTest.Mss
             MssMsgType inMsgType, int inData1Bottom, int inData1Top, int inData2Bottom, int inData2Top,
             MssMsgType outMsgType, int outData1Bottom, int outData1Top, int outData2Bottom, int outData2Top)
         {
+            IFactory_MssMsgInfo msgInfoFactory = new Factory_MssMsgInfo();
+            var genMgrMock = new Mock<IGeneratorMappingManager>();
+            msgInfoFactory.Init(genMgrMock.Object);
 
             MssMsgRange inMsgRange = new MssMsgRange();
-            inMsgRange.InitAllMembers(inMsgType, inData1Bottom, inData1Top, inData2Bottom, inData2Top);
+            inMsgRange.Init(msgInfoFactory);
+            inMsgRange.InitPublicMembers(inMsgType, inData1Bottom, inData1Top, inData2Bottom, inData2Top);
 
             MssMsgRange outMsgRange = new MssMsgRange();
-            outMsgRange.InitAllMembers(outMsgType, outData1Bottom, outData1Top, outData2Bottom, outData2Top);
+            outMsgRange.Init(msgInfoFactory);
+            outMsgRange.InitPublicMembers(outMsgType, outData1Bottom, outData1Top, outData2Bottom, outData2Top);
 
             MappingEntry mappingEntry = new MappingEntry();
             mappingEntry.InitAllMembers(inMsgRange, outMsgRange, false, DEFAULT_CURVE_SHAPE_INFO);

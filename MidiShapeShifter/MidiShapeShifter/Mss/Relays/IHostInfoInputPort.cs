@@ -9,5 +9,7 @@ namespace MidiShapeShifter.Mss.Relays
     {
         void ReceiveProcessingCycleEndTimestampInTicks(long cycleEndTimeStampInTicks);
         void ReceiveSampleRate(double sampleRate);
+        void ReceiveTempo(double tempo);
+        void ReceiveBarPosition(double barPos, long timestampInTicks);
     }
 }

@@ -79,22 +79,26 @@
     <Compile Include="Framework\VstTimeInfoTransmitter.cs" />
     <Compile Include="Ioc\IocMgr.cs" />
     <Compile Include="Midi\MidiUtil.cs" />
+    <Compile Include="Mss\Generator\GenEntryHistoryInfo.cs" />
     <Compile Include="Mss\Generator\GeneratorDlg.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Mss\Generator\GeneratorDlg.Designer.cs">
       <DependentUpon>GeneratorDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="Mss\Generator\GeneratorMappingEntryInfo.cs" />
+    <Compile Include="Mss\Generator\GenEntryConfigInfo.cs" />
     <Compile Include="Mss\Generator\GeneratorMappingEntry.cs" />
     <Compile Include="Mss\Generator\GeneratorMappingManager.cs" />
+    <Compile Include="Mss\Generator\IGeneratorMappingManager.cs" />
     <Compile Include="Mss\Generator\MssEventGenerator.cs" />
     <Compile Include="Mss\ICurveShapeInfoContainer.cs" />
     <Compile Include="Mss\CurveShapeInfo.cs" />
     <Compile Include="Mss\IMssEvaluator.cs" />
+    <Compile Include="Mss\Mapping\IGraphableMappingManager.cs" />
     <Compile Include="Mss\Mapping\IMappingManager.cs" />
     <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\ChanAftertouchMsgRangeEntryMetadata.cs" />
     <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\Factory_MssMsgRangeEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\MsgRangeEntryMetadataWithGenSelect.cs" />
     <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\PolyAftertouchMsgRangeEntryMetadata.cs" />
     <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\CCMsgRangeEntryMetadata.cs" />
     <Compile Include="Framework\DummyAudioHandler.cs" />
@@ -118,6 +122,7 @@
     <Compile Include="Mss\MssMsgInfoTypes\GeneratorMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\GeneratorToggleMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\GenericRelitivePosMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\IFactory_MssMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\MidiMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\MssMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\NoteOffMsgInfo.cs" />

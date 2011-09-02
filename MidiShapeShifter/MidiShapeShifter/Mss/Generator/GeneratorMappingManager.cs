@@ -6,11 +6,12 @@ using System.Diagnostics;
 using System.Windows.Forms;
 
 using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mss.Generator
 {
     // TODO: comment this calss
-    public class GeneratorMappingManager
+    public class GeneratorMappingManager : IGeneratorMappingManager
     {
 
         protected int nextGenId = 0;
@@ -19,12 +20,12 @@ namespace MidiShapeShifter.Mss.Generator
 
         public void AddGenMappingEntry(GeneratorMappingEntry newEntry)
         {
-            newEntry.GeneratorInfo.Id = this.nextGenId;
+            newEntry.GenConfigInfo.Id = this.nextGenId;
             this.nextGenId++;
             genMappingEntryList.Add(newEntry);
         }
 
-        public void CreateAndAddEntryFromGenInfo(GeneratorMappingEntryInfo genInfo)
+        public void CreateAndAddEntryFromGenInfo(GenEntryConfigInfo genInfo)
         {
             genInfo.Id = this.nextGenId;
             this.nextGenId++;
@@ -38,29 +39,35 @@ namespace MidiShapeShifter.Mss.Generator
         }
 
         //Precondition: GenInfo's ID must correspond to an existing entry in genMappingEntryList.
-        public void UpdateEntryWithNewGenInfo(GeneratorMappingEntryInfo genInfo)
+        public void UpdateEntryWithNewGenInfo(GenEntryConfigInfo genInfo)
         {
             GeneratorMappingEntry mappingEntry = GetGenMappingEntryById(genInfo.Id);
 
             InitializeEntryFromGenInfo(genInfo, mappingEntry);
         }
 
-        protected void InitializeEntryFromGenInfo(GeneratorMappingEntryInfo genInfo, GeneratorMappingEntry mappingEntry)
+        protected void InitializeEntryFromGenInfo(GenEntryConfigInfo genInfo, GeneratorMappingEntry mappingEntry)
         {
-            //Set mappingEntry.GeneratorInfo
-            mappingEntry.GeneratorInfo = genInfo;
+            //Creats MssMsgInfo Factory needed to initialize in/out MssMsgRange
+            IFactory_MssMsgInfo msgInfoFactory = new Factory_MssMsgInfo();
+            msgInfoFactory.Init(this);
 
-            //Set mappingEntry.inMsgRange
+            //Sets mappingEntry.GeneratorInfo
+            mappingEntry.GenConfigInfo = genInfo;
+
+            //Sets mappingEntry.inMsgRange
             MssMsgRange inMsgRange = new MssMsgRange();
-            if (genInfo.PeriodType == GenPeriodType.Beats)
+            inMsgRange.Init(msgInfoFactory);
+
+            if (genInfo.PeriodType == GenPeriodType.BeatSynced)
             {
-                inMsgRange.InitAllMembers(MssMsgType.RelBarPeriodPos,
+                inMsgRange.InitPublicMembers(MssMsgType.RelBarPeriodPos,
                                           MssMsgUtil.UNUSED_MSS_MSG_DATA,
                                           MssMsgUtil.UNUSED_MSS_MSG_DATA);
             }
             else if (genInfo.PeriodType == GenPeriodType.Time)
             {
-                inMsgRange.InitAllMembers(MssMsgType.RelTimePeriodPos,
+                inMsgRange.InitPublicMembers(MssMsgType.RelTimePeriodPos,
                                           MssMsgUtil.UNUSED_MSS_MSG_DATA,
                                           MssMsgUtil.UNUSED_MSS_MSG_DATA);
             }
@@ -73,18 +80,19 @@ namespace MidiShapeShifter.Mss.Generator
 
             mappingEntry.InMssMsgRange = inMsgRange;
 
-            //Set mappingEntry.outMsgRange
+            //Sets mappingEntry.outMsgRange
             MssMsgRange outMsgRange = new MssMsgRange();
-            outMsgRange.InitAllMembers(MssMsgType.Generator,
+            outMsgRange.Init(msgInfoFactory);
+            outMsgRange.InitPublicMembers(MssMsgType.Generator,
                                        genInfo.Id,
                                        MssMsgUtil.UNUSED_MSS_MSG_DATA);
 
             mappingEntry.OutMssMsgRange = outMsgRange;
 
-            //Set mappingEntry.OverrideDuplicates
+            //Sets mappingEntry.OverrideDuplicates
             mappingEntry.OverrideDuplicates = false;
 
-            //Set mappingEntry.CurveShapeInfo
+            //Sets mappingEntry.CurveShapeInfo
             CurveShapeInfo curveInfo = new CurveShapeInfo();
             curveInfo.InitWithDefaultValues();
             mappingEntry.CurveShapeInfo = curveInfo;
@@ -120,10 +128,10 @@ namespace MidiShapeShifter.Mss.Generator
             if (index >= 0 && index < genMappingEntryList.Count)
             {
                 GeneratorMappingEntry entry = genMappingEntryList[index];
-                ListViewItem genMappingItem = new ListViewItem(entry.GeneratorInfo.Name);
+                ListViewItem genMappingItem = new ListViewItem(entry.GenConfigInfo.Name);
                 genMappingItem.SubItems.Add(entry.GetReadablePeriod());
                 genMappingItem.SubItems.Add(entry.GetReadableLoopStatus());
-                genMappingItem.SubItems.Add(entry.GetReadableIsGeneratingStatus());
+                genMappingItem.SubItems.Add(entry.GetReadableEnabledStatus());
 
                 return genMappingItem;
             }
@@ -156,12 +164,28 @@ namespace MidiShapeShifter.Mss.Generator
 
         public GeneratorMappingEntry GetGenMappingEntryById(int id)
         { 
-            return genMappingEntryList.Find(entry => entry.GeneratorInfo.Id == id);
+            return genMappingEntryList.Find(entry => entry.GenConfigInfo.Id == id);
         }
 
         public int GetNumEntries()
         {
             return genMappingEntryList.Count;
+        }
+
+        public IEnumerable<MappingEntry> GetAssociatedEntries(MssMsg inputMsg)
+        {
+            List<MappingEntry> associatedEntries = new List<MappingEntry>();
+            if (inputMsg.Type == MssMsgType.Generator)
+            {
+                associatedEntries.Add(GetGenMappingEntryById((int)inputMsg.Data1));
+            }
+
+            return associatedEntries;
+        }
+
+        public MappingEntry GetMappingEntry(int index)
+        {
+            return GetGenMappingEntryByIndex(index);
         }
     }
 }
