@@ -8,12 +8,23 @@ using MidiShapeShifter.Mss.Mapping;
 
 namespace MidiShapeShifter.Mss.Generator
 {
-    // TODO: comment this calss
+    
+    /// <summary>
+    /// This class describes how and when generator messages will be generated. Instances of this
+    /// class are stored in GeneratorMappingManager and each instances corresponds to a row in the
+    /// generator list view on the PluginEditorView dialog. MssEventGenerator will use the 
+    /// information in this class to create and send the generator messages. 
+    /// GeneratorMappingEntries will always map one of the relative bar position MSS message types
+    /// to a generator mss message. 
+    /// </summary>
     public class GeneratorMappingEntry : MappingEntry
     {
+
         public GenEntryConfigInfo GenConfigInfo;
-        //Stores information about previously generated events. If this is null then 
-        //MssEventGenerator will initialize it at the end of the next processing cycle.
+        
+        /// <summary>
+        /// Stores information about previously generated events.
+        /// </summary>
         public GenEntryHistoryInfo GenHistoryInfo;
 
         public GeneratorMappingEntry()
@@ -29,6 +40,10 @@ namespace MidiShapeShifter.Mss.Generator
             InitAllMembers(inMsgRange, outMsgRange, overrideDuplicates, curveShapeInfo);
         }
 
+        /// <summary>
+        /// Returns a string representation of the period size.
+        /// </summary>
+        /// <returns></returns>
         public string GetReadablePeriod()
         { 
             if (this.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
@@ -47,11 +62,18 @@ namespace MidiShapeShifter.Mss.Generator
             }
         }
 
+
+        /// <summary>
+        /// Returns a string representation of the Loop member variable in GenConfigInfo.
+        /// </summary>
         public string GetReadableLoopStatus()
         {
             return GetReadableBool(this.GenConfigInfo.Loop);
         }
 
+        /// <summary>
+        /// Returns a string representation of the Enabled member variable in GenConfigInfo.
+        /// </summary>
         public string GetReadableEnabledStatus()
         {
             return GetReadableBool(this.GenConfigInfo.Enabled);

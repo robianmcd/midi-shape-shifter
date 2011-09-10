@@ -10,14 +10,30 @@ using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mss.Generator
 {
-    // TODO: comment this calss
+    /// <summary>
+    ///     The GeneratorMappingManager is responsible for storing, retrieving and interpreting 
+    ///     GeneratorMappingEntry objects.
+    /// </summary>
     public class GeneratorMappingManager : IGeneratorMappingManager
     {
 
+        /// <summary>
+        /// Each GeneratorMappingEntry has a unique ID. nextGenId keeps track of the next 
+        /// available unique ID.
+        /// </summary>
         protected int nextGenId = 0;
 
+        /// <summary>
+        ///     List that stores all of the GeneratorMappingEntry objects. Each instance of 
+        ///     GeneratorMappingEntry in this list corresponds to a row in the generator list view
+        ///     on the PluginEditorView dialog.
+        /// </summary>
         protected List<GeneratorMappingEntry> genMappingEntryList = new List<GeneratorMappingEntry>();
 
+        /// <summary>
+        /// Adds newEntry to this manager's list. Calling this function will also initialize 
+        /// the unique ID corresponding to newEntry
+        /// </summary>
         public void AddGenMappingEntry(GeneratorMappingEntry newEntry)
         {
             newEntry.GenConfigInfo.Id = this.nextGenId;
@@ -25,6 +41,10 @@ namespace MidiShapeShifter.Mss.Generator
             genMappingEntryList.Add(newEntry);
         }
 
+        /// <summary>
+        /// Creates a new GeneratorMappingEntry based on the info in genInfo. The newly created 
+        /// GeneratorMappingEntry will be stored in this GeneratorMappingManager.
+        /// </summary>
         public void CreateAndAddEntryFromGenInfo(GenEntryConfigInfo genInfo)
         {
             genInfo.Id = this.nextGenId;
@@ -38,7 +58,10 @@ namespace MidiShapeShifter.Mss.Generator
             genMappingEntryList.Add(mappingEntry);
         }
 
-        //Precondition: GenInfo's ID must correspond to an existing entry in genMappingEntryList.
+        /// <summary>
+        /// Regererates an existing GeneratorMappingEntry based on genInfo. genInfo's ID must be
+        /// the same as an ID in this GeneratorMappingManager.
+        /// </summary>
         public void UpdateEntryWithNewGenInfo(GenEntryConfigInfo genInfo)
         {
             GeneratorMappingEntry mappingEntry = GetGenMappingEntryById(genInfo.Id);
@@ -46,6 +69,9 @@ namespace MidiShapeShifter.Mss.Generator
             InitializeEntryFromGenInfo(genInfo, mappingEntry);
         }
 
+        /// <summary>
+        /// populate mappingEntry's members based on the information in genInfo
+        /// </summary>
         protected void InitializeEntryFromGenInfo(GenEntryConfigInfo genInfo, GeneratorMappingEntry mappingEntry)
         {
             //Creats MssMsgInfo Factory needed to initialize in/out MssMsgRange
@@ -162,6 +188,11 @@ namespace MidiShapeShifter.Mss.Generator
             }
         }
 
+        /// <summary>
+        ///     Get the GeneratorMappingEntry in this GeneratorMappingManager with a the same ID
+        ///     as <paramref name="id"/>. Returns null if the GeneratorMappingEntry cannot be
+        ///     found
+        /// </summary>
         public GeneratorMappingEntry GetGenMappingEntryById(int id)
         { 
             return genMappingEntryList.Find(entry => entry.GenConfigInfo.Id == id);
@@ -172,6 +203,14 @@ namespace MidiShapeShifter.Mss.Generator
             return genMappingEntryList.Count;
         }
 
+        /// <summary>
+        /// Returns a list of MappingEntries from the GeneratorMappingEntries stored in this 
+        /// GeneratorMappingManager. A GeneratorMappingEntry will be in this list if 
+        /// <paramref name="inputMsg"/> falls into it's input range. Due the the nature of the 
+        /// GeneratorMappingEntries stored in this GeneratorMappingManager, the returned list will 
+        /// only ever contain a maximum of one element. This is because a GeneratorMappingEntry's
+        /// input range will only accept one message that has a unique id.
+        /// </summary>
         public IEnumerable<MappingEntry> GetAssociatedEntries(MssMsg inputMsg)
         {
             List<MappingEntry> associatedEntries = new List<MappingEntry>();

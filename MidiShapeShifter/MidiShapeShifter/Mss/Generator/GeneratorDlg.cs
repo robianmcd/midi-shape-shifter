@@ -10,9 +10,17 @@ using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss.Generator
 {
-    // TODO: comment this calss
+    /// <summary>
+    /// Dialog for creating or editing a GeneratorMappingEntry. This dialog does not actually 
+    /// create/edit a GeneratorMappingEntry but instead creates/edits a GenEntryConfigInfo that 
+    /// will be used to create/edit a GeneratorMappingEntry.
+    /// </summary>
     public partial class GeneratorDlg : Form
     {
+        /// <summary>
+        /// The GenEntryConfigInfo resulting form the users input in this dialog. This should 
+        /// be retrieved after this dialog exits with DialogResult.OK. 
+        /// </summary>
         public GenEntryConfigInfo GenInfoResult { get; private set; }
 
         public GeneratorDlg()
@@ -20,6 +28,8 @@ namespace MidiShapeShifter.Mss.Generator
             InitializeComponent();
 
             GenInfoResult = new GenEntryConfigInfo();
+
+            //Populate the dropdown meunes on the dialog
 
             foreach (string PeriodTypeName in GenEntryConfigInfo.GenPeriodTypeNames)
             {
@@ -32,6 +42,7 @@ namespace MidiShapeShifter.Mss.Generator
             }
         }
 
+        //Initialized the entry fields on the dialog. This method must be called.
         public void Init(GenEntryConfigInfo genInfo)
         {
             this.GenInfoResult.Id = genInfo.Id;
@@ -43,18 +54,29 @@ namespace MidiShapeShifter.Mss.Generator
             this.enabledCheckBox.Checked = genInfo.Enabled;
         }
 
+        /// <summary>
+        /// Retrieves the GenPeriodType represented by the selection in the periodTypeCombo
+        /// </summary>
         protected GenPeriodType GetSelectedPeriodType()
         {
             return (GenPeriodType)GenEntryConfigInfo.GenPeriodTypeNames.FindIndex(
                 periodTypeName => periodTypeName.Equals(this.periodTypeCombo.Text));
         }
 
+        /// <summary>
+        /// Retrieves the GenBarsPeriod represented by the selection in the periodCombo
+        /// </summary>
         protected GenBarsPeriod GetSelectedBarsPeriod()
         {
             return (GenBarsPeriod)GenEntryConfigInfo.GenBarsPeriodNames.FindIndex(
                 BarsPeriodName => BarsPeriodName.Equals(this.periodCombo.Text));
         }
 
+        /// <summary>
+        /// Checks if the content of the periodTextBox is a valid period size and 
+        /// displays/clears the error message in the errorProvider
+        /// </summary>
+        /// <returns>True if the content is valid. False otherwise.</returns>
         protected bool ValidatePeriodTextBox()
         {
             int periodSize;
@@ -70,6 +92,11 @@ namespace MidiShapeShifter.Mss.Generator
             }
         }
 
+        /// <summary>
+        /// Different controls will be used to enter the period size depending on the selection
+        /// in the periodTypeCombo. This method catches the SelectedIndexChanged event for the
+        /// periodTypeCombo and enables the appropriate controls for entering the period size.
+        /// </summary>
         private void periodTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             GenPeriodType SelectedPeriodType = GetSelectedPeriodType();
@@ -97,6 +124,10 @@ namespace MidiShapeShifter.Mss.Generator
             ValidatePeriodTextBox();
         }
 
+        /// <summary>
+        /// Ensures that the user input is valid and if it is, initializes GenInfoResult and 
+        /// closes the dialog with DialogResult.OK.
+        /// </summary>
         private void OkBtn_Click(object sender, EventArgs e)
         {
             GenPeriodType SelectedPeriodType = GetSelectedPeriodType();
