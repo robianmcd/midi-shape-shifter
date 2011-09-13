@@ -5,10 +5,10 @@ namespace MidiShapeShifter.Mss.Generator
 {
     public interface IGeneratorMappingManager : IGraphableMappingManager
     {
-        void AddGenMappingEntry(GeneratorMappingEntry newEntry);
+        void AddGenMappingEntry(IGeneratorMappingEntry newEntry);
         void CreateAndAddEntryFromGenInfo(GenEntryConfigInfo genInfo);
-        GeneratorMappingEntry GetGenMappingEntryById(int id);
-        GeneratorMappingEntry GetGenMappingEntryByIndex(int index);
+        IGeneratorMappingEntry GetGenMappingEntryById(int id);
+        IGeneratorMappingEntry GetGenMappingEntryByIndex(int index);
         void RemoveGenMappingEntry(int index);
         void UpdateEntryWithNewGenInfo(GenEntryConfigInfo genInfo);
     }

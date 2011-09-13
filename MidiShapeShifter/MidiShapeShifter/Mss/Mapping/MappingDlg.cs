@@ -30,7 +30,7 @@ namespace MidiShapeShifter.Mss.Mapping
         ///     default values for all of the entry fields. If the dialog exits with DialogResult.OK then mappingEntry 
         ///     is populated based on data from the entry fields.
         /// </summary>
-        public MappingEntry mappingEntry {get; private set;}
+        public IMappingEntry mappingEntry {get; private set;}
 
         public MappingDlg()
         {
@@ -67,7 +67,7 @@ namespace MidiShapeShifter.Mss.Mapping
         /// <param name="useMappingEntryForDefaultValues"> 
         ///     If true, use the data in <paramref name="mappingEntry"/> to populate the entry fields.
         /// </param>
-        public void Init(MappingEntry mappingEntry, 
+        public void Init(IMappingEntry mappingEntry, 
                          bool useMappingEntryForDefaultValues, 
                          Factory_MssMsgRangeEntryMetadata msgMetadataFactory,
                          IFactory_MssMsgInfo msgInfoFactory)

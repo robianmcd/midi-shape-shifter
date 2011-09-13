@@ -28,13 +28,13 @@ namespace MidiShapeShifter.Mss.Generator
         ///     GeneratorMappingEntry in this list corresponds to a row in the generator list view
         ///     on the PluginEditorView dialog.
         /// </summary>
-        protected List<GeneratorMappingEntry> genMappingEntryList = new List<GeneratorMappingEntry>();
+        protected List<IGeneratorMappingEntry> genMappingEntryList = new List<IGeneratorMappingEntry>();
 
         /// <summary>
         /// Adds newEntry to this manager's list. Calling this function will also initialize 
         /// the unique ID corresponding to newEntry
         /// </summary>
-        public void AddGenMappingEntry(GeneratorMappingEntry newEntry)
+        public void AddGenMappingEntry(IGeneratorMappingEntry newEntry)
         {
             newEntry.GenConfigInfo.Id = this.nextGenId;
             this.nextGenId++;
@@ -50,7 +50,7 @@ namespace MidiShapeShifter.Mss.Generator
             genInfo.Id = this.nextGenId;
             this.nextGenId++;
 
-            GeneratorMappingEntry mappingEntry = new GeneratorMappingEntry();
+            IGeneratorMappingEntry mappingEntry = new GeneratorMappingEntry();
 
             InitializeEntryFromGenInfo(genInfo, mappingEntry);
 
@@ -64,7 +64,7 @@ namespace MidiShapeShifter.Mss.Generator
         /// </summary>
         public void UpdateEntryWithNewGenInfo(GenEntryConfigInfo genInfo)
         {
-            GeneratorMappingEntry mappingEntry = GetGenMappingEntryById(genInfo.Id);
+            IGeneratorMappingEntry mappingEntry = GetGenMappingEntryById(genInfo.Id);
 
             InitializeEntryFromGenInfo(genInfo, mappingEntry);
         }
@@ -72,7 +72,8 @@ namespace MidiShapeShifter.Mss.Generator
         /// <summary>
         /// populate mappingEntry's members based on the information in genInfo
         /// </summary>
-        protected void InitializeEntryFromGenInfo(GenEntryConfigInfo genInfo, GeneratorMappingEntry mappingEntry)
+        protected void InitializeEntryFromGenInfo(GenEntryConfigInfo genInfo, 
+                                                  IGeneratorMappingEntry mappingEntry)
         {
             //Creats MssMsgInfo Factory needed to initialize in/out MssMsgRange
             IFactory_MssMsgInfo msgInfoFactory = new Factory_MssMsgInfo();
@@ -124,7 +125,6 @@ namespace MidiShapeShifter.Mss.Generator
             mappingEntry.CurveShapeInfo = curveInfo;
         }
 
-
         /// <remarks>
         ///     Precondition: <paramref name="index"/> must be a valid index in the 
         ///     GeneratorMappingManager's list of GeneratorMappingEntry objects.
@@ -142,7 +142,6 @@ namespace MidiShapeShifter.Mss.Generator
             }
         }
 
-
         /// <summary>
         ///     Creates a ListViewItem based on the GeneratorMappingEntry specified by 
         ///     <paramref name="index"/>. This ListViewItem is intended to be used in the 
@@ -153,7 +152,7 @@ namespace MidiShapeShifter.Mss.Generator
         {
             if (index >= 0 && index < genMappingEntryList.Count)
             {
-                GeneratorMappingEntry entry = genMappingEntryList[index];
+                IGeneratorMappingEntry entry = genMappingEntryList[index];
                 ListViewItem genMappingItem = new ListViewItem(entry.GenConfigInfo.Name);
                 genMappingItem.SubItems.Add(entry.GetReadablePeriod());
                 genMappingItem.SubItems.Add(entry.GetReadableLoopStatus());
@@ -174,7 +173,7 @@ namespace MidiShapeShifter.Mss.Generator
         ///     Precondition: <paramref name="index"/> must be a valid index in the 
         ///     GeneratorMappingManager's list of GeneratorMappingEntry objects.
         /// </remarks>
-        public GeneratorMappingEntry GetGenMappingEntryByIndex(int index)
+        public IGeneratorMappingEntry GetGenMappingEntryByIndex(int index)
         {
             if (index >= 0 && index < genMappingEntryList.Count)
             {
@@ -193,7 +192,7 @@ namespace MidiShapeShifter.Mss.Generator
         ///     as <paramref name="id"/>. Returns null if the GeneratorMappingEntry cannot be
         ///     found
         /// </summary>
-        public GeneratorMappingEntry GetGenMappingEntryById(int id)
+        public IGeneratorMappingEntry GetGenMappingEntryById(int id)
         { 
             return genMappingEntryList.Find(entry => entry.GenConfigInfo.Id == id);
         }
@@ -211,18 +210,23 @@ namespace MidiShapeShifter.Mss.Generator
         /// only ever contain a maximum of one element. This is because a GeneratorMappingEntry's
         /// input range will only accept one message that has a unique id.
         /// </summary>
-        public IEnumerable<MappingEntry> GetAssociatedEntries(MssMsg inputMsg)
+        public IEnumerable<IMappingEntry> GetAssociatedEntries(MssMsg inputMsg)
         {
-            List<MappingEntry> associatedEntries = new List<MappingEntry>();
+            List<IMappingEntry> associatedEntryList = new List<IMappingEntry>();
             if (inputMsg.Type == MssMsgType.Generator)
             {
-                associatedEntries.Add(GetGenMappingEntryById((int)inputMsg.Data1));
+                IGeneratorMappingEntry associatedEntry = 
+                        GetGenMappingEntryById((int)inputMsg.Data1);
+                if (associatedEntry != null)
+                {
+                    associatedEntryList.Add(associatedEntry);
+                }
             }
 
-            return associatedEntries;
+            return associatedEntryList;
         }
 
-        public MappingEntry GetMappingEntry(int index)
+        public IMappingEntry GetMappingEntry(int index)
         {
             return GetGenMappingEntryByIndex(index);
         }

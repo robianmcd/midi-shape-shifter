@@ -68,7 +68,7 @@ namespace MidiShapeShifter.Mss.Generator
             //TODO: call generateEvent() when nessary in this loop
             for (int i = 0; i < numGens; i++)
             {
-                GeneratorMappingEntry curEntry = 
+                IGeneratorMappingEntry curEntry = 
                         this.generatorMappingMgr.GetGenMappingEntryByIndex(i);
 
                 int ticksPerUpdate = GetTicksPerGenUpdate(curEntry.GenConfigInfo.PeriodType);
@@ -109,7 +109,7 @@ namespace MidiShapeShifter.Mss.Generator
             }
         }
 
-        protected MssEvent GenerateEvent(GeneratorMappingEntry genEntry)
+        protected MssEvent GenerateEvent(IGeneratorMappingEntry genEntry)
         {
             Debug.Assert(genEntry.GenHistoryInfo.Initialized == true);
 
@@ -193,7 +193,7 @@ namespace MidiShapeShifter.Mss.Generator
             }
         }
 
-        protected MssMsg CreateInputMsgForGenMappingEntry(GeneratorMappingEntry genEntry, 
+        protected MssMsg CreateInputMsgForGenMappingEntry(IGeneratorMappingEntry genEntry, 
                                                           double relPosInPeriod)
         {
             MssMsg relPosMsg = new MssMsg();

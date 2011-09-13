@@ -43,7 +43,7 @@ namespace MidiShapeShifter.Mss
         public List<MssMsg> ProcessMssMsg(MssMsg mssMsg)
         {
             //Retrieves mappings from the MappingManager that will affect mssMsg
-            IEnumerable<MappingEntry> mappingEntries = this.mappingMgr.GetAssociatedEntries(mssMsg);
+            IEnumerable<IMappingEntry> mappingEntries = this.mappingMgr.GetAssociatedEntries(mssMsg);
 
             List<MssMsg> outMessages = new List<MssMsg>();
             if (mappingEntries.Any() == false)
@@ -52,7 +52,7 @@ namespace MidiShapeShifter.Mss
             }
             else
             {
-                foreach (MappingEntry entry in mappingEntries)
+                foreach (IMappingEntry entry in mappingEntries)
                 {
                     double relativeData3 = (double)mssMsg.Data3 / (double)entry.InMssMsgRange.MsgInfo.MaxData3Value;
                     ReturnStatus<double> evalReturnStatus = this.evaluator.Evaluate(entry.CurveShapeInfo.Equation, relativeData3);

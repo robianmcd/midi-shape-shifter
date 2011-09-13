@@ -15,19 +15,19 @@ namespace MidiShapeShifter.Mss.Mapping
     ///     2. Information about how to modify incomeing MSS messages. OnMssMsgRange is used to map the incoming MSS 
     ///         message's type, data1, and data2. The equation is used to map the incoming MSS message's data3.
     /// </summary>
-    public class MappingEntry : ICurveShapeInfoContainer
+    public class MappingEntry : IMappingEntry
     {
         /// <summary>
         ///     Specifies which MSS messages will be accepted for input as well as additional information about the 
         ///     input type
         /// </summary>
-        public MssMsgRange InMssMsgRange;
+        public MssMsgRange InMssMsgRange { get; set; }
 
         /// <summary>
         ///     Specifies the range of messages that can be output as well as additional information about the output 
         ///     type.
         /// </summary>
-        public MssMsgRange OutMssMsgRange;
+        public MssMsgRange OutMssMsgRange { get; set; }
 
         /// <summary>
         ///     If there are multiple mapping entries with overlapping input ranges then a single mss message can
@@ -35,7 +35,7 @@ namespace MidiShapeShifter.Mss.Mapping
         ///     If there are two mapping entries with an overlapping inMsgRange and overrideDuplicates is set to 
         ///     true for each one, then the one closer to the top of the mapping list box overrides the other.
         /// </summary>
-        public bool OverrideDuplicates;
+        public bool OverrideDuplicates { get; set; }
 
         /// <summary>
         ///     Contains information about the curve shape for this mapping and how it is being entered.

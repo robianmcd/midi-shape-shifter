@@ -8,8 +8,8 @@ namespace MidiShapeShifter.Mss.Mapping
     public interface IGraphableMappingManager
     {
         int GetNumEntries();
-        IEnumerable<MappingEntry> GetAssociatedEntries(MidiShapeShifter.Mss.MssMsg inputMsg);
+        IEnumerable<IMappingEntry> GetAssociatedEntries(MidiShapeShifter.Mss.MssMsg inputMsg);
         System.Windows.Forms.ListViewItem GetListViewRow(int index);
-        MappingEntry GetMappingEntry(int index);
+        IMappingEntry GetMappingEntry(int index);
     }
 }

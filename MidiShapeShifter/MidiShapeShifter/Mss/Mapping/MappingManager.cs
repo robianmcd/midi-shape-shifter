@@ -17,9 +17,9 @@ namespace MidiShapeShifter.Mss.Mapping
         ///     List that stores all of the MappingEntry objects. The mapping list box on the main GUI is basically a 
         ///     visualization of this list.
         /// </summary>
-        protected List<MappingEntry> mappingEntryList = new List<MappingEntry>();
+        protected List<IMappingEntry> mappingEntryList = new List<IMappingEntry>();
 
-        public void AddMappingEntry(MappingEntry newEntry) 
+        public void AddMappingEntry(IMappingEntry newEntry) 
         {
             mappingEntryList.Add(newEntry);
         }
@@ -47,7 +47,7 @@ namespace MidiShapeShifter.Mss.Mapping
         ///     Precondition: <paramref name="index"/> must be a valid index in the MappingManager's list of 
         ///     MappingEntry objects.
         /// </remarks>
-        public MappingEntry GetMappingEntry(int index)
+        public IMappingEntry GetMappingEntry(int index)
         {
             if (index >= 0 && index < mappingEntryList.Count)
             {
@@ -83,7 +83,7 @@ namespace MidiShapeShifter.Mss.Mapping
         {
             if (index >= 1 && index < mappingEntryList.Count)
             {
-                MappingEntry tempEntry = mappingEntryList[index];
+                IMappingEntry tempEntry = mappingEntryList[index];
                 mappingEntryList[index] = mappingEntryList[index - 1];
                 mappingEntryList[index - 1] = tempEntry;
             }
@@ -111,7 +111,7 @@ namespace MidiShapeShifter.Mss.Mapping
         {
             if (index >= 0 && index < mappingEntryList.Count - 1)
             {
-                MappingEntry tempEntry = mappingEntryList[index];
+                IMappingEntry tempEntry = mappingEntryList[index];
                 mappingEntryList[index] = mappingEntryList[index + 1];
                 mappingEntryList[index + 1] = tempEntry;
             }
@@ -131,7 +131,7 @@ namespace MidiShapeShifter.Mss.Mapping
         { 
             if (index >= 0 && index < mappingEntryList.Count)
             {
-                MappingEntry entry = mappingEntryList[index];
+                IMappingEntry entry = mappingEntryList[index];
                 ListViewItem mappingItem = new ListViewItem(entry.GetReadableMsgType(IoType.Input));
                 mappingItem.SubItems.Add(entry.InMssMsgRange.Data1RangeStr);
                 mappingItem.SubItems.Add(entry.InMssMsgRange.Data2RangeStr);
@@ -163,7 +163,7 @@ namespace MidiShapeShifter.Mss.Mapping
         /// </summary>
         /// <param name="inputMsg">MssMsg to query the MappingManager with.</param>
         /// <returns>An enumeration of MappingEntry objects that match <paramref name="inputMsg"/>.</returns>
-        public IEnumerable<MappingEntry> GetAssociatedEntries(MssMsg inputMsg) 
+        public IEnumerable<IMappingEntry> GetAssociatedEntries(MssMsg inputMsg) 
         {
             var associatedEntiresQuery =
                 from entry in mappingEntryList

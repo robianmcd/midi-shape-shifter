@@ -54,7 +54,7 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         public override string ConvertData1ToString(double Data1)
         {
 
-            GeneratorMappingEntry genEntry = this.genMappingMgr.GetGenMappingEntryById((int)Data1);
+            IGeneratorMappingEntry genEntry = this.genMappingMgr.GetGenMappingEntryById((int)Data1);
             if (genEntry != null)
             {
                 return genEntry.GenConfigInfo.Name;

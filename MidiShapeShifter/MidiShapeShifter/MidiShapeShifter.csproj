@@ -89,12 +89,14 @@
     <Compile Include="Mss\Generator\GenEntryConfigInfo.cs" />
     <Compile Include="Mss\Generator\GeneratorMappingEntry.cs" />
     <Compile Include="Mss\Generator\GeneratorMappingManager.cs" />
+    <Compile Include="Mss\Generator\IGeneratorMappingEntry.cs" />
     <Compile Include="Mss\Generator\IGeneratorMappingManager.cs" />
     <Compile Include="Mss\Generator\MssEventGenerator.cs" />
     <Compile Include="Mss\ICurveShapeInfoContainer.cs" />
     <Compile Include="Mss\CurveShapeInfo.cs" />
     <Compile Include="Mss\IMssEvaluator.cs" />
     <Compile Include="Mss\Mapping\IGraphableMappingManager.cs" />
+    <Compile Include="Mss\Mapping\IMappingEntry.cs" />
     <Compile Include="Mss\Mapping\IMappingManager.cs" />
     <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\ChanAftertouchMsgRangeEntryMetadata.cs" />
     <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\Factory_MssMsgRangeEntryMetadata.cs" />

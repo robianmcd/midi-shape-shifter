@@ -17,15 +17,15 @@ namespace MidiShapeShifter.Mss.Generator
     /// GeneratorMappingEntries will always map one of the relative bar position MSS message types
     /// to a generator mss message. 
     /// </summary>
-    public class GeneratorMappingEntry : MappingEntry
+    public class GeneratorMappingEntry : MappingEntry, IGeneratorMappingEntry
     {
 
-        public GenEntryConfigInfo GenConfigInfo;
+        public GenEntryConfigInfo GenConfigInfo {get; set;}
         
         /// <summary>
         /// Stores information about previously generated events.
         /// </summary>
-        public GenEntryHistoryInfo GenHistoryInfo;
+        public GenEntryHistoryInfo GenHistoryInfo {get; set;}
 
         public GeneratorMappingEntry()
         {

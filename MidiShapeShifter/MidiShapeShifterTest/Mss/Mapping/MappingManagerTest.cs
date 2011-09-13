@@ -28,7 +28,7 @@ namespace MidiShapeShifterTest.Mss.Mapping
         public void AddMappingEntry_SingleEntry_SuccessfullyAdded()
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
-            MappingEntry mappingEntry = Factory_MappingEntry_Basic();
+            IMappingEntry mappingEntry = Factory_IMappingEntry_Basic();
 
             mappingMgr.AddMappingEntry(mappingEntry);
 
@@ -39,7 +39,7 @@ namespace MidiShapeShifterTest.Mss.Mapping
         public void AddMappingEntry_SingleEntry_AddsExactlyOneEntry()
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
-            MappingEntry mappingEntry = Factory_MappingEntry_Basic();
+            IMappingEntry mappingEntry = Factory_IMappingEntry_Basic();
 
             mappingMgr.AddMappingEntry(mappingEntry);
 
@@ -50,7 +50,7 @@ namespace MidiShapeShifterTest.Mss.Mapping
         public void RemoveMappingEntry_ManagerHasOneEntry_ExistingEntryIsRemoved()
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
-            MappingEntry mappingEntry = Factory_MappingEntry_Basic();
+            IMappingEntry mappingEntry = Factory_IMappingEntry_Basic();
 
             mappingMgr.AddMappingEntry(mappingEntry);
             mappingMgr.RemoveMappingEntry(0);
@@ -62,8 +62,8 @@ namespace MidiShapeShifterTest.Mss.Mapping
         public void MoveEntryUp_MoveBottomEntryUpInManagerThatHasTwoEntries_EntriesAreSwapped()
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
-            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
-            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 2, 3, 3);
+            IMappingEntry mappingEntry1 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
+            IMappingEntry mappingEntry2 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 2, 3, 3);
 
             mappingMgr.AddMappingEntry(mappingEntry1);
             mappingMgr.AddMappingEntry(mappingEntry2);
@@ -78,10 +78,10 @@ namespace MidiShapeShifterTest.Mss.Mapping
         public void MoveEntryUp_MoveThirdEntryUpInManagerThatHasFourEntries_OnlyMiddleTwoEntriesAreSwapped()
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
-            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
-            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 2, 0, 0);
-            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 3, 3, 0, 0);
-            MappingEntry mappingEntry4 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 4, 4, 0, 0);
+            IMappingEntry mappingEntry1 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
+            IMappingEntry mappingEntry2 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 2, 0, 0);
+            IMappingEntry mappingEntry3 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 3, 3, 0, 0);
+            IMappingEntry mappingEntry4 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 4, 4, 0, 0);
 
             mappingMgr.AddMappingEntry(mappingEntry1);
             mappingMgr.AddMappingEntry(mappingEntry2);
@@ -100,8 +100,8 @@ namespace MidiShapeShifterTest.Mss.Mapping
         public void MoveEntryDown_MoveTopEntryDownInManagerThatHasTwoEntries_EntriesAreSwapped()
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
-            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
-            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 2, 3, 3);
+            IMappingEntry mappingEntry1 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
+            IMappingEntry mappingEntry2 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 2, 3, 3);
 
             mappingMgr.AddMappingEntry(mappingEntry1);
             mappingMgr.AddMappingEntry(mappingEntry2);
@@ -116,10 +116,10 @@ namespace MidiShapeShifterTest.Mss.Mapping
         public void MoveEntryDown_MoveSecondEntryDownInManagerThatHasFourEntries_OnlyMiddleTwoEntriesAreSwapped()
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
-            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
-            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 2, 0, 0);
-            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 3, 3, 0, 0);
-            MappingEntry mappingEntry4 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 4, 4, 0, 0);
+            IMappingEntry mappingEntry1 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
+            IMappingEntry mappingEntry2 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 2, 0, 0);
+            IMappingEntry mappingEntry3 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 3, 3, 0, 0);
+            IMappingEntry mappingEntry4 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 4, 4, 0, 0);
 
             mappingMgr.AddMappingEntry(mappingEntry1);
             mappingMgr.AddMappingEntry(mappingEntry2);
@@ -138,7 +138,7 @@ namespace MidiShapeShifterTest.Mss.Mapping
         public void GetAssociatedEntries_MsgMatchesOneEntry_TheAssociatedEntryIsReturned()
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
-            MappingEntry mappingEntry = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 3, 0, 10);
+            IMappingEntry mappingEntry = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 3, 0, 10);
             mappingMgr.AddMappingEntry(mappingEntry);
 
             MssMsg msg = Factory_MssMsg_InitializedValues(
@@ -148,7 +148,7 @@ namespace MidiShapeShifterTest.Mss.Mapping
                 100 /*doesn't need to match anything*/);
 
             var matchingEntries = mappingMgr.GetAssociatedEntries(msg);
-            Assert.IsTrue(matchingEntries.Contains<MappingEntry>(mappingEntry));
+            Assert.IsTrue(matchingEntries.Contains<IMappingEntry>(mappingEntry));
         }
 
         [Test]
@@ -156,9 +156,9 @@ namespace MidiShapeShifterTest.Mss.Mapping
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
             
-            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 3, 127);
-            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 16, 2, 2);
-            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(SECONDARY_MSG_TYPE, 1, 1, 2, 2);
+            IMappingEntry mappingEntry1 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 3, 127);
+            IMappingEntry mappingEntry2 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 16, 2, 2);
+            IMappingEntry mappingEntry3 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(SECONDARY_MSG_TYPE, 1, 1, 2, 2);
 
             mappingMgr.AddMappingEntry(mappingEntry1);
             mappingMgr.AddMappingEntry(mappingEntry2);
@@ -180,9 +180,9 @@ namespace MidiShapeShifterTest.Mss.Mapping
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
 
-            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 16, 0, 127);
-            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 8, 0, 64);
-            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 7, 16, 60, 127);
+            IMappingEntry mappingEntry1 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 16, 0, 127);
+            IMappingEntry mappingEntry2 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 8, 0, 64);
+            IMappingEntry mappingEntry3 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 7, 16, 60, 127);
             mappingEntry3.OverrideDuplicates = true;
 
             mappingMgr.AddMappingEntry(mappingEntry1);
@@ -197,9 +197,9 @@ namespace MidiShapeShifterTest.Mss.Mapping
 
             var matchingEntries = mappingMgr.GetAssociatedEntries(msg);
 
-            Assert.IsTrue(matchingEntries.Contains<MappingEntry>(mappingEntry1));
-            Assert.IsTrue(matchingEntries.Contains<MappingEntry>(mappingEntry2));
-            Assert.IsFalse(matchingEntries.Contains<MappingEntry>(mappingEntry3));
+            Assert.IsTrue(matchingEntries.Contains<IMappingEntry>(mappingEntry1));
+            Assert.IsTrue(matchingEntries.Contains<IMappingEntry>(mappingEntry2));
+            Assert.IsFalse(matchingEntries.Contains<IMappingEntry>(mappingEntry3));
         }
 
         [Test]
@@ -233,12 +233,12 @@ namespace MidiShapeShifterTest.Mss.Mapping
             return new MappingManager();
         }
 
-        protected MappingEntry Factory_MappingEntry_Basic()
+        protected IMappingEntry Factory_IMappingEntry_Basic()
         {
-            return Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
+            return Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 0, 0);
         }
 
-        protected MappingEntry Factory_MappingEntry_MapsIdenticalMidiMsgRanges(
+        protected IMappingEntry Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(
             MssMsgType msgType, 
             int chanRangeBottom, int chanRamgeTop, 
             int paramRangeBottom, int paramRangeTop)
@@ -253,7 +253,7 @@ namespace MidiShapeShifterTest.Mss.Mapping
             outMsgRange.Init(msgInfoFactoryMock.Object);
             outMsgRange.InitPublicMembers(msgType, chanRangeBottom, chanRamgeTop, paramRangeBottom, paramRangeTop);
 
-            MappingEntry mapEntry = new MappingEntry();
+            IMappingEntry mapEntry = new MappingEntry();
             mapEntry.InMssMsgRange = inMsgRange;
             mapEntry.OutMssMsgRange = outMsgRange;
             mapEntry.OverrideDuplicates = DEFAULT_OVERRIDE_DUPLICATES;
@@ -271,11 +271,11 @@ namespace MidiShapeShifterTest.Mss.Mapping
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
 
-            MappingEntry mappingEntry1 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 16, 0, 127);
+            IMappingEntry mappingEntry1 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 16, 0, 127);
             mappingEntry1.OverrideDuplicates = Entry1Override;
-            MappingEntry mappingEntry2 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 4, 5, 10, 20);
+            IMappingEntry mappingEntry2 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 4, 5, 10, 20);
             mappingEntry2.OverrideDuplicates = Entry2Override;
-            MappingEntry mappingEntry3 = Factory_MappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 5, 5, 15, 15);
+            IMappingEntry mappingEntry3 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 5, 5, 15, 15);
             mappingEntry3.OverrideDuplicates = Entry3Override;
 
             mappingMgr.AddMappingEntry(mappingEntry1);
@@ -290,9 +290,9 @@ namespace MidiShapeShifterTest.Mss.Mapping
 
             var matchingEntries = mappingMgr.GetAssociatedEntries(msg);
 
-            Assert.AreEqual(matchingEntries.Contains<MappingEntry>(mappingEntry1), Entry1Matches);
-            Assert.AreEqual(matchingEntries.Contains<MappingEntry>(mappingEntry2), Entry2Matches);
-            Assert.AreEqual(matchingEntries.Contains<MappingEntry>(mappingEntry3), Entry3Matches);
+            Assert.AreEqual(matchingEntries.Contains<IMappingEntry>(mappingEntry1), Entry1Matches);
+            Assert.AreEqual(matchingEntries.Contains<IMappingEntry>(mappingEntry2), Entry2Matches);
+            Assert.AreEqual(matchingEntries.Contains<IMappingEntry>(mappingEntry3), Entry3Matches);
         }
     }
 }

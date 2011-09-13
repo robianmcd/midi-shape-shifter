@@ -50,7 +50,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             }
             else 
             { 
-                GeneratorMappingEntry SelectedGenEntry = 
+                IGeneratorMappingEntry SelectedGenEntry = 
                         this.genMappingMgr.GetGenMappingEntryByIndex(SelectedIndex);
                 int SelectedGenId = SelectedGenEntry.GenConfigInfo.Id;
                 this.msgRange.Data1RangeBottom = SelectedGenId;
@@ -74,7 +74,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 
             for (int i = 0; i < this.genMappingMgr.GetNumEntries(); i++ )
             {
-                GeneratorMappingEntry curEntry = this.genMappingMgr.GetGenMappingEntryByIndex(i);
+                IGeneratorMappingEntry curEntry = this.genMappingMgr.GetGenMappingEntryByIndex(i);
                 ((ComboBox)EntryField1).Items.Add(curEntry.GenConfigInfo.Name);
             }
 

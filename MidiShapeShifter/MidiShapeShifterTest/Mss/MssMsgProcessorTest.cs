@@ -33,7 +33,7 @@ namespace MidiShapeShifterTest.Mss
         {
             MssMsg inputMsg = Factory_MssMsg(MssMsgType.NoteOn, 1, 64, 100);
             
-            List<MappingEntry> matchingEntries = new List<MappingEntry>();
+            List<IMappingEntry> matchingEntries = new List<IMappingEntry>();
 
             List<MssMsg> desiredReturnedMsgList = new List<MssMsg>();
             desiredReturnedMsgList.Add((MssMsg)inputMsg.Clone());
@@ -46,8 +46,8 @@ namespace MidiShapeShifterTest.Mss
         {
             MssMsg inputMsg = Factory_MssMsg(MssMsgType.NoteOff, 1, 64, 0);
 
-            List<MappingEntry> matchingEntries = new List<MappingEntry>();
-            MappingEntry mapsNoteOffToSameMsg = Factory_MappingEntry(
+            List<IMappingEntry> matchingEntries = new List<IMappingEntry>();
+            IMappingEntry mapsNoteOffToSameMsg = Factory_IMappingEntry(
                 MssMsgType.NoteOff, 1, 1, 64, 64,
                 MssMsgType.NoteOff, 1, 1, 64, 64);
             matchingEntries.Add(mapsNoteOffToSameMsg);
@@ -63,8 +63,8 @@ namespace MidiShapeShifterTest.Mss
         {
             MssMsg inputMsg = Factory_MssMsg(MssMsgType.NoteOff, 1, 64, 0);
 
-            List<MappingEntry> matchingEntries = new List<MappingEntry>();
-            MappingEntry mappingEntry = Factory_MappingEntry(
+            List<IMappingEntry> matchingEntries = new List<IMappingEntry>();
+            IMappingEntry mappingEntry = Factory_IMappingEntry(
                 MssMsgType.NoteOff, 1, 1, 64, 64,
                 MssMsgType.CC, 2, 2, 100, 100);
             matchingEntries.Add(mappingEntry);
@@ -80,8 +80,8 @@ namespace MidiShapeShifterTest.Mss
         {
             MssMsg inputMsg = Factory_MssMsg(MssMsgType.PolyAftertouch, 16, 64, 100);
 
-            List<MappingEntry> matchingEntries = new List<MappingEntry>();
-            MappingEntry mappingEntry = Factory_MappingEntry(
+            List<IMappingEntry> matchingEntries = new List<IMappingEntry>();
+            IMappingEntry mappingEntry = Factory_IMappingEntry(
                 MssMsgType.PolyAftertouch, 15, 16, 60, 70,
                 MssMsgType.PolyAftertouch, 1, 2, 50, 60);
             matchingEntries.Add(mappingEntry);
@@ -97,8 +97,8 @@ namespace MidiShapeShifterTest.Mss
         {
             MssMsg inputMsg = Factory_MssMsg(MssMsgType.NoteOn, 2, 10, 100);
 
-            List<MappingEntry> matchingEntries = new List<MappingEntry>();
-            MappingEntry mappingEntry = Factory_MappingEntry(
+            List<IMappingEntry> matchingEntries = new List<IMappingEntry>();
+            IMappingEntry mappingEntry = Factory_IMappingEntry(
                 MssMsgType.NoteOn, 1, 3, 9, 10,
                 MssMsgType.NoteOn, 1, 5, 0, 127);
             matchingEntries.Add(mappingEntry);
@@ -114,13 +114,13 @@ namespace MidiShapeShifterTest.Mss
         {
             MssMsg inputMsg = Factory_MssMsg(MssMsgType.NoteOn, 1, 64, 100);
 
-            List<MappingEntry> matchingEntries = new List<MappingEntry>();
-            MappingEntry mappingEntry = Factory_MappingEntry(
+            List<IMappingEntry> matchingEntries = new List<IMappingEntry>();
+            IMappingEntry mappingEntry = Factory_IMappingEntry(
                 MssMsgType.NoteOn, 1, 1, 64, 64,
                 MssMsgType.NoteOn, 2, 2, 65, 65);
             matchingEntries.Add(mappingEntry);
 
-            MappingEntry mappingEntry2 = Factory_MappingEntry(
+            IMappingEntry mappingEntry2 = Factory_IMappingEntry(
                 MssMsgType.NoteOn, 1, 1, 64, 64,
                 MssMsgType.CC, 3, 3, 66, 66);
             matchingEntries.Add(mappingEntry2);
@@ -137,8 +137,8 @@ namespace MidiShapeShifterTest.Mss
         {
             MssMsg inputMsg = Factory_MssMsg(MssMsgType.CC, 1, 10, 127);
 
-            List<MappingEntry> matchingEntries = new List<MappingEntry>();
-            MappingEntry mappingEntry = Factory_MappingEntry(
+            List<IMappingEntry> matchingEntries = new List<IMappingEntry>();
+            IMappingEntry mappingEntry = Factory_IMappingEntry(
                 MssMsgType.CC, 1, 1, 10, 10,
                 MssMsgType.PitchBend, 1, 1, 10, 10);
             matchingEntries.Add(mappingEntry);
@@ -154,8 +154,8 @@ namespace MidiShapeShifterTest.Mss
         {
             MssMsg inputMsg = Factory_MssMsg(MssMsgType.NoteOn, 1, 10, 64);
 
-            List<MappingEntry> matchingEntries = new List<MappingEntry>();
-            MappingEntry mapsNoteOffToSameMsg = Factory_MappingEntry(
+            List<IMappingEntry> matchingEntries = new List<IMappingEntry>();
+            IMappingEntry mapsNoteOffToSameMsg = Factory_IMappingEntry(
                 MssMsgType.NoteOn, 1, 1, 10, 10,
                 MssMsgType.NoteOn, 1, 1, 10, 10);
             matchingEntries.Add(mapsNoteOffToSameMsg);
@@ -178,7 +178,7 @@ namespace MidiShapeShifterTest.Mss
         ///     false. 
         /// </param>
         protected void Test_ProcessMssMsg(MssMsg inputMsg, 
-                                         List<MappingEntry> matchingEntries, 
+                                         List<IMappingEntry> matchingEntries, 
                                          List<MssMsg> desiredReturnedMsgList,
                                          bool doubleData3)
         {
@@ -232,7 +232,7 @@ namespace MidiShapeShifterTest.Mss
             return new MssMsg(msgType, data1, data2, data3);
         }
 
-        protected MappingEntry Factory_MappingEntry(
+        protected IMappingEntry Factory_IMappingEntry(
             MssMsgType inMsgType, int inData1Bottom, int inData1Top, int inData2Bottom, int inData2Top,
             MssMsgType outMsgType, int outData1Bottom, int outData1Top, int outData2Bottom, int outData2Top)
         {
@@ -248,7 +248,7 @@ namespace MidiShapeShifterTest.Mss
             outMsgRange.Init(msgInfoFactory);
             outMsgRange.InitPublicMembers(outMsgType, outData1Bottom, outData1Top, outData2Bottom, outData2Top);
 
-            MappingEntry mappingEntry = new MappingEntry();
+            IMappingEntry mappingEntry = new MappingEntry();
             mappingEntry.InitAllMembers(inMsgRange, outMsgRange, false, DEFAULT_CURVE_SHAPE_INFO);
 
             return mappingEntry;

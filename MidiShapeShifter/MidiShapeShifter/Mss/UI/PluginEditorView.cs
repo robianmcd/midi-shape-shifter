@@ -56,7 +56,7 @@ namespace MidiShapeShifter.Mss.UI
         protected Factory_MssMsgRangeEntryMetadata msgMetadataFactory;
         protected IFactory_MssMsgInfo msgInfoFactory;
 
-        public MappingEntry ActiveGraphableEntry 
+        public IMappingEntry ActiveGraphableEntry 
         {
             get
             {
@@ -66,7 +66,7 @@ namespace MidiShapeShifter.Mss.UI
                 }
                 else
                 {
-                    MappingEntry activeEntry;
+                    IMappingEntry activeEntry;
 
                     if (this.activeGraphableEntryType == GraphableEntryType.Mapping) 
                     {
@@ -475,7 +475,7 @@ namespace MidiShapeShifter.Mss.UI
                 Debug.Assert(false);
                 return;
             }
-            GeneratorMappingEntry activeGenMapping = 
+            IGeneratorMappingEntry activeGenMapping = 
                 this.genMappingMgr.GetGenMappingEntryByIndex(this.activeGraphableEntryIndex);
 
             GeneratorDlg genDlg = new GeneratorDlg();

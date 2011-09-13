@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="Framework\MidiHandlerProtectedWrapper.cs" />
     <Compile Include="Framework\MidiHandlerTest.cs" />
+    <Compile Include="Mss\Generator\GeneratorMappingManagerTest.cs" />
     <Compile Include="Mss\Mapping\EntryFieldInterpretingUtilsTest.cs" />
     <Compile Include="Mss\Mapping\MappingManagerTest.cs" />
     <Compile Include="Mss\MssMsgProcessorTest.cs" />
