@@ -81,9 +81,9 @@ namespace MidiShapeShifterTest.Mss.Generator
             genMgr.CreateAndAddEntryFromGenInfo(genConfigInfo);
 
             IGeneratorMappingEntry genEntry = genMgr.GetGenMappingEntryByIndex(0);
-            Assert.AreEqual(MssMsgUtil.UNUSED_MSS_MSG_DATA, 
+            Assert.AreEqual(genConfigInfo.Id, 
                             genEntry.InMssMsgRange.Data1RangeBottom);
-            Assert.AreEqual(MssMsgUtil.UNUSED_MSS_MSG_DATA, 
+            Assert.AreEqual(genConfigInfo.Id, 
                             genEntry.InMssMsgRange.Data1RangeTop);
             Assert.AreEqual(MssMsgUtil.UNUSED_MSS_MSG_DATA,
                             genEntry.InMssMsgRange.Data2RangeBottom);
@@ -164,7 +164,7 @@ namespace MidiShapeShifterTest.Mss.Generator
         public void GetAssociatedEntries_EmptyManager_NoEntriesRetrieved()
         {
             GeneratorMappingManager genMgr = Factory_GeneratorMappingManager_Default();
-            MssMsg inputMsg = Factory_MssMsg_CustomTypeAndData1(MssMsgType.Generator, 0);
+            MssMsg inputMsg = Factory_MssMsg_CustomTypeAndData1(MssMsgType.RelBarPeriodPos, 0);
 
             IEnumerable<IMappingEntry> retrievedEntries = genMgr.GetAssociatedEntries(inputMsg);
 
@@ -193,7 +193,7 @@ namespace MidiShapeShifterTest.Mss.Generator
             genMgr.AddGenMappingEntry(genEntryMock2.Object);
             genMgr.AddGenMappingEntry(genEntryMock3.Object);
             MssMsg inputMsg = Factory_MssMsg_CustomTypeAndData1(
-                    MssMsgType.Generator, genEntryMock2.Object.GenConfigInfo.Id);
+                    MssMsgType.RelTimePeriodPos, genEntryMock2.Object.GenConfigInfo.Id);
 
             IEnumerable<IMappingEntry> retrievedEntries = genMgr.GetAssociatedEntries(inputMsg);
 

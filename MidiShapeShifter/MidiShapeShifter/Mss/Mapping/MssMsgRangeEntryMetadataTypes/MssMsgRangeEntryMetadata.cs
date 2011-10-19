@@ -303,6 +303,8 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         public virtual bool SetData1RangeFromField(out string errorMessage)
         {
             errorMessage = "";
+            this.msgRange.Data1RangeBottom = MssMsgUtil.UNUSED_MSS_MSG_DATA;
+            this.msgRange.Data1RangeTop = MssMsgUtil.UNUSED_MSS_MSG_DATA;
             return true;
         }
 
@@ -339,6 +341,8 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         public virtual bool SetData2RangeFromField(out string errorMessage)
         {
             errorMessage = "";
+            this.msgRange.Data2RangeBottom = MssMsgUtil.UNUSED_MSS_MSG_DATA;
+            this.msgRange.Data2RangeTop = MssMsgUtil.UNUSED_MSS_MSG_DATA;
             return true;
         }
 

@@ -53,11 +53,11 @@ namespace MidiShapeShifter.Mss
         /// <param name="dryMssEvent"></param>
         protected void dryMssEventOutputPort_DryMssEventRecieved(MssEvent dryMssEvent)
         {
-            //Process in incoming MssEvent
+            //Process incoming MssEvent
             List<MssMsg> mssMessages = this.mssMsgProcessor.ProcessMssMsg(dryMssEvent.mssMsg);
 
             List<MssEvent> wetEventList = new List<MssEvent>(mssMessages.Count);
-            //Convert the list of processed MssMsgs into an list of MssEvents.
+            //Convert the list of processed MssMsgs into a list of MssEvents.
             foreach (MssMsg mssMsg in mssMessages)
             {
                 MssEvent wetEvent = new MssEvent();

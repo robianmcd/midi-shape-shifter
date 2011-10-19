@@ -9,27 +9,51 @@ using MidiShapeShifter.Mss.Mapping;
 
 namespace MidiShapeShifter.Mss.Generator
 {
-    // TODO: comment this calss
+    // TODO: comment this calss and write test casses for it
+    /// <summary>
+    /// Before the end of each audio processing cycle this class will iterate through the 
+    /// entries in generatorMappingManager, create all nessary Mss Events and send them to 
+    /// dryMssEventInputPort
+    /// </summary>
     public class MssEventGenerator
     {
+        /// <summary>
+        /// Specifies the maximum number of events that could be generated in a single bar
+        /// for a beat synced GeneratorMappingEntry
+        /// </summary>
         protected const int GENERATOR_UPDATES_PER_BAR = 128;
+
+        /// <summary>
+        /// Specifies the maximum number of events that could be generated in one second
+        /// for a time based GeneratorMappingEntry
+        /// </summary>
         protected const int GENERATOR_UPDATES_PER_SECOND = 64;
 
+        /// <summary>
+        /// This class sends generated events to this input port
+        /// </summary>
         protected IDryMssEventInputPort dryMssEventInputPort;
+
+        /// <summary>
+        /// Recieves information about the host form this output port such as: bar position,
+        /// tempo, and notifications when an audio processing cycle is comming to an end
+        /// </summary>
         protected IHostInfoOutputPort hostInfoOutputPort;
 
+        /// <summary>
+        /// Stores the GeneratorMappingEntries
+        /// </summary>
         protected GeneratorMappingManager generatorMappingMgr;
 
+        /// <summary>
+        /// Applies the equation the user has specified for each generator to generated events.
+        /// </summary>
         protected MssMsgProcessor mssMsgProcessor;
 
-        public int PreviousGenId { get; private set; }
 
         public MssEventGenerator()
         {
-            PreviousGenId = -1;
             this.mssMsgProcessor = new MssMsgProcessor();
-            this.generatorMappingMgr = new GeneratorMappingManager();
-
         }
 
         public void Init(IHostInfoOutputPort hostInfoOutputPort, 
@@ -37,8 +61,10 @@ namespace MidiShapeShifter.Mss.Generator
                          IDryMssEventInputPort dryMssEventInputPort,
                          GeneratorMappingManager generatorMappingMgr)
         {
-            this.mssMsgProcessor.Init(this.generatorMappingMgr);
+            this.generatorMappingMgr = generatorMappingMgr;
+            this.mssMsgProcessor.Init(generatorMappingMgr);
 
+            //Adds listener for generator toggle messages
             wetMssEventOutputPort.WetMssEventsReceived += new 
                     WetMssEventsReceivedEventHandler(WetMssEventOutputPort_WetMssEventsReceived);
 
@@ -47,10 +73,11 @@ namespace MidiShapeShifter.Mss.Generator
                     ProcessingCycleEndEventHandler(HostInfoOutputPort_BeforeProcessingCycleEnd);
             
             this.dryMssEventInputPort = dryMssEventInputPort;
-
-            this.generatorMappingMgr = generatorMappingMgr;
         }
 
+        /// <summary>
+        /// Listens for GeneratorToggle messages
+        /// </summary>
         protected void WetMssEventOutputPort_WetMssEventsReceived(List<MssEvent> mssEventList)
         {
             foreach(MssEvent mssEvent in mssEventList)
@@ -62,15 +89,23 @@ namespace MidiShapeShifter.Mss.Generator
             }
         }
 
+        /// <summary>
+        /// Iterates through the entries in generatorMappingManager, creates all nessary Mss 
+        /// Events, and send them to dryMssEventInputPort. This function will be called before 
+        /// each audio processing cycle ends. 
+        /// </summary>
+        /// <param name="cycleEndTimestamp">
+        /// The timestamp for when the current processing cycle will end
+        /// </param>
         protected void HostInfoOutputPort_BeforeProcessingCycleEnd(long cycleEndTimestamp)
         {
             int numGens = this.generatorMappingMgr.GetNumEntries();
-            //TODO: call generateEvent() when nessary in this loop
             for (int i = 0; i < numGens; i++)
             {
                 IGeneratorMappingEntry curEntry = 
                         this.generatorMappingMgr.GetGenMappingEntryByIndex(i);
 
+                //ticksPerUpdate stores the number of ticks in between each update
                 int ticksPerUpdate = GetTicksPerGenUpdate(curEntry.GenConfigInfo.PeriodType);
 
                 if (curEntry.GenConfigInfo.Enabled == true)
@@ -79,7 +114,7 @@ namespace MidiShapeShifter.Mss.Generator
                     {
                         if (curEntry.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
                         {
-
+                            //todo: handel the beat synced csae
                         }
                         else if (curEntry.GenConfigInfo.PeriodType == GenPeriodType.Time)
                         {
@@ -115,7 +150,7 @@ namespace MidiShapeShifter.Mss.Generator
 
             int ticksPerUpdate = GetTicksPerGenUpdate(genEntry.GenConfigInfo.PeriodType);
             int periodSizeInTicks = GetPeriodSizeInTicks(genEntry.GenConfigInfo);
-            double RelativeperiodIncrement = ticksPerUpdate / periodSizeInTicks;
+            double RelativeperiodIncrement = ((double)ticksPerUpdate) / ((double)periodSizeInTicks);
             double relPosInPeriod = genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate +
                                     RelativeperiodIncrement;
 
@@ -126,25 +161,27 @@ namespace MidiShapeShifter.Mss.Generator
 
             MssMsg relPosMsg = CreateInputMsgForGenMappingEntry(genEntry, relPosInPeriod);
             List<MssMsg> processedMsgList = this.mssMsgProcessor.ProcessMssMsg(relPosMsg);
-            Debug.Assert(processedMsgList.Count == 1);
 
-            if (processedMsgList[0].Data3 == genEntry.GenHistoryInfo.LastValueSent)
+            long GenUpdateTimestamp = genEntry.GenHistoryInfo.LastGeneratorUpdateTimestamp +
+                                      ticksPerUpdate;
+            genEntry.GenHistoryInfo.LastGeneratorUpdateTimestamp = GenUpdateTimestamp;
+            genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = relPosInPeriod;
+            
+            //Count could equal 0 if data 3 has been mapped above 1.
+            Debug.Assert(processedMsgList.Count <= 1);
+
+            if (processedMsgList.Count == 0 || 
+                processedMsgList[0].Data3 == genEntry.GenHistoryInfo.LastValueSent)
             {
                 return null;
             }
             else
             {
-                long GenUpdateTimestamp = genEntry.GenHistoryInfo.LastGeneratorUpdateTimestamp +
-                                          ticksPerUpdate;
-
                 MssEvent generatedEvent = new MssEvent();
                 generatedEvent.mssMsg = processedMsgList[0];
                 generatedEvent.timestamp = GenUpdateTimestamp;
 
-
-                genEntry.GenHistoryInfo.LastGeneratorUpdateTimestamp = GenUpdateTimestamp;
                 genEntry.GenHistoryInfo.LastValueSent = generatedEvent.mssMsg.Data3;
-                genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = relPosInPeriod;
 
                 return generatedEvent;
             }
@@ -171,7 +208,7 @@ namespace MidiShapeShifter.Mss.Generator
                 return 1000;
             }
 
-            return (1 / updatesPerSecond) * (int)System.TimeSpan.TicksPerSecond;
+            return (int)System.Math.Round((1.0 / updatesPerSecond) * (int)System.TimeSpan.TicksPerSecond);
         }
 
         protected int GetPeriodSizeInTicks(GenEntryConfigInfo genConfigInfo)

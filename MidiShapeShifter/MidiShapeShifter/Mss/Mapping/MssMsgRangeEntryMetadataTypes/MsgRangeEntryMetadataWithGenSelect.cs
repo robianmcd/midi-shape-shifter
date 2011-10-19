@@ -63,7 +63,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 
         protected override void SetEntryField1FromRange(MssMsgRange msgRange)
         {
-            throw new NotImplementedException();
+            ((ComboBox)EntryField1).SelectedIndex = msgRange.Data1RangeBottom;
         }
 
         protected override void SetMappingDlgEntryFieldCustomProperties()

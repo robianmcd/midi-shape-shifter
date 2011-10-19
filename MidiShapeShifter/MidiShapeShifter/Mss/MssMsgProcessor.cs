@@ -61,8 +61,7 @@ namespace MidiShapeShifter.Mss
                     Debug.Assert(evalReturnStatus.IsValid);
 
                     double mappedRelativeData3 = evalReturnStatus.ReturnVal;
-                    int mappedData3 = (int)System.Math.Round(
-                        mappedRelativeData3 * entry.OutMssMsgRange.MsgInfo.MaxData3Value);
+                    double mappedData3 = mappedRelativeData3 * entry.OutMssMsgRange.MsgInfo.MaxData3Value;
 
                     //If data3 has been mapped outside of the range of values for its message type then this 
                     //mapping will not output anything.

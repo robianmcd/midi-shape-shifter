@@ -89,13 +89,13 @@ namespace MidiShapeShifter.Mss.Generator
             if (genInfo.PeriodType == GenPeriodType.BeatSynced)
             {
                 inMsgRange.InitPublicMembers(MssMsgType.RelBarPeriodPos,
-                                          MssMsgUtil.UNUSED_MSS_MSG_DATA,
+                                          genInfo.Id,
                                           MssMsgUtil.UNUSED_MSS_MSG_DATA);
             }
             else if (genInfo.PeriodType == GenPeriodType.Time)
             {
                 inMsgRange.InitPublicMembers(MssMsgType.RelTimePeriodPos,
-                                          MssMsgUtil.UNUSED_MSS_MSG_DATA,
+                                          genInfo.Id,
                                           MssMsgUtil.UNUSED_MSS_MSG_DATA);
             }
             else
@@ -119,10 +119,14 @@ namespace MidiShapeShifter.Mss.Generator
             //Sets mappingEntry.OverrideDuplicates
             mappingEntry.OverrideDuplicates = false;
 
-            //Sets mappingEntry.CurveShapeInfo
-            CurveShapeInfo curveInfo = new CurveShapeInfo();
-            curveInfo.InitWithDefaultValues();
-            mappingEntry.CurveShapeInfo = curveInfo;
+            //Sets mappingEntry.CurveShapeInfo. This function is also used to reinitialize 
+            //mappingEntry so sometimes CurveShapeInfo will already be initialized.
+            if (mappingEntry.CurveShapeInfo == null)
+            {
+                mappingEntry.CurveShapeInfo = new CurveShapeInfo();
+                mappingEntry.CurveShapeInfo.InitWithDefaultValues();
+            }
+            
         }
 
         /// <remarks>
@@ -213,7 +217,7 @@ namespace MidiShapeShifter.Mss.Generator
         public IEnumerable<IMappingEntry> GetAssociatedEntries(MssMsg inputMsg)
         {
             List<IMappingEntry> associatedEntryList = new List<IMappingEntry>();
-            if (inputMsg.Type == MssMsgType.Generator)
+            if (inputMsg.Type == MssMsgType.RelBarPeriodPos || inputMsg.Type == MssMsgType.RelTimePeriodPos)
             {
                 IGeneratorMappingEntry associatedEntry = 
                         GetGenMappingEntryById((int)inputMsg.Data1);
