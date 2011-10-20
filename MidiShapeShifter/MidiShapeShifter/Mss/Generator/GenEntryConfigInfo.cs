@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss.Generator
 {
@@ -42,7 +43,9 @@ namespace MidiShapeShifter.Mss.Generator
         /// </summary>
         public static readonly List<string> GenBarsPeriodNames = new List<string>(NUM_GEN_BARS_PERIOD);
         /// <summary>
-        /// Stores the number of bars as a double that each GenBarsPeriod type represents.
+        /// Stores the number of bars as a double that each GenBarsPeriod type represents in a 
+        /// 4/4 time signature. To get an accurate bar size of a GenBarsPeriod for any time
+        /// signature use the function GetSizeOfBarsPeriod().
         /// </summary>
         public static readonly List<double> GenBarsPeriodValues = new List<double>(NUM_GEN_BARS_PERIOD);
 
@@ -128,7 +131,7 @@ namespace MidiShapeShifter.Mss.Generator
         public int TimePeriodInMs;
 
         /// <summary>
-        /// Size of a beat synced period. This is only used if PeriodType is set to BeatSynced.
+        /// Type of a beat synced period. This is only used if PeriodType is set to BeatSynced.
         /// </summary>
         public GenBarsPeriod BarsPeriod;
 
@@ -153,6 +156,25 @@ namespace MidiShapeShifter.Mss.Generator
             this.BarsPeriod = DEFAULT_BARS_PERIOD;
             this.Loop = DEFAULT_LOOP;
             this.Enabled = DEFAULT_ENABLED;
+        }
+
+        //TODO: Comment
+        //Preconditions: The period type is BeatSynced.
+        public double GetSizeOfBarsPeriod(int timeSignatureNumerator, int timeSignatureDenominator)
+        {
+            Debug.Assert(this.PeriodType == GenPeriodType.BeatSynced);
+
+            double barsPeriodVal = GenBarsPeriodValues[(int)this.BarsPeriod];
+
+            if (barsPeriodVal >= 1)
+            {
+                return barsPeriodVal;
+            }
+            else
+            { 
+                double timeSig = (double)timeSignatureNumerator / timeSignatureDenominator;
+                return barsPeriodVal / (timeSig);
+            }
         }
 
         public object Clone()

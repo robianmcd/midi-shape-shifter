@@ -8,7 +8,8 @@ namespace MidiShapeShifter.Mss.Relays
     public delegate void ProcessingCycleEndEventHandler(long cycleEndTimestampInTicks);
     public delegate void SampleRateChangedEventHandler(double sampleRate);
     public delegate void TempoChangedEventHandler(double tempo);
-    public delegate void BarsPerTimestampTickUpdatedEventHandler(double barsPerTimestampTick);
+    public delegate void TimeSignatureChangedEventHandler(int numerator, int denominator);
+    public delegate void TransportPlayingEventHandler(bool TransportPlaying);
 
 
     public interface IHostInfoOutputPort
@@ -24,8 +25,16 @@ namespace MidiShapeShifter.Mss.Relays
         bool TempoIsInitialized { get; }
         event TempoChangedEventHandler TempoChanged;
 
-        double BarsPerTimestampTick { get; }
-        bool BarsPerTimestampTickIsInitialized { get; }
-        event BarsPerTimestampTickUpdatedEventHandler BarsPerTimestampTickUpdated;
+        int TimeSignatureNumerator { get; }
+        int TimeSignatureDenominator { get; }
+        bool TimeSignatureIsInitialized { get; }
+        event TimeSignatureChangedEventHandler TimeSignatureChanged;
+
+        bool TransportPlaying { get; }
+        bool TransportPlayingIsInitialized { get; }
+        event TransportPlayingEventHandler TransportPlayingChanged;
+
+        bool BarPosIsInitialized { get; }
+        double GetBarPosAtTimestamp(long timestamp);
     }
 }

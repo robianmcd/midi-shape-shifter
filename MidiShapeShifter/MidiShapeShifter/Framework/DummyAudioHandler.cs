@@ -60,8 +60,8 @@ namespace MidiShapeShifter.Framework
             IVstHostSequencer midiHostSeq = this.vstHost.GetInstance<IVstHostSequencer>();
             VstTimeInfo timeInfo = midiHostSeq.GetTime(VstTimeInfoTransmitter.RequiredTimeInfoFlags);
 
-            this.timeInfoTransmitter.TransmitTimeInfoToRelay(timeInfo);
-            
+            this.timeInfoTransmitter.TransmitTimeInfoToRelay(timeInfo, cycleEndTimestampInTicks);
+
             //Informs the HostInfoRelay that the audio processing cycle is ending.
             this.hostInfoInputPort.ReceiveProcessingCycleEndTimestampInTicks(cycleEndTimestampInTicks);
 

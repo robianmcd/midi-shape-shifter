@@ -105,6 +105,25 @@ namespace MidiShapeShifter.Mss.Generator
                 IGeneratorMappingEntry curEntry = 
                         this.generatorMappingMgr.GetGenMappingEntryByIndex(i);
 
+                //In order to generate beat synced events we need to some information about the 
+                //host. If any of this information hasn't been initialized yet then just don't 
+                //generate anything for this generator.
+                if (curEntry.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
+                {
+                    if (this.hostInfoOutputPort.TempoIsInitialized == false ||
+                        this.hostInfoOutputPort.TimeSignatureIsInitialized == false ||
+                        this.hostInfoOutputPort.BarPosIsInitialized == false ||
+                        this.hostInfoOutputPort.TransportPlayingIsInitialized == false)
+                    {
+                        continue;
+                    }
+
+                    if (this.hostInfoOutputPort.TransportPlaying == false)
+                    {
+                        continue;
+                    }
+                }
+
                 //ticksPerUpdate stores the number of ticks in between each update
                 int ticksPerUpdate = GetTicksPerGenUpdate(curEntry.GenConfigInfo.PeriodType);
 
@@ -112,14 +131,21 @@ namespace MidiShapeShifter.Mss.Generator
                 {
                     if (curEntry.GenHistoryInfo.Initialized == false)
                     {
+                        //The GenHistoryInfo will be initialized such that it appears to have been
+                        //updated on the last update.
+                        long lastUpdateTimestamp = cycleEndTimestamp - ticksPerUpdate;
+
                         if (curEntry.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
                         {
-                            //todo: handel the beat synced csae
+                            curEntry.GenHistoryInfo.InitAllMembers(
+                                lastUpdateTimestamp,
+                                GetPercentThroughBeatSyncedPeriod(curEntry.GenConfigInfo, lastUpdateTimestamp),
+                                double.NaN);
                         }
                         else if (curEntry.GenConfigInfo.PeriodType == GenPeriodType.Time)
                         {
                             curEntry.GenHistoryInfo.InitAllMembers(
-                                cycleEndTimestamp - ticksPerUpdate,
+                                lastUpdateTimestamp,
                                 0,
                                 double.NaN);
                         }
@@ -149,10 +175,26 @@ namespace MidiShapeShifter.Mss.Generator
             Debug.Assert(genEntry.GenHistoryInfo.Initialized == true);
 
             int ticksPerUpdate = GetTicksPerGenUpdate(genEntry.GenConfigInfo.PeriodType);
-            int periodSizeInTicks = GetPeriodSizeInTicks(genEntry.GenConfigInfo);
-            double RelativeperiodIncrement = ((double)ticksPerUpdate) / ((double)periodSizeInTicks);
-            double relPosInPeriod = genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate +
-                                    RelativeperiodIncrement;
+
+            double relPosInPeriod;
+            if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
+            {
+                relPosInPeriod = GetPercentThroughBeatSyncedPeriod(genEntry.GenConfigInfo,
+                        genEntry.GenHistoryInfo.LastGeneratorUpdateTimestamp + ticksPerUpdate);
+            }
+            else if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.Time)
+            {
+                int periodSizeInTicks = GetPeriodSizeInTicks(genEntry.GenConfigInfo);
+                double RelativeperiodIncrement = ((double)ticksPerUpdate) / ((double)periodSizeInTicks);
+                relPosInPeriod = genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate +
+                                        RelativeperiodIncrement;
+            }
+            else
+            {
+                //Unexpected period type
+                Debug.Assert(false);
+                return null;
+            }
 
             if (relPosInPeriod > 1)
             {
@@ -215,8 +257,18 @@ namespace MidiShapeShifter.Mss.Generator
         {
             if (genConfigInfo.PeriodType == GenPeriodType.BeatSynced)
             {
-                //TODO: Impliment this
-                return 1000;
+                Debug.Assert(hostInfoOutputPort.BarPosIsInitialized == true);
+                Debug.Assert(hostInfoOutputPort.TimeSignatureIsInitialized == true);
+                
+                double periodSizeInBars =
+                    genConfigInfo.GetSizeOfBarsPeriod(hostInfoOutputPort.TimeSignatureNumerator,
+                                                      hostInfoOutputPort.TimeSignatureDenominator);
+
+                double timeSig = (double)hostInfoOutputPort.TimeSignatureNumerator / hostInfoOutputPort.TimeSignatureDenominator;
+                double beatsPerBar = timeSig / (1/4d);
+                double secondsPerBar = (beatsPerBar / hostInfoOutputPort.Tempo) * 60;
+                return (int)System.Math.Round(
+                    secondsPerBar * periodSizeInBars * System.TimeSpan.TicksPerSecond);
             }
             else if (genConfigInfo.PeriodType == GenPeriodType.Time)
             {
@@ -256,6 +308,23 @@ namespace MidiShapeShifter.Mss.Generator
             relPosMsg.Data3 = relPosInPeriod;
 
             return relPosMsg;
+        }
+
+        //Preconditions: genInfo refers to a beat synced generator. BarsPerTimestampTick and 
+        //TimeSignature have been initialized in hostInfoOutputPort
+        protected double GetPercentThroughBeatSyncedPeriod(GenEntryConfigInfo genInfo, 
+                                                              long timestamp)
+        {
+            Debug.Assert(genInfo.PeriodType == GenPeriodType.BeatSynced);
+            Debug.Assert(hostInfoOutputPort.BarPosIsInitialized == true);
+            Debug.Assert(hostInfoOutputPort.TimeSignatureIsInitialized == true);
+
+
+            double barPos = hostInfoOutputPort.GetBarPosAtTimestamp(timestamp);
+            double periodSizeInBars = 
+                genInfo.GetSizeOfBarsPeriod(hostInfoOutputPort.TimeSignatureNumerator,
+                                            hostInfoOutputPort.TimeSignatureDenominator);
+            return barPos % periodSizeInBars;
         }
     }
 }
