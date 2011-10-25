@@ -120,6 +120,7 @@ namespace MidiShapeShifter.Mss.Generator
 
                     if (this.hostInfoOutputPort.TransportPlaying == false)
                     {
+                        curEntry.GenHistoryInfo.Initialized = false;
                         continue;
                     }
                 }
@@ -158,7 +159,7 @@ namespace MidiShapeShifter.Mss.Generator
                     }
 
                     while (curEntry.GenHistoryInfo.LastGeneratorUpdateTimestamp + ticksPerUpdate
-                                <= cycleEndTimestamp)
+                                <= cycleEndTimestamp && curEntry.GenConfigInfo.Enabled == true)
                     {
                         MssEvent generatedEvent = GenerateEvent(curEntry);
                         if (generatedEvent != null)
@@ -181,6 +182,12 @@ namespace MidiShapeShifter.Mss.Generator
             {
                 relPosInPeriod = GetPercentThroughBeatSyncedPeriod(genEntry.GenConfigInfo,
                         genEntry.GenHistoryInfo.LastGeneratorUpdateTimestamp + ticksPerUpdate);
+                if (relPosInPeriod < 0)
+                {
+                    //TODO: deal with this case. It can come up when you are debugging as bar 0 
+                    //will be moved at then end of every audio processing cycle due to lag from
+                    //debugging.
+                }
             }
             else if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.Time)
             {
@@ -188,6 +195,10 @@ namespace MidiShapeShifter.Mss.Generator
                 double RelativeperiodIncrement = ((double)ticksPerUpdate) / ((double)periodSizeInTicks);
                 relPosInPeriod = genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate +
                                         RelativeperiodIncrement;
+                if (relPosInPeriod > 1)
+                {
+                    relPosInPeriod--;                    
+                }
             }
             else
             {
@@ -196,10 +207,13 @@ namespace MidiShapeShifter.Mss.Generator
                 return null;
             }
 
-            if (relPosInPeriod > 1)
-            {
-                relPosInPeriod--;
-            }
+                if (genEntry.GenConfigInfo.Loop == false && 
+                    relPosInPeriod < genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate)
+                {
+                    genEntry.GenConfigInfo.Enabled = false;
+                    genEntry.GenHistoryInfo.Initialized = false;
+                    return null;
+                }
 
             MssMsg relPosMsg = CreateInputMsgForGenMappingEntry(genEntry, relPosInPeriod);
             List<MssMsg> processedMsgList = this.mssMsgProcessor.ProcessMssMsg(relPosMsg);
@@ -324,7 +338,7 @@ namespace MidiShapeShifter.Mss.Generator
             double periodSizeInBars = 
                 genInfo.GetSizeOfBarsPeriod(hostInfoOutputPort.TimeSignatureNumerator,
                                             hostInfoOutputPort.TimeSignatureDenominator);
-            return barPos % periodSizeInBars;
+            return barPos % periodSizeInBars / periodSizeInBars;
         }
     }
 }
