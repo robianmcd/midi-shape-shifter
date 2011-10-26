@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidiShapeShifter", "MidiShapeShifter\MidiShapeShifter.csproj", "{D19470F9-7D1E-4385-AD34-C7D826649F89}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MidiShapeShifterSetup", "MidiShapeShifterSetup\MidiShapeShifterSetup.vdproj", "{73742DFF-74CA-4D4C-8FCF-71192832A8FB}"
