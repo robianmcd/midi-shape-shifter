@@ -14,6 +14,21 @@ namespace MidiShapeShifter.Mss.Relays
     /// </remarks>
     public class HostInfoRelay : IHostInfoInputPort, IHostInfoOutputPort
     {
+        [Flags]
+        public enum HostInfoFields
+        { 
+            None = 0x0,
+            SampleRate = 0x1,
+            Tempo = 0x2,
+            TimeSignature = 0x4,
+            TransportPlaying = 0x8,
+            CalculatedBarZero = 0x10
+        }
+
+        protected bool CurrentlyUpdating = false;
+        public HostInfoFields ChangesInLastUpdate;
+
+
         //used to trigger any processing that needs to happen before a processing cycle ends.
         public event ProcessingCycleEndEventHandler BeforeProcessingCycleEnd;
         //used to trigger any processing that should happen at the very end of a processing cycle.
@@ -34,11 +49,11 @@ namespace MidiShapeShifter.Mss.Relays
 
         public bool TransportPlaying { get; private set; }
         public bool TransportPlayingIsInitialized { get; private set; }
-        public event TransportPlayingEventHandler TransportPlayingChanged;
+        public event TransportPlayingChangedEventHandler TransportPlayingChanged;
 
 
         public bool BarPosIsInitialized { get; private set; }
-        private long barZeroTimestamp;
+        private long calculatedBarZeroTimestamp;
         private double ticksPerBar;
 
         //Precondition: BarsPosIsInitialized is true.
@@ -46,26 +61,36 @@ namespace MidiShapeShifter.Mss.Relays
         {
             Debug.Assert(BarPosIsInitialized);
 
-            long timeSinceStart = timestamp - barZeroTimestamp;
+            long timeSinceStart = timestamp - calculatedBarZeroTimestamp;
             return timeSinceStart / ticksPerBar;
         }
-        //Multiply BarsPerTimestampTick by a timestamp to get the number of bars into a song at 
-        //that timestamp.
-        public double BarsPerTimestampTick { get; private set; }
-        public bool BarsPerTimestampTickIsInitialized { get; private set; }
 
         public HostInfoRelay()
         {
             this.SampleRateIsInitialized = false;
             this.TempoIsInitialized = false;
             this.SampleRateIsInitialized = false;
-            this.BarsPerTimestampTickIsInitialized = false;
             this.TransportPlayingIsInitialized = false;
             this.BarPosIsInitialized = false;
         }
 
+        public void StartUpdate()
+        {
+            Debug.Assert(this.CurrentlyUpdating == false);
 
-        public void ReceiveProcessingCycleEndTimestampInTicks(long cycleEndTimeStampInTicks)
+            ChangesInLastUpdate = HostInfoFields.None;
+            CurrentlyUpdating = true;
+        }
+
+        public void FinishUpdate()
+        {
+            Debug.Assert(this.CurrentlyUpdating == true);
+
+            CurrentlyUpdating = false;
+        }
+
+
+        public void TriggerProcessingCycleEnd(long cycleEndTimeStampInTicks)
         {
             if (BeforeProcessingCycleEnd != null)
             {
@@ -78,8 +103,10 @@ namespace MidiShapeShifter.Mss.Relays
         }
 
 
-        public void ReceiveSampleRate(double sampleRate)
+        public void ReceiveSampleRateDuringUpdate(double sampleRate)
         {
+            Debug.Assert(this.CurrentlyUpdating == true);
+
             this.SampleRateIsInitialized = true;
 
             if (this.SampleRate != sampleRate) 
@@ -92,8 +119,10 @@ namespace MidiShapeShifter.Mss.Relays
             }
         }
 
-        public void ReceiveTempo(double tempo)
+        public void ReceiveTempoDuringUpdate(double tempo)
         {
+            Debug.Assert(this.CurrentlyUpdating == true);
+
             this.TempoIsInitialized = true;
 
             if (this.Tempo != tempo)
@@ -106,8 +135,10 @@ namespace MidiShapeShifter.Mss.Relays
             }
         }
 
-        public void ReceiveTimeSignature(int numerator, int denominator)
+        public void ReceiveTimeSignatureDuringUpdate(int numerator, int denominator)
         {
+            Debug.Assert(this.CurrentlyUpdating == true);
+
             this.TimeSignatureIsInitialized = true;
 
             if (this.TimeSignatureNumerator != numerator || this.TimeSignatureDenominator != denominator)
@@ -121,8 +152,10 @@ namespace MidiShapeShifter.Mss.Relays
             }
         }
 
-        public void ReceiveTransportPlaying(bool transportPlaying)
+        public void ReceiveTransportPlayingDuringUpdate(bool transportPlaying)
         {
+            Debug.Assert(this.CurrentlyUpdating == true);
+
             this.TransportPlayingIsInitialized = true;
 
             if (this.TransportPlaying != transportPlaying)
@@ -135,8 +168,10 @@ namespace MidiShapeShifter.Mss.Relays
             }
         }
 
-        public void ReceiveBarPosition(double barPos, long timestampInTicks)
+        public void ReceiveBarPositionDuringUpdate(double barPos, long timestampInTicks)
         {
+            Debug.Assert(this.CurrentlyUpdating == true);
+
             if (this.TempoIsInitialized == false || this.TimeSignatureIsInitialized == false)
             {
                 return;
@@ -147,7 +182,7 @@ namespace MidiShapeShifter.Mss.Relays
             double beatsPerBar = timeSig / (1/4d);
             this.ticksPerBar = (beatsPerBar / this.Tempo) * System.TimeSpan.TicksPerMinute;
 
-            this.barZeroTimestamp = timestampInTicks - (long)System.Math.Round(barPos * ticksPerBar);
+            this.calculatedBarZeroTimestamp = timestampInTicks - (long)System.Math.Round(barPos * ticksPerBar);
         }
 
 

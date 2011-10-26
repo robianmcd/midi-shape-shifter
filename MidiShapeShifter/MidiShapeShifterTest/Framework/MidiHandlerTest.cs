@@ -40,7 +40,9 @@ namespace MidiShapeShifterTest.Framework
             this.wetMssEventOutputPort = new WetMssEventRelay();
 
             HostInfoRelay hostInfoRelay = new HostInfoRelay();
-            hostInfoRelay.ReceiveSampleRate(this.sampleRate);
+            hostInfoRelay.StartUpdate();
+            hostInfoRelay.ReceiveSampleRateDuringUpdate(this.sampleRate);
+            hostInfoRelay.FinishUpdate();
             this.hostInfoOutputPort = hostInfoRelay;
         }
 

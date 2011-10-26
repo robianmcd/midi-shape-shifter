@@ -9,7 +9,7 @@ namespace MidiShapeShifter.Mss.Relays
     public delegate void SampleRateChangedEventHandler(double sampleRate);
     public delegate void TempoChangedEventHandler(double tempo);
     public delegate void TimeSignatureChangedEventHandler(int numerator, int denominator);
-    public delegate void TransportPlayingEventHandler(bool TransportPlaying);
+    public delegate void TransportPlayingChangedEventHandler(bool TransportPlaying);
 
 
     public interface IHostInfoOutputPort
@@ -32,7 +32,7 @@ namespace MidiShapeShifter.Mss.Relays
 
         bool TransportPlaying { get; }
         bool TransportPlayingIsInitialized { get; }
-        event TransportPlayingEventHandler TransportPlayingChanged;
+        event TransportPlayingChangedEventHandler TransportPlayingChanged;
 
         bool BarPosIsInitialized { get; }
         double GetBarPosAtTimestamp(long timestamp);

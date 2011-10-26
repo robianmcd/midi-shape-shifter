@@ -7,11 +7,15 @@ namespace MidiShapeShifter.Mss.Relays
 {
     public interface IHostInfoInputPort
     {
-        void ReceiveProcessingCycleEndTimestampInTicks(long cycleEndTimeStampInTicks);
-        void ReceiveSampleRate(double sampleRate);
-        void ReceiveTempo(double tempo);
-        void ReceiveTimeSignature(int numerator, int denominator);
-        void ReceiveTransportPlaying(bool transportPlaying);
-        void ReceiveBarPosition(double barPos, long timestampInTicks);
+        void StartUpdate();
+        void FinishUpdate();
+
+        void ReceiveSampleRateDuringUpdate(double sampleRate);
+        void ReceiveTempoDuringUpdate(double tempo);
+        void ReceiveTimeSignatureDuringUpdate(int numerator, int denominator);
+        void ReceiveTransportPlayingDuringUpdate(bool transportPlaying);
+        void ReceiveBarPositionDuringUpdate(double barPos, long timestampInTicks);
+
+        void TriggerProcessingCycleEnd(long cycleEndTimeStampInTicks);
     }
 }

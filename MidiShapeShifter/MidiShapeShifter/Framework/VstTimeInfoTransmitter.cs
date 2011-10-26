@@ -28,20 +28,20 @@ namespace MidiShapeShifter.Framework
             //Ensures that the host is transmitting all the required time info.
             Debug.Assert((timeInfo.Flags & RequiredTimeInfoFlags) == RequiredTimeInfoFlags);
 
-            this.hostInfoInputPort.ReceiveTimeSignature(timeInfo.TimeSignatureNumerator,
+            this.hostInfoInputPort.ReceiveTimeSignatureDuringUpdate(timeInfo.TimeSignatureNumerator,
                                                         timeInfo.TimeSignatureDenominator);
 
             double quarterNotesPerBar = ((double)timeInfo.TimeSignatureNumerator / 
                                      (double)timeInfo.TimeSignatureDenominator) / 0.25;
             double barPos = timeInfo.PpqPosition / quarterNotesPerBar;
 
-            this.hostInfoInputPort.ReceiveSampleRate(timeInfo.SampleRate);
+            this.hostInfoInputPort.ReceiveSampleRateDuringUpdate(timeInfo.SampleRate);
 
-            this.hostInfoInputPort.ReceiveTempo(timeInfo.Tempo);
+            this.hostInfoInputPort.ReceiveTempoDuringUpdate(timeInfo.Tempo);
 
-            this.hostInfoInputPort.ReceiveBarPosition(barPos, timeInfoCreatedTimestamp);
+            this.hostInfoInputPort.ReceiveBarPositionDuringUpdate(barPos, timeInfoCreatedTimestamp);
 
-            this.hostInfoInputPort.ReceiveTransportPlaying(
+            this.hostInfoInputPort.ReceiveTransportPlayingDuringUpdate(
                 (timeInfo.Flags & VstTimeInfoFlags.TransportPlaying) != 0);
         }
     }

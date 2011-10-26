@@ -63,7 +63,7 @@ namespace MidiShapeShifter.Framework
             this.timeInfoTransmitter.TransmitTimeInfoToRelay(timeInfo, cycleEndTimestampInTicks);
 
             //Informs the HostInfoRelay that the audio processing cycle is ending.
-            this.hostInfoInputPort.ReceiveProcessingCycleEndTimestampInTicks(cycleEndTimestampInTicks);
+            this.hostInfoInputPort.TriggerProcessingCycleEnd(cycleEndTimestampInTicks);
 
             // calling the base class transfers input samples to the output channels unchanged (bypass).
             base.Process(inChannels, outChannels);
