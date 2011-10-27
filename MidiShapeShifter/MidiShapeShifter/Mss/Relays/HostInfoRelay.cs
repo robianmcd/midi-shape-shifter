@@ -14,20 +14,13 @@ namespace MidiShapeShifter.Mss.Relays
     /// </remarks>
     public class HostInfoRelay : IHostInfoInputPort, IHostInfoOutputPort
     {
-        [Flags]
-        public enum HostInfoFields
-        { 
-            None = 0x0,
-            SampleRate = 0x1,
-            Tempo = 0x2,
-            TimeSignature = 0x4,
-            TransportPlaying = 0x8,
-            CalculatedBarZero = 0x10
-        }
+
 
         protected bool CurrentlyUpdating = false;
-        public HostInfoFields ChangesInLastUpdate;
+        public HostInfoFields UpdatedFieldsInLastUpdate {get; private set;}
+        public HostInfoFields ChangedFieldsInLastUpdate {get; private set;}
 
+        public event HostUpdateFinishedEventHandler HostUpdateFinished;
 
         //used to trigger any processing that needs to happen before a processing cycle ends.
         public event ProcessingCycleEndEventHandler BeforeProcessingCycleEnd;
@@ -52,41 +45,105 @@ namespace MidiShapeShifter.Mss.Relays
         public event TransportPlayingChangedEventHandler TransportPlayingChanged;
 
 
-        public bool BarPosIsInitialized { get; private set; }
-        private long calculatedBarZeroTimestamp;
-        private double ticksPerBar;
-
-        //Precondition: BarsPosIsInitialized is true.
-        public double GetBarPosAtTimestamp(long timestamp)
-        {
-            Debug.Assert(BarPosIsInitialized);
-
-            long timeSinceStart = timestamp - calculatedBarZeroTimestamp;
-            return timeSinceStart / ticksPerBar;
-        }
+        public bool CalculatedBarZeroIsInitialized { get; private set; }
+        public long CalculatedBarZeroTimestamp {get; private set;}
+        protected double ticksPerBar;
+        protected double barPosOnLastUpdate;
+        protected long timestampOnLastUpdate;
+        public event CalculatedBarZeroChangedEventHandler CalculatedBarZeroChanged;
 
         public HostInfoRelay()
         {
             this.SampleRateIsInitialized = false;
             this.TempoIsInitialized = false;
-            this.SampleRateIsInitialized = false;
             this.TransportPlayingIsInitialized = false;
-            this.BarPosIsInitialized = false;
+            this.CalculatedBarZeroIsInitialized = false;
+
+            this.UpdatedFieldsInLastUpdate = HostInfoFields.None;
+            this.ChangedFieldsInLastUpdate = HostInfoFields.None;
+        }
+
+        //Precondition: BarsPosIsInitialized is true.
+        public double GetBarPosAtTimestamp(long timestamp)
+        {
+            Debug.Assert(CalculatedBarZeroIsInitialized);
+
+            long timeSinceStart = timestamp - CalculatedBarZeroTimestamp;
+            return timeSinceStart / ticksPerBar;
         }
 
         public void StartUpdate()
         {
             Debug.Assert(this.CurrentlyUpdating == false);
 
-            ChangesInLastUpdate = HostInfoFields.None;
             CurrentlyUpdating = true;
+            this.UpdatedFieldsInLastUpdate = HostInfoFields.None;
+            this.ChangedFieldsInLastUpdate = HostInfoFields.None;
         }
 
         public void FinishUpdate()
         {
             Debug.Assert(this.CurrentlyUpdating == true);
 
+            //Finish any updates that are dependant on multiple fields.
+
+            if (this.TempoIsInitialized == true && this.TimeSignatureIsInitialized == true)
+            {
+                double timeSig = (double)this.TimeSignatureNumerator / this.TimeSignatureDenominator;
+                double beatsPerBar = timeSig / (1 / 4d);
+                this.ticksPerBar = (beatsPerBar / this.Tempo) * System.TimeSpan.TicksPerMinute;
+
+                if (this.UpdatedFieldsInLastUpdate.HasFlag(HostInfoFields.CalculatedBarZero))
+                {
+                    long newCalculatedBarZeroTimestamp = this.timestampOnLastUpdate -
+                            (long)System.Math.Round(this.barPosOnLastUpdate * ticksPerBar);
+                    if (this.CalculatedBarZeroTimestamp != newCalculatedBarZeroTimestamp)
+                    {
+                        this.CalculatedBarZeroTimestamp = newCalculatedBarZeroTimestamp;
+                        this.ChangedFieldsInLastUpdate |= HostInfoFields.CalculatedBarZero;
+                    }
+
+                    this.CalculatedBarZeroIsInitialized = true;
+                }
+            }
+
             CurrentlyUpdating = false;
+
+            //Send Events
+            if (this.HostUpdateFinished != null)
+            {
+                HostUpdateFinished(this.ChangedFieldsInLastUpdate);
+            }
+
+            if (this.ChangedFieldsInLastUpdate.HasFlag(HostInfoFields.SampleRate) && 
+                SampleRateChanged != null)
+            {
+                SampleRateChanged(this.SampleRate);
+            }
+
+            if (this.ChangedFieldsInLastUpdate.HasFlag(HostInfoFields.Tempo) && 
+                TempoChanged != null)
+            {
+                TempoChanged(this.Tempo);
+            }
+
+            if (this.ChangedFieldsInLastUpdate.HasFlag(HostInfoFields.TimeSignature) && 
+                TimeSignatureChanged != null)
+            {
+                TimeSignatureChanged(this.TimeSignatureNumerator, this.TimeSignatureDenominator);
+            }
+
+            if (this.ChangedFieldsInLastUpdate.HasFlag(HostInfoFields.TransportPlaying) && 
+                TransportPlayingChanged != null)
+            {
+                TransportPlayingChanged(this.TransportPlaying);
+            }
+
+            if (this.ChangedFieldsInLastUpdate.HasFlag(HostInfoFields.CalculatedBarZero) &&
+                CalculatedBarZeroChanged != null)
+            {
+                CalculatedBarZeroChanged(this.CalculatedBarZeroTimestamp);
+            }
         }
 
 
@@ -107,15 +164,14 @@ namespace MidiShapeShifter.Mss.Relays
         {
             Debug.Assert(this.CurrentlyUpdating == true);
 
-            this.SampleRateIsInitialized = true;
+            this.UpdatedFieldsInLastUpdate |= HostInfoFields.SampleRate;
 
-            if (this.SampleRate != sampleRate) 
+            if (this.SampleRateIsInitialized == false || this.SampleRate != sampleRate) 
             {
+                this.ChangedFieldsInLastUpdate |= HostInfoFields.SampleRate;
                 this.SampleRate = sampleRate;
-                if (SampleRateChanged != null) 
-                {
-                    SampleRateChanged(this.SampleRate);
-                }                
+
+                this.SampleRateIsInitialized = true;
             }
         }
 
@@ -123,15 +179,14 @@ namespace MidiShapeShifter.Mss.Relays
         {
             Debug.Assert(this.CurrentlyUpdating == true);
 
-            this.TempoIsInitialized = true;
+            this.UpdatedFieldsInLastUpdate |= HostInfoFields.Tempo;
 
-            if (this.Tempo != tempo)
+            if (this.TempoIsInitialized == false || this.Tempo != tempo)
             {
+                this.ChangedFieldsInLastUpdate |= HostInfoFields.Tempo;
                 this.Tempo = tempo;
-                if (TempoChanged != null)
-                {
-                    TempoChanged(this.Tempo);
-                }
+
+                this.TempoIsInitialized = true;
             }
         }
 
@@ -139,16 +194,17 @@ namespace MidiShapeShifter.Mss.Relays
         {
             Debug.Assert(this.CurrentlyUpdating == true);
 
-            this.TimeSignatureIsInitialized = true;
+            this.UpdatedFieldsInLastUpdate |= HostInfoFields.TimeSignature;
 
-            if (this.TimeSignatureNumerator != numerator || this.TimeSignatureDenominator != denominator)
+            if (this.TimeSignatureIsInitialized == false ||
+                this.TimeSignatureNumerator != numerator || 
+                this.TimeSignatureDenominator != denominator)
             {
+                this.ChangedFieldsInLastUpdate |= HostInfoFields.TimeSignature;
                 this.TimeSignatureNumerator = numerator;
                 this.TimeSignatureDenominator = denominator;
-                if (TimeSignatureChanged != null)
-                {
-                    TimeSignatureChanged(this.TimeSignatureNumerator, this.TimeSignatureDenominator);
-                }
+
+                this.TimeSignatureIsInitialized = true;
             }
         }
 
@@ -156,15 +212,15 @@ namespace MidiShapeShifter.Mss.Relays
         {
             Debug.Assert(this.CurrentlyUpdating == true);
 
-            this.TransportPlayingIsInitialized = true;
+            this.UpdatedFieldsInLastUpdate |= HostInfoFields.TransportPlaying;
 
-            if (this.TransportPlaying != transportPlaying)
+            if (this.TransportPlayingIsInitialized == false || 
+                this.TransportPlaying != transportPlaying)
             {
+                this.ChangedFieldsInLastUpdate |= HostInfoFields.TransportPlaying;
                 this.TransportPlaying = transportPlaying;
-                if (TransportPlayingChanged != null)
-                {
-                    TransportPlayingChanged(this.TransportPlaying);
-                }
+
+                this.TransportPlayingIsInitialized = true;
             }
         }
 
@@ -172,19 +228,11 @@ namespace MidiShapeShifter.Mss.Relays
         {
             Debug.Assert(this.CurrentlyUpdating == true);
 
-            if (this.TempoIsInitialized == false || this.TimeSignatureIsInitialized == false)
-            {
-                return;
-            }
-            this.BarPosIsInitialized = true;
+            this.UpdatedFieldsInLastUpdate |= HostInfoFields.CalculatedBarZero;
 
-            double timeSig = (double)this.TimeSignatureNumerator / this.TimeSignatureDenominator;
-            double beatsPerBar = timeSig / (1/4d);
-            this.ticksPerBar = (beatsPerBar / this.Tempo) * System.TimeSpan.TicksPerMinute;
-
-            this.calculatedBarZeroTimestamp = timestampInTicks - (long)System.Math.Round(barPos * ticksPerBar);
+            this.barPosOnLastUpdate = barPos;
+            this.timestampOnLastUpdate = timestampInTicks;
         }
-
 
     }
 }

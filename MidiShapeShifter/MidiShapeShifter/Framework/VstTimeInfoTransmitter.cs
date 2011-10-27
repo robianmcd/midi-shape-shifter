@@ -35,6 +35,8 @@ namespace MidiShapeShifter.Framework
                                      (double)timeInfo.TimeSignatureDenominator) / 0.25;
             double barPos = timeInfo.PpqPosition / quarterNotesPerBar;
 
+            this.hostInfoInputPort.StartUpdate();
+
             this.hostInfoInputPort.ReceiveSampleRateDuringUpdate(timeInfo.SampleRate);
 
             this.hostInfoInputPort.ReceiveTempoDuringUpdate(timeInfo.Tempo);
@@ -43,6 +45,11 @@ namespace MidiShapeShifter.Framework
 
             this.hostInfoInputPort.ReceiveTransportPlayingDuringUpdate(
                 (timeInfo.Flags & VstTimeInfoFlags.TransportPlaying) != 0);
+
+            this.hostInfoInputPort.ReceiveTimeSignatureDuringUpdate(timeInfo.TimeSignatureNumerator, 
+                                                                    timeInfo.TimeSignatureDenominator);
+
+            this.hostInfoInputPort.FinishUpdate();
         }
     }
 }
