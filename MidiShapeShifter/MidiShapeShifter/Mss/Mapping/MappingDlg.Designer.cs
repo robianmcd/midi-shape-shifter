@@ -85,9 +85,9 @@
             this.inEntryField2Combo.Location = new System.Drawing.Point(9, 125);
             this.inEntryField2Combo.Name = "inEntryField2Combo";
             this.inEntryField2Combo.Size = new System.Drawing.Size(105, 21);
-            this.inEntryField2Combo.TabIndex = 10;
-            this.inEntryField2Combo.Validating += new System.ComponentModel.CancelEventHandler(this.inEntryField2Combo_Validating);
+            this.inEntryField2Combo.TabIndex = 7;
             this.inEntryField2Combo.TextChanged += new System.EventHandler(this.inEntryField2Combo_TextChanged);
+            this.inEntryField2Combo.Validating += new System.ComponentModel.CancelEventHandler(this.inEntryField2Combo_Validating);
             // 
             // inEntryField1Combo
             // 
@@ -96,9 +96,9 @@
             this.inEntryField1Combo.Location = new System.Drawing.Point(9, 81);
             this.inEntryField1Combo.Name = "inEntryField1Combo";
             this.inEntryField1Combo.Size = new System.Drawing.Size(105, 21);
-            this.inEntryField1Combo.TabIndex = 9;
-            this.inEntryField1Combo.Validating += new System.ComponentModel.CancelEventHandler(this.inEntryField1Combo_Validating);
+            this.inEntryField1Combo.TabIndex = 4;
             this.inEntryField1Combo.SelectedValueChanged += new System.EventHandler(this.inEntryField1Combo_SelectedValueChanged);
+            this.inEntryField1Combo.Validating += new System.ComponentModel.CancelEventHandler(this.inEntryField1Combo_Validating);
             // 
             // inLearnBtn
             // 
@@ -106,7 +106,7 @@
             this.inLearnBtn.Location = new System.Drawing.Point(29, 185);
             this.inLearnBtn.Name = "inLearnBtn";
             this.inLearnBtn.Size = new System.Drawing.Size(75, 23);
-            this.inLearnBtn.TabIndex = 8;
+            this.inLearnBtn.TabIndex = 9;
             this.inLearnBtn.Text = "Learn";
             this.inLearnBtn.UseVisualStyleBackColor = true;
             // 
@@ -116,7 +116,7 @@
             this.inOverrideDupsCheckBox.Location = new System.Drawing.Point(9, 157);
             this.inOverrideDupsCheckBox.Name = "inOverrideDupsCheckBox";
             this.inOverrideDupsCheckBox.Size = new System.Drawing.Size(119, 17);
-            this.inOverrideDupsCheckBox.TabIndex = 7;
+            this.inOverrideDupsCheckBox.TabIndex = 8;
             this.inOverrideDupsCheckBox.Text = "Override Duplicates";
             this.inOverrideDupsCheckBox.UseVisualStyleBackColor = true;
             // 
@@ -125,7 +125,7 @@
             this.inEntryField2TextBox.Location = new System.Drawing.Point(9, 126);
             this.inEntryField2TextBox.Name = "inEntryField2TextBox";
             this.inEntryField2TextBox.Size = new System.Drawing.Size(105, 20);
-            this.inEntryField2TextBox.TabIndex = 5;
+            this.inEntryField2TextBox.TabIndex = 6;
             this.inEntryField2TextBox.TextChanged += new System.EventHandler(this.inEntryField2TextBox_TextChanged);
             this.inEntryField2TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.inEntryField2TextBox_Validating);
             // 
@@ -135,7 +135,7 @@
             this.inEntryField2Lbl.Location = new System.Drawing.Point(6, 110);
             this.inEntryField2Lbl.Name = "inEntryField2Lbl";
             this.inEntryField2Lbl.Size = new System.Drawing.Size(75, 13);
-            this.inEntryField2Lbl.TabIndex = 4;
+            this.inEntryField2Lbl.TabIndex = 5;
             this.inEntryField2Lbl.Text = "Param Range:";
             // 
             // inEntryField1TextBox
@@ -153,17 +153,17 @@
             this.inEntryField1Lbl.Location = new System.Drawing.Point(6, 66);
             this.inEntryField1Lbl.Name = "inEntryField1Lbl";
             this.inEntryField1Lbl.Size = new System.Drawing.Size(84, 13);
-            this.inEntryField1Lbl.TabIndex = 1;
+            this.inEntryField1Lbl.TabIndex = 2;
             this.inEntryField1Lbl.Text = "Channel Range:";
             // 
             // inTypeCombo
             // 
             this.inTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.inTypeCombo.FormattingEnabled = true;
-            this.inTypeCombo.Location = new System.Drawing.Point(6, 37);
+            this.inTypeCombo.Location = new System.Drawing.Point(9, 37);
             this.inTypeCombo.Name = "inTypeCombo";
             this.inTypeCombo.Size = new System.Drawing.Size(108, 21);
-            this.inTypeCombo.TabIndex = 2;
+            this.inTypeCombo.TabIndex = 1;
             this.inTypeCombo.SelectedIndexChanged += new System.EventHandler(this.inTypeCombo_SelectedIndexChanged);
             // 
             // inTypeLbl
@@ -172,7 +172,7 @@
             this.inTypeLbl.Location = new System.Drawing.Point(6, 21);
             this.inTypeLbl.Name = "inTypeLbl";
             this.inTypeLbl.Size = new System.Drawing.Size(80, 13);
-            this.inTypeLbl.TabIndex = 1;
+            this.inTypeLbl.TabIndex = 0;
             this.inTypeLbl.Text = "Message Type:";
             // 
             // outGroup
@@ -190,7 +190,7 @@
             this.outGroup.Location = new System.Drawing.Point(153, 12);
             this.outGroup.Name = "outGroup";
             this.outGroup.Size = new System.Drawing.Size(135, 218);
-            this.outGroup.TabIndex = 9;
+            this.outGroup.TabIndex = 1;
             this.outGroup.TabStop = false;
             this.outGroup.Text = "Out";
             // 
@@ -198,20 +198,20 @@
             // 
             this.outEntryField2Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.outEntryField2Combo.FormattingEnabled = true;
-            this.outEntryField2Combo.Location = new System.Drawing.Point(6, 125);
+            this.outEntryField2Combo.Location = new System.Drawing.Point(9, 125);
             this.outEntryField2Combo.Name = "outEntryField2Combo";
             this.outEntryField2Combo.Size = new System.Drawing.Size(108, 21);
-            this.outEntryField2Combo.TabIndex = 12;
+            this.outEntryField2Combo.TabIndex = 7;
             this.outEntryField2Combo.Validating += new System.ComponentModel.CancelEventHandler(this.outEntryField2Combo_Validating);
             // 
             // outEntryField1Combo
             // 
             this.outEntryField1Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.outEntryField1Combo.FormattingEnabled = true;
-            this.outEntryField1Combo.Location = new System.Drawing.Point(6, 81);
+            this.outEntryField1Combo.Location = new System.Drawing.Point(9, 82);
             this.outEntryField1Combo.Name = "outEntryField1Combo";
             this.outEntryField1Combo.Size = new System.Drawing.Size(108, 21);
-            this.outEntryField1Combo.TabIndex = 11;
+            this.outEntryField1Combo.TabIndex = 4;
             this.outEntryField1Combo.Validating += new System.ComponentModel.CancelEventHandler(this.outEntryField1Combo_Validating);
             // 
             // outSameAsInCheckBox
@@ -241,7 +241,7 @@
             this.outEntryField2TextBox.Location = new System.Drawing.Point(9, 126);
             this.outEntryField2TextBox.Name = "outEntryField2TextBox";
             this.outEntryField2TextBox.Size = new System.Drawing.Size(105, 20);
-            this.outEntryField2TextBox.TabIndex = 5;
+            this.outEntryField2TextBox.TabIndex = 6;
             this.outEntryField2TextBox.Validating += new System.ComponentModel.CancelEventHandler(this.outEntryField2TextBox_Validating);
             // 
             // outEntryField2Lbl
@@ -250,7 +250,7 @@
             this.outEntryField2Lbl.Location = new System.Drawing.Point(6, 110);
             this.outEntryField2Lbl.Name = "outEntryField2Lbl";
             this.outEntryField2Lbl.Size = new System.Drawing.Size(75, 13);
-            this.outEntryField2Lbl.TabIndex = 4;
+            this.outEntryField2Lbl.TabIndex = 5;
             this.outEntryField2Lbl.Text = "Param Range:";
             // 
             // outEntryField1TextBox
@@ -267,17 +267,17 @@
             this.outEntryField1Lbl.Location = new System.Drawing.Point(6, 66);
             this.outEntryField1Lbl.Name = "outEntryField1Lbl";
             this.outEntryField1Lbl.Size = new System.Drawing.Size(84, 13);
-            this.outEntryField1Lbl.TabIndex = 1;
+            this.outEntryField1Lbl.TabIndex = 2;
             this.outEntryField1Lbl.Text = "Channel Range:";
             // 
             // outTypeCombo
             // 
             this.outTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.outTypeCombo.FormattingEnabled = true;
-            this.outTypeCombo.Location = new System.Drawing.Point(6, 37);
+            this.outTypeCombo.Location = new System.Drawing.Point(9, 37);
             this.outTypeCombo.Name = "outTypeCombo";
             this.outTypeCombo.Size = new System.Drawing.Size(108, 21);
-            this.outTypeCombo.TabIndex = 2;
+            this.outTypeCombo.TabIndex = 1;
             this.outTypeCombo.SelectedIndexChanged += new System.EventHandler(this.outTypeCombo_SelectedIndexChanged);
             // 
             // outTypeLbl
@@ -286,7 +286,7 @@
             this.outTypeLbl.Location = new System.Drawing.Point(6, 21);
             this.outTypeLbl.Name = "outTypeLbl";
             this.outTypeLbl.Size = new System.Drawing.Size(80, 13);
-            this.outTypeLbl.TabIndex = 1;
+            this.outTypeLbl.TabIndex = 0;
             this.outTypeLbl.Text = "Message Type:";
             // 
             // OkBtn
@@ -294,7 +294,7 @@
             this.OkBtn.Location = new System.Drawing.Point(72, 241);
             this.OkBtn.Name = "OkBtn";
             this.OkBtn.Size = new System.Drawing.Size(75, 23);
-            this.OkBtn.TabIndex = 10;
+            this.OkBtn.TabIndex = 2;
             this.OkBtn.Text = "Ok";
             this.OkBtn.UseVisualStyleBackColor = true;
             this.OkBtn.Click += new System.EventHandler(this.OkBtn_Click);
@@ -306,7 +306,7 @@
             this.cancelBtn.Location = new System.Drawing.Point(153, 241);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
-            this.cancelBtn.TabIndex = 11;
+            this.cancelBtn.TabIndex = 3;
             this.cancelBtn.Text = "Cancel";
             this.cancelBtn.UseVisualStyleBackColor = true;
             // 
