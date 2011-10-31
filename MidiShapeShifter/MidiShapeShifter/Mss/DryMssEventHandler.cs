@@ -62,7 +62,7 @@ namespace MidiShapeShifter.Mss
             {
                 MssEvent wetEvent = new MssEvent();
                 wetEvent.mssMsg = mssMsg;
-                wetEvent.timestamp = dryMssEvent.timestamp;
+                wetEvent.sampleTime = dryMssEvent.sampleTime;
                 wetEventList.Add(wetEvent);
             }
 

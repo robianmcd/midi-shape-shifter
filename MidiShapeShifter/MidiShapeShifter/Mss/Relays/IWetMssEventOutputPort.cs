@@ -6,7 +6,8 @@ using System.Text;
 namespace MidiShapeShifter.Mss.Relays
 {
     public delegate void WetMssEventsReceivedEventHandler(List<MssEvent> mssEventList);
-    public delegate void SendingWetMssEventsEventHandler(List<MssEvent> mssEventList, long processingCycleEndTimeInTicks);
+    public delegate void SendingWetMssEventsEventHandler(List<MssEvent> mssEventList, 
+            long sampleTimeAtEndOfProcessingCycle);
 
     public interface IWetMssEventOutputPort
     {

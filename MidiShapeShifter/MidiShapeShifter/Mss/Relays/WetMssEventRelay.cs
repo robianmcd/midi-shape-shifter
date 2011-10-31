@@ -70,11 +70,11 @@ namespace MidiShapeShifter.Mss.Relays
         //only be sent at the end of a processing cycle.
         public event SendingWetMssEventsEventHandler SendingWetMssEvents;
 
-        public void OnProcessingCycleEnd(long cycleEndTimeInTicks)
+        public void OnProcessingCycleEnd(long SampleTimeAtEndOfCycle)
         {
             if (this.OnlySendOnProcessingCycleEnd == true && SendingWetMssEvents != null)
             {
-                SendingWetMssEvents(transferMssEventBufferContentToNewList(), cycleEndTimeInTicks);
+                SendingWetMssEvents(transferMssEventBufferContentToNewList(), SampleTimeAtEndOfCycle);
             }
         }
     }

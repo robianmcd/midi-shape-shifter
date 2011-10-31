@@ -13,15 +13,16 @@ namespace MidiShapeShifter.Mss.Relays
         Tempo = 0x2,
         TimeSignature = 0x4,
         TransportPlaying = 0x8,
-        CalculatedBarZero = 0x10
+        BarPos = 0x10,
+        CalculatedBarZero = 0x20
     }
 
-    public delegate void ProcessingCycleEndEventHandler(long cycleEndTimestampInTicks);
+    public delegate void ProcessingCycleEndEventHandler(long cycleEndSampleTime);
     public delegate void SampleRateChangedEventHandler(double sampleRate);
     public delegate void TempoChangedEventHandler(double tempo);
     public delegate void TimeSignatureChangedEventHandler(int numerator, int denominator);
     public delegate void TransportPlayingChangedEventHandler(bool cransportPlaying);
-    public delegate void CalculatedBarZeroChangedEventHandler(long calculatedBarZeroTimestamp);
+    public delegate void CalculatedBarZeroChangedEventHandler(long calculatedBarZeroSampleTime);
     public delegate void HostUpdateFinishedEventHandler(HostInfoFields changedHostFields);
 
     public interface IHostInfoOutputPort
@@ -50,9 +51,11 @@ namespace MidiShapeShifter.Mss.Relays
         bool TransportPlayingIsInitialized { get; }
         event TransportPlayingChangedEventHandler TransportPlayingChanged;
 
+        bool BarPosIsInitialized { get; }
+
         bool CalculatedBarZeroIsInitialized { get; }
-        double GetBarPosAtTimestamp(long timestamp);
-        long CalculatedBarZeroTimestamp {get;}
+        double GetBarPosAtSampleTime(long sampleTime);
+        long CalculatedBarZeroSampleTime {get;}
         event CalculatedBarZeroChangedEventHandler CalculatedBarZeroChanged;
     }
 }

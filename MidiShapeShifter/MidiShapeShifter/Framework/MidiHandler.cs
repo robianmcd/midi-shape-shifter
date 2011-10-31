@@ -29,11 +29,8 @@ namespace MidiShapeShifter.Framework
         //Allows this class to receive host information from the HostInfoRelay
         protected IHostInfoOutputPort hostInfoOutputPort;
 
-        //ProcessingCycleStartTime is not set until the end of the first processing cycle so it will be set to
-        //UNINITIALIZED_CYCLE_START_TIME before that.
-        protected const long UNINITIALIZED_CYCLE_START_TIME = -1;
-        //The start time of the current processing cycle in ticks.
-        protected long ProcessingCycleStartTime = UNINITIALIZED_CYCLE_START_TIME;
+        //The sample time at the start of the current processing cycle.
+        protected long SampleTimeAtStartOfProcessingCycle = 0;
 
         protected IVstHost vstHost;
 
@@ -85,7 +82,7 @@ namespace MidiShapeShifter.Framework
                 {
                     VstMidiEvent midiEvent = (VstMidiEvent)evnt;
                     MssEvent mssEvent = ConvertVstMidiEventToMssEvent(midiEvent, 
-                                                                      this.ProcessingCycleStartTime, 
+                                                                      this.SampleTimeAtStartOfProcessingCycle, 
                                                                       this.hostInfoOutputPort.SampleRate);
 
                     if (mssEvent == null)
@@ -109,11 +106,12 @@ namespace MidiShapeShifter.Framework
         ///     Receives processed MssEvents from the IWetMssEventOutputPort.
         /// </summary>
         /// <param name="mssEvents">List of processed mss events</param>
-        /// <param name="processingCycleEndTimeInTicks">
+        /// <param name="sampleTimeAtEndOfProcessingCycle">
         ///     If wetMssEventOutputPort is configured to only output when a processing cycle ends then 
-        ///     processingCycleEndTimeInTicks will contain the end time the cycle that just ended. 
+        ///     sampleTimeAtEndOfProcessingCycle will contain the end time the cycle that just ended. 
         /// </param>
-        public void IWetMssEventOutputPort_SendingWetMssEvents(List<MssEvent> mssEvents, long processingCycleEndTimeInTicks)
+        public void IWetMssEventOutputPort_SendingWetMssEvents(List<MssEvent> mssEvents, 
+            long sampleTimeAtEndOfProcessingCycle)
         { 
             if (this.vstHost == null) {
                 return;
@@ -130,9 +128,10 @@ namespace MidiShapeShifter.Framework
                 foreach (MssEvent mssEvent in mssEvents)
                 {
                     //This will return null if there is no valid conversion.
-                    VstMidiEvent midiEvent = ConvertMssEventToVstMidiEvent(mssEvent,
-                                                                           this.ProcessingCycleStartTime, 
-                                                                           this.hostInfoOutputPort.SampleRate);
+                    VstMidiEvent midiEvent = 
+                        ConvertMssEventToVstMidiEvent(mssEvent,
+                                                      this.SampleTimeAtStartOfProcessingCycle, 
+                                                      this.hostInfoOutputPort.SampleRate);
                     if (midiEvent != null)
                     {
                         this.outEvents.Add(midiEvent);
@@ -144,7 +143,7 @@ namespace MidiShapeShifter.Framework
                 outEvents.Clear();
             }
 
-            OnProcessingCycleEnd(processingCycleEndTimeInTicks);
+            OnProcessingCycleEnd(sampleTimeAtEndOfProcessingCycle);
         }
 
 
@@ -153,10 +152,10 @@ namespace MidiShapeShifter.Framework
         ///     the next processing cycle. This method should not be called until all processing associated with the 
         ///     ending cycle has finished.
         /// </summary>
-        public void OnProcessingCycleEnd(long previousProcessingCycleEndTimeInTicks)
+        public void OnProcessingCycleEnd(long sampleTimeAtEndOfLastProcessingCycle)
         { 
-            //Sets the time that the next processing cycle will start
-            ProcessingCycleStartTime = previousProcessingCycleEndTimeInTicks;
+            //Sets the sample time that the next processing cycle will start
+            SampleTimeAtStartOfProcessingCycle = sampleTimeAtEndOfLastProcessingCycle;
         }
 
         /// <summary>
@@ -164,24 +163,13 @@ namespace MidiShapeShifter.Framework
         /// </summary>
         /// <returns>The MssEvent representation of midiEvent or null of there is no valid conversion.</returns>
         protected static MssEvent ConvertVstMidiEventToMssEvent(VstMidiEvent midiEvent, 
-                                                         long processingCycleStartTime, 
+                                                         long sampleTimeAtStartOfProcessingCycle, 
                                                          double sampleRate)
         {
             MssEvent mssEvent = new MssEvent();
 
-            //Sets the timestamp for mssEvent.
-            //This will only be true if the very first processing cycle has not ended yet
-            if (processingCycleStartTime == UNINITIALIZED_CYCLE_START_TIME)
-            {
-                //If we cannot calculate the timestamp then a good approximation for it is the current time
-                mssEvent.timestamp = System.DateTime.Now.Ticks;
-            }
-            else
-            {
-                //Calculates mssEvent's timestamp.
-                long ticksOffset = MidiUtil.ConvertSamplesToTicks(midiEvent.DeltaFrames, sampleRate);
-                mssEvent.timestamp = processingCycleStartTime + ticksOffset;
-            }
+            //Sets the sample time for mssEvent.
+            mssEvent.sampleTime = sampleTimeAtStartOfProcessingCycle + midiEvent.DeltaFrames;
 
             MssMsgType msgType = MidiUtil.GetMssTypeFromMidiData(midiEvent.Data);
             mssEvent.mssMsg.Type = msgType;
@@ -223,14 +211,13 @@ namespace MidiShapeShifter.Framework
         /// </summary>
         /// <returns>The VstMidiEvent representation of mssEvent or null of there is no valid conversion.</returns>
         protected static VstMidiEvent ConvertMssEventToVstMidiEvent(MssEvent mssEvent,
-                                                                    long processingCycleStartTime,
+                                                                    long sampleTimeAtStartOfProcessingCycle,
                                                                     double sampleRate)
         {
-            Debug.Assert(mssEvent.timestamp >= processingCycleStartTime);
+            Debug.Assert(mssEvent.sampleTime >= sampleTimeAtStartOfProcessingCycle);
 
             //Calculate delta frames
-            long ticksElapsed = mssEvent.timestamp - processingCycleStartTime;
-            int deltaFrames = MidiUtil.ConvertTicksToSamples(ticksElapsed, sampleRate);
+            int deltaFrames = (int)(mssEvent.sampleTime - sampleTimeAtStartOfProcessingCycle);
 
             byte[] midiData = new byte[3];
 

@@ -12,9 +12,9 @@ namespace MidiShapeShifter.Mss
     {
         public MssMsg mssMsg;
         /// <summary>
-        ///     The system time that MssMsg occured in ticks
+        ///     The time in samples of when MssMsg occured
         /// </summary>
-        public long timestamp;
+        public long sampleTime;
 
         public MssEvent()
         {
@@ -24,7 +24,7 @@ namespace MidiShapeShifter.Mss
         public override bool Equals(object o)
         {
             MssEvent compareToEvent = (MssEvent)o;
-            return this.mssMsg.Equals(compareToEvent.mssMsg) && this.timestamp == compareToEvent.timestamp;
+            return this.mssMsg.Equals(compareToEvent.mssMsg) && this.sampleTime == compareToEvent.sampleTime;
         }
     }
 }

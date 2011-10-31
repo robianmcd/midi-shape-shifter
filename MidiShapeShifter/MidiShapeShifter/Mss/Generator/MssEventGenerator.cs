@@ -17,17 +17,7 @@ namespace MidiShapeShifter.Mss.Generator
     /// </summary>
     public class MssEventGenerator
     {
-        /// <summary>
-        /// Specifies the maximum number of events that could be generated in a single bar
-        /// for a beat synced GeneratorMappingEntry
-        /// </summary>
-        protected const int GENERATOR_UPDATES_PER_BAR = 128;
-
-        /// <summary>
-        /// Specifies the maximum number of events that could be generated in one second
-        /// for a time based GeneratorMappingEntry
-        /// </summary>
-        protected const int GENERATOR_UPDATES_PER_SECOND = 64;
+        protected const int SAMPLES_PER_GENERATOR_UPDATE = 600;
 
         /// <summary>
         /// This class sends generated events to this input port
@@ -49,7 +39,7 @@ namespace MidiShapeShifter.Mss.Generator
         /// Applies the equation the user has specified for each generator to generated events.
         /// </summary>
         protected MssMsgProcessor mssMsgProcessor;
-
+        
 
         public MssEventGenerator()
         {
@@ -94,10 +84,10 @@ namespace MidiShapeShifter.Mss.Generator
         /// Events, and send them to dryMssEventInputPort. This function will be called before 
         /// each audio processing cycle ends. 
         /// </summary>
-        /// <param name="cycleEndTimestamp">
-        /// The timestamp for when the current processing cycle will end
+        /// <param name="sampleTimeAtEndOfCycle">
+        /// The sample time for when the current processing cycle will end
         /// </param>
-        protected void HostInfoOutputPort_BeforeProcessingCycleEnd(long cycleEndTimestamp)
+        protected void HostInfoOutputPort_BeforeProcessingCycleEnd(long sampleTimeAtEndOfCycle)
         {
             int numGens = this.generatorMappingMgr.GetNumEntries();
             for (int i = 0; i < numGens; i++)
@@ -112,7 +102,7 @@ namespace MidiShapeShifter.Mss.Generator
                 {
                     if (this.hostInfoOutputPort.TempoIsInitialized == false ||
                         this.hostInfoOutputPort.TimeSignatureIsInitialized == false ||
-                        this.hostInfoOutputPort.BarPosIsInitialized == false ||
+                        this.hostInfoOutputPort.CalculatedBarZeroIsInitialized == false ||
                         this.hostInfoOutputPort.TransportPlayingIsInitialized == false)
                     {
                         continue;
@@ -125,41 +115,24 @@ namespace MidiShapeShifter.Mss.Generator
                     }
                 }
 
-                //ticksPerUpdate stores the number of ticks in between each update
-                int ticksPerUpdate = GetTicksPerGenUpdate(curEntry.GenConfigInfo.PeriodType);
-
                 if (curEntry.GenConfigInfo.Enabled == true)
                 {
                     if (curEntry.GenHistoryInfo.Initialized == false)
                     {
                         //The GenHistoryInfo will be initialized such that it appears to have been
                         //updated on the last update.
-                        long lastUpdateTimestamp = cycleEndTimestamp - ticksPerUpdate;
+                        long sampleTimeOfLastUpdate = 
+                                sampleTimeAtEndOfCycle - SAMPLES_PER_GENERATOR_UPDATE;
 
-                        if (curEntry.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
-                        {
-                            curEntry.GenHistoryInfo.InitAllMembers(
-                                lastUpdateTimestamp,
-                                GetPercentThroughBeatSyncedPeriod(curEntry.GenConfigInfo, lastUpdateTimestamp),
-                                double.NaN);
-                        }
-                        else if (curEntry.GenConfigInfo.PeriodType == GenPeriodType.Time)
-                        {
-                            curEntry.GenHistoryInfo.InitAllMembers(
-                                lastUpdateTimestamp,
+                        curEntry.GenHistoryInfo.InitAllMembers(
+                                sampleTimeOfLastUpdate,
                                 0,
                                 double.NaN);
-                        }
-                        else
-                        {
-                            //Unexpected period type
-                            Debug.Assert(false);
-                            return;
-                        }
                     }
 
-                    while (curEntry.GenHistoryInfo.LastGeneratorUpdateTimestamp + ticksPerUpdate
-                                <= cycleEndTimestamp && curEntry.GenConfigInfo.Enabled == true)
+                    while (curEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate + 
+                           SAMPLES_PER_GENERATOR_UPDATE <= sampleTimeAtEndOfCycle && 
+                           curEntry.GenConfigInfo.Enabled == true)
                     {
                         MssEvent generatedEvent = GenerateEvent(curEntry);
                         if (generatedEvent != null)
@@ -175,24 +148,18 @@ namespace MidiShapeShifter.Mss.Generator
         {
             Debug.Assert(genEntry.GenHistoryInfo.Initialized == true);
 
-            int ticksPerUpdate = GetTicksPerGenUpdate(genEntry.GenConfigInfo.PeriodType);
-
             double relPosInPeriod;
             if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
             {
                 relPosInPeriod = GetPercentThroughBeatSyncedPeriod(genEntry.GenConfigInfo,
-                        genEntry.GenHistoryInfo.LastGeneratorUpdateTimestamp + ticksPerUpdate);
-                if (relPosInPeriod < 0)
-                {
-                    //TODO: deal with this case. It can come up when you are debugging as bar 0 
-                    //will be moved at then end of every audio processing cycle due to lag from
-                    //debugging.
-                }
+                        genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate + 
+                        SAMPLES_PER_GENERATOR_UPDATE);
             }
             else if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.Time)
             {
-                int periodSizeInTicks = GetPeriodSizeInTicks(genEntry.GenConfigInfo);
-                double RelativeperiodIncrement = ((double)ticksPerUpdate) / ((double)periodSizeInTicks);
+                int periodSizeInSamples = GetPeriodSizeInSamples(genEntry.GenConfigInfo);
+                double RelativeperiodIncrement = 
+                        ((double)SAMPLES_PER_GENERATOR_UPDATE) / ((double)periodSizeInSamples);
                 relPosInPeriod = genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate +
                                         RelativeperiodIncrement;
                 if (relPosInPeriod > 1)
@@ -218,9 +185,9 @@ namespace MidiShapeShifter.Mss.Generator
             MssMsg relPosMsg = CreateInputMsgForGenMappingEntry(genEntry, relPosInPeriod);
             List<MssMsg> processedMsgList = this.mssMsgProcessor.ProcessMssMsg(relPosMsg);
 
-            long GenUpdateTimestamp = genEntry.GenHistoryInfo.LastGeneratorUpdateTimestamp +
-                                      ticksPerUpdate;
-            genEntry.GenHistoryInfo.LastGeneratorUpdateTimestamp = GenUpdateTimestamp;
+            long updatedSampleTime = genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate +
+                                      SAMPLES_PER_GENERATOR_UPDATE;
+            genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate = updatedSampleTime;
             genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = relPosInPeriod;
             
             //Count could equal 0 if data 3 has been mapped above 1.
@@ -235,7 +202,7 @@ namespace MidiShapeShifter.Mss.Generator
             {
                 MssEvent generatedEvent = new MssEvent();
                 generatedEvent.mssMsg = processedMsgList[0];
-                generatedEvent.timestamp = GenUpdateTimestamp;
+                generatedEvent.sampleTime = updatedSampleTime;
 
                 genEntry.GenHistoryInfo.LastValueSent = generatedEvent.mssMsg.Data3;
 
@@ -243,37 +210,14 @@ namespace MidiShapeShifter.Mss.Generator
             }
         }
 
-        protected int GetTicksPerGenUpdate(GenPeriodType periodType)
-        {
-            int updatesPerSecond;
-            if (periodType == GenPeriodType.BeatSynced)
-            {
-                Debug.Assert(this.hostInfoOutputPort.TempoIsInitialized);
-                //TODO: impliment this
-                updatesPerSecond = 64;
-
-            }
-            else if (periodType == GenPeriodType.Time)
-            {
-                updatesPerSecond = GENERATOR_UPDATES_PER_SECOND;
-            }
-            else
-            {
-                //Unexpected period type
-                Debug.Assert(false);
-                return 1000;
-            }
-
-            return (int)System.Math.Round((1.0 / updatesPerSecond) * (int)System.TimeSpan.TicksPerSecond);
-        }
-
-        protected int GetPeriodSizeInTicks(GenEntryConfigInfo genConfigInfo)
+        protected int GetPeriodSizeInSamples(GenEntryConfigInfo genConfigInfo)
         {
             if (genConfigInfo.PeriodType == GenPeriodType.BeatSynced)
             {
-                Debug.Assert(hostInfoOutputPort.BarPosIsInitialized == true);
+                Debug.Assert(hostInfoOutputPort.CalculatedBarZeroIsInitialized == true);
                 Debug.Assert(hostInfoOutputPort.TimeSignatureIsInitialized == true);
-                
+                Debug.Assert(hostInfoOutputPort.SampleRateIsInitialized == true);
+
                 double periodSizeInBars =
                     genConfigInfo.GetSizeOfBarsPeriod(hostInfoOutputPort.TimeSignatureNumerator,
                                                       hostInfoOutputPort.TimeSignatureDenominator);
@@ -282,11 +226,14 @@ namespace MidiShapeShifter.Mss.Generator
                 double beatsPerBar = timeSig / (1/4d);
                 double secondsPerBar = (beatsPerBar / hostInfoOutputPort.Tempo) * 60;
                 return (int)System.Math.Round(
-                    secondsPerBar * periodSizeInBars * System.TimeSpan.TicksPerSecond);
+                    secondsPerBar * periodSizeInBars * hostInfoOutputPort.SampleRate);
             }
             else if (genConfigInfo.PeriodType == GenPeriodType.Time)
             {
-                return genConfigInfo.TimePeriodInMs * (int)System.TimeSpan.TicksPerMillisecond;
+                Debug.Assert(hostInfoOutputPort.SampleRateIsInitialized == true);
+
+                return (int)System.Math.Round(
+                    (genConfigInfo.TimePeriodInMs / 1000d) * hostInfoOutputPort.SampleRate);
             }
             else
             {
@@ -324,17 +271,17 @@ namespace MidiShapeShifter.Mss.Generator
             return relPosMsg;
         }
 
-        //Preconditions: genInfo refers to a beat synced generator. BarsPerTimestampTick and 
+        //Preconditions: genInfo refers to a beat synced generator. CalculatedBarZero and 
         //TimeSignature have been initialized in hostInfoOutputPort
         protected double GetPercentThroughBeatSyncedPeriod(GenEntryConfigInfo genInfo, 
-                                                              long timestamp)
+                                                              long sampleTime)
         {
             Debug.Assert(genInfo.PeriodType == GenPeriodType.BeatSynced);
-            Debug.Assert(hostInfoOutputPort.BarPosIsInitialized == true);
+            Debug.Assert(hostInfoOutputPort.CalculatedBarZeroIsInitialized == true);
             Debug.Assert(hostInfoOutputPort.TimeSignatureIsInitialized == true);
 
 
-            double barPos = hostInfoOutputPort.GetBarPosAtTimestamp(timestamp);
+            double barPos = hostInfoOutputPort.GetBarPosAtSampleTime(sampleTime);
             double periodSizeInBars = 
                 genInfo.GetSizeOfBarsPeriod(hostInfoOutputPort.TimeSignatureNumerator,
                                             hostInfoOutputPort.TimeSignatureDenominator);

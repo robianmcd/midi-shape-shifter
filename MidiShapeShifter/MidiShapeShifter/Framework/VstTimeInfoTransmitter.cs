@@ -23,13 +23,10 @@ namespace MidiShapeShifter.Framework
             this.hostInfoInputPort = hostInfoInputPort;
         }
 
-        public void TransmitTimeInfoToRelay(VstTimeInfo timeInfo, long timeInfoCreatedTimestamp)
+        public void TransmitTimeInfoToRelay(VstTimeInfo timeInfo, long timeInfoCreatedSampleTime)
         {
             //Ensures that the host is transmitting all the required time info.
             Debug.Assert((timeInfo.Flags & RequiredTimeInfoFlags) == RequiredTimeInfoFlags);
-
-            this.hostInfoInputPort.ReceiveTimeSignatureDuringUpdate(timeInfo.TimeSignatureNumerator,
-                                                        timeInfo.TimeSignatureDenominator);
 
             double quarterNotesPerBar = ((double)timeInfo.TimeSignatureNumerator / 
                                      (double)timeInfo.TimeSignatureDenominator) / 0.25;
@@ -41,7 +38,7 @@ namespace MidiShapeShifter.Framework
 
             this.hostInfoInputPort.ReceiveTempoDuringUpdate(timeInfo.Tempo);
 
-            this.hostInfoInputPort.ReceiveBarPositionDuringUpdate(barPos, timeInfoCreatedTimestamp);
+            this.hostInfoInputPort.ReceiveBarPositionDuringUpdate(barPos, timeInfoCreatedSampleTime);
 
             this.hostInfoInputPort.ReceiveTransportPlayingDuringUpdate(
                 (timeInfo.Flags & VstTimeInfoFlags.TransportPlaying) != 0);

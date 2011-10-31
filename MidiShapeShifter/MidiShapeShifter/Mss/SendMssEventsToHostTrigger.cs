@@ -17,13 +17,13 @@ namespace MidiShapeShifter.Mss
 
         public void Init(IHostInfoOutputPort hostInfoOutputPort, IWetMssEventInputPort wetMssEventInputPort)
         { 
-            hostInfoOutputPort.ProcessingCycleEnd += new ProcessingCycleEndEventHandler(hostInfoOutputPort_ProcessingCycleEndTimestampRecieved);
+            hostInfoOutputPort.ProcessingCycleEnd += new ProcessingCycleEndEventHandler(hostInfoOutputPort_ProcessingCycleEndSampleTimeRecieved);
             this.wetMssEventInputPort = wetMssEventInputPort;
         }
 
-        protected void hostInfoOutputPort_ProcessingCycleEndTimestampRecieved(long cycleEndTimestampInTicks)
+        protected void hostInfoOutputPort_ProcessingCycleEndSampleTimeRecieved(long sampleTimeAtEndOfCycle)
         {
-            this.wetMssEventInputPort.OnProcessingCycleEnd(cycleEndTimestampInTicks);
+            this.wetMssEventInputPort.OnProcessingCycleEnd(sampleTimeAtEndOfCycle);
         }
     }
 }

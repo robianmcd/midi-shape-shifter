@@ -142,14 +142,14 @@ namespace MidiShapeShifterTest.Framework
         {
             MidiHandlerProtectedWrapper midiHandler = Factory_MidiHandler_Basic();
 
-            long timestamp = 123456;
+            long sampleTime = 123456;
 
             MssEvent internalEvent = new MssEvent();
             internalEvent.mssMsg = new MssMsg(MssMsgType.Generator, 0, 0, 0);
-            internalEvent.timestamp = timestamp;
+            internalEvent.sampleTime = sampleTime;
 
             VstMidiEvent convertedEvent = midiHandler.ConvertMssEventToVstMidiEventWrapper(
-                internalEvent, timestamp, this.hostInfoOutputPort.SampleRate);
+                internalEvent, sampleTime, this.hostInfoOutputPort.SampleRate);
 
             Assert.IsNull(convertedEvent);
         }
@@ -160,7 +160,7 @@ namespace MidiShapeShifterTest.Framework
         //if testMssToMidi is true then this method tests ConvertMssEventToVstMidiEvent. Otherwise this method tests ConvertVstMidiEventToMssEvent
         protected void Test_MsgConversion(MssMsgType msgType, int midiChannel, int midiParam1, int midiParam2, bool testMssToMidi)
         {
-            long cycleStartTime = 12345;
+            long sampleTimeAtStartOfCycle = 12345;
             int deltaFrames = 789;
 
             MidiHandlerProtectedWrapper midiHandler = Factory_MidiHandler_Basic();
@@ -175,7 +175,7 @@ namespace MidiShapeShifterTest.Framework
             {
                 mssEvent.mssMsg = new MssMsg(msgType, midiChannel, midiParam1, midiParam2);
             }
-            mssEvent.timestamp = cycleStartTime + MidiUtil.ConvertSamplesToTicks(deltaFrames, this.hostInfoOutputPort.SampleRate);
+            mssEvent.sampleTime = sampleTimeAtStartOfCycle + deltaFrames;
 
             byte[] midiData = MidiUtil.CreateMidiData(msgType, midiChannel, (byte)midiParam1, (byte)midiParam2);
             VstMidiEvent midiEvent = new VstMidiEvent(deltaFrames, 0, 0, midiData, 0, 0x00);
@@ -183,13 +183,13 @@ namespace MidiShapeShifterTest.Framework
             if (testMssToMidi == true)
             {
                 MssEvent convertedMssEvent = midiHandler.ConvertVstMidiEventToMssEventWrapper(
-                    midiEvent, cycleStartTime, this.hostInfoOutputPort.SampleRate);
+                    midiEvent, sampleTimeAtStartOfCycle, this.hostInfoOutputPort.SampleRate);
                 Assert.AreEqual(mssEvent, convertedMssEvent);
             }
             else
             {
                 VstMidiEvent ConvertedMidiEvent = midiHandler.ConvertMssEventToVstMidiEventWrapper(
-                    mssEvent, cycleStartTime, this.hostInfoOutputPort.SampleRate);
+                    mssEvent, sampleTimeAtStartOfCycle, this.hostInfoOutputPort.SampleRate);
                 Assert.AreEqual(midiEvent.Data, ConvertedMidiEvent.Data);
                 Assert.AreEqual(midiEvent.DeltaFrames, ConvertedMidiEvent.DeltaFrames);
             }

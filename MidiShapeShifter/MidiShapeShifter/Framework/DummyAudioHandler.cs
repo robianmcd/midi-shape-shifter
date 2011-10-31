@@ -1,4 +1,6 @@
-﻿using Jacobi.Vst.Core;
+﻿using System.Diagnostics;
+
+using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
 
@@ -18,6 +20,8 @@ namespace MidiShapeShifter.Framework
         private static readonly int AudioInputCount = 2;
         private static readonly int AudioOutputCount = 2;
         private static readonly int InitialTailSize = 0;
+
+        protected long sampleTime = 0;
 
         //Receives information about the audio processing cycle and sends it out to which ever classes need to know 
         //about it.
@@ -55,18 +59,19 @@ namespace MidiShapeShifter.Framework
         /// </summary>
         public override void Process(VstAudioBuffer[] inChannels, VstAudioBuffer[] outChannels)
         {
-            long cycleEndTimestampInTicks = System.DateTime.Now.Ticks;
+            sampleTime += inChannels[0].SampleCount;
 
             IVstHostSequencer midiHostSeq = this.vstHost.GetInstance<IVstHostSequencer>();
             VstTimeInfo timeInfo = midiHostSeq.GetTime(VstTimeInfoTransmitter.RequiredTimeInfoFlags);
 
-            this.timeInfoTransmitter.TransmitTimeInfoToRelay(timeInfo, cycleEndTimestampInTicks);
+            this.timeInfoTransmitter.TransmitTimeInfoToRelay(timeInfo, sampleTime);
 
             //Informs the HostInfoRelay that the audio processing cycle is ending.
-            this.hostInfoInputPort.TriggerProcessingCycleEnd(cycleEndTimestampInTicks);
+            this.hostInfoInputPort.TriggerProcessingCycleEnd(sampleTime);
 
             // calling the base class transfers input samples to the output channels unchanged (bypass).
             base.Process(inChannels, outChannels);
         }
+
     }
 }

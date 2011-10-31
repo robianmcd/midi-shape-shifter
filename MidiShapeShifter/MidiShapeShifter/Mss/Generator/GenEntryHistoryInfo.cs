@@ -22,10 +22,10 @@ namespace MidiShapeShifter.Mss.Generator
         /// Before the end of an audio processing cycle each GeneratorMappingEntry will be 
         /// brought up to date by the MssEventGenerator. This is done by generating all of the 
         /// MssEvents that should occur in that audio processing cycle. 
-        /// LastGeneratorUpdateTimestamp stores the timestamp in ticks of the last time this 
+        /// SampleTimeAtLastGeneratorUpdate stores the sample time of the last time this 
         /// update has occured.
         /// </summary>
-        public long LastGeneratorUpdateTimestamp;
+        public long SampleTimeAtLastGeneratorUpdate;
 
         /// <summary>
         /// Stores the percentage (as a number from 0 to 1) through the period at the last 
@@ -43,11 +43,11 @@ namespace MidiShapeShifter.Mss.Generator
             this.Initialized = false;
         }
 
-        public void InitAllMembers(long lastGeneratorUpdateTimestamp,
+        public void InitAllMembers(long sampleTimeAtLastGeneratorUpdate,
                                    double percentThroughPeriodOnLastUpdate,
                                    double lastValueSent)
         {
-            this.LastGeneratorUpdateTimestamp = lastGeneratorUpdateTimestamp;
+            this.SampleTimeAtLastGeneratorUpdate = sampleTimeAtLastGeneratorUpdate;
             this.PercentThroughPeriodOnLastUpdate = percentThroughPeriodOnLastUpdate;
             this.LastValueSent = lastValueSent;
 

@@ -27,20 +27,6 @@ namespace MidiShapeShifter.Midi
             return value >= MIN_MIDI_PARAM_VAL && value <= MAX_MIDI_PARAM_VAL;
         }
 
-        public static int ConvertTicksToSamples(long ticks, double sampleRate)
-        {
-            double samplesPerTick = sampleRate / (double)System.TimeSpan.TicksPerSecond;
-
-            return (int)System.Math.Round(ticks * samplesPerTick);
-        }
-
-        public static long ConvertSamplesToTicks(int samples, double sampleRate)
-        {
-            double ticksPerSample = (double)System.TimeSpan.TicksPerSecond / sampleRate;
-
-            return (long)System.Math.Round(samples * ticksPerSample);
-        }
-
         /// <summary>
         ///     Get the MssMsgType associated with the message type of <paramref name="midiData"/>. 
         /// </summary>
