@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PluginEditorView));
             this.mainGraphControl = new ZedGraph.ZedGraphControl();
             this.presetParam1Knob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
@@ -79,13 +78,13 @@
             this.variableATitle = new System.Windows.Forms.Label();
             this.variableAKnob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
             this.mappingListView = new System.Windows.Forms.ListView();
-            this.inTypeColHeader = new System.Windows.Forms.ColumnHeader();
-            this.inChannelsColHeader = new System.Windows.Forms.ColumnHeader();
-            this.inParamsColHeader = new System.Windows.Forms.ColumnHeader();
-            this.outTypeColHeader = new System.Windows.Forms.ColumnHeader();
-            this.outChannelsColHeader = new System.Windows.Forms.ColumnHeader();
-            this.outParamsColHeader = new System.Windows.Forms.ColumnHeader();
-            this.overrideColHeader = new System.Windows.Forms.ColumnHeader();
+            this.inTypeColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.inChannelsColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.inParamsColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.outTypeColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.outChannelsColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.outParamsColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.overrideColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.mappingGroupBox = new System.Windows.Forms.GroupBox();
             this.moveMappingDownBtn = new System.Windows.Forms.Button();
             this.moveMappingUpBtn = new System.Windows.Forms.Button();
@@ -94,10 +93,10 @@
             this.deleteMappingBtn = new System.Windows.Forms.Button();
             this.generatorGroupBox = new System.Windows.Forms.GroupBox();
             this.generatorListView = new System.Windows.Forms.ListView();
-            this.generaotrNameColHeader = new System.Windows.Forms.ColumnHeader();
-            this.generatorPeriodColHeader = new System.Windows.Forms.ColumnHeader();
-            this.generatorLoopColHeader = new System.Windows.Forms.ColumnHeader();
-            this.generatorEnabledColHeader = new System.Windows.Forms.ColumnHeader();
+            this.generaotrNameColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.generatorPeriodColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.generatorLoopColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.generatorEnabledColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.addGeneratorBtn = new System.Windows.Forms.Button();
             this.editGeneratorBtn = new System.Windows.Forms.Button();
             this.deleteGeneratorBtn = new System.Windows.Forms.Button();
@@ -115,13 +114,13 @@
             // 
             this.mainGraphControl.Location = new System.Drawing.Point(362, 35);
             this.mainGraphControl.Name = "mainGraphControl";
-            this.mainGraphControl.ScrollGrace = 0;
-            this.mainGraphControl.ScrollMaxX = 0;
-            this.mainGraphControl.ScrollMaxY = 0;
-            this.mainGraphControl.ScrollMaxY2 = 0;
-            this.mainGraphControl.ScrollMinX = 0;
-            this.mainGraphControl.ScrollMinY = 0;
-            this.mainGraphControl.ScrollMinY2 = 0;
+            this.mainGraphControl.ScrollGrace = 0D;
+            this.mainGraphControl.ScrollMaxX = 0D;
+            this.mainGraphControl.ScrollMaxY = 0D;
+            this.mainGraphControl.ScrollMaxY2 = 0D;
+            this.mainGraphControl.ScrollMinX = 0D;
+            this.mainGraphControl.ScrollMinY = 0D;
+            this.mainGraphControl.ScrollMinY2 = 0D;
             this.mainGraphControl.Size = new System.Drawing.Size(275, 275);
             this.mainGraphControl.TabIndex = 1;
             // 
@@ -181,7 +180,7 @@
             this.curveGroup.Size = new System.Drawing.Size(273, 171);
             this.curveGroup.TabIndex = 6;
             this.curveGroup.TabStop = false;
-            this.curveGroup.Text = "Curve Shape";
+            this.curveGroup.Text = "Transformation";
             // 
             // equationBookBtn
             // 
@@ -427,7 +426,7 @@
             this.variableDMin.Name = "variableDMin";
             this.variableDMin.Size = new System.Drawing.Size(40, 20);
             this.variableDMin.TabIndex = 42;
-            this.variableDMin.Text = "1";
+            this.variableDMin.Text = "0";
             // 
             // variableDMax
             // 
@@ -435,7 +434,7 @@
             this.variableDMax.Name = "variableDMax";
             this.variableDMax.Size = new System.Drawing.Size(40, 20);
             this.variableDMax.TabIndex = 41;
-            this.variableDMax.Text = "0";
+            this.variableDMax.Text = "1";
             // 
             // variableDMaxLbl
             // 
@@ -502,7 +501,7 @@
             this.variableCMin.Name = "variableCMin";
             this.variableCMin.Size = new System.Drawing.Size(40, 20);
             this.variableCMin.TabIndex = 35;
-            this.variableCMin.Text = "1";
+            this.variableCMin.Text = "0";
             // 
             // variableCMax
             // 
@@ -510,7 +509,7 @@
             this.variableCMax.Name = "variableCMax";
             this.variableCMax.Size = new System.Drawing.Size(40, 20);
             this.variableCMax.TabIndex = 34;
-            this.variableCMax.Text = "0";
+            this.variableCMax.Text = "1";
             // 
             // variableCMaxLbl
             // 
@@ -577,7 +576,7 @@
             this.variableBMin.Name = "variableBMin";
             this.variableBMin.Size = new System.Drawing.Size(40, 20);
             this.variableBMin.TabIndex = 28;
-            this.variableBMin.Text = "1";
+            this.variableBMin.Text = "0";
             // 
             // variableBMax
             // 
@@ -585,7 +584,7 @@
             this.variableBMax.Name = "variableBMax";
             this.variableBMax.Size = new System.Drawing.Size(40, 20);
             this.variableBMax.TabIndex = 27;
-            this.variableBMax.Text = "0";
+            this.variableBMax.Text = "1";
             // 
             // variableBMaxLbl
             // 
@@ -652,7 +651,7 @@
             this.variableAMin.Name = "variableAMin";
             this.variableAMin.Size = new System.Drawing.Size(40, 20);
             this.variableAMin.TabIndex = 21;
-            this.variableAMin.Text = "1";
+            this.variableAMin.Text = "0";
             // 
             // variableAMax
             // 
@@ -660,7 +659,7 @@
             this.variableAMax.Name = "variableAMax";
             this.variableAMax.Size = new System.Drawing.Size(40, 20);
             this.variableAMax.TabIndex = 20;
-            this.variableAMax.Text = "0";
+            this.variableAMax.Text = "1";
             // 
             // variableAMaxLbl
             // 
@@ -783,7 +782,7 @@
             this.mappingGroupBox.Size = new System.Drawing.Size(351, 164);
             this.mappingGroupBox.TabIndex = 14;
             this.mappingGroupBox.TabStop = false;
-            this.mappingGroupBox.Text = "Mapping Entries";
+            this.mappingGroupBox.Text = "Mapings";
             // 
             // moveMappingDownBtn
             // 
@@ -795,8 +794,8 @@
             this.moveMappingDownBtn.Size = new System.Drawing.Size(24, 24);
             this.moveMappingDownBtn.TabIndex = 12;
             this.moveMappingDownBtn.UseVisualStyleBackColor = true;
-            this.moveMappingDownBtn.Click += new System.EventHandler(this.moveMappingDownBtn_Click);
             this.moveMappingDownBtn.EnabledChanged += new System.EventHandler(this.moveDownBtn_EnabledChanged);
+            this.moveMappingDownBtn.Click += new System.EventHandler(this.moveMappingDownBtn_Click);
             // 
             // moveMappingUpBtn
             // 
@@ -808,8 +807,8 @@
             this.moveMappingUpBtn.Size = new System.Drawing.Size(24, 24);
             this.moveMappingUpBtn.TabIndex = 11;
             this.moveMappingUpBtn.UseVisualStyleBackColor = true;
-            this.moveMappingUpBtn.Click += new System.EventHandler(this.moveMappingUpBtn_Click);
             this.moveMappingUpBtn.EnabledChanged += new System.EventHandler(this.moveUpBtn_EnabledChanged);
+            this.moveMappingUpBtn.Click += new System.EventHandler(this.moveMappingUpBtn_Click);
             // 
             // addMappingBtn
             // 
@@ -833,8 +832,8 @@
             this.editMappingBtn.Size = new System.Drawing.Size(24, 24);
             this.editMappingBtn.TabIndex = 10;
             this.editMappingBtn.UseVisualStyleBackColor = true;
-            this.editMappingBtn.Click += new System.EventHandler(this.editMappingBtn_Click);
             this.editMappingBtn.EnabledChanged += new System.EventHandler(this.editBtn_EnabledChanged);
+            this.editMappingBtn.Click += new System.EventHandler(this.editMappingBtn_Click);
             // 
             // deleteMappingBtn
             // 
@@ -846,11 +845,12 @@
             this.deleteMappingBtn.Size = new System.Drawing.Size(24, 24);
             this.deleteMappingBtn.TabIndex = 9;
             this.deleteMappingBtn.UseVisualStyleBackColor = true;
-            this.deleteMappingBtn.Click += new System.EventHandler(this.deleteMappingBtn_Click);
             this.deleteMappingBtn.EnabledChanged += new System.EventHandler(this.deleteBtn_EnabledChanged);
+            this.deleteMappingBtn.Click += new System.EventHandler(this.deleteMappingBtn_Click);
             // 
             // generatorGroupBox
             // 
+            this.generatorGroupBox.BackColor = System.Drawing.SystemColors.Control;
             this.generatorGroupBox.Controls.Add(this.generatorListView);
             this.generatorGroupBox.Controls.Add(this.addGeneratorBtn);
             this.generatorGroupBox.Controls.Add(this.editGeneratorBtn);
@@ -923,8 +923,8 @@
             this.editGeneratorBtn.Size = new System.Drawing.Size(24, 24);
             this.editGeneratorBtn.TabIndex = 10;
             this.editGeneratorBtn.UseVisualStyleBackColor = true;
-            this.editGeneratorBtn.Click += new System.EventHandler(this.editGeneratorBtn_Click);
             this.editGeneratorBtn.EnabledChanged += new System.EventHandler(this.editBtn_EnabledChanged);
+            this.editGeneratorBtn.Click += new System.EventHandler(this.editGeneratorBtn_Click);
             // 
             // deleteGeneratorBtn
             // 
@@ -936,8 +936,8 @@
             this.deleteGeneratorBtn.Size = new System.Drawing.Size(24, 24);
             this.deleteGeneratorBtn.TabIndex = 9;
             this.deleteGeneratorBtn.UseVisualStyleBackColor = true;
-            this.deleteGeneratorBtn.Click += new System.EventHandler(this.deleteGeneratorBtn_Click);
             this.deleteGeneratorBtn.EnabledChanged += new System.EventHandler(this.deleteBtn_EnabledChanged);
+            this.deleteGeneratorBtn.Click += new System.EventHandler(this.deleteGeneratorBtn_Click);
             // 
             // toolStrip
             // 
