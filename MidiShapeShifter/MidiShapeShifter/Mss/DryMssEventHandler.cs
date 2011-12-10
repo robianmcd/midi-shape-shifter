@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Ninject;
+using MidiShapeShifter.Ioc;
+
 using MidiShapeShifter.Mss.Relays;
 using MidiShapeShifter.Mss.Mapping;
 
@@ -17,7 +20,7 @@ namespace MidiShapeShifter.Mss
         /// <summary>
         ///     Used to process incomming MssEvents
         /// </summary>
-        protected MssMsgProcessor mssMsgProcessor;
+        protected IMssMsgProcessor mssMsgProcessor;
 
         /// <summary>
         ///     Receives MssEvents once they have been processed
@@ -26,7 +29,7 @@ namespace MidiShapeShifter.Mss
 
         public DryMssEventHandler()
         {
-            this.mssMsgProcessor = new MssMsgProcessor();
+            this.mssMsgProcessor = IocMgr.Kernal.Get<IMssMsgProcessor>();
         }
 
         /// <summary>

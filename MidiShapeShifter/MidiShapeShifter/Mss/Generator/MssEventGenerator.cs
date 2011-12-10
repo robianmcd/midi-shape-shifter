@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
+using Ninject;
+using MidiShapeShifter.Ioc;
+
 using MidiShapeShifter.Mss.Relays;
 using MidiShapeShifter.Mss.Mapping;
 
@@ -17,7 +20,7 @@ namespace MidiShapeShifter.Mss.Generator
     /// </summary>
     public class MssEventGenerator
     {
-        protected const int SAMPLES_PER_GENERATOR_UPDATE = 200;
+        public const int SAMPLES_PER_GENERATOR_UPDATE = 200;
 
         /// <summary>
         /// This class sends generated events to this input port
@@ -33,12 +36,12 @@ namespace MidiShapeShifter.Mss.Generator
         /// <summary>
         /// Stores the GeneratorMappingEntries
         /// </summary>
-        protected GeneratorMappingManager generatorMappingMgr;
+        protected IGeneratorMappingManager generatorMappingMgr;
 
         /// <summary>
         /// Applies the equation the user has specified for each generator to generated events.
         /// </summary>
-        protected MssMsgProcessor mssMsgProcessor;
+        protected IMssMsgProcessor mssMsgProcessor;
 
         /// <summary>
         /// Stores the sample time at the end of the last processing cycle. This should be updated at
@@ -49,14 +52,14 @@ namespace MidiShapeShifter.Mss.Generator
         //Constructor
         public MssEventGenerator()
         {
-            this.mssMsgProcessor = new MssMsgProcessor();
+            this.mssMsgProcessor = IocMgr.Kernal.Get<IMssMsgProcessor>();
         }
 
 
         public void Init(IHostInfoOutputPort hostInfoOutputPort, 
                          IWetMssEventOutputPort wetMssEventOutputPort, 
                          IDryMssEventInputPort dryMssEventInputPort,
-                         GeneratorMappingManager generatorMappingMgr)
+                         IGeneratorMappingManager generatorMappingMgr)
         {
             this.generatorMappingMgr = generatorMappingMgr;
             this.mssMsgProcessor.Init(generatorMappingMgr);
@@ -105,7 +108,7 @@ namespace MidiShapeShifter.Mss.Generator
                 IGeneratorMappingEntry curEntry = 
                         this.generatorMappingMgr.GetGenMappingEntryByIndex(i);
 
-                //In order to generate beat synced events we need to some information about the 
+                //In order to generate events we need to some information about the 
                 //host. If any of this information hasn't been initialized yet then just don't 
                 //generate anything for this generator.
                 if (curEntry.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
@@ -123,6 +126,13 @@ namespace MidiShapeShifter.Mss.Generator
                     if (this.hostInfoOutputPort.TransportPlaying == false)
                     {
                         curEntry.GenHistoryInfo.Initialized = false;
+                        continue;
+                    }
+                }
+                else if (curEntry.GenConfigInfo.PeriodType == GenPeriodType.Time)
+                {
+                    if (this.hostInfoOutputPort.TimeSignatureIsInitialized == false)
+                    {
                         continue;
                     }
                 }

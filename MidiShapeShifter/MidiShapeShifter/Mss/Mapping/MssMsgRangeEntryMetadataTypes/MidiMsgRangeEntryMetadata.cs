@@ -56,12 +56,12 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             }
         }
 
-        protected override void SetEntryField1FromRange(MssMsgRange msgRange)
+        protected override void SetEntryField1FromRange(IMssMsgRange msgRange)
         {
             EntryField1.Text = msgRange.Data1RangeStr;
         }
 
-        protected override void SetEntryField2FromRange(MssMsgRange msgRange)
+        protected override void SetEntryField2FromRange(IMssMsgRange msgRange)
         {
             EntryField2.Text = msgRange.Data2RangeStr;
         }

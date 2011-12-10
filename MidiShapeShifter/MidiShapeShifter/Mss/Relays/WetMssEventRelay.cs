@@ -13,7 +13,7 @@ namespace MidiShapeShifter.Mss.Relays
     ///     Depending on the value of OnlySendOnProcessingCycleEnd this class will either send received events 
     ///     immeadateally or wait for the end of the next processing cycle to send the events.
     /// </remarks>
-    public class WetMssEventRelay : IWetMssEventInputPort, IWetMssEventOutputPort
+    public class WetMssEventRelay : IWetMssEventRelay
     {
         protected List<MssEvent> mssEventBuffer = new List<MssEvent>();
         protected bool _onlySendOnProcessingCycleEnd = true;

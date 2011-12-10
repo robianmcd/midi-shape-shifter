@@ -83,7 +83,7 @@ namespace MidiShapeShifter.Mss.Generator
             mappingEntry.GenConfigInfo = genInfo;
 
             //Sets mappingEntry.inMsgRange
-            MssMsgRange inMsgRange = new MssMsgRange();
+            IMssMsgRange inMsgRange = new MssMsgRange();
             inMsgRange.Init(msgInfoFactory);
 
             if (genInfo.PeriodType == GenPeriodType.BeatSynced)
@@ -108,7 +108,7 @@ namespace MidiShapeShifter.Mss.Generator
             mappingEntry.InMssMsgRange = inMsgRange;
 
             //Sets mappingEntry.outMsgRange
-            MssMsgRange outMsgRange = new MssMsgRange();
+            IMssMsgRange outMsgRange = new MssMsgRange();
             outMsgRange.Init(msgInfoFactory);
             outMsgRange.InitPublicMembers(MssMsgType.Generator,
                                        genInfo.Id,

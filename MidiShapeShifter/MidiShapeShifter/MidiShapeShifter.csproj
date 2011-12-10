@@ -116,6 +116,8 @@
     <Compile Include="Mss\ICurveShapeInfoContainer.cs" />
     <Compile Include="Mss\CurveShapeInfo.cs" />
     <Compile Include="Mss\IMssEvaluator.cs" />
+    <Compile Include="Mss\IMssMsgProcessor.cs" />
+    <Compile Include="Mss\IMssMsgRange.cs" />
     <Compile Include="Mss\Mapping\IGraphableMappingManager.cs" />
     <Compile Include="Mss\Mapping\IMappingEntry.cs" />
     <Compile Include="Mss\Mapping\IMappingManager.cs" />
@@ -173,11 +175,14 @@
     <Compile Include="Mss\Relays\DryMssEventRelay.cs" />
     <Compile Include="Mss\Relays\IDryMssEventOutputPort.cs" />
     <Compile Include="Mss\Relays\IDryMssEventInputPort.cs" />
+    <Compile Include="Mss\Relays\IDryMssEventRelay.cs" />
     <Compile Include="Mss\Relays\IHostInfoOutputPort.cs" />
     <Compile Include="Mss\Relays\IHostInfoInputPort.cs" />
     <Compile Include="Mss\Relays\HostInfoRelay.cs" />
+    <Compile Include="Mss\Relays\IHostInfoRelay.cs" />
     <Compile Include="Mss\Relays\IWetMssEventOutputPort.cs" />
     <Compile Include="Mss\Relays\IWetMssEventInputPort.cs" />
+    <Compile Include="Mss\Relays\IWetMssEventRelay.cs" />
     <Compile Include="Mss\Relays\WetMssEventRelay.cs" />
     <Compile Include="Mss\SendMssEventsToHostTrigger.cs" />
     <Compile Include="Mss\DryMssEventHandler.cs" />

@@ -21,7 +21,7 @@ namespace MidiShapeShifter.Mss.Relays
     ///     This class is used to pass host information from the "Framework" namespace to the 
     ///     "Mss" namespace.
     /// </remarks>
-    public class HostInfoRelay : IHostInfoInputPort, IHostInfoOutputPort
+    public class HostInfoRelay : IHostInfoRelay
     {
 
         /// <summary>

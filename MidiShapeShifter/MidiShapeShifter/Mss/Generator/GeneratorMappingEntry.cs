@@ -32,7 +32,7 @@ namespace MidiShapeShifter.Mss.Generator
             this.GenHistoryInfo = new GenEntryHistoryInfo();
         }
 
-        public void InitAllMembers(MssMsgRange inMsgRange, MssMsgRange outMsgRange,
+        public void InitAllMembers(IMssMsgRange inMsgRange, IMssMsgRange outMsgRange,
                             bool overrideDuplicates, CurveShapeInfo curveShapeInfo, GenEntryConfigInfo generatorInfo)
         {
             this.GenConfigInfo = generatorInfo;

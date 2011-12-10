@@ -21,13 +21,13 @@ namespace MidiShapeShifter.Mss.Mapping
         ///     Specifies which MSS messages will be accepted for input as well as additional information about the 
         ///     input type
         /// </summary>
-        public MssMsgRange InMssMsgRange { get; set; }
+        public IMssMsgRange InMssMsgRange { get; set; }
 
         /// <summary>
         ///     Specifies the range of messages that can be output as well as additional information about the output 
         ///     type.
         /// </summary>
-        public MssMsgRange OutMssMsgRange { get; set; }
+        public IMssMsgRange OutMssMsgRange { get; set; }
 
         /// <summary>
         ///     If there are multiple mapping entries with overlapping input ranges then a single mss message can
@@ -49,7 +49,7 @@ namespace MidiShapeShifter.Mss.Mapping
             
         }
 
-        public void InitAllMembers(MssMsgRange inMsgRange, MssMsgRange outMsgRange,
+        public void InitAllMembers(IMssMsgRange inMsgRange, IMssMsgRange outMsgRange,
                             bool overrideDuplicates, CurveShapeInfo curveShapeInfo)
         {
             this.InMssMsgRange = inMsgRange;

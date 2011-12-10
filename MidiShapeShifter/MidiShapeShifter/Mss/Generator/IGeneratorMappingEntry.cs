@@ -10,6 +10,6 @@ namespace MidiShapeShifter.Mss.Generator
         string GetReadableEnabledStatus();
         string GetReadableLoopStatus();
         string GetReadablePeriod();
-        void InitAllMembers(MidiShapeShifter.Mss.MssMsgRange inMsgRange, MidiShapeShifter.Mss.MssMsgRange outMsgRange, bool overrideDuplicates, MidiShapeShifter.Mss.CurveShapeInfo curveShapeInfo, GenEntryConfigInfo generatorInfo);
+        void InitAllMembers(MidiShapeShifter.Mss.IMssMsgRange inMsgRange, MidiShapeShifter.Mss.IMssMsgRange outMsgRange, bool overrideDuplicates, MidiShapeShifter.Mss.CurveShapeInfo curveShapeInfo, GenEntryConfigInfo generatorInfo);
     }
 }

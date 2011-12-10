@@ -33,7 +33,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         protected bool entryField1IsValid = false;
         protected bool entryField2IsValid = false;
 
-        protected MssMsgRange msgRange;
+        protected IMssMsgRange msgRange;
 
         //Contains a list of valid output message types when this class is the input type
         protected List<string> outMssMsgTypeNames = new List<string>();
@@ -167,7 +167,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         /// <summary>
         ///     Set the entry fields associated with this class based on an initialized MssMsgRange.
         /// </summary>
-        public void UseExistingMsgRange(MssMsgRange msgRange)
+        public void UseExistingMsgRange(IMssMsgRange msgRange)
         {
             this.msgRange = msgRange;
 
@@ -185,8 +185,8 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         /// <summary>
         ///     Sets the contents of an entry field based on the state of the supplies MssMsgRange
         /// </summary>
-        protected abstract void SetEntryField1FromRange(MssMsgRange msgRange);
-        protected abstract void SetEntryField2FromRange(MssMsgRange msgRange);
+        protected abstract void SetEntryField1FromRange(IMssMsgRange msgRange);
+        protected abstract void SetEntryField2FromRange(IMssMsgRange msgRange);
 
         /// <summary>
         ///     Sets the entry fields so that they are all blank and invisable.
@@ -351,7 +351,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         ///     with this object.
         /// </summary>
         /// <remarks>Precondition: The contents of the entry fields must be valid.</remarks>
-        public MssMsgRange CreateValidMsgRange()
+        public IMssMsgRange CreateValidMsgRange()
         { 
             if (this.entryField1IsValid == false)
             {

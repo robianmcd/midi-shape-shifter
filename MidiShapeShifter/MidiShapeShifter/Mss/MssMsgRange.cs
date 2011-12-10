@@ -13,7 +13,7 @@ namespace MidiShapeShifter.Mss
     ///     classes MsgType and its Data1 and Data2 fall into the ranges specified in this class. This class is
     ///     used to describe the set of messages affected by a mapping.
     /// </summary>
-    public class MssMsgRange
+    public class MssMsgRange : IMssMsgRange
     {
         /// <summary>
         ///     Contains information about the message type specified by MsgType. If MsgType has not been set then 
@@ -43,14 +43,14 @@ namespace MidiShapeShifter.Mss
         /// <summary>
         ///     Specifies the range of accepted Data1 values
         /// </summary>
-        public int Data1RangeBottom;
-        public int Data1RangeTop;
+        public int Data1RangeBottom { get; set; }
+        public int Data1RangeTop { get; set; }
 
         /// <summary>
         ///     Specifies the range of accepted Data2 values
         /// </summary>
-        public int Data2RangeBottom;
-        public int Data2RangeTop;
+        public int Data2RangeBottom { get; set; }
+        public int Data2RangeTop { get; set; }
 
         protected IFactory_MssMsgInfo msgInfoFactory;
 
@@ -161,7 +161,7 @@ namespace MidiShapeShifter.Mss
 
         public override bool Equals(object o)
         {
-            MssMsgRange compareToRange = (MssMsgRange)o;
+            IMssMsgRange compareToRange = (IMssMsgRange)o;
             return this.MsgType == compareToRange.MsgType &&
                    this.Data1RangeBottom == compareToRange.Data1RangeBottom &&
                    this.Data1RangeTop == compareToRange.Data1RangeTop &&

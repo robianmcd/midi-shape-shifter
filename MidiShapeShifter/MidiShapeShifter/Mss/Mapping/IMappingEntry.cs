@@ -3,13 +3,13 @@ namespace MidiShapeShifter.Mss.Mapping
 {
     public interface IMappingEntry : ICurveShapeInfoContainer
     {
-        MssMsgRange InMssMsgRange { get; set; }
-        MssMsgRange OutMssMsgRange { get; set; }
+        IMssMsgRange InMssMsgRange { get; set; }
+        IMssMsgRange OutMssMsgRange { get; set; }
         bool OverrideDuplicates { get; set; }
 
 
         string GetReadableMsgType(IoType ioCategory);
         string GetReadableOverrideDuplicates();
-        void InitAllMembers(MidiShapeShifter.Mss.MssMsgRange inMsgRange, MidiShapeShifter.Mss.MssMsgRange outMsgRange, bool overrideDuplicates, MidiShapeShifter.Mss.CurveShapeInfo curveShapeInfo);
+        void InitAllMembers(MidiShapeShifter.Mss.IMssMsgRange inMsgRange, MidiShapeShifter.Mss.IMssMsgRange outMsgRange, bool overrideDuplicates, MidiShapeShifter.Mss.CurveShapeInfo curveShapeInfo);
     }
 }

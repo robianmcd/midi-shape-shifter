@@ -11,7 +11,7 @@ namespace MidiShapeShifter.Mss.Relays
     /// <remarks>
     ///     This class is used to pass unprocessed MssEvents from the "Framework" namespace to the "Mss" namespace.
     /// </remarks>
-    public class DryMssEventRelay : IDryMssEventInputPort, IDryMssEventOutputPort
+    public class DryMssEventRelay : IDryMssEventRelay
     {
         //See IDryMssEventInputPort
         public void ReceiveDryMssEvent(MssEvent mssEvent)

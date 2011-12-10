@@ -8,7 +8,7 @@ using MidiShapeShifter.Mss;
 
 namespace MidiShapeShifter.Ioc
 {
-    public class IocMgr
+    public static class IocMgr
     {
         public static IKernel Kernal;
 
@@ -17,6 +17,7 @@ namespace MidiShapeShifter.Ioc
             Kernal = new StandardKernel();
 
             Kernal.Bind<IMssEvaluator>().To<MssEvaluator>();
+            Kernal.Bind<IMssMsgProcessor>().To<MssMsgProcessor>();
         }
     }
 }

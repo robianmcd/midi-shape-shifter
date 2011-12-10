@@ -17,7 +17,7 @@ namespace MidiShapeShifter.Mss
     ///     Responsible for applying the mappings stored in MappingManager to incoming MSS messages. The resulting MSS
     ///     messages are then stored in the MssComponentHub.
     /// </summary>
-    public class MssMsgProcessor
+    public class MssMsgProcessor : IMssMsgProcessor
     {
         protected IGraphableMappingManager mappingMgr;
 
