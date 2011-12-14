@@ -69,6 +69,7 @@ namespace MidiShapeShifter.Mss
                 return this._pluginEditorView; 
             } 
         }
+        protected SerializablePluginEditorInfo pluginEditorInfo;
 
         public MssComponentHub()
         {
@@ -87,6 +88,8 @@ namespace MidiShapeShifter.Mss
 
             this.msgEntryMetadataFactory = new Factory_MssMsgRangeEntryMetadata();
             this.msgInfoFactory = new Factory_MssMsgInfo();
+
+            pluginEditorInfo = new SerializablePluginEditorInfo();
         }
 
         /// <summary>
@@ -139,8 +142,12 @@ namespace MidiShapeShifter.Mss
             if (this._pluginEditorView == null)
             {
                 this._pluginEditorView = new PluginEditorView();
-                this._pluginEditorView.Init(this.MssParameters, this.mappingMgr, this.genMappingMgr, this.DryMssEventOutputPort);
                 this._pluginEditorView.CreateControl();
+                this._pluginEditorView.Init(this.MssParameters, 
+                                            this.mappingMgr, 
+                                            this.genMappingMgr, 
+                                            this.DryMssEventOutputPort,
+                                            this.pluginEditorInfo);
             }
         }
     }

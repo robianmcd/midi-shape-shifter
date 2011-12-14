@@ -185,7 +185,7 @@
             // equationBookBtn
             // 
             this.equationBookBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgNotebookBlue;
-            this.equationBookBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.equationBookBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.equationBookBtn.Location = new System.Drawing.Point(242, 21);
             this.equationBookBtn.Margin = new System.Windows.Forms.Padding(0);
             this.equationBookBtn.Name = "equationBookBtn";
@@ -982,7 +982,6 @@
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "PluginEditorView";
             this.Size = new System.Drawing.Size(641, 488);
-            this.Load += new System.EventHandler(this.PluginEditorView_Load);
             this.curveGroup.ResumeLayout(false);
             this.curveGroup.PerformLayout();
             this.groupBox1.ResumeLayout(false);

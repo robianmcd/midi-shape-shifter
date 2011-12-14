@@ -41,26 +41,21 @@ namespace MidiShapeShifter.Mss.UI
 
         protected MssEvaluator evaluator;
 
-        //Injected dependencies
         protected MssParameters mssParameters;
         protected MappingManager mappingMgr;
         protected GeneratorMappingManager genMappingMgr;
         protected IDryMssEventOutputPort dryMssEventOutputPort;
 
-        protected enum GraphableEntryType {Mapping, Generator}
-
-
-        protected int activeGraphableEntryIndex = -1;
-        protected GraphableEntryType activeGraphableEntryType;
-
         protected Factory_MssMsgRangeEntryMetadata msgMetadataFactory;
         protected IFactory_MssMsgInfo msgInfoFactory;
+
+        protected SerializablePluginEditorInfo persistantInfo;
 
         public IMappingEntry ActiveGraphableEntry 
         {
             get
             {
-                if (this.activeGraphableEntryIndex < 0)
+                if (this.persistantInfo.activeGraphableEntryIndex < 0)
                 {
                     return null;
                 }
@@ -68,13 +63,15 @@ namespace MidiShapeShifter.Mss.UI
                 {
                     IMappingEntry activeEntry;
 
-                    if (this.activeGraphableEntryType == GraphableEntryType.Mapping) 
+                    if (this.persistantInfo.activeGraphableEntryType == GraphableEntryType.Mapping) 
                     {
-                        activeEntry = this.mappingMgr.GetMappingEntry(this.activeGraphableEntryIndex);
+                        activeEntry = this.mappingMgr.GetMappingEntry(
+                                this.persistantInfo.activeGraphableEntryIndex);
                     }
-                    else if (this.activeGraphableEntryType == GraphableEntryType.Generator)
+                    else if (this.persistantInfo.activeGraphableEntryType == GraphableEntryType.Generator)
                     {
-                        activeEntry = this.genMappingMgr.GetGenMappingEntryByIndex(this.activeGraphableEntryIndex);
+                        activeEntry = this.genMappingMgr.GetGenMappingEntryByIndex(
+                                this.persistantInfo.activeGraphableEntryIndex);
                     }
                     else
                     {
@@ -107,20 +104,36 @@ namespace MidiShapeShifter.Mss.UI
             }
         }
 
-        public void Init(MssParameters mssParameters, MappingManager mappingMgr, GeneratorMappingManager genMappingMgr, IDryMssEventOutputPort dryMssEventOutputPort)
+        public void Init(MssParameters mssParameters, 
+                         MappingManager mappingMgr, 
+                         GeneratorMappingManager genMappingMgr, 
+                         IDryMssEventOutputPort dryMssEventOutputPort,
+                         SerializablePluginEditorInfo serializablePluginEditorInfo)
         {
+            InitiaizeGraph();
+
             this.mssParameters = mssParameters;
             this.mappingMgr = mappingMgr;
             this.genMappingMgr = genMappingMgr;
             this.dryMssEventOutputPort = dryMssEventOutputPort;
+            this.persistantInfo = serializablePluginEditorInfo;
 
             this.mssParameters.ParameterValueChanged += new ParameterValueChangedEventHandler(MssParameters_ValueChanged);
             this.mssParameters.ParameterNameChanged += new ParameterNameChangedEventHandler(MssParameters_NameChanged);
             this.mssParameters.ParameterMinValueChanged += new ParameterMinValueChangedEventHandler(MssParameters_MinValueChanged);
             this.mssParameters.ParameterMaxValueChanged += new ParameterMaxValueChangedEventHandler(MssParameters_MaxValueChanged);
 
+            //Set parameters from MssParameters
+            foreach(MssParameterID paramId in Enum.GetValues(typeof(MssParameterID)))
+            {
+                UpdateInfoForParameter(paramId);                
+            }
+
             this.msgMetadataFactory.Init(genMappingMgr);
             this.msgInfoFactory.Init(genMappingMgr);
+
+            RefreshMappingListView();
+            RefreshGeneratorListView();
 
             ActiveGraphableEntryChanged();
         }
@@ -170,17 +183,17 @@ namespace MidiShapeShifter.Mss.UI
             bool EnableMappingButtons;
             bool EnableGeneratorButtons;
 
-            if (this.activeGraphableEntryIndex < 0) 
+            if (this.persistantInfo.activeGraphableEntryIndex < 0) 
             {
                 EnableMappingButtons = false;
                 EnableGeneratorButtons = false;
             }
-            else if (this.activeGraphableEntryType == GraphableEntryType.Mapping)
+            else if (this.persistantInfo.activeGraphableEntryType == GraphableEntryType.Mapping)
             {
                 EnableMappingButtons = true;
                 EnableGeneratorButtons = false;
             }
-            else if (this.activeGraphableEntryType == GraphableEntryType.Generator)
+            else if (this.persistantInfo.activeGraphableEntryType == GraphableEntryType.Generator)
             {
                 EnableMappingButtons = false;
                 EnableGeneratorButtons = true;
@@ -195,9 +208,9 @@ namespace MidiShapeShifter.Mss.UI
             this.deleteMappingBtn.Enabled = EnableMappingButtons;
             this.editMappingBtn.Enabled = EnableMappingButtons;
             this.moveMappingUpBtn.Enabled = EnableMappingButtons && 
-                    this.activeGraphableEntryIndex > 0;
+                    this.persistantInfo.activeGraphableEntryIndex > 0;
             this.moveMappingDownBtn.Enabled = EnableMappingButtons && 
-                    this.activeGraphableEntryIndex < this.mappingMgr.GetNumEntries() - 1;
+                    this.persistantInfo.activeGraphableEntryIndex < this.mappingMgr.GetNumEntries() - 1;
 
             this.deleteGeneratorBtn.Enabled = EnableGeneratorButtons;
             this.editGeneratorBtn.Enabled = EnableGeneratorButtons;
@@ -212,21 +225,15 @@ namespace MidiShapeShifter.Mss.UI
                 this.mappingListView.Items.Add(this.mappingMgr.GetListViewRow(i));
             }
 
-            if (this.activeGraphableEntryIndex > -1)
+            if (this.persistantInfo.activeGraphableEntryType == GraphableEntryType.Mapping &&
+                this.persistantInfo.activeGraphableEntryIndex > -1)
             {
-                this.mappingListView.Items[this.activeGraphableEntryIndex].Selected = true;
+                this.mappingListView.Items[this.persistantInfo.activeGraphableEntryIndex].Selected = true;
             }
         }
 
         protected void RefreshGeneratorListView()
         {
-            int selectionBackup = -1;
-
-            if (this.generatorListView.SelectedIndices.Count > 0)
-            {
-                selectionBackup = this.generatorListView.SelectedIndices[0];
-            }
-
             this.generatorListView.Items.Clear();
 
             for (int i = 0; i < this.genMappingMgr.GetNumEntries(); i++)
@@ -234,14 +241,15 @@ namespace MidiShapeShifter.Mss.UI
                 this.generatorListView.Items.Add(this.genMappingMgr.GetListViewRow(i));
             }
 
-            if (selectionBackup > -1)
+            if (this.persistantInfo.activeGraphableEntryType == GraphableEntryType.Generator && 
+                this.persistantInfo.activeGraphableEntryIndex > -1)
             {
-                this.generatorListView.Items[selectionBackup].Selected = true;
+                this.generatorListView.Items[this.persistantInfo.activeGraphableEntryIndex].Selected = true;
             }
         }
 
         //TODO: add handlers like this for changes to max and min value text boxes
-        private void lbKnob_KnobChangeValue(object sender, LBSoft.IndustrialCtrls.Knobs.LBKnobEventArgs e) {
+        private void lbKnob_KnobChangeValue(object sender, LBKnobEventArgs e) {
             LBKnob knob = (LBKnob)sender;
             MssParameterID paramId;
             ParameterValueKnobControlDict.TryGetLeftByRight(out paramId, knob);
@@ -250,7 +258,11 @@ namespace MidiShapeShifter.Mss.UI
             Label parameterValueDisplay;
             if (ParameterValueLabelControlDict.TryGetRightByLeft(paramId, out parameterValueDisplay) == true)
             {
-                parameterValueDisplay.Text = FormatRawParameterValue((double)knob.Value);
+                string valueString = FormatRawParameterValue((double)knob.Value);
+                if (valueString != parameterValueDisplay.Text)
+                {
+                    parameterValueDisplay.Text = valueString;
+                }
             }
             
 
@@ -283,15 +295,6 @@ namespace MidiShapeShifter.Mss.UI
 
                 this.curveEquationTextBox.Text = "";
                 this.curvePresetCombo.SelectedIndex = -1;
-
-                this.presetParam1Knob.Value = 0;
-                this.presetParam2Knob.Value = 0;
-                this.presetParam3Knob.Value = 0;
-                this.presetParam4Knob.Value = 0;
-                this.presetParam1Value.Text = "";
-                this.presetParam2Value.Text = "";
-                this.presetParam3Value.Text = "";
-                this.presetParam4Value.Text = "";
             }
             else
             {
@@ -370,9 +373,17 @@ namespace MidiShapeShifter.Mss.UI
                 IgnoreGraphableEntrySelectionChangedHandler = false;
             }
 
-            activeGraphableEntryType = mappingType;
-            activeGraphableEntryIndex = modifiedListView.SelectedItems[0].Index;
+            this.persistantInfo.activeGraphableEntryType = mappingType;
+            this.persistantInfo.activeGraphableEntryIndex = modifiedListView.SelectedItems[0].Index;
             ActiveGraphableEntryChanged();
+        }
+
+        protected void UpdateInfoForParameter(MssParameterID paramID)
+        {
+            MssParameters_NameChanged(paramID, this.mssParameters.GetParameterName(paramID));
+            MssParameters_ValueChanged(paramID, this.mssParameters.GetParameterValue(paramID));
+            MssParameters_MaxValueChanged(paramID, this.mssParameters.GetParameterMaxValue(paramID));
+            MssParameters_MinValueChanged(paramID, this.mssParameters.GetParameterMinValue(paramID));
         }
 
         private void addMappingBtn_Click(object sender, System.EventArgs e)
@@ -386,8 +397,8 @@ namespace MidiShapeShifter.Mss.UI
 
                 int newestEntryIndex = this.mappingMgr.GetNumEntries() - 1;
 
-                this.activeGraphableEntryType = GraphableEntryType.Mapping;
-                this.activeGraphableEntryIndex = newestEntryIndex;
+                this.persistantInfo.activeGraphableEntryType = GraphableEntryType.Mapping;
+                this.persistantInfo.activeGraphableEntryIndex = newestEntryIndex;
 
                 this.mappingListView.Items.Add(this.mappingMgr.GetListViewRow(newestEntryIndex));
                 this.mappingListView.Items[newestEntryIndex].Selected = true;
@@ -396,7 +407,8 @@ namespace MidiShapeShifter.Mss.UI
 
         private void editMappingBtn_Click(object sender, System.EventArgs e)
         {
-            if (ActiveGraphableEntry == null || this.activeGraphableEntryType != GraphableEntryType.Mapping)
+            if (ActiveGraphableEntry == null || 
+                this.persistantInfo.activeGraphableEntryType != GraphableEntryType.Mapping)
             {
                 //The edit button should be disabled if there is no ActiveGraphableEntry or if the active 
                 //mapping is not in the mapping list view.
@@ -417,7 +429,7 @@ namespace MidiShapeShifter.Mss.UI
         private void deleteMappingBtn_Click(object sender, EventArgs e)
         {
             if (ActiveGraphableEntry == null ||
-                this.activeGraphableEntryType != GraphableEntryType.Mapping)
+                this.persistantInfo.activeGraphableEntryType != GraphableEntryType.Mapping)
             {
                 //The delete button should be disabled if there is no ActiveGraphableEntry or if the 
                 //active mapping is not in the mapping list view.
@@ -425,18 +437,18 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
-            this.mappingMgr.RemoveMappingEntry(this.activeGraphableEntryIndex);
-            this.mappingListView.Items[this.activeGraphableEntryIndex].Remove();
+            this.mappingMgr.RemoveMappingEntry(this.persistantInfo.activeGraphableEntryIndex);
+            this.mappingListView.Items[this.persistantInfo.activeGraphableEntryIndex].Remove();
 
-            if (this.mappingListView.Items.Count > this.activeGraphableEntryIndex)
+            if (this.mappingListView.Items.Count > this.persistantInfo.activeGraphableEntryIndex)
             {
                 //don't need to call ActiveGraphableEntryChanged() because selecting an item 
                 //will trigger it.
-                this.mappingListView.Items[this.activeGraphableEntryIndex].Selected = true;
+                this.mappingListView.Items[this.persistantInfo.activeGraphableEntryIndex].Selected = true;
             }
             else
             {
-                this.activeGraphableEntryIndex = -1;
+                this.persistantInfo.activeGraphableEntryIndex = -1;
                 ActiveGraphableEntryChanged();
             }
         }
@@ -458,17 +470,19 @@ namespace MidiShapeShifter.Mss.UI
                 //Creates a new mapping entry, adds it the the generator mapping manager and sets
                 //it as the active mapping
                 this.genMappingMgr.CreateAndAddEntryFromGenInfo(genDlg.GenInfoResult);
-                this.activeGraphableEntryType = GraphableEntryType.Generator;
-                this.activeGraphableEntryIndex = this.genMappingMgr.GetNumEntries() - 1;
+                this.persistantInfo.activeGraphableEntryType = GraphableEntryType.Generator;
+                this.persistantInfo.activeGraphableEntryIndex = this.genMappingMgr.GetNumEntries() - 1;
 
-                this.generatorListView.Items.Add(this.genMappingMgr.GetListViewRow(this.activeGraphableEntryIndex));
-                this.generatorListView.Items[this.activeGraphableEntryIndex].Selected = true;
+                this.generatorListView.Items.Add(
+                    this.genMappingMgr.GetListViewRow(this.persistantInfo.activeGraphableEntryIndex));
+                this.generatorListView.Items[this.persistantInfo.activeGraphableEntryIndex].Selected = true;
             }
         }
 
         private void editGeneratorBtn_Click(object sender, EventArgs e)
         {
-            if (ActiveGraphableEntry == null || this.activeGraphableEntryType != GraphableEntryType.Generator)
+            if (ActiveGraphableEntry == null || 
+                this.persistantInfo.activeGraphableEntryType != GraphableEntryType.Generator)
             {
                 //The edit button should be disabled if there is no ActiveGraphableEntry or if the active 
                 //mapping is not in the generator list view.
@@ -476,7 +490,7 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
             IGeneratorMappingEntry activeGenMapping = 
-                this.genMappingMgr.GetGenMappingEntryByIndex(this.activeGraphableEntryIndex);
+                this.genMappingMgr.GetGenMappingEntryByIndex(this.persistantInfo.activeGraphableEntryIndex);
 
             GeneratorDlg genDlg = new GeneratorDlg();
             genDlg.Init(activeGenMapping.GenConfigInfo);
@@ -491,6 +505,12 @@ namespace MidiShapeShifter.Mss.UI
 
         private void MssParameters_NameChanged(MssParameterID paramId, string name)
         {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action<MssParameterID, string>(MssParameters_NameChanged), paramId, name);
+                return;
+            }
+
             Label paramNameLabel;
             if (ParameterNameControlDict.TryGetRightByLeft(paramId, out paramNameLabel) == true)
             {
@@ -503,6 +523,12 @@ namespace MidiShapeShifter.Mss.UI
 
         private void MssParameters_ValueChanged(MssParameterID paramId, double value)
         {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action<MssParameterID, double>(MssParameters_ValueChanged), paramId, value);
+                return;
+            }
+
             LBKnob knob;
             if (ParameterValueKnobControlDict.TryGetRightByLeft(paramId, out knob) == true)
             {
@@ -511,20 +537,16 @@ namespace MidiShapeShifter.Mss.UI
                     knob.Value = (float)value;
                 }
             }
-
-            Label parameterValueLabel;
-            if (ParameterValueLabelControlDict.TryGetRightByLeft(paramId, out parameterValueLabel) == true)
-            {
-                string valueAsString = FormatRawParameterValue(value);
-                if (parameterValueLabel.Text != valueAsString)
-                {
-                    parameterValueLabel.Text = valueAsString;
-                }
-            }
         }
 
         private void MssParameters_MinValueChanged(MssParameterID paramId, int minValue)
         {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action<MssParameterID, int>(MssParameters_MinValueChanged), paramId, minValue);
+                return;
+            }
+
             TextBox minValueTextBox;
             if (ParameterMinValueControlDict.TryGetRightByLeft(paramId, out minValueTextBox) == true)
             {
@@ -537,6 +559,12 @@ namespace MidiShapeShifter.Mss.UI
 
         private void MssParameters_MaxValueChanged(MssParameterID paramId, int maxValue)
         {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action<MssParameterID, int>(MssParameters_MaxValueChanged), paramId, maxValue);
+                return;
+            }
+
             TextBox maxValueTextBox;
             if (ParameterMaxValueControlDict.TryGetRightByLeft(paramId, out maxValueTextBox) == true)
             {
@@ -610,11 +638,6 @@ namespace MidiShapeShifter.Mss.UI
                 }
             }
 
-        }
-
-        private void PluginEditorView_Load(object sender, EventArgs e)
-        {
-            InitiaizeGraph();
         }
 
         protected void InitiaizeGraph()
@@ -720,7 +743,7 @@ namespace MidiShapeShifter.Mss.UI
         private void deleteGeneratorBtn_Click(object sender, EventArgs e)
         {
             if (ActiveGraphableEntry == null ||
-                this.activeGraphableEntryType != GraphableEntryType.Generator)
+                this.persistantInfo.activeGraphableEntryType != GraphableEntryType.Generator)
             {
                 //The delete button should be disabled if there is no ActiveGraphableEntry or if the 
                 //active mapping is not in the mapping list view.
@@ -728,18 +751,18 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
-            this.genMappingMgr.RemoveGenMappingEntry(this.activeGraphableEntryIndex);
-            this.generatorListView.Items[this.activeGraphableEntryIndex].Remove();
+            this.genMappingMgr.RemoveGenMappingEntry(this.persistantInfo.activeGraphableEntryIndex);
+            this.generatorListView.Items[this.persistantInfo.activeGraphableEntryIndex].Remove();
 
-            if (this.generatorListView.Items.Count > this.activeGraphableEntryIndex)
+            if (this.generatorListView.Items.Count > this.persistantInfo.activeGraphableEntryIndex)
             {
                 //don't need to call ActiveGraphableEntryChanged() because selecting an item 
                 //will trigger it.
-                this.generatorListView.Items[this.activeGraphableEntryIndex].Selected = true;
+                this.generatorListView.Items[this.persistantInfo.activeGraphableEntryIndex].Selected = true;
             }
             else
             {
-                this.activeGraphableEntryIndex = -1;
+                this.persistantInfo.activeGraphableEntryIndex = -1;
                 ActiveGraphableEntryChanged();
             }
         }
@@ -747,8 +770,8 @@ namespace MidiShapeShifter.Mss.UI
         private void moveMappingUpBtn_Click(object sender, EventArgs e)
         {
             if (ActiveGraphableEntry == null ||
-                this.activeGraphableEntryType != GraphableEntryType.Mapping ||
-                this.activeGraphableEntryIndex <= 0)
+                this.persistantInfo.activeGraphableEntryType != GraphableEntryType.Mapping ||
+                this.persistantInfo.activeGraphableEntryIndex <= 0)
             {
                 //The move up button should be disabled if there is no ActiveGraphableEntry, 
                 //if the ActiveGraphableEntry is not in the mapping list view or if the 
@@ -757,16 +780,16 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
-            this.mappingMgr.MoveEntryUp(this.activeGraphableEntryIndex);
-            this.activeGraphableEntryIndex--;
+            this.mappingMgr.MoveEntryUp(this.persistantInfo.activeGraphableEntryIndex);
+            this.persistantInfo.activeGraphableEntryIndex--;
             RefreshMappingListView();
         }
 
         private void moveMappingDownBtn_Click(object sender, EventArgs e)
         {
             if (ActiveGraphableEntry == null ||
-                this.activeGraphableEntryType != GraphableEntryType.Mapping ||
-                this.activeGraphableEntryIndex >= this.mappingMgr.GetNumEntries() - 1)
+                this.persistantInfo.activeGraphableEntryType != GraphableEntryType.Mapping ||
+                this.persistantInfo.activeGraphableEntryIndex >= this.mappingMgr.GetNumEntries() - 1)
             {
                 //The move up button should be disabled if there is no ActiveGraphableEntry, 
                 //if the ActiveGraphableEntry is not in the mapping list view or if the 
@@ -775,8 +798,8 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
-            this.mappingMgr.MoveEntryDown(this.activeGraphableEntryIndex);
-            this.activeGraphableEntryIndex++;
+            this.mappingMgr.MoveEntryDown(this.persistantInfo.activeGraphableEntryIndex);
+            this.persistantInfo.activeGraphableEntryIndex++;
             RefreshMappingListView();
         }
     }
