@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 using System.Drawing;
 using System.Windows.Forms;
@@ -22,21 +23,26 @@ namespace MidiShapeShifter.Mss
     ///     MidiShapeShifter.Framework namespace. This will make it much easier to extend this plugin to other 
     ///     frameworks or to a standalone application.
     /// </summary>
+    [Serializable]
     public class MssComponentHub
     {
         [DllImport("user32.dll")]
         public static extern IntPtr SetParent(IntPtr child, IntPtr newParent);
 
+        [NonSerialized]
         protected SendMssEventsToHostTrigger sendEventsToHostTrigger;
+        [NonSerialized]
         protected DryMssEventHandler dryMssEventHandler;
         protected MappingManager mappingMgr;
 
+        [NonSerialized]
         protected MssEventGenerator mssEventGenrator;
         protected GeneratorMappingManager genMappingMgr;
         
         /// <summary>
         ///     Passes unprocessed MssEvents from the "Framework" namespace to the "Mss" namespace.
         /// </summary>
+        [NonSerialized]
         protected DryMssEventRelay _dryMssEventRelay;
         public IDryMssEventInputPort DryMssEventInputPort { get { return this._dryMssEventRelay; } }
         public IDryMssEventOutputPort DryMssEventOutputPort { get { return this._dryMssEventRelay; } }
@@ -44,6 +50,7 @@ namespace MidiShapeShifter.Mss
         /// <summary>
         ///     Passes processed MssEvents from the "Mss" namespace to the "Framework" namespace.
         /// </summary>
+        [NonSerialized]
         protected WetMssEventRelay _wetMssEventRelay;
         public IWetMssEventInputPort WetMssEventInputPort { get { return this._wetMssEventRelay; } }
         public IWetMssEventOutputPort WetMssEventOutputPort { get { return this._wetMssEventRelay; } }
@@ -51,6 +58,7 @@ namespace MidiShapeShifter.Mss
         /// <summary>
         ///     Passes information about the host from the "Framework" namespace to the "Mss" namespace
         /// </summary>
+        [NonSerialized]
         protected HostInfoRelay _hostInfoRelay;
         public IHostInfoInputPort HostInfoInputPort { get { return this._hostInfoRelay; } }
         public IHostInfoOutputPort HostInfoOutputPort { get { return this._hostInfoRelay; } }
@@ -58,9 +66,12 @@ namespace MidiShapeShifter.Mss
         protected MssParameters _mssParameters;
         public MssParameters MssParameters { get { return this._mssParameters; } }
 
+        [NonSerialized]
         protected Factory_MssMsgRangeEntryMetadata msgEntryMetadataFactory;
+        [NonSerialized]
         protected IFactory_MssMsgInfo msgInfoFactory;
 
+        [NonSerialized]
         protected PluginEditorView _pluginEditorView;
         public PluginEditorView PluginEditorView { 
             get 
@@ -73,23 +84,30 @@ namespace MidiShapeShifter.Mss
 
         public MssComponentHub()
         {
+            ConstructNonSerializableMembers();
+            
+            //Construct Serializable members
+            this.mappingMgr = new MappingManager();
+            this.genMappingMgr = new GeneratorMappingManager();
+
+            this._mssParameters = new MssParameters();
+
+            this.pluginEditorInfo = new SerializablePluginEditorInfo();
+        }
+
+        protected void ConstructNonSerializableMembers()
+        {
             this.sendEventsToHostTrigger = new SendMssEventsToHostTrigger();
             this.dryMssEventHandler = new DryMssEventHandler();
-            this.mappingMgr = new MappingManager();
 
             this._dryMssEventRelay = new DryMssEventRelay();
             this._wetMssEventRelay = new WetMssEventRelay();
             this._hostInfoRelay = new HostInfoRelay();
 
-            this.genMappingMgr = new GeneratorMappingManager();
             this.mssEventGenrator = new MssEventGenerator();
-
-            this._mssParameters = new MssParameters();
 
             this.msgEntryMetadataFactory = new Factory_MssMsgRangeEntryMetadata();
             this.msgInfoFactory = new Factory_MssMsgInfo();
-
-            pluginEditorInfo = new SerializablePluginEditorInfo();
         }
 
         /// <summary>
@@ -97,17 +115,35 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         public void Init()
         {
+            InitializeNonSerializableMembers();
+
+            //Initialize serializable members
+            this._mssParameters.Init();
+        }
+
+        protected void InitializeNonSerializableMembers()
+        {
             this.msgEntryMetadataFactory.Init(this.genMappingMgr);
             this.msgInfoFactory.Init(this.genMappingMgr);
 
-            this._mssParameters.Init();
-
             this.sendEventsToHostTrigger.Init(this.HostInfoOutputPort, this.WetMssEventInputPort);
             this.dryMssEventHandler.Init(this.DryMssEventOutputPort, this.WetMssEventInputPort, this.mappingMgr);
-            this.mssEventGenrator.Init(this.HostInfoOutputPort, 
-                                       this.WetMssEventOutputPort, 
-                                       this.DryMssEventInputPort, 
+            this.mssEventGenrator.Init(this.HostInfoOutputPort,
+                                       this.WetMssEventOutputPort,
+                                       this.DryMssEventInputPort,
                                        this.genMappingMgr);
+        }
+
+        [OnDeserializing]
+        protected void OnDeserializing(StreamingContext context)
+        {
+            ConstructNonSerializableMembers();
+        }
+
+        [OnDeserialized]
+        protected void OnDeserialized(StreamingContext context)
+        {
+            InitializeNonSerializableMembers();
         }
 
         /// <summary>

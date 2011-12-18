@@ -5,6 +5,7 @@ using System.Text;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
+    [Serializable]
     public class RelTimePeriodPosMsgInfo : GenericRelitivePosMsgInfo
     {
         public override MssMsgType MsgType

@@ -14,6 +14,7 @@ namespace MidiShapeShifter.Mss.Generator
     ///     The GeneratorMappingManager is responsible for storing, retrieving and interpreting 
     ///     GeneratorMappingEntry objects.
     /// </summary>
+    [Serializable]
     public class GeneratorMappingManager : IGeneratorMappingManager
     {
 

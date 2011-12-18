@@ -7,6 +7,7 @@ using MidiShapeShifter.Midi;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
+    [Serializable]
     public class PitchBendMsgInfo : MidiMsgInfo
     {
         public override MssMsgType MsgType

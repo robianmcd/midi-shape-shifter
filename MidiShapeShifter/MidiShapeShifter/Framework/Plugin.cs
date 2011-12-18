@@ -114,6 +114,25 @@ namespace MidiShapeShifter.Framework
         }
 
         /// <summary>
+        /// Creates a default instance and reuses that for all threads.
+        /// </summary>
+        /// <param name="instance">A reference to the default instance or null.</param>
+        /// <returns>Returns the default instance.</returns>
+        protected override IVstPluginPersistence CreatePersistence(IVstPluginPersistence instance)
+        {
+            if (instance == null)
+            {
+                VstPluginPersistence pluginPersistence = new VstPluginPersistence();
+                pluginPersistence.Init(this);
+                return pluginPersistence;
+            }
+            else
+            {
+                return instance;
+            }
+        }
+
+        /// <summary>
         /// Implement this when you output midi events to the host.
         /// </summary>
         /// <param name="instance">A previous instance returned by this method. 

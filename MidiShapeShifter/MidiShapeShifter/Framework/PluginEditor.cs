@@ -18,6 +18,8 @@ namespace MidiShapeShifter.Framework
     public class PluginEditor : IVstPluginEditor
     {
         private Plugin _plugin;
+        protected bool pluginEditorIsOpen = false;
+        protected IntPtr pluginHandle;
 
         public PluginEditor(Plugin plugin)
         {
@@ -31,6 +33,7 @@ namespace MidiShapeShifter.Framework
 
         public void Close()
         {
+            this.pluginEditorIsOpen = false;
             _plugin.MssHub.ClosePluginEditor();
         }
 
@@ -48,7 +51,17 @@ namespace MidiShapeShifter.Framework
 
         public void Open(IntPtr hWnd)
         {
+            this.pluginEditorIsOpen = true;
+            this.pluginHandle = hWnd;
             _plugin.MssHub.OpenPluginEditor(hWnd);
+        }
+
+        public void OnDeserialized()
+        {
+            if (this.pluginEditorIsOpen)
+            {
+                Open(this.pluginHandle);
+            }
         }
 
         public void ProcessIdle()

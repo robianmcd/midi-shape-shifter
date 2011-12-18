@@ -94,9 +94,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSharpUtil\DeserializationBinderForPlugins.cs" />
     <Compile Include="CSharpUtil\ReturnStatus.cs" />
     <Compile Include="CSharpUtil\TwoWayDictionary.cs" />
     <Compile Include="Framework\VstParameters.cs" />
+    <Compile Include="Framework\VstPluginPersistence.cs" />
     <Compile Include="Framework\VstTimeInfoTransmitter.cs" />
     <Compile Include="Ioc\IocMgr.cs" />
     <Compile Include="Midi\MidiUtil.cs" />

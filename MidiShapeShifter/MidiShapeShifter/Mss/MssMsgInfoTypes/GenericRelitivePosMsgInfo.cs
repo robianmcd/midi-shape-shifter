@@ -5,6 +5,7 @@ using System.Text;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
+    [Serializable]
     public abstract class GenericRelitivePosMsgInfo : MssMsgInfo
     {
 

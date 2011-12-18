@@ -120,7 +120,10 @@ namespace MidiShapeShifter.Framework
 
             if (e.PropertyName == VstParameterManager.ActiveParameterPropertyName)
             {
-                paramMgr.ActiveParameter.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(VstParameter_Changed);
+                if (paramMgr.ActiveParameter != null)
+                {
+                    paramMgr.ActiveParameter.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(VstParameter_Changed);
+                }
             }
         }
 
@@ -167,9 +170,12 @@ namespace MidiShapeShifter.Framework
             VstParameterManager paramMgr;
             //Looks up the VstParameterManager associated with the changed parameter
             VstParameterManagerDict.TryGetRightByLeft(paramId, out paramMgr);
-            if (paramMgr.ActiveParameter.Value != value)
+            if (paramMgr.ActiveParameter != null)
             {
-                paramMgr.ActiveParameter.Value = (float)value;
+                if (paramMgr.ActiveParameter.Value != value)
+                {
+                    paramMgr.ActiveParameter.Value = (float)value;
+                }
             }
         }
 

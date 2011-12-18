@@ -21,12 +21,17 @@ namespace MidiShapeShifter.Mss
     ///     MssParameterInfo is mapped to a unique id for each parameter. MssParameters provides events that other 
     ///     classes can subscribe to if they want to be notified of changes to parameter information.
     /// </summary>
+    [Serializable]
     public class MssParameters
     {
         //These events will be thrown whenever a parameter is modified
+        [field: NonSerialized]
         public event ParameterNameChangedEventHandler ParameterNameChanged;
+        [field: NonSerialized]
         public event ParameterValueChangedEventHandler ParameterValueChanged;
+        [field: NonSerialized]
         public event ParameterMinValueChangedEventHandler ParameterMinValueChanged;
+        [field: NonSerialized]
         public event ParameterMaxValueChangedEventHandler ParameterMaxValueChanged;
 
         /// <summary>

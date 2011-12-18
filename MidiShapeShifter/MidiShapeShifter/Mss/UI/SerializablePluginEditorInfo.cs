@@ -7,6 +7,7 @@ namespace MidiShapeShifter.Mss.UI
 {
     public enum GraphableEntryType { Mapping, Generator }
 
+    [Serializable]
     public class SerializablePluginEditorInfo
     {
         public int activeGraphableEntryIndex = -1;

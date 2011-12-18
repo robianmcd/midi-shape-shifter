@@ -15,6 +15,7 @@ namespace MidiShapeShifter.Mss
     /// <summary>
     ///     Contains information about a curve's shape and how it is being entered.
     /// </summary>
+    [Serializable]
     public class CurveShapeInfo
     {
         public const EquationInputMode DEFAULT_EQUATION_INPUT_MODE = EquationInputMode.Text;

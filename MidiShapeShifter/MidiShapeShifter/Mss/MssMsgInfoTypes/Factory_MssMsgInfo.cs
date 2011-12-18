@@ -8,6 +8,7 @@ using MidiShapeShifter.Mss.Generator;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
+    [Serializable]
     public class Factory_MssMsgInfo : MidiShapeShifter.Mss.MssMsgInfoTypes.IFactory_MssMsgInfo
     {
         protected IGeneratorMappingManager genMappingMgr;

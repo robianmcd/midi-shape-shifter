@@ -29,6 +29,7 @@ namespace MidiShapeShifter.Mss.Generator
     /// Stores configuration info about a GeneratorMappingEntry. Most of this information is
     /// specified by the user with the GeneratorDlg
     /// </summary>
+    [Serializable]
     public class GenEntryConfigInfo : ICloneable
     {
         public const int NUM_GEN_PERIOD_TYPES = 2;

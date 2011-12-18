@@ -5,6 +5,7 @@ using System.Text;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
+    [Serializable]
     class ChanAftertouchMsgInfo : MidiMsgInfo
     {
         public override MssMsgType MsgType

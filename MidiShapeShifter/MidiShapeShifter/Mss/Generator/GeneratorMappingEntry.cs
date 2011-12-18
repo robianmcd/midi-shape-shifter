@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 using MidiShapeShifter.Mss.Mapping;
 
@@ -17,15 +18,20 @@ namespace MidiShapeShifter.Mss.Generator
     /// GeneratorMappingEntries will always map one of the relative bar position MSS message types
     /// to a generator mss message. 
     /// </summary>
+    [Serializable]
     public class GeneratorMappingEntry : MappingEntry, IGeneratorMappingEntry
     {
-
-        public GenEntryConfigInfo GenConfigInfo {get; set;}
+        protected GenEntryConfigInfo _genConfigInfo;
+        public GenEntryConfigInfo GenConfigInfo { get { return this._genConfigInfo; } 
+                                                  set { this._genConfigInfo = value; } }
         
         /// <summary>
         /// Stores information about previously generated events.
         /// </summary>
-        public GenEntryHistoryInfo GenHistoryInfo {get; set;}
+        [NonSerialized]
+        protected GenEntryHistoryInfo _genHistoryInfo;
+        public GenEntryHistoryInfo GenHistoryInfo { get { return this._genHistoryInfo; } 
+                                                    set { this._genHistoryInfo = value; } }
 
         public GeneratorMappingEntry()
         {
@@ -33,11 +39,18 @@ namespace MidiShapeShifter.Mss.Generator
         }
 
         public void InitAllMembers(IMssMsgRange inMsgRange, IMssMsgRange outMsgRange,
-                            bool overrideDuplicates, CurveShapeInfo curveShapeInfo, GenEntryConfigInfo generatorInfo)
+                            bool overrideDuplicates, CurveShapeInfo curveShapeInfo, 
+                            GenEntryConfigInfo generatorConfigInfo)
         {
-            this.GenConfigInfo = generatorInfo;
+            this.GenConfigInfo = generatorConfigInfo;
 
             InitAllMembers(inMsgRange, outMsgRange, overrideDuplicates, curveShapeInfo);
+        }
+
+        [OnDeserializing]
+        protected void OnDeserializing(StreamingContext context)
+        {
+            this.GenHistoryInfo = new GenEntryHistoryInfo();
         }
 
         /// <summary>

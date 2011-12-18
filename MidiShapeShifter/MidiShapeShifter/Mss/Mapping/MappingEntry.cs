@@ -15,19 +15,24 @@ namespace MidiShapeShifter.Mss.Mapping
     ///     2. Information about how to modify incomeing MSS messages. OnMssMsgRange is used to map the incoming MSS 
     ///         message's type, data1, and data2. The equation is used to map the incoming MSS message's data3.
     /// </summary>
+    [Serializable]
     public class MappingEntry : IMappingEntry
     {
         /// <summary>
         ///     Specifies which MSS messages will be accepted for input as well as additional information about the 
         ///     input type
         /// </summary>
-        public IMssMsgRange InMssMsgRange { get; set; }
+        protected IMssMsgRange _inMssMsgRange;
+        public IMssMsgRange InMssMsgRange { get { return this._inMssMsgRange; } 
+                                            set { this._inMssMsgRange = value; } }
 
         /// <summary>
         ///     Specifies the range of messages that can be output as well as additional information about the output 
         ///     type.
         /// </summary>
-        public IMssMsgRange OutMssMsgRange { get; set; }
+        protected IMssMsgRange _outMssMsgRange;
+        public IMssMsgRange OutMssMsgRange { get { return this._outMssMsgRange; }
+                                             set { this._outMssMsgRange = value; } }
 
         /// <summary>
         ///     If there are multiple mapping entries with overlapping input ranges then a single mss message can
@@ -40,9 +45,9 @@ namespace MidiShapeShifter.Mss.Mapping
         /// <summary>
         ///     Contains information about the curve shape for this mapping and how it is being entered.
         /// </summary>
-        public CurveShapeInfo CurveShapeInfo { get; set; }
-        //public CurveShapeInfo CurveShapeInfo;
-
+        protected CurveShapeInfo _curveShapeInfo;        
+        public CurveShapeInfo CurveShapeInfo { get { return this._curveShapeInfo; }
+                                               set { this._curveShapeInfo = value; } }
 
         public MappingEntry() 
         {

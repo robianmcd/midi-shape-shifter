@@ -8,6 +8,7 @@ namespace MidiShapeShifter.Mss
     /// <summary>
     ///     A representation of a parameter in Midi Shape Shifter.
     /// </summary>
+    [Serializable]
     public class MssParameterInfo
     {
         public string Name;

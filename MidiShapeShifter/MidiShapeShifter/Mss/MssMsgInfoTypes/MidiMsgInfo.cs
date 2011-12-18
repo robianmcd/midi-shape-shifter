@@ -7,6 +7,7 @@ using MidiShapeShifter.Midi;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
+    [Serializable]
     public abstract class MidiMsgInfo : MssMsgInfo
     {
         public override double MaxData1Value
