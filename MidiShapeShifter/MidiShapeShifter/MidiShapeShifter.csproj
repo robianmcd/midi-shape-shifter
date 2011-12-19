@@ -286,7 +286,8 @@
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(ProjectDir)bin\vst-dist\"
 copy "$(TargetDir)\Jacobi.Vst.Interop.dll" "$(ProjectDir)bin\vst-dist\$(TargetFileName)"
-copy "$(TargetPath)" "$(ProjectDir)bin\vst-dist\$(TargetName).net.vstdll"</PostBuildEvent>
+copy "$(TargetPath)" "$(ProjectDir)bin\vst-dist\$(TargetName).net.vstdll"
+copy "$(TargetDir)\MidiShapeShifter.pdb"  "$(ProjectDir)bin\vst-dist\MidiShapeShifter.pdb"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
