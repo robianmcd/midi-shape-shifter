@@ -342,13 +342,13 @@
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{862CBCCF-7E1B-4AED-BD73-F0B6D5DF027F}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{B8C4CE18-851F-4C89-A776-9E789FF3B675}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Jacobi.Vst.Core.dll</td><td>{CDFFDC9A-AC56-4ED1-BD34-DE7C0ADD00EB}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>jacobi.vst.core.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Jacobi.Vst.Framework.dll</td><td>{C224030D-2A9C-4C07-B7BD-181010956C46}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>jacobi.vst.framework.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>LBIndustrialCtrls.dll</td><td>{4281C9FF-653C-478B-9648-6D5299769FE6}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>lbindustrialctrls.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>MidiShapeShifter.dll</td><td>{31BDD6A5-A4BD-4D0B-86B8-5091F3AD4446}</td><td>INSTALLDIR</td><td>2</td><td/><td>midishapeshifter.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>NCalc.dll</td><td>{407B3E02-35EA-43F2-8AD2-99D52BD95B83}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>ncalc.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Ninject.dll</td><td>{E83EF695-2D07-4805-9A85-761988413357}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>ninject.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ZedGraph.dll</td><td>{8B240272-4554-41FC-9655-CFC86AA49205}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>zedgraph.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Jacobi.Vst.Core.dll</td><td>{C3D4A365-E9EB-4BC5-9F12-04A5AE30C549}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>jacobi.vst.core.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Jacobi.Vst.Framework.dll</td><td>{6C91B4D9-B1E3-452C-99EC-3E35503DDFE2}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>jacobi.vst.framework.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>LBIndustrialCtrls.dll</td><td>{F7FB6295-A7D5-4CE9-BCB0-C5D1072483B4}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>lbindustrialctrls.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MidiShapeShifter.dll</td><td>{727B0D19-E28F-4AF7-AAC9-80A841B4BD94}</td><td>INSTALLDIR</td><td>2</td><td/><td>midishapeshifter.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>NCalc.dll</td><td>{42502704-3485-4F26-A7E0-13D93849D6D9}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>ncalc.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Ninject.dll</td><td>{A66B98F8-A217-4BD7-8AE4-E1E53569003B}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>ninject.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ZedGraph.dll</td><td>{36C43458-32A7-4A73-8A5F-CDD977530C26}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>zedgraph.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1017,9 +1017,9 @@
 		<row><td>SetupCompleteError</td><td>Finish</td><td>DoAction</td><td>CleanUp</td><td>ISSCRIPTRUNNING="1"</td><td>1</td></row>
 		<row><td>SetupCompleteError</td><td>Finish</td><td>DoAction</td><td>ShowMsiLog</td><td>MsiLogFileLocation And (ISSHOWMSILOG="1")</td><td>3</td></row>
 		<row><td>SetupCompleteError</td><td>Finish</td><td>EndDialog</td><td>Exit</td><td>1</td><td>2</td></row>
-		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>CleanUp</td><td>ISSCRIPTRUNNING="1"</td><td>1</td></row>
-		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>ShowMsiLog</td><td>MsiLogFileLocation And (ISSHOWMSILOG="1") And NOT ISENABLEDWUSFINISHDIALOG</td><td>6</td></row>
-		<row><td>SetupCompleteSuccess</td><td>OK</td><td>EndDialog</td><td>Exit</td><td>1</td><td>2</td></row>
+		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>CleanUp</td><td>ISSCRIPTRUNNING="1"</td><td>3</td></row>
+		<row><td>SetupCompleteSuccess</td><td>OK</td><td>DoAction</td><td>ShowMsiLog</td><td>MsiLogFileLocation And (ISSHOWMSILOG="1") And NOT ISENABLEDWUSFINISHDIALOG</td><td>8</td></row>
+		<row><td>SetupCompleteSuccess</td><td>OK</td><td>EndDialog</td><td>Exit</td><td>1</td><td>4</td></row>
 		<row><td>SetupError</td><td>A</td><td>EndDialog</td><td>ErrorAbort</td><td>1</td><td>0</td></row>
 		<row><td>SetupError</td><td>C</td><td>EndDialog</td><td>ErrorCancel</td><td>1</td><td>0</td></row>
 		<row><td>SetupError</td><td>I</td><td>EndDialog</td><td>ErrorIgnore</td><td>1</td><td>0</td></row>
@@ -1144,11 +1144,12 @@
 		<row><td>DATABASEDIR</td><td>ISYourDataBaseDir</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DIRPROPERTY1</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DIRPROPERTY2</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
+		<row><td>DIRPROPERTY3</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DesktopFolder</td><td>TARGETDIR</td><td>.:Desktop</td><td/><td>3</td><td/></row>
 		<row><td>FavoritesFolder</td><td>TARGETDIR</td><td>.:FAVORI~1|Favorites</td><td/><td>0</td><td/></row>
 		<row><td>FontsFolder</td><td>TARGETDIR</td><td>.:Fonts</td><td/><td>0</td><td/></row>
 		<row><td>GlobalAssemblyCache</td><td>TARGETDIR</td><td>.:Global~1|GlobalAssemblyCache</td><td/><td>0</td><td/></row>
-		<row><td>INSTALLDIR</td><td>VSTPLUGINS</td><td>.</td><td/><td>0</td><td/></row>
+		<row><td>INSTALLDIR</td><td>VSTPLUGINS1</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>ISCommonFilesFolder</td><td>CommonFilesFolder</td><td>Instal~1|InstallShield</td><td/><td>0</td><td/></row>
 		<row><td>ISMyCompanyDir</td><td>ProgramFilesFolder</td><td>MYCOMP~1|My Company Name</td><td/><td>0</td><td/></row>
 		<row><td>ISMyProductDir</td><td>ISMyCompanyDir</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
@@ -1174,6 +1175,7 @@
 		<row><td>TemplateFolder</td><td>TARGETDIR</td><td>.:ShellNew</td><td/><td>0</td><td/></row>
 		<row><td>USERPROFILE</td><td>TARGETDIR</td><td>.:USERPR~1|UserProfile</td><td/><td>0</td><td/></row>
 		<row><td>VSTPLUGINS</td><td>DIRPROPERTY2</td><td>VSTPLU~1|vstplugins</td><td/><td>0</td><td/></row>
+		<row><td>VSTPLUGINS1</td><td>DIRPROPERTY3</td><td>VSTPLU~1|vstplugins</td><td/><td>0</td><td/></row>
 		<row><td>WindowsFolder</td><td>TARGETDIR</td><td>.:Windows</td><td/><td>0</td><td/></row>
 		<row><td>WindowsVolume</td><td>TARGETDIR</td><td>.:WinRoot</td><td/><td>0</td><td/></row>
 	</table>
@@ -1890,14 +1892,14 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
-		<row><td>jacobi.vst.core.dll</td><td>Jacobi.Vst.Core.dll</td><td>JACOBI~1.DLL|Jacobi.Vst.Core.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Rob\Dropbox\Repos\midi-shape-shifter\MidiShapeShifter\MidiShapeShifter\bin\Release\Jacobi.Vst.Core.dll</td><td>1</td><td/></row>
-		<row><td>jacobi.vst.framework.dll</td><td>Jacobi.Vst.Framework.dll</td><td>JACOBI~1.DLL|Jacobi.Vst.Framework.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Rob\Dropbox\Repos\midi-shape-shifter\MidiShapeShifter\MidiShapeShifter\bin\Release\Jacobi.Vst.Framework.dll</td><td>1</td><td/></row>
-		<row><td>lbindustrialctrls.dll</td><td>LBIndustrialCtrls.dll</td><td>LBINDU~1.DLL|LBIndustrialCtrls.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Rob\Dropbox\Repos\midi-shape-shifter\MidiShapeShifter\MidiShapeShifter\bin\Release\LBIndustrialCtrls.dll</td><td>1</td><td/></row>
-		<row><td>midishapeshifter.dll</td><td>MidiShapeShifter.dll</td><td>MIDISH~1.DLL|MidiShapeShifter.dll</td><td>0</td><td/><td/><td>0</td><td>1</td><td>C:\Rob\Dropbox\Repos\midi-shape-shifter\MidiShapeShifter\MidiShapeShifter\bin\vst-dist\MidiShapeShifter.dll</td><td>1</td><td/></row>
-		<row><td>midishapeshifter.net.vstdll</td><td>ISX_DEFAULTCOMPONENT2</td><td>MIDISH~1.VST|MidiShapeShifter.net.vstdll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Rob\Dropbox\Repos\midi-shape-shifter\MidiShapeShifter\MidiShapeShifter\bin\vst-dist\MidiShapeShifter.net.vstdll</td><td>1</td><td/></row>
-		<row><td>ncalc.dll</td><td>NCalc.dll</td><td>NCalc.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Rob\Dropbox\Repos\midi-shape-shifter\MidiShapeShifter\MidiShapeShifter\bin\Release\NCalc.dll</td><td>1</td><td/></row>
-		<row><td>ninject.dll</td><td>Ninject.dll</td><td>Ninject.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Rob\Dropbox\Repos\midi-shape-shifter\MidiShapeShifter\MidiShapeShifter\bin\Release\Ninject.dll</td><td>1</td><td/></row>
-		<row><td>zedgraph.dll</td><td>ZedGraph.dll</td><td>ZedGraph.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Rob\Dropbox\Repos\midi-shape-shifter\MidiShapeShifter\MidiShapeShifter\bin\Release\ZedGraph.dll</td><td>1</td><td/></row>
+		<row><td>jacobi.vst.core.dll</td><td>Jacobi.Vst.Core.dll</td><td>JACOBI~1.DLL|Jacobi.Vst.Core.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\Jacobi.Vst.Core.dll</td><td>1</td><td/></row>
+		<row><td>jacobi.vst.framework.dll</td><td>Jacobi.Vst.Framework.dll</td><td>JACOBI~1.DLL|Jacobi.Vst.Framework.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\Jacobi.Vst.Framework.dll</td><td>1</td><td/></row>
+		<row><td>lbindustrialctrls.dll</td><td>LBIndustrialCtrls.dll</td><td>LBINDU~1.DLL|LBIndustrialCtrls.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\LBIndustrialCtrls.dll</td><td>1</td><td/></row>
+		<row><td>midishapeshifter.dll</td><td>MidiShapeShifter.dll</td><td>MIDISH~1.DLL|MidiShapeShifter.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\MidiShapeShifter\bin\vst-dist\MidiShapeShifter.dll</td><td>1</td><td/></row>
+		<row><td>midishapeshifter.net.vstdll</td><td>ISX_DEFAULTCOMPONENT2</td><td>MIDISH~1.VST|MidiShapeShifter.net.vstdll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\MidiShapeShifter\bin\vst-dist\MidiShapeShifter.net.vstdll</td><td>1</td><td/></row>
+		<row><td>ncalc.dll</td><td>NCalc.dll</td><td>NCalc.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\NCalc.dll</td><td>1</td><td/></row>
+		<row><td>ninject.dll</td><td>Ninject.dll</td><td>Ninject.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\Ninject.dll</td><td>1</td><td/></row>
+		<row><td>zedgraph.dll</td><td>ZedGraph.dll</td><td>ZedGraph.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\ZedGraph.dll</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -1913,6 +1915,8 @@
 	<table name="ISAssistantTag">
 		<col key="yes" def="s72">Tag</col>
 		<col def="S255">Data</col>
+		<row><td>PROJECT_ASSISTANT_DEFAULT_FEATURE</td><td>AlwaysInstall</td></row>
+		<row><td>PROJECT_ASSISTANT_FEATURES</td><td>NonSelectable</td></row>
 	</table>
 
 	<table name="ISBillBoard">
@@ -2154,13 +2158,13 @@
 		<col def="S0">Miscellaneous</col>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_1D8EF6FD_478F_47E9_BF53_DE4AE7498C43_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_FFAB5719_76BB_461A_B668_ED3812C5DE98_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Jacobi.Vst.Core.dll</td><td/><td/><td>_A8FA13A2_0EEF_4A8B_9E8C_BF2C68FCF8FC_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Jacobi.Vst.Framework.dll</td><td/><td/><td>_8811D034_18CE_436B_89FA_35518E48C52D_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>LBIndustrialCtrls.dll</td><td/><td/><td>_29ED57E2_12C2_44B0_A0D4_DBDEF62E7E32_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>MidiShapeShifter.dll</td><td/><td/><td>_4E173D0D_EEA4_4453_92CA_BD093D200F09_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>NCalc.dll</td><td/><td/><td>_CAC57896_54AB_4814_B77C_0BC0D27F36F5_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Ninject.dll</td><td/><td/><td>_DCF26F33_BF57_4730_9DC7_4FB97F4FC45C_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ZedGraph.dll</td><td/><td/><td>_A8810E5F_B036_44FA_AE79_BBDB03A8A610_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Jacobi.Vst.Core.dll</td><td/><td/><td>_67A48FC2_FF76_4DB2_B8D9_A275DB0AFB70_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Jacobi.Vst.Framework.dll</td><td/><td/><td>_EBF1EBDA_B1D1_4571_92C5_67FD01C058C6_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>LBIndustrialCtrls.dll</td><td/><td/><td>_C347D0CC_44D5_4230_9098_1759AA1DEAF3_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MidiShapeShifter.dll</td><td/><td/><td>_47759697_A8FA_4C7C_9AEE_11B6197D60ED_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>NCalc.dll</td><td/><td/><td>_01285225_9A01_44F9_8EEF_289570FD547E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Ninject.dll</td><td/><td/><td>_93D7943C_1B7A_44CB_A9F3_8D0737A32F83_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ZedGraph.dll</td><td/><td/><td>_53877953_91B4_4594_8843_9EBCCAF40130_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -2232,7 +2236,13 @@
 		<col def="I2">Exclude</col>
 		<row><td>JACOBI.VST.CORE</td><td>1</td></row>
 		<row><td>JACOBI.VST.CORE.DLL</td><td>1</td></row>
+		<row><td>JACOBI.VST.FRAMEWORK.DLL</td><td>1</td></row>
+		<row><td>JACOBI.VST.INTEROP.DLL</td><td>1</td></row>
+		<row><td>LBINDUSTRIALCTRLS.DLL</td><td>1</td></row>
+		<row><td>NCALC.DLL</td><td>1</td></row>
+		<row><td>NINJECT.DLL</td><td>1</td></row>
 		<row><td>VISUAL C++ 10.0 CRT (IA64)</td><td>1</td></row>
+		<row><td>ZEDGRAPH.DLL</td><td>1</td></row>
 	</table>
 
 	<table name="ISDisk1File">
@@ -2789,7 +2799,7 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>1033</td><td>SpeqSoft</td><td>0</td><td/><td>-1776308907</td></row>
+		<row><td>COMPANY_NAME</td><td>1033</td><td>SpeqSoft</td><td>0</td><td/><td>-1642101952</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>-1776295216</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-1776295216</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40CLIENT</td><td>1033</td><td>Microsoft .NET Framework 4.0 Client Package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>-1776307402</td></row>
@@ -3891,9 +3901,9 @@
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>-1776295216</td></row>
 		<row><td>ID_STRING1</td><td>1033</td><td/><td>0</td><td/><td>-1776293168</td></row>
 		<row><td>ID_STRING2</td><td>1033</td><td>Install Midi Shape Shifter</td><td>0</td><td/><td>-1776337579</td></row>
-		<row><td>ID_STRING3</td><td>1033</td><td>SpeqSoft</td><td>0</td><td/><td>-1776317131</td></row>
+		<row><td>ID_STRING3</td><td>1033</td><td>SpeqSoft</td><td>0</td><td/><td>-1642101952</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td/><td>0</td><td/><td>-1776292555</td></row>
-		<row><td>ID_STRING5</td><td>1033</td><td>http://code.google.com/p/midi-shape-shifter/</td><td>0</td><td/><td>-1776298667</td></row>
+		<row><td>ID_STRING5</td><td>1033</td><td>http://www.SpeqSoft.com</td><td>0</td><td/><td>-1642101952</td></row>
 		<row><td>IIDS_UITEXT_FeatureUninstalled</td><td>1033</td><td>This feature will remain uninstalled.</td><td>0</td><td/><td>-1776295216</td></row>
 	</table>
 
@@ -4439,7 +4449,7 @@ QwBEAF8AUgBPAE0AAQBFAHgAcAByAGUAcwBzAA==
 		<row><td>ARPURLINFOABOUT</td><td>##ID_STRING5##</td><td/></row>
 		<row><td>AgreeToLicense</td><td>No</td><td/></row>
 		<row><td>ApplicationUsers</td><td>AllUsers</td><td/></row>
-		<row><td>DIRPROPERTY2</td><td>c:\</td><td/></row>
+		<row><td>DIRPROPERTY3</td><td>c:\</td><td/></row>
 		<row><td>DWUSINTERVAL</td><td>30</td><td/></row>
 		<row><td>DWUSLINK</td><td>CEEB6798A92CF7E8BEAC87DF0ECB978FBE4CD78F490C97E8CEBBE09FE94B70C8CE8C30A8F9AC</td><td/></row>
 		<row><td>DefaultUIFont</td><td>ExpressDefault</td><td/></row>
