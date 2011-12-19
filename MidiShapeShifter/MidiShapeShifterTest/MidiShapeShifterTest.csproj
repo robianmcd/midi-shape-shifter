@@ -81,10 +81,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\MidiShapeShifter\bin\Debug\LBIndustrialCtrls.dll</HintPath>
     </Reference>
-    <Reference Include="MidiShapeShifterForTests, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\MidiShapeShifter\bin\Debug\MidiShapeShifterForTests.dll</HintPath>
-    </Reference>
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Moq.dll</HintPath>
@@ -144,6 +140,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MidiShapeShifter\MidiShapeShifter.csproj">
+      <Project>{D19470F9-7D1E-4385-AD34-C7D826649F89}</Project>
+      <Name>MidiShapeShifter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
