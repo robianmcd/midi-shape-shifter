@@ -21,7 +21,8 @@ namespace MidiShapeShifter.Framework
         protected const string DEFAULT_PARAMETER_CATEGORY_NAME = "Parameter";
 
         protected PluginPrograms pluginPrograms;
-        protected MssParameters mssParameters;
+        private Func<MssParameters> getMssParameters;
+        protected MssParameters mssParameters { get { return this.getMssParameters(); } }
 
         //Used to map MSS parameters to their associated VST parameters.
         public TwoWayDictionary<MssParameterID, VstParameterManager> VstParameterManagerDict = new TwoWayDictionary<MssParameterID, VstParameterManager>();
@@ -30,18 +31,26 @@ namespace MidiShapeShifter.Framework
         {
         }
 
-        public void Init(MssParameters mssParameters, PluginPrograms pluginPrograms)
+        public void Init(Func<MssParameters> getMssParameters, PluginPrograms pluginPrograms)
         {
-            this.mssParameters = mssParameters;
+            this.getMssParameters = getMssParameters;
             this.pluginPrograms = pluginPrograms;
 
             InitializeVstParams();
-            
+        }
+
+        protected void AttachHandlersToMssParameterEvents()
+        {
             //Listens to changes made to parameters from the MSS namespace (E.G. the GUI)
             this.mssParameters.ParameterValueChanged += new ParameterValueChangedEventHandler(MssParameters_ValueChanged);
             this.mssParameters.ParameterNameChanged += new ParameterNameChangedEventHandler(MssParameters_NameChanged);
             this.mssParameters.ParameterMinValueChanged += new ParameterMinValueChangedEventHandler(MssParameters_MinValueChanged);
             this.mssParameters.ParameterMaxValueChanged += new ParameterMaxValueChangedEventHandler(MssParameters_MaxValueChanged);
+        }
+
+        public void OnMssParametersInstanceReplaced()
+        {
+            AttachHandlersToMssParameterEvents();
         }
 
         /// <summary>

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Drawing;
+using System.Collections.Generic;
+
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Common;
+
+using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.UI;
-using System.Collections.Generic;
 
 namespace MidiShapeShifter.Framework
 {
@@ -17,24 +20,31 @@ namespace MidiShapeShifter.Framework
     /// </remarks>
     public class PluginEditor : IVstPluginEditor
     {
-        private Plugin _plugin;
+        private Func<MssComponentHub> getMssHub;
+        protected MssComponentHub MssHub { get { return this.getMssHub(); } }
+
         protected bool pluginEditorIsOpen = false;
         protected IntPtr pluginHandle;
 
-        public PluginEditor(Plugin plugin)
+        public PluginEditor()
         {
-            _plugin = plugin;
+
+        }
+
+        public void Init(Func<MssComponentHub> getMssHub)
+        {
+            this.getMssHub = getMssHub;
         }
 
         public Rectangle Bounds
         {
-            get { return _plugin.MssHub.PluginEditorView.Bounds; }
+            get { return this.MssHub.PluginEditorView.Bounds; }
         }
 
         public void Close()
         {
             this.pluginEditorIsOpen = false;
-            _plugin.MssHub.ClosePluginEditor();
+            this.MssHub.ClosePluginEditor();
         }
 
         public void KeyDown(byte ascii, VstVirtualKey virtualKey, VstModifierKeys modifers)
@@ -53,7 +63,7 @@ namespace MidiShapeShifter.Framework
         {
             this.pluginEditorIsOpen = true;
             this.pluginHandle = hWnd;
-            _plugin.MssHub.OpenPluginEditor(hWnd);
+            this.MssHub.OpenPluginEditor(hWnd);
         }
 
         public void OnDeserialized()

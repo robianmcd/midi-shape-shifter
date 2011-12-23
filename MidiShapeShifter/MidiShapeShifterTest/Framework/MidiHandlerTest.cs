@@ -216,7 +216,9 @@ namespace MidiShapeShifterTest.Framework
         protected MidiHandlerProtectedWrapper Factory_MidiHandler_Basic()
         {
             MidiHandlerProtectedWrapper midiHandler = new MidiHandlerProtectedWrapper();
-            midiHandler.Init(this.dryMssEventInputPort, this.wetMssEventOutputPort, this.hostInfoOutputPort);
+            midiHandler.Init(() => this.dryMssEventInputPort, 
+                             () => this.wetMssEventOutputPort, 
+                             () => this.hostInfoOutputPort);
 
             var vstHostMock = new Mock<IVstHost>();
             midiHandler.InitVstHost(vstHostMock.Object);

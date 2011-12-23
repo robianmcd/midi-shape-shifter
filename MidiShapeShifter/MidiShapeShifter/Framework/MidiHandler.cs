@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 using Jacobi.Vst.Core;
@@ -22,13 +23,29 @@ namespace MidiShapeShifter.Framework
         //Temporarily stores VstEvents that are waiting to be sent to the host.
         protected VstEventCollection outEvents = new VstEventCollection();
 
-        //Allows this class to send MssEvents to the DryMssEventRelay
-        protected IDryMssEventInputPort dryMssEventInputPort;
-        //Allows this class to receive MssEvents from the WetMssEventRelay
-        protected IWetMssEventOutputPort wetMssEventOutputPort;
-        //Allows this class to receive host information from the HostInfoRelay
-        protected IHostInfoOutputPort hostInfoOutputPort;
 
+        //Allows this class to send MssEvents to the DryMssEventRelay
+        private Func<IDryMssEventInputPort> getDryMssEventInputPort;
+        protected IDryMssEventInputPort dryMssEventInputPort 
+        { 
+            get { return this.getDryMssEventInputPort(); } 
+        }
+
+        //Allows this class to receive MssEvents from the WetMssEventRelay
+        private Func<IWetMssEventOutputPort> getWetMssEventOutputPort;
+        protected IWetMssEventOutputPort wetMssEventOutputPort 
+        { 
+            get { return this.getWetMssEventOutputPort(); } 
+        }
+
+        //Allows this class to receive host information from the HostInfoRelay
+        private Func<IHostInfoOutputPort> getHostInfoOutputPort;
+        protected IHostInfoOutputPort hostInfoOutputPort 
+        {
+            get { return this.getHostInfoOutputPort(); } 
+        }
+
+        
         //The sample time at the start of the current processing cycle.
         protected long SampleTimeAtStartOfProcessingCycle = 0;
 
@@ -38,16 +55,27 @@ namespace MidiShapeShifter.Framework
         {
         }
 
-        public void Init(IDryMssEventInputPort dryMssEventInputPort, IWetMssEventOutputPort wetMssEventOutputPort, IHostInfoOutputPort hostInfoOutputPort)
+        public void Init(Func<IDryMssEventInputPort> getDryMssEventInputPort, 
+                         Func<IWetMssEventOutputPort> getWetMssEventOutputPort, 
+                         Func<IHostInfoOutputPort> getHostInfoOutputPort)
         {
             //Connects up this class to the required relays.
+            this.getDryMssEventInputPort = getDryMssEventInputPort;
+            this.getWetMssEventOutputPort = getWetMssEventOutputPort;
+            this.getHostInfoOutputPort = getHostInfoOutputPort;
 
-            this.dryMssEventInputPort = dryMssEventInputPort;
+            AttachHandlersToRelayEvents();
+        }
 
-            this.wetMssEventOutputPort = wetMssEventOutputPort;
-            this.wetMssEventOutputPort.SendingWetMssEvents += new SendingWetMssEventsEventHandler(IWetMssEventOutputPort_SendingWetMssEvents);
+        protected void AttachHandlersToRelayEvents()
+        {
+            this.wetMssEventOutputPort.SendingWetMssEvents += 
+                new SendingWetMssEventsEventHandler(IWetMssEventOutputPort_SendingWetMssEvents);            
+        }
 
-            this.hostInfoOutputPort = hostInfoOutputPort;
+        public void OnRelayInstancesReplaced()
+        {
+            AttachHandlersToRelayEvents();
         }
 
         //This cannot be done during Init() because the IVstHost is still null

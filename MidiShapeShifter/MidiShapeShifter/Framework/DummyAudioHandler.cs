@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
@@ -25,7 +26,8 @@ namespace MidiShapeShifter.Framework
 
         //Receives information about the audio processing cycle and sends it out to which ever classes need to know 
         //about it.
-        protected IHostInfoInputPort hostInfoInputPort;
+        private Func<IHostInfoInputPort> getHostInfoInputPort;
+        protected IHostInfoInputPort hostInfoInputPort { get { return this.getHostInfoInputPort(); } }
 
         //Interprets a VstTimeInfo object and sends the relavent information out to the HostInfoRelay.
         protected VstTimeInfoTransmitter timeInfoTransmitter;
@@ -41,10 +43,10 @@ namespace MidiShapeShifter.Framework
             timeInfoTransmitter = new VstTimeInfoTransmitter();
         }
 
-        public void Init(IHostInfoInputPort hostInfoInputPort)
+        public void Init(Func<IHostInfoInputPort>getHostInfoInputPort)
         {
-            timeInfoTransmitter.Init(hostInfoInputPort);
-            this.hostInfoInputPort = hostInfoInputPort;
+            timeInfoTransmitter.Init(getHostInfoInputPort);
+            this.getHostInfoInputPort = getHostInfoInputPort;
         }
 
         //This cannot be done during Init() because the IVstHost is still null

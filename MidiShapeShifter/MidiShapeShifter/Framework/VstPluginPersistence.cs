@@ -14,18 +14,22 @@ using MidiShapeShifter.Mss;
 
 namespace MidiShapeShifter.Framework
 {
-    class VstPluginPersistence : IVstPluginPersistence
+
+    class VstPluginPersistence<SerializableRootType> : IVstPluginPersistence
     {
-        protected Plugin plugin;
+        public delegate void PluginDeserializedEventHandler(SerializableRootType deserializedRoot);
+        public event PluginDeserializedEventHandler PluginDeserialized;
+
+        protected Func<SerializableRootType> getSerializableRootFromPlugin;
 
         public VstPluginPersistence()
         { 
             
         }
 
-        public void Init(Plugin plugin)
+        public void Init(Func<SerializableRootType> getSerializableRootFromPlugin)
         {
-            this.plugin = plugin;
+            this.getSerializableRootFromPlugin = getSerializableRootFromPlugin;
         }
 
         public bool CanLoadChunk(VstPatchChunkInfo chunkInfo)
@@ -37,14 +41,18 @@ namespace MidiShapeShifter.Framework
         {
             BinaryFormatter formatter = new BinaryFormatter();
             formatter.Binder = new DeserializationBinderForPlugins();
-            this.plugin.MssHub = (MssComponentHub)formatter.Deserialize(stream);
-            this.plugin.PluginEditor.OnDeserialized();
+            SerializableRootType deserializedRoot = (SerializableRootType)formatter.Deserialize(stream);
+
+            if (PluginDeserialized != null)
+            {
+                PluginDeserialized(deserializedRoot);
+            }
         }
 
         public void WritePrograms(Stream stream, VstProgramCollection programs)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(stream, this.plugin.MssHub);
+            formatter.Serialize(stream, getSerializableRootFromPlugin());
         }
     }
 }

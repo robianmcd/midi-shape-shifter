@@ -40,7 +40,7 @@ namespace MidiShapeShifter.Framework
             this.MssHub.Init();
 
             this.vstParameters = new VstParameters();
-            this.vstParameters.Init(this.MssHub.MssParameters, this.PluginPrograms);
+            this.vstParameters.Init(() => this.MssHub.MssParameters, this.PluginPrograms);
 
             this.Opened += new System.EventHandler(Plugin_Opened);
         }
@@ -88,7 +88,7 @@ namespace MidiShapeShifter.Framework
             if (instance == null)
             {
                 DummyAudioHandler newDummpAudioHandler = new DummyAudioHandler();
-                newDummpAudioHandler.Init(this.MssHub.HostInfoInputPort);
+                newDummpAudioHandler.Init(() => this.MssHub.HostInfoInputPort);
                 return newDummpAudioHandler;
             }
 
@@ -106,7 +106,9 @@ namespace MidiShapeShifter.Framework
             if (instance == null)
             {
                 MidiHandler newMidiHandler = new MidiHandler();
-                newMidiHandler.Init(this.MssHub.DryMssEventInputPort, this.MssHub.WetMssEventOutputPort, this.MssHub.HostInfoOutputPort);
+                newMidiHandler.Init(() => this.MssHub.DryMssEventInputPort, 
+                                    () => this.MssHub.WetMssEventOutputPort, 
+                                    () => this.MssHub.HostInfoOutputPort);
                 return newMidiHandler;
             }
 
@@ -122,8 +124,12 @@ namespace MidiShapeShifter.Framework
         {
             if (instance == null)
             {
-                VstPluginPersistence pluginPersistence = new VstPluginPersistence();
-                pluginPersistence.Init(this);
+                var pluginPersistence = new VstPluginPersistence<MssComponentHub>();
+                pluginPersistence.Init(() => this.MssHub);
+                pluginPersistence.PluginDeserialized += 
+                    new VstPluginPersistence<MssComponentHub>.PluginDeserializedEventHandler(
+                        VstPluginPersistence_PluginDeserialized);
+
                 return pluginPersistence;
             }
             else
@@ -154,7 +160,9 @@ namespace MidiShapeShifter.Framework
         {
             if (instance == null)
             {
-                return new PluginEditor(this);
+                PluginEditor pluginEditor = new PluginEditor();
+                pluginEditor.Init(() => this.MssHub);
+                return pluginEditor;
             }
 
             return base.CreateEditor(instance);
@@ -176,7 +184,6 @@ namespace MidiShapeShifter.Framework
             return base.CreatePrograms(instance);
         }
 
-
         private void Plugin_Opened(object sender, System.EventArgs e)
         {
             //Anything associated with Plugin.Host must be set up in this even handler and not in the constructor 
@@ -185,6 +192,14 @@ namespace MidiShapeShifter.Framework
             this.MidiHandler.InitVstHost(this.Host);
             this.AudioHandler.InitVstHost(this.Host);
             this.vstParameters.InitHostAutomation(this.Host);
+        }
+
+        private void VstPluginPersistence_PluginDeserialized(MssComponentHub deserializedMssHub)
+        {
+            this.MssHub = deserializedMssHub;
+
+            this.MidiHandler.OnRelayInstancesReplaced();
+            this.vstParameters.OnMssParametersInstanceReplaced();
         }
     }
 }

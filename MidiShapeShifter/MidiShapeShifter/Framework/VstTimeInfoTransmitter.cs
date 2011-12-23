@@ -16,11 +16,14 @@ namespace MidiShapeShifter.Framework
                                                                        VstTimeInfoFlags.TempoValid |
                                                                        VstTimeInfoFlags.TimeSignatureValid;
 
-        protected IHostInfoInputPort hostInfoInputPort;
+        //Receives information about the audio processing cycle and sends it out to which ever classes need to know 
+        //about it.
+        private Func<IHostInfoInputPort> getHostInfoInputPort;
+        protected IHostInfoInputPort hostInfoInputPort { get { return this.getHostInfoInputPort(); } }
 
-        public void Init(IHostInfoInputPort hostInfoInputPort)
+        public void Init(Func<IHostInfoInputPort> getHostInfoInputPort)
         {
-            this.hostInfoInputPort = hostInfoInputPort;
+            this.getHostInfoInputPort = getHostInfoInputPort;
         }
 
         public void TransmitTimeInfoToRelay(VstTimeInfo timeInfo, long timeInfoCreatedSampleTime)
