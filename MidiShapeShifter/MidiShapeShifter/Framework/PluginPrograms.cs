@@ -61,14 +61,26 @@ namespace MidiShapeShifter.Framework
         /// <returns>Never returns null or an empty collection.</returns>
         protected override VstProgramCollection CreateProgramCollection()
         {
+            return CreatePrograms();
+        }
+
+        public VstProgramCollection CreatePrograms()
+        {
             VstProgramCollection programs = new VstProgramCollection();
 
-            // TODO: add a number of programs for your plugin.
+            //Todo: Get this list from the MSS namespace. It should generate it based on the file 
+            //system
+            var programNameList = new System.Collections.Generic.List<string>();
+            programNameList.Add("Prog1");
+            programNameList.Add("Prog2");
+            programNameList.Add("Prog3");
 
-            VstProgram program = CreateProgram(ParameterInfos);
-            program.Name = "Default";
-            programs.Add(program);
-
+            foreach(string programName in programNameList)
+            {
+                VstProgram program = CreateProgram(ParameterInfos);
+                program.Name = programName;
+                programs.Add(program);
+            }
             return programs;
         }
 

@@ -21,6 +21,7 @@ namespace MidiShapeShifter.Framework
         protected const string DEFAULT_PARAMETER_CATEGORY_NAME = "Parameter";
 
         protected PluginPrograms pluginPrograms;
+
         private Func<MssParameters> getMssParameters;
         protected MssParameters mssParameters { get { return this.getMssParameters(); } }
 
@@ -36,6 +37,7 @@ namespace MidiShapeShifter.Framework
             this.getMssParameters = getMssParameters;
             this.pluginPrograms = pluginPrograms;
 
+            AttachHandlersToMssParameterEvents();
             InitializeVstParams();
         }
 
@@ -69,13 +71,14 @@ namespace MidiShapeShifter.Framework
         /// </summary>
         protected void InitializeVstParams()
         {
+            // all parameter definitions are added to a central list.
+            VstParameterInfoCollection parameterInfos = this.pluginPrograms.ParameterInfos;
+
             //itterate over each MssParameterID
             foreach(MssParameterID paramId in MssParameterID.GetValues(typeof(MssParameterID)))
             {
                 VstParameterInfo paramInfo = MssToVstParameterInfo(paramId);
-
-                // all parameter definitions are added to a central list.
-                VstParameterInfoCollection parameterInfos = this.pluginPrograms.ParameterInfos;
+                
                 parameterInfos.Add(paramInfo);
 
                 VstParameterManager paramMgr = new VstParameterManager(paramInfo);

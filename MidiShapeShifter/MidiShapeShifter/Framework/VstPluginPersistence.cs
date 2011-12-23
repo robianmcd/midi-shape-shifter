@@ -22,14 +22,18 @@ namespace MidiShapeShifter.Framework
 
         protected Func<SerializableRootType> getSerializableRootFromPlugin;
 
+        protected PluginPrograms pluginPrograms;
+
         public VstPluginPersistence()
         { 
             
         }
 
-        public void Init(Func<SerializableRootType> getSerializableRootFromPlugin)
+        public void Init(Func<SerializableRootType> getSerializableRootFromPlugin,
+                         PluginPrograms pluginPrograms)
         {
             this.getSerializableRootFromPlugin = getSerializableRootFromPlugin;
+            this.pluginPrograms = pluginPrograms;
         }
 
         public bool CanLoadChunk(VstPatchChunkInfo chunkInfo)
@@ -42,6 +46,8 @@ namespace MidiShapeShifter.Framework
             BinaryFormatter formatter = new BinaryFormatter();
             formatter.Binder = new DeserializationBinderForPlugins();
             SerializableRootType deserializedRoot = (SerializableRootType)formatter.Deserialize(stream);
+
+            programs.AddRange(this.pluginPrograms.CreatePrograms());
 
             if (PluginDeserialized != null)
             {
