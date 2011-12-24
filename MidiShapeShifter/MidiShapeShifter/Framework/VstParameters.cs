@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.ComponentModel;
 
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
@@ -13,8 +14,9 @@ using MidiShapeShifter.Mss;
 namespace MidiShapeShifter.Framework
 {
     /// <summary>
-    ///     Manages communication between the parameters described in MidiShapeShifter.Mss.MssParameters and the Jacobi
-    ///     framework. In order to do this a VstParameterManager must be created for each parameter.
+    ///     Manages communication between the parameters described in 
+    ///     MidiShapeShifter.Mss.MssParameters and the Jacobi framework. In order to do this a 
+    ///     VstParameterManager must be created for each parameter.
     /// </summary>
     public class VstParameters
     {
@@ -25,8 +27,11 @@ namespace MidiShapeShifter.Framework
         private Func<MssParameters> getMssParameters;
         protected MssParameters mssParameters { get { return this.getMssParameters(); } }
 
+        protected bool ignoreParameterChangesFromHost = false;
+
         //Used to map MSS parameters to their associated VST parameters.
-        public TwoWayDictionary<MssParameterID, VstParameterManager> VstParameterManagerDict = new TwoWayDictionary<MssParameterID, VstParameterManager>();
+        public TwoWayDictionary<MssParameterID, VstParameterManager> VstParameterManagerDict = 
+            new TwoWayDictionary<MssParameterID, VstParameterManager>();
 
         public VstParameters()
         {
@@ -37,6 +42,7 @@ namespace MidiShapeShifter.Framework
             this.getMssParameters = getMssParameters;
             this.pluginPrograms = pluginPrograms;
 
+            pluginPrograms.ProgramActivated += new ProgramActivatedEventHandler(OnProgramActivated);
             AttachHandlersToMssParameterEvents();
             InitializeVstParams();
         }
@@ -44,10 +50,14 @@ namespace MidiShapeShifter.Framework
         protected void AttachHandlersToMssParameterEvents()
         {
             //Listens to changes made to parameters from the MSS namespace (E.G. the GUI)
-            this.mssParameters.ParameterValueChanged += new ParameterValueChangedEventHandler(MssParameters_ValueChanged);
-            this.mssParameters.ParameterNameChanged += new ParameterNameChangedEventHandler(MssParameters_NameChanged);
-            this.mssParameters.ParameterMinValueChanged += new ParameterMinValueChangedEventHandler(MssParameters_MinValueChanged);
-            this.mssParameters.ParameterMaxValueChanged += new ParameterMaxValueChangedEventHandler(MssParameters_MaxValueChanged);
+            this.mssParameters.ParameterValueChanged += 
+                new ParameterValueChangedEventHandler(MssParameters_ValueChanged);
+            this.mssParameters.ParameterNameChanged += 
+                new ParameterNameChangedEventHandler(MssParameters_NameChanged);
+            this.mssParameters.ParameterMinValueChanged += 
+                new ParameterMinValueChangedEventHandler(MssParameters_MinValueChanged);
+            this.mssParameters.ParameterMaxValueChanged += 
+                new ParameterMaxValueChangedEventHandler(MssParameters_MaxValueChanged);
         }
 
         public void OnMssParametersInstanceReplaced()
@@ -67,7 +77,8 @@ namespace MidiShapeShifter.Framework
         }
 
         /// <summary>
-        ///     Initialized VstParameterManagerDict by createing a VstParameterManager for each MSS parameter.
+        ///     Initialized VstParameterManagerDict by createing a VstParameterManager for each MSS 
+        ///     parameter.
         /// </summary>
         protected void InitializeVstParams()
         {
@@ -84,7 +95,8 @@ namespace MidiShapeShifter.Framework
                 VstParameterManager paramMgr = new VstParameterManager(paramInfo);
 
                 //Adds listener to changes made to a parameter from the host
-                paramMgr.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(VstParameterManager_PropertyChanged);
+                paramMgr.PropertyChanged += 
+                    new PropertyChangedEventHandler(VstParameterManager_PropertyChanged);
                 VstParameterManagerDict.Add(paramId, paramMgr);
             }
         }
@@ -105,7 +117,8 @@ namespace MidiShapeShifter.Framework
             paramInfo.Category = paramCategory;
             paramInfo.CanBeAutomated = true;
             string paramName = this.mssParameters.GetParameterName(paramId);
-            paramInfo.Name = paramName.Substring(0, Math.Min(7, paramName.Length)); //Cannot be more then 7 characters
+            //Cannot be more then 7 characters
+            paramInfo.Name = paramName.Substring(0, Math.Min(7, paramName.Length)); 
             paramInfo.Label = "";
             paramInfo.ShortLabel = "";
             paramInfo.MinInteger = (int)this.mssParameters.GetParameterMinValue(paramId);
@@ -120,13 +133,13 @@ namespace MidiShapeShifter.Framework
         }
 
         /// <summary>
-        ///     Listens to changes made to VstParameterManagers. This method is used to keep VstParameter_Changed up to
-        ///     date with the active parameter for each VstParameterManager. The active parameter can change when the 
-        ///     user changes the program from the host.
+        ///     Listens to changes made to VstParameterManagers. This method is used to keep 
+        ///     VstParameter_Changed up to date with the active parameter for each VstParameterManager. 
+        ///     The active parameter can change when the user changes the program from the host.
         /// </summary>
         /// <param name="sender">The VstParameterManager that changed.</param>
         /// <param name="e">Specifies the type of change made to a VstParameterManager</param>
-        private void VstParameterManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void VstParameterManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             VstParameterManager paramMgr = (VstParameterManager)sender;
 
@@ -134,29 +147,37 @@ namespace MidiShapeShifter.Framework
             {
                 if (paramMgr.ActiveParameter != null)
                 {
-                    paramMgr.ActiveParameter.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(VstParameter_Changed);
+                    paramMgr.ActiveParameter.PropertyChanged += 
+                        new PropertyChangedEventHandler(VstParameter_Changed);
                 }
             }
         }
 
         /// <summary>
-        ///     Listens to changes made to parameter values from the host and sends those changes to MssParameters.
+        ///     Listens to changes made to parameter values from the host and sends those changes to 
+        ///     MssParameters.
         /// </summary>
         /// <param name="sender">The VstParameter that changed.</param>
-        private void VstParameter_Changed(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void VstParameter_Changed(object sender, PropertyChangedEventArgs e)
         {
-            VstParameter changedParam = (VstParameter)sender;
-            MssParameterID paramID;
-            //Gets the MssParameterID associated with the changed parameter.
-            VstParameterManagerDict.TryGetLeftByRight(out paramID, changedParam.Info.ParameterManager);
+            if (this.ignoreParameterChangesFromHost == false)
+            {
+                VstParameter changedParam = (VstParameter)sender;
+                MssParameterID paramID;
+                //Gets the MssParameterID associated with the changed parameter.
+                VstParameterManagerDict.TryGetLeftByRight(out paramID, changedParam.Info.ParameterManager);
 
-            //Notifies MssParameters of the change.
-            this.mssParameters.SetParameterValue(paramID, changedParam.Value);
+                if (e.PropertyName == VstParameter.ValuePropertyName)
+                {
+                    //Notifies MssParameters of the change.
+                    this.mssParameters.SetParameterValue(paramID, changedParam.Value);
+                }
+            }
         }
 
         /// <summary>
-        ///     Listens to changes made from the MSS namespace to the name of a parameter and modifies the 
-        ///     associated VstParameterManager to reflect the change.
+        ///     Listens to changes made from the MSS namespace to the name of a parameter and modifies 
+        ///     the associated VstParameterManager to reflect the change.
         /// </summary>
         /// <param name="paramId">ID of the changed parameter.</param>
         /// <param name="name">New name of the changed parameter.</param>
@@ -172,8 +193,8 @@ namespace MidiShapeShifter.Framework
         }
 
         /// <summary>
-        ///     Listens to changes made from the MSS namespace to the value of a parameter and modifies the 
-        ///     associated VstParameterManager to reflect the change.
+        ///     Listens to changes made from the MSS namespace to the value of a parameter and modifies 
+        ///     the associated VstParameterManager to reflect the change.
         /// </summary>
         /// <param name="paramId">ID of the changed parameter.</param>
         /// <param name="value">New value of the changed parameter.</param>
@@ -186,14 +207,16 @@ namespace MidiShapeShifter.Framework
             {
                 if (paramMgr.ActiveParameter.Value != value)
                 {
+                    this.ignoreParameterChangesFromHost = true;
                     paramMgr.ActiveParameter.Value = (float)value;
+                    this.ignoreParameterChangesFromHost = false;
                 }
             }
         }
 
         /// <summary>
-        ///     Listens to changes made from the MSS namespace to the min value for a parameter and modifies the 
-        ///     associated VstParameterManager to reflect the change.
+        ///     Listens to changes made from the MSS namespace to the min value for a parameter and 
+        ///     modifies the associated VstParameterManager to reflect the change.
         /// </summary>
         /// <param name="paramId">ID of the changed parameter.</param>
         /// <param name="minValue">New min value of the changed parameter.</param>
@@ -209,8 +232,8 @@ namespace MidiShapeShifter.Framework
         }
 
         /// <summary>
-        ///     Listens to changes made from the MSS namespace to the max value for a parameter and modifies the 
-        ///     associated VstParameterManager to reflect the change.
+        ///     Listens to changes made from the MSS namespace to the max value for a parameter and 
+        ///     modifies the associated VstParameterManager to reflect the change.
         /// </summary>
         /// <param name="paramId">ID of the changed parameter.</param>
         /// <param name="maxValue">New max value of the changed parameter.</param>
@@ -222,6 +245,18 @@ namespace MidiShapeShifter.Framework
             if (paramMgr.ActiveParameter.Info.MaxInteger != maxValue)
             {
                 paramMgr.ActiveParameter.Info.MaxInteger = maxValue;
+            }
+        }
+
+        protected void OnProgramActivated()
+        {
+            //Send the info for each parameter from MssParameters to the host.
+            foreach (MssParameterID paramId in MssParameterID.GetValues(typeof(MssParameterID)))
+            {
+                MssParameters_ValueChanged(paramId, this.mssParameters.GetParameterValue(paramId));
+                MssParameters_NameChanged(paramId, this.mssParameters.GetParameterName(paramId));
+                MssParameters_MaxValueChanged(paramId, this.mssParameters.GetParameterMaxValue(paramId));
+                MssParameters_MinValueChanged(paramId, this.mssParameters.GetParameterMinValue(paramId));
             }
         }
 

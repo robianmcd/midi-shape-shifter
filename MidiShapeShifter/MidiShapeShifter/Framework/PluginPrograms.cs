@@ -3,11 +3,16 @@ using Jacobi.Vst.Framework.Plugin;
 
 namespace MidiShapeShifter.Framework
 {
+
+    public delegate void ProgramActivatedEventHandler();
+
     /// <summary>
     /// This object manages the Plugin programs and its parameters.
     /// </summary>
     public class PluginPrograms : VstPluginProgramsBase
     {
+        public event ProgramActivatedEventHandler ProgramActivated;
+
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
@@ -110,5 +115,44 @@ namespace MidiShapeShifter.Framework
 
             return parameter;
         }
+
+        protected VstProgram activeProgram;
+        public override VstProgram ActiveProgram
+        {
+            get
+            {
+                if (activeProgram == null && Programs.Count > 0)
+                {
+                    ActiveProgram = Programs[0];
+                }
+
+                return activeProgram;
+            }
+            set
+            {
+                if (activeProgram != value)
+                {
+                    if (activeProgram != null)
+                    {
+                        activeProgram.IsActive = false;
+                    }
+
+                    if (value != null)
+                    {
+                        activeProgram = value;
+                        activeProgram.IsActive = true;
+                        
+                        //Todo: Load the active parameter from a .mssp file if it is not the active 
+                        //program in MssPrograms;
+
+                        if (ProgramActivated != null)
+                        {
+                            ProgramActivated();
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

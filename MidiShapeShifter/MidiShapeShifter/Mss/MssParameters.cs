@@ -39,6 +39,9 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         protected Dictionary<MssParameterID, MssParameterInfo> paramDict;
 
+        //Used to prevent parameter change events from being recursively triggered.
+        protected bool acceptParameterChanges = true;
+
         public MssParameters()
         {
             paramDict = new Dictionary<MssParameterID, MssParameterInfo>();
@@ -117,10 +120,15 @@ namespace MidiShapeShifter.Mss
                 return;
             }
 
-            paramDict[parameterId].Name = name;
-            if (ParameterNameChanged != null)
+            if (this.acceptParameterChanges && paramDict[parameterId].Name != name)
             {
-                ParameterNameChanged(parameterId, name);
+                paramDict[parameterId].Name = name;
+                if (ParameterNameChanged != null)
+                {
+                    this.acceptParameterChanges = false;
+                    ParameterNameChanged(parameterId, name);
+                    this.acceptParameterChanges = true;
+                }
             }
         }
 
@@ -147,10 +155,15 @@ namespace MidiShapeShifter.Mss
                 return;
             }
 
-            paramDict[parameterId].Value = value;
-            if (ParameterValueChanged != null)
+            if (this.acceptParameterChanges && paramDict[parameterId].Value != value)
             {
-                ParameterValueChanged(parameterId, value);
+                paramDict[parameterId].Value = value;
+                if (ParameterValueChanged != null)
+                {
+                    this.acceptParameterChanges = false;
+                    ParameterValueChanged(parameterId, value);
+                    this.acceptParameterChanges = true;
+                }
             }
         }
 
@@ -170,6 +183,7 @@ namespace MidiShapeShifter.Mss
 
         public void SetParameterMinValue(MssParameterID parameterId, int minValue)
         {
+            
             if (this.paramDict.ContainsKey(parameterId) == false)
             {
                 //paramDict should always contain every possible MssParameterID
@@ -177,10 +191,15 @@ namespace MidiShapeShifter.Mss
                 return;
             }
 
-            paramDict[parameterId].MinValue = minValue;
-            if (ParameterMinValueChanged != null)
+            if (this.acceptParameterChanges && paramDict[parameterId].MinValue != minValue)
             {
-                ParameterMinValueChanged(parameterId, minValue);
+                paramDict[parameterId].MinValue = minValue;
+                if (ParameterMinValueChanged != null)
+                {
+                    this.acceptParameterChanges = false;
+                    ParameterMinValueChanged(parameterId, minValue);
+                    this.acceptParameterChanges = true;
+                }
             }
         }
 
@@ -200,6 +219,7 @@ namespace MidiShapeShifter.Mss
 
         public void SetParameterMaxValue(MssParameterID parameterId, int maxValue)
         {
+            
             if (this.paramDict.ContainsKey(parameterId) == false)
             {
                 //paramDict should always contain every possible MssParameterID
@@ -207,11 +227,17 @@ namespace MidiShapeShifter.Mss
                 return;
             }
 
-            paramDict[parameterId].MaxValue = maxValue;
-            if (ParameterMaxValueChanged != null)
+            if (this.acceptParameterChanges && paramDict[parameterId].MaxValue != maxValue)
             {
-                ParameterMaxValueChanged(parameterId, maxValue);
+                paramDict[parameterId].MaxValue = maxValue;
+                if (ParameterMaxValueChanged != null)
+                {
+                    this.acceptParameterChanges = false;
+                    ParameterMaxValueChanged(parameterId, maxValue);
+                    this.acceptParameterChanges = true;
+                }
             }
         }
+    
     }
 }
