@@ -26,5 +26,12 @@ namespace MidiShapeShifter.Mss
             MssEvent compareToEvent = (MssEvent)o;
             return this.mssMsg.Equals(compareToEvent.mssMsg) && this.sampleTime == compareToEvent.sampleTime;
         }
+
+        public override int GetHashCode()
+        {
+            int hash = this.mssMsg.GetHashCode();
+            hash = (hash * 7) + (int)sampleTime;
+            return hash;
+        }
     }
 }

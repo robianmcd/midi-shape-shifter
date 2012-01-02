@@ -178,5 +178,16 @@ namespace MidiShapeShifter.Mss
                    this.Data2RangeBottom == compareToRange.Data2RangeBottom &&
                    this.Data2RangeTop == compareToRange.Data2RangeTop;
         }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + (int)this.MsgType;
+            hash = (hash * 7) + this.Data1RangeBottom;
+            hash = (hash * 7) + this.Data1RangeTop;
+            hash = (hash * 7) + this.Data2RangeBottom;
+            hash = (hash * 7) + this.Data2RangeTop;
+            return hash;
+        }
     }
 }

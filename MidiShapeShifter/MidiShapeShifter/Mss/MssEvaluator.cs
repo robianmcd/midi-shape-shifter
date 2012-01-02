@@ -67,7 +67,7 @@ namespace MidiShapeShifter.Mss
 
                 return new ReturnStatus<double>(output, true);
             }
-            catch (Exception exception)
+            catch 
             {
                 //TODO: get actual error message
                 this.LastErrorMsg = "error!";

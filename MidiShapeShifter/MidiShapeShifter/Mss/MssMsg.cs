@@ -86,6 +86,16 @@ namespace MidiShapeShifter.Mss
                    this.Data3 == compareToEvent.Data3;
         }
 
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + (int)this.Type;
+            hash = (hash * 7) + this.Data1.GetHashCode();
+            hash = (hash * 7) + this.Data2.GetHashCode();
+            hash = (hash * 7) + this.Data3.GetHashCode();
+            return hash;
+        }
+
         public object Clone()
         {
             return this.MemberwiseClone();
