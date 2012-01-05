@@ -55,6 +55,13 @@ namespace MidiShapeShifter.Framework
             this.vstHost = vstHost;
         }
 
+        //When the plugin is deserialized a new instance of the classes in the MSS namespace will be 
+        //created. These classes will assume that the sample time starts at 0.
+        public void OnDeserialized()
+        {
+            this.sampleTime = 0;
+        }
+
         /// <summary>
         /// Called by the host to allow the plugin to process audio samples. This method is used to inform the rest of 
         /// the plugin that the audio processing cycle is ending.

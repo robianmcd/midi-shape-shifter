@@ -75,6 +75,9 @@ namespace MidiShapeShifter.Framework
 
         public void OnRelayInstancesReplaced()
         {
+            //When the plugin is deserialized a new instance of the classes in the MSS namespace 
+            //will be created. These classes will assume that the sample time starts at 0.
+            SampleTimeAtStartOfProcessingCycle = 0;
             AttachHandlersToRelayEvents();
         }
 

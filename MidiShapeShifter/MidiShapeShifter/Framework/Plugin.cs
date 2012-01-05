@@ -217,6 +217,7 @@ namespace MidiShapeShifter.Framework
             this.MssHub = deserializedMssHub;
 
             this.MidiHandler.OnRelayInstancesReplaced();
+            this.AudioHandler.OnDeserialized();
             this.vstParameters.OnMssParametersInstanceReplaced();
             this.VstPluginPersistence.OnMssProgramMgrInstanceReplaced();
             this.PluginPrograms.OnMssProgramMgrInstanceReplaced();
