@@ -79,11 +79,11 @@ namespace MidiShapeShifter.Mss
 
         public override bool Equals(object o) 
         {
-            MssMsg compareToEvent = (MssMsg)o;
-            return this.Type == compareToEvent.Type &&
-                   this.Data1 == compareToEvent.Data1 &&
-                   this.Data2 == compareToEvent.Data2 &&
-                   this.Data3 == compareToEvent.Data3;
+            MssMsg compareToMsg = (MssMsg)o;
+            return this.Type == compareToMsg.Type &&
+                   this.Data1 == compareToMsg.Data1 &&
+                   this.Data2 == compareToMsg.Data2 &&
+                   this.Data3 == compareToMsg.Data3;
         }
 
         public override int GetHashCode()

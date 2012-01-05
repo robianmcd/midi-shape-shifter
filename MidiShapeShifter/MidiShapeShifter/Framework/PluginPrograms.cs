@@ -1,5 +1,9 @@
-﻿using Jacobi.Vst.Framework;
+﻿using System;
+
+using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
+
+using MidiShapeShifter.Mss.Programs;
 
 namespace MidiShapeShifter.Framework
 {
@@ -13,6 +17,10 @@ namespace MidiShapeShifter.Framework
     {
         public event ProgramActivatedEventHandler ProgramActivated;
 
+        protected Func<MssProgramMgr> getMssProgramMgr;
+        protected MssProgramMgr mssProgramMgr { get { return this.getMssProgramMgr(); } }
+        protected IVstHost vstHost;
+
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
@@ -21,6 +29,28 @@ namespace MidiShapeShifter.Framework
         {
             ParameterCategories = new VstParameterCategoryCollection();
             ParameterInfos = new VstParameterInfoCollection();
+        }
+
+        public void Init(Func<MssProgramMgr> getMssProgramMgr)
+        {
+            this.getMssProgramMgr = getMssProgramMgr;
+            AttachHandlersToMssProgramMgrEvents();
+        }
+
+        protected void AttachHandlersToMssProgramMgrEvents()
+        {
+            this.getMssProgramMgr().ActiveProgramChanged +=
+                new ActiveProgramChangedEventHandler(OnProgramChangeFromPlugin);
+        }
+
+        public void OnMssProgramMgrInstanceReplaced()
+        {
+            AttachHandlersToMssProgramMgrEvents();
+        }
+
+        public void InitVstHost(IVstHost vstHost)
+        {
+            this.vstHost = vstHost;
         }
 
         /// <summary>
@@ -71,22 +101,15 @@ namespace MidiShapeShifter.Framework
 
         public VstProgramCollection CreatePrograms()
         {
-            VstProgramCollection programs = new VstProgramCollection();
+            VstProgramCollection newPrograms = new VstProgramCollection();
 
-            //Todo: Get this list from the MSS namespace. It should generate it based on the file 
-            //system
-            var programNameList = new System.Collections.Generic.List<string>();
-            programNameList.Add("Prog1");
-            programNameList.Add("Prog2");
-            programNameList.Add("Prog3");
-
-            foreach(string programName in programNameList)
+            foreach(MssProgramInfo progInfo in this.mssProgramMgr.FlatProgramList)
             {
                 VstProgram program = CreateProgram(ParameterInfos);
-                program.Name = programName;
-                programs.Add(program);
+                program.Name = progInfo.Name;
+                newPrograms.Add(program);
             }
-            return programs;
+            return newPrograms;
         }
 
         // create a program with all parameters.
@@ -116,41 +139,77 @@ namespace MidiShapeShifter.Framework
             return parameter;
         }
 
-        protected VstProgram activeProgram;
+        protected VstProgram _activeProgram;
         public override VstProgram ActiveProgram
         {
             get
             {
-                if (activeProgram == null && Programs.Count > 0)
+                if (this._activeProgram == null && Programs.Count > 0)
                 {
-                    ActiveProgram = Programs[0];
+                    this.ActiveProgram = Programs[0];
                 }
 
-                return activeProgram;
+                return this._activeProgram;
             }
             set
             {
-                if (activeProgram != value)
+                if (this._activeProgram != value)
                 {
-                    if (activeProgram != null)
+                    if (this._activeProgram != null)
                     {
-                        activeProgram.IsActive = false;
+                        this._activeProgram.IsActive = false;
+                        this._activeProgram = null;
                     }
 
                     if (value != null)
                     {
-                        activeProgram = value;
-                        activeProgram.IsActive = true;
-                        
-                        //Todo: Load the active parameter from a .mssp file if it is not the active 
-                        //program in MssPrograms;
-
-                        if (ProgramActivated != null)
-                        {
-                            ProgramActivated();
-                        }
+                        ActivateProgram(value);
                     }
                 }
+            }
+        }
+
+        protected void ActivateProgram(VstProgram program)
+        {
+            this._activeProgram = program;
+            this._activeProgram.IsActive = true;
+
+            this.Programs[0].Name = program.Name;
+            this.mssProgramMgr.OnProgramChanged(program.Name);
+
+            if (ProgramActivated != null)
+            {
+                ProgramActivated();
+            }
+
+            if (this.vstHost != null)
+            {
+                this.vstHost.GetInstance<IVstHostShell>().UpdateDisplay();
+            }
+        }
+
+        protected void OnProgramChangeFromPlugin(string programName)
+        {
+            if (programName == this.ActiveProgram.Name)
+            {
+                return;
+            }
+
+            bool matchingProgramFound = false;
+            foreach (VstProgram prog in this.Programs)
+            {
+                if (prog.Name == programName)
+                {
+                    ActivateProgram(prog);
+                    matchingProgramFound = true;
+                    break;
+                }
+            }
+
+            if (matchingProgramFound == false)
+            {
+                this.Programs[0].Name = programName;
+                ActivateProgram(this.Programs[0]);
             }
         }
 

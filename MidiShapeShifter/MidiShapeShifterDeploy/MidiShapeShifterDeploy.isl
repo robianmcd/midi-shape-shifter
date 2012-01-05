@@ -340,8 +340,13 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
+		<row><td>ISX_DEFAULTCOMPONENT</td><td>{224637E0-A050-417C-A288-A6C9D628CFF1}</td><td>ProgramFilesFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{862CBCCF-7E1B-4AED-BD73-F0B6D5DF027F}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{B8C4CE18-851F-4C89-A776-9E789FF3B675}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT4</td><td>{780BB8A4-5141-4E02-8F07-00C8252B0DF2}</td><td>FACTORY_SETTINGS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT5</td><td>{642EDB92-A57D-426D-AD26-82B682796AF1}</td><td>PROGRAMS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT6</td><td>{C6FCBDAD-9E32-477C-A9F0-12B8F9C2E4C9}</td><td>USER_SETTINGS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT7</td><td>{14FBB0CF-06D6-4A7B-B3FE-016FB29B55FD}</td><td>PROGRAMS1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Jacobi.Vst.Core.dll</td><td>{C3D4A365-E9EB-4BC5-9F12-04A5AE30C549}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>jacobi.vst.core.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Jacobi.Vst.Framework.dll</td><td>{6C91B4D9-B1E3-452C-99EC-3E35503DDFE2}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>jacobi.vst.framework.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>LBIndustrialCtrls.dll</td><td>{F7FB6295-A7D5-4CE9-BCB0-C5D1072483B4}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>lbindustrialctrls.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -923,16 +928,16 @@
 		<row><td>CustomerInformation</td><td>Next</td><td>NewDialog</td><td>ReadyToInstall</td><td>(Not SERIALNUMVALRETURN) OR (SERIALNUMVALRETURN=SERIALNUMVALSUCCESSRETVAL)</td><td>3</td></row>
 		<row><td>CustomerInformation</td><td>Next</td><td>[ALLUSERS]</td><td>1</td><td>ApplicationUsers = "AllUsers" And Privileged</td><td>1</td></row>
 		<row><td>CustomerInformation</td><td>Next</td><td>[ALLUSERS]</td><td>{}</td><td>ApplicationUsers = "OnlyCurrentUser" And Privileged</td><td>2</td></row>
-		<row><td>DatabaseFolder</td><td>Back</td><td>NewDialog</td><td>CustomerInformation</td><td>1</td><td>1</td></row>
+		<row><td>DatabaseFolder</td><td>Back</td><td>NewDialog</td><td>DestinationFolder</td><td>NOT Installed</td><td>1</td></row>
 		<row><td>DatabaseFolder</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>1</td></row>
 		<row><td>DatabaseFolder</td><td>ChangeFolder</td><td>SpawnDialog</td><td>InstallChangeFolder</td><td>1</td><td>1</td></row>
 		<row><td>DatabaseFolder</td><td>ChangeFolder</td><td>[_BrowseProperty]</td><td>DATABASEDIR</td><td>1</td><td>2</td></row>
-		<row><td>DatabaseFolder</td><td>Next</td><td>NewDialog</td><td>SetupType</td><td>1</td><td>1</td></row>
+		<row><td>DatabaseFolder</td><td>Next</td><td>NewDialog</td><td>ReadyToInstall</td><td>1</td><td>1</td></row>
 		<row><td>DestinationFolder</td><td>Back</td><td>NewDialog</td><td>InstallWelcome</td><td>NOT Installed</td><td>0</td></row>
 		<row><td>DestinationFolder</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>1</td></row>
 		<row><td>DestinationFolder</td><td>ChangeFolder</td><td>SpawnDialog</td><td>InstallChangeFolder</td><td>1</td><td>1</td></row>
 		<row><td>DestinationFolder</td><td>ChangeFolder</td><td>[_BrowseProperty]</td><td>INSTALLDIR</td><td>1</td><td>2</td></row>
-		<row><td>DestinationFolder</td><td>Next</td><td>NewDialog</td><td>ReadyToInstall</td><td>1</td><td>0</td></row>
+		<row><td>DestinationFolder</td><td>Next</td><td>NewDialog</td><td>DatabaseFolder</td><td>1</td><td>0</td></row>
 		<row><td>DiskSpaceRequirements</td><td>OK</td><td>EndDialog</td><td>Return</td><td>1</td><td>0</td></row>
 		<row><td>FilesInUse</td><td>Exit</td><td>EndDialog</td><td>Exit</td><td>1</td><td>0</td></row>
 		<row><td>FilesInUse</td><td>Ignore</td><td>EndDialog</td><td>Ignore</td><td>1</td><td>0</td></row>
@@ -980,7 +985,7 @@
 		<row><td>ReadmeInformation</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>1</td></row>
 		<row><td>ReadmeInformation</td><td>Next</td><td>NewDialog</td><td>CustomerInformation</td><td>1</td><td>1</td></row>
 		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>CustomSetup</td><td>Installed OR _IsSetupTypeMin = "Custom"</td><td>2</td></row>
-		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>DestinationFolder</td><td>NOT Installed</td><td>1</td></row>
+		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>DatabaseFolder</td><td>NOT Installed</td><td>1</td></row>
 		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>MaintenanceType</td><td>Installed AND _IsMaintenance = "Reinstall"</td><td>3</td></row>
 		<row><td>ReadyToInstall</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
 		<row><td>ReadyToInstall</td><td>InstallNow</td><td>EndDialog</td><td>Return</td><td>OutOfNoRbDiskSpace &lt;&gt; 1</td><td>0</td></row>
@@ -1057,7 +1062,12 @@
 	<table name="CreateFolder">
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>FACTORY_SETTINGS</td><td>ISX_DEFAULTCOMPONENT4</td></row>
 		<row><td>GlobalAssemblyCache</td><td>ISX_DEFAULTCOMPONENT1</td></row>
+		<row><td>PROGRAMS</td><td>ISX_DEFAULTCOMPONENT5</td></row>
+		<row><td>PROGRAMS1</td><td>ISX_DEFAULTCOMPONENT7</td></row>
+		<row><td>ProgramFilesFolder</td><td>ISX_DEFAULTCOMPONENT</td></row>
+		<row><td>USER_SETTINGS</td><td>ISX_DEFAULTCOMPONENT6</td></row>
 	</table>
 
 	<table name="CustomAction">
@@ -1146,6 +1156,7 @@
 		<row><td>DIRPROPERTY2</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DIRPROPERTY3</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DesktopFolder</td><td>TARGETDIR</td><td>.:Desktop</td><td/><td>3</td><td/></row>
+		<row><td>FACTORY_SETTINGS</td><td>DATABASEDIR</td><td>FACTOR~1|Factory Settings</td><td/><td>0</td><td/></row>
 		<row><td>FavoritesFolder</td><td>TARGETDIR</td><td>.:FAVORI~1|Favorites</td><td/><td>0</td><td/></row>
 		<row><td>FontsFolder</td><td>TARGETDIR</td><td>.:Fonts</td><td/><td>0</td><td/></row>
 		<row><td>GlobalAssemblyCache</td><td>TARGETDIR</td><td>.:Global~1|GlobalAssemblyCache</td><td/><td>0</td><td/></row>
@@ -1153,12 +1164,14 @@
 		<row><td>ISCommonFilesFolder</td><td>CommonFilesFolder</td><td>Instal~1|InstallShield</td><td/><td>0</td><td/></row>
 		<row><td>ISMyCompanyDir</td><td>ProgramFilesFolder</td><td>MYCOMP~1|My Company Name</td><td/><td>0</td><td/></row>
 		<row><td>ISMyProductDir</td><td>ISMyCompanyDir</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
-		<row><td>ISYourDataBaseDir</td><td>INSTALLDIR</td><td>Database</td><td/><td>0</td><td/></row>
+		<row><td>ISYourDataBaseDir</td><td>ProgramFilesFolder</td><td>MIDISH~1|MIDI Shape Shifter</td><td/><td>0</td><td/></row>
 		<row><td>LocalAppDataFolder</td><td>TARGETDIR</td><td>.:LocalA~1|LocalAppData</td><td/><td>0</td><td/></row>
 		<row><td>MY_COMPANY_NAME</td><td>DIRPROPERTY1</td><td>MYCOMP~1|My Company Name</td><td/><td>0</td><td/></row>
 		<row><td>MY_PRODUCT_NAME</td><td>MY_COMPANY_NAME</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
 		<row><td>MyPicturesFolder</td><td>TARGETDIR</td><td>.:MyPict~1|MyPictures</td><td/><td>0</td><td/></row>
 		<row><td>NetHoodFolder</td><td>TARGETDIR</td><td>.:NetHood</td><td/><td>0</td><td/></row>
+		<row><td>PROGRAMS</td><td>FACTORY_SETTINGS</td><td>Programs</td><td/><td>0</td><td/></row>
+		<row><td>PROGRAMS1</td><td>USER_SETTINGS</td><td>Programs</td><td/><td>0</td><td/></row>
 		<row><td>PersonalFolder</td><td>TARGETDIR</td><td>.:Personal</td><td/><td>0</td><td/></row>
 		<row><td>PrimaryVolumePath</td><td>TARGETDIR</td><td>.:Primar~1|PrimaryVolumePath</td><td/><td>0</td><td/></row>
 		<row><td>PrintHoodFolder</td><td>TARGETDIR</td><td>.:PRINTH~1|PrintHood</td><td/><td>0</td><td/></row>
@@ -1174,6 +1187,7 @@
 		<row><td>TempFolder</td><td>TARGETDIR</td><td>.:Temp</td><td/><td>0</td><td/></row>
 		<row><td>TemplateFolder</td><td>TARGETDIR</td><td>.:ShellNew</td><td/><td>0</td><td/></row>
 		<row><td>USERPROFILE</td><td>TARGETDIR</td><td>.:USERPR~1|UserProfile</td><td/><td>0</td><td/></row>
+		<row><td>USER_SETTINGS</td><td>DATABASEDIR</td><td>USERSE~1|User Settings</td><td/><td>0</td><td/></row>
 		<row><td>VSTPLUGINS</td><td>DIRPROPERTY2</td><td>VSTPLU~1|vstplugins</td><td/><td>0</td><td/></row>
 		<row><td>VSTPLUGINS1</td><td>DIRPROPERTY3</td><td>VSTPLU~1|vstplugins</td><td/><td>0</td><td/></row>
 		<row><td>WindowsFolder</td><td>TARGETDIR</td><td>.:Windows</td><td/><td>0</td><td/></row>
@@ -1869,8 +1883,13 @@
 	<table name="FeatureComponents">
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT2</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT4</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT5</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT6</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT7</td></row>
 		<row><td>AlwaysInstall</td><td>Jacobi.Vst.Core.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Jacobi.Vst.Framework.dll</td></row>
 		<row><td>AlwaysInstall</td><td>LBIndustrialCtrls.dll</td></row>
@@ -2156,8 +2175,13 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
+		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_B53B9A40_CE6A_42CB_B6EB_96AB17939596_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_1D8EF6FD_478F_47E9_BF53_DE4AE7498C43_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_FFAB5719_76BB_461A_B668_ED3812C5DE98_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT4</td><td/><td/><td>_579DC6DC_C44E_4B48_BF0E_F35A54AD197D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT5</td><td/><td/><td>_C5081161_BD74_4334_9EFD_5459E9EA76F3_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT6</td><td/><td/><td>_A6F9B3E7_4CAB_45C3_A4ED_E8325842B47D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT7</td><td/><td/><td>_E9AFE71F_CD6F_418A_A26E_F320EC13F3A0_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Jacobi.Vst.Core.dll</td><td/><td/><td>_67A48FC2_FF76_4DB2_B8D9_A275DB0AFB70_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Jacobi.Vst.Framework.dll</td><td/><td/><td>_EBF1EBDA_B1D1_4571_92C5_67FD01C058C6_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>LBIndustrialCtrls.dll</td><td/><td/><td>_C347D0CC_44D5_4230_9098_1759AA1DEAF3_FILTER</td><td/><td/><td/><td/></row>
@@ -2955,7 +2979,7 @@
 		<row><td>IDS_DIFX_AMD64</td><td>1033</td><td>[ProductName] requires an X64 processor. Click OK to exit the wizard.</td><td>0</td><td/><td>-1776295216</td></row>
 		<row><td>IDS_DIFX_IA64</td><td>1033</td><td>[ProductName] requires an IA64 processor. Click OK to exit the wizard.</td><td>0</td><td/><td>-1776295216</td></row>
 		<row><td>IDS_DIFX_X86</td><td>1033</td><td>[ProductName] requires an X86 processor. Click OK to exit the wizard.</td><td>0</td><td/><td>-1776295216</td></row>
-		<row><td>IDS_DatabaseFolder_InstallDatabaseTo</td><td>1033</td><td>Install [ProductName] database to:</td><td>0</td><td/><td>-1776295216</td></row>
+		<row><td>IDS_DatabaseFolder_InstallDatabaseTo</td><td>1033</td><td>Folder to install [ProductName] settings into:</td><td>0</td><td/><td>-971040527</td></row>
 		<row><td>IDS_ERROR_0</td><td>1033</td><td>{{Fatal error: }}</td><td>0</td><td/><td>-1776295216</td></row>
 		<row><td>IDS_ERROR_1</td><td>1033</td><td>Error [1]. </td><td>0</td><td/><td>-1776295216</td></row>
 		<row><td>IDS_ERROR_10</td><td>1033</td><td>=== Logging started: [Date]  [Time] ===</td><td>0</td><td/><td>-1776295216</td></row>
@@ -3696,7 +3720,7 @@
 		<row><td>IDS__DestinationFolder_Change</td><td>1033</td><td>&amp;Change...</td><td>0</td><td/><td>-1776295216</td></row>
 		<row><td>IDS__DestinationFolder_ChangeFolder</td><td>1033</td><td>Click Next to install to this folder, or click Change to install to a different folder.</td><td>0</td><td/><td>-1776295216</td></row>
 		<row><td>IDS__DestinationFolder_DestinationFolder</td><td>1033</td><td>{&amp;MSSansBold8}Destination Folder</td><td>0</td><td/><td>-1776295216</td></row>
-		<row><td>IDS__DestinationFolder_InstallTo</td><td>1033</td><td>Install [ProductName] to:</td><td>0</td><td/><td>-1776295216</td></row>
+		<row><td>IDS__DestinationFolder_InstallTo</td><td>1033</td><td>VST folder to install [ProductName] into:</td><td>0</td><td/><td>-971015951</td></row>
 		<row><td>IDS__DisplayName_Custom</td><td>1033</td><td>Custom</td><td>0</td><td/><td>-1776295216</td></row>
 		<row><td>IDS__DisplayName_Minimal</td><td>1033</td><td>Minimal</td><td>0</td><td/><td>-1776295216</td></row>
 		<row><td>IDS__DisplayName_Typical</td><td>1033</td><td>Typical</td><td>0</td><td/><td>-1776295216</td></row>
@@ -4137,7 +4161,7 @@ QwBEAF8AUgBPAE0AAQBFAHgAcAByAGUAcwBzAA==
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{D7ED005B-244C-4D91-9804-FFC388F6D93A}</td></row>
 		<row><td>ISUSSignature</td><td>{084286CE-3185-4C75-A20B-71BAFF26FCA2}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewISToday,viewDependencies,viewAppFiles,viewProject,viewRealSetupDesign,viewUpgradePaths,viewUpdateService,viewObjects,viewSystemSearch,viewAppV,viewUI,viewRelease,viewCustomActions,viewFileExtensions,viewEnvironmentVariables,viewShortcuts</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewISToday,viewDependencies,viewAppFiles,viewProject,viewRealSetupDesign,viewUpgradePaths,viewUpdateService,viewObjects,viewSystemSearch,viewAppV,viewUI,viewRelease,viewCustomActions,viewFileExtensions,viewEnvironmentVariables,viewShortcuts,viewTextMessages,viewRegistry</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4581,6 +4605,7 @@ QwBEAF8AUgBPAE0AAQBFAHgAcAByAGUAcwBzAA==
 		<col def="S0">Value</col>
 		<col def="s72">Component_</col>
 		<col def="I4">ISAttributes</col>
+		<row><td>Registry1</td><td>2</td><td>SOFTWARE\MIDI Shape Shifter</td><td>SettingsFolder</td><td>[DATABASEDIR]</td><td>ISX_DEFAULTCOMPONENT2</td><td>0</td></row>
 	</table>
 
 	<table name="RemoveFile">

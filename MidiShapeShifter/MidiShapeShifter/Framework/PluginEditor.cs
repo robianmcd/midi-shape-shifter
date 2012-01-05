@@ -66,6 +66,11 @@ namespace MidiShapeShifter.Framework
             this.MssHub.OpenPluginEditor(hWnd);
         }
 
+        public void OnBeforeDeserialized()
+        {
+            this.MssHub.ClosePluginEditor();
+        }
+
         public void OnDeserialized()
         {
             if (this.pluginEditorIsOpen)

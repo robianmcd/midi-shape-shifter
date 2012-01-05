@@ -14,6 +14,7 @@ using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.UI;
 using MidiShapeShifter.Mss.Relays;
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
+using MidiShapeShifter.Mss.Programs;
 
 namespace MidiShapeShifter.Mss
 {
@@ -65,6 +66,8 @@ namespace MidiShapeShifter.Mss
 
         protected MssParameters _mssParameters;
         public MssParameters MssParameters { get { return this._mssParameters; } }
+        public MssProgramMgr MssProgramMgr;
+
 
         [NonSerialized]
         protected Factory_MssMsgRangeEntryMetadata msgEntryMetadataFactory;
@@ -91,6 +94,7 @@ namespace MidiShapeShifter.Mss
             this.genMappingMgr = new GeneratorMappingManager();
 
             this._mssParameters = new MssParameters();
+            this.MssProgramMgr = new MssProgramMgr();
 
             this.pluginEditorInfo = new SerializablePluginEditorInfo();
         }
@@ -119,6 +123,7 @@ namespace MidiShapeShifter.Mss
 
             //Initialize serializable members
             this._mssParameters.Init();
+            this.MssProgramMgr.Init();
         }
 
         protected void InitializeNonSerializableMembers()
@@ -181,7 +186,8 @@ namespace MidiShapeShifter.Mss
                 this._pluginEditorView.CreateControl();
                 this._pluginEditorView.Init(this.MssParameters, 
                                             this.mappingMgr, 
-                                            this.genMappingMgr, 
+                                            this.genMappingMgr,
+                                            this.MssProgramMgr,
                                             this.DryMssEventOutputPort,
                                             this.pluginEditorInfo);
             }

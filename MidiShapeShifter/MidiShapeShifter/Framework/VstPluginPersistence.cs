@@ -11,6 +11,7 @@ using Jacobi.Vst.Framework;
 using MidiShapeShifter.CSharpUtil;
 
 using MidiShapeShifter.Mss;
+using MidiShapeShifter.Mss.Programs;
 
 namespace MidiShapeShifter.Framework
 {
@@ -28,7 +29,7 @@ namespace MidiShapeShifter.Framework
     /// However due to some drawbacks to that approach this class only persists the state of the active 
     /// program. The state of unactive programs are saved in .mssp files in the settings folder.
     /// </remarks>
-    class VstPluginPersistence<SerializableRootType> : IVstPluginPersistence
+    public class VstPluginPersistence<SerializableRootType> : IVstPluginPersistence
     {
         public delegate void PluginDeserializedEventHandler(SerializableRootType deserializedRoot);
         //triggered after deserialization has finished. This event is ment to give casses in the 
@@ -36,8 +37,14 @@ namespace MidiShapeShifter.Framework
         //used to overwrite the old instance of the serializable root which should be stored in Plugin.
         public event PluginDeserializedEventHandler PluginDeserialized;
 
+        public delegate void BeforePluginDeserializedEventHandler();
+        public event BeforePluginDeserializedEventHandler BeforePluginDeserialized;
+
+
         //Gets the object that will be serialized and deserialized.
         protected Func<SerializableRootType> getSerializableRootFromPlugin;
+
+        protected Func<MssProgramMgr> getMssProgramMgr;
 
         protected PluginPrograms pluginPrograms;
 
@@ -53,10 +60,27 @@ namespace MidiShapeShifter.Framework
         /// Gets the object that will be serialized and deserialized
         /// </param>
         public void Init(Func<SerializableRootType> getSerializableRootFromPlugin,
-                         PluginPrograms pluginPrograms)
+                         PluginPrograms pluginPrograms,
+                         Func<MssProgramMgr> getMssProgramMgr)
         {
             this.getSerializableRootFromPlugin = getSerializableRootFromPlugin;
             this.pluginPrograms = pluginPrograms;
+
+            this.getMssProgramMgr = getMssProgramMgr;
+            AttachHandlersToMssProgramMgrEvents();
+        }
+
+        protected void AttachHandlersToMssProgramMgrEvents()
+        {
+            this.getMssProgramMgr().SaveProgramRequest += 
+                new SaveProgramRequestEventHandler(WritePluginState);
+            this.getMssProgramMgr().LoadProgramRequest +=
+                new LoadProgramRequestEventHandler(ReadPluginState);
+        }
+
+        public void OnMssProgramMgrInstanceReplaced()
+        {
+            AttachHandlersToMssProgramMgrEvents();
         }
 
         public bool CanLoadChunk(VstPatchChunkInfo chunkInfo)
@@ -89,6 +113,11 @@ namespace MidiShapeShifter.Framework
         /// is null.</param>
         public void ReadPrograms(Stream stream, VstProgramCollection programs)
         {
+            if (BeforePluginDeserialized != null)
+            {
+                BeforePluginDeserialized();
+            }
+
             BinaryFormatter formatter = new BinaryFormatter();
             formatter.Binder = new DeserializationBinderForPlugins();
             SerializableRootType deserializedRoot = (SerializableRootType)formatter.Deserialize(stream);

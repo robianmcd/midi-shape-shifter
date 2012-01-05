@@ -142,6 +142,7 @@
     <Compile Include="Mss\MssComponentHub.cs" />
     <Compile Include="Mss\MssEvaluator.cs" />
     <Compile Include="Mss\MssEvent.cs" />
+    <Compile Include="Mss\MssFileSystemLocations.cs" />
     <Compile Include="Mss\MssMsg.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\CCMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\ChanAftertouchMsgInfo.cs" />
@@ -174,6 +175,9 @@
     <Compile Include="Framework\PluginPrograms.cs" />
     <Compile Include="Mss\MssParameterInfo.cs" />
     <Compile Include="Mss\MssParameters.cs" />
+    <Compile Include="Mss\Programs\MssProgramInfo.cs" />
+    <Compile Include="Mss\Programs\MssProgramMgr.cs" />
+    <Compile Include="Mss\Programs\MssProgramTreeNode.cs" />
     <Compile Include="Mss\Relays\DryMssEventRelay.cs" />
     <Compile Include="Mss\Relays\IDryMssEventOutputPort.cs" />
     <Compile Include="Mss\Relays\IDryMssEventInputPort.cs" />
@@ -274,6 +278,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\imgSaveAsBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgSaveAsBlue.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -77,6 +77,11 @@ namespace MidiShapeShifter.Framework
             get { return GetInstance<PluginPrograms>(); }
         }
 
+        public VstPluginPersistence<MssComponentHub> VstPluginPersistence
+        {
+            get { return (VstPluginPersistence<MssComponentHub>)GetInstance<IVstPluginPersistence>(); }
+        }
+
         /// <summary>
         /// Implement this when you do audio processing.
         /// </summary>
@@ -125,10 +130,15 @@ namespace MidiShapeShifter.Framework
             if (instance == null)
             {
                 var pluginPersistence = new VstPluginPersistence<MssComponentHub>();
-                pluginPersistence.Init(() => this.MssHub, this.PluginPrograms);
+                pluginPersistence.Init(() => this.MssHub, 
+                                       this.PluginPrograms, 
+                                       () => this.MssHub.MssProgramMgr);
                 pluginPersistence.PluginDeserialized += 
                     new VstPluginPersistence<MssComponentHub>.PluginDeserializedEventHandler(
                         VstPluginPersistence_PluginDeserialized);
+                pluginPersistence.BeforePluginDeserialized +=
+                    new VstPluginPersistence<MssComponentHub>.BeforePluginDeserializedEventHandler(
+                        VstPluginPersistence_BeforePluginDeserialized);
 
                 return pluginPersistence;
             }
@@ -178,7 +188,9 @@ namespace MidiShapeShifter.Framework
         {
             if (instance == null)
             {
-                return new PluginPrograms();
+                PluginPrograms pluginPrograms = new PluginPrograms();
+                pluginPrograms.Init(() => this.MssHub.MssProgramMgr);
+                return pluginPrograms;
             }
 
             return base.CreatePrograms(instance);
@@ -191,7 +203,13 @@ namespace MidiShapeShifter.Framework
             Debug.Assert(this.Host != null);
             this.MidiHandler.InitVstHost(this.Host);
             this.AudioHandler.InitVstHost(this.Host);
+            this.PluginPrograms.InitVstHost(this.Host);
             this.vstParameters.InitHostAutomation(this.Host);
+        }
+
+        private void VstPluginPersistence_BeforePluginDeserialized()
+        {
+            this.PluginEditor.OnBeforeDeserialized();
         }
 
         private void VstPluginPersistence_PluginDeserialized(MssComponentHub deserializedMssHub)
@@ -200,6 +218,9 @@ namespace MidiShapeShifter.Framework
 
             this.MidiHandler.OnRelayInstancesReplaced();
             this.vstParameters.OnMssParametersInstanceReplaced();
+            this.VstPluginPersistence.OnMssProgramMgrInstanceReplaced();
+            this.PluginPrograms.OnMssProgramMgrInstanceReplaced();
+            this.PluginEditor.OnDeserialized();
         }
     }
 }

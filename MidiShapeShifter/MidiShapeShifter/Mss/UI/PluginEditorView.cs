@@ -13,6 +13,7 @@ using MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes;
 using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.Relays;
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
+using MidiShapeShifter.Mss.Programs;
 
 using LBSoft.IndustrialCtrls.Knobs;
 
@@ -48,6 +49,8 @@ namespace MidiShapeShifter.Mss.UI
 
         protected Factory_MssMsgRangeEntryMetadata msgMetadataFactory;
         protected IFactory_MssMsgInfo msgInfoFactory;
+
+        protected MssProgramMgr programMgr;
 
         protected SerializablePluginEditorInfo persistantInfo;
 
@@ -106,7 +109,8 @@ namespace MidiShapeShifter.Mss.UI
 
         public void Init(MssParameters mssParameters, 
                          MappingManager mappingMgr, 
-                         GeneratorMappingManager genMappingMgr, 
+                         GeneratorMappingManager genMappingMgr,
+                         MssProgramMgr programMgr,
                          IDryMssEventOutputPort dryMssEventOutputPort,
                          SerializablePluginEditorInfo serializablePluginEditorInfo)
         {
@@ -115,6 +119,7 @@ namespace MidiShapeShifter.Mss.UI
             this.mssParameters = mssParameters;
             this.mappingMgr = mappingMgr;
             this.genMappingMgr = genMappingMgr;
+            this.programMgr = programMgr;
             this.dryMssEventOutputPort = dryMssEventOutputPort;
             this.persistantInfo = serializablePluginEditorInfo;
 
@@ -134,6 +139,8 @@ namespace MidiShapeShifter.Mss.UI
 
             RefreshMappingListView();
             RefreshGeneratorListView();
+
+            repopulateProgramList();
 
             ActiveGraphableEntryChanged();
         }
@@ -671,6 +678,40 @@ namespace MidiShapeShifter.Mss.UI
             return (LineItem) pane.CurveList.Find(curveItem => curveItem.Label.Text == GRAPH_MAIN_CURVE_LABEL);
         }
 
+        protected void repopulateProgramList()
+        {
+            this.programList.Text = this.programMgr.ActiveProgram.Name;
+            this.programList.DropDownItems.Clear();
+
+            populateDropDownItemsFromProgramTreeNode(this.programList.DropDownItems, 
+                                                     this.programMgr.ProgramTree);
+        }
+
+        protected void populateDropDownItemsFromProgramTreeNode(ToolStripItemCollection dropDownItems, 
+                                                                MssProgramTreeNode programTreeNode)
+        {
+            foreach (MssProgramInfo program in programTreeNode.ChildProgramsList)
+            {
+                var programMenuItem = new ToolStripMenuItem(program.Name);
+                programMenuItem.Tag = program;
+                programMenuItem.Click += new EventHandler(onProgramClicked);
+                dropDownItems.Add(programMenuItem);
+            }
+
+            foreach (MssProgramTreeNode childNode in programTreeNode.ChildTreeNodesList)
+            {
+                var programFolder = new ToolStripMenuItem(childNode.NodeName);
+                dropDownItems.Add(programFolder);
+                populateDropDownItemsFromProgramTreeNode(programFolder.DropDownItems, childNode);
+            }
+        }
+
+        private void onProgramClicked(object sender, EventArgs e)
+        {
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+            this.programMgr.OnProgramChanged((MssProgramInfo) menuItem.Tag);
+        }
+
         private void generatorListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             GraphableEntrySelectionChanged((ListView)sender, GraphableEntryType.Generator, e);
@@ -802,5 +843,18 @@ namespace MidiShapeShifter.Mss.UI
             this.persistantInfo.activeGraphableEntryIndex++;
             RefreshMappingListView();
         }
+
+        private void saveProgram_Click(object sender, EventArgs e)
+        {
+            this.programMgr.SaveActiveProgram();
+            repopulateProgramList();
+        }
+
+        private void saveProgramAs_Click(object sender, EventArgs e)
+        {
+            this.programMgr.SaveActiveProgramAsNewProgram();
+            repopulateProgramList();
+        }
+
     }
 }
