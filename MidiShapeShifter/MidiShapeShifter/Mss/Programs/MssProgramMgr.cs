@@ -214,6 +214,11 @@ namespace MidiShapeShifter.Mss.Programs
 
         public void ActivateProgramByPath(string programFilePath)
         {
+            if (programFilePath == this.ActiveProgram.FilePath)
+            {
+                return;
+            }
+
             //We don't need to set this.ActiveProgram because it will be deserialized when the
             //new instance of MssComponentHub is loaded
 

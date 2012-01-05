@@ -156,38 +156,36 @@ namespace MidiShapeShifter.Framework
             }
             set
             {
-                if (this._activeProgram != value)
-                {
-                    if (this._activeProgram != null)
-                    {
-                        this._activeProgram.IsActive = false;
-                        this._activeProgram = null;
-                    }
-
-                    if (value != null)
-                    {
-                        ActivateProgram(value);
-                    }
-                }
+                ActivateProgram(value);
             }
         }
 
         protected void ActivateProgram(VstProgram program)
         {
-            this._activeProgram = program;
-            this._activeProgram.IsActive = true;
-
-            this.Programs[0].Name = program.Name;
-            this.mssProgramMgr.ActivateProgramByName(program.Name);
-
-            if (ProgramActivated != null)
+            if (this._activeProgram != null)
             {
-                ProgramActivated();
+                this._activeProgram.IsActive = false;
+                this._activeProgram = null;
             }
 
-            if (this.vstHost != null)
+            if (program != null)
             {
-                this.vstHost.GetInstance<IVstHostShell>().UpdateDisplay();
+
+                this._activeProgram = program;
+                this._activeProgram.IsActive = true;
+
+                this.Programs[0].Name = program.Name;
+                this.mssProgramMgr.ActivateProgramByName(program.Name);
+
+                if (ProgramActivated != null)
+                {
+                    ProgramActivated();
+                }
+
+                if (this.vstHost != null)
+                {
+                    this.vstHost.GetInstance<IVstHostShell>().UpdateDisplay();
+                }
             }
         }
 
