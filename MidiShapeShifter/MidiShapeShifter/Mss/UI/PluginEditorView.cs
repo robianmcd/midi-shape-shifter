@@ -709,7 +709,7 @@ namespace MidiShapeShifter.Mss.UI
         private void onProgramClicked(object sender, EventArgs e)
         {
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
-            this.programMgr.OnProgramChanged((MssProgramInfo) menuItem.Tag);
+            this.programMgr.ActivateProgramByMssProgramInfo((MssProgramInfo) menuItem.Tag);
         }
 
         private void generatorListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -854,6 +854,18 @@ namespace MidiShapeShifter.Mss.UI
         {
             this.programMgr.SaveActiveProgramAsNewProgram();
             repopulateProgramList();
+        }
+
+        private void openProgram_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = MssProgramInfo.MSS_PROGRAM_FILE_FILTER;
+            dlg.InitialDirectory = MssFileSystemLocations.UserProgramsFolder;
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                this.programMgr.ActivateProgramByPath(dlg.FileName);
+            }
         }
 
     }

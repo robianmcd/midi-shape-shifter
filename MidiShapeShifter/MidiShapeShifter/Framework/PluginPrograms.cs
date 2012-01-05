@@ -46,6 +46,9 @@ namespace MidiShapeShifter.Framework
         public void OnMssProgramMgrInstanceReplaced()
         {
             AttachHandlersToMssProgramMgrEvents();
+
+            //Check to see if there is a new program
+            OnProgramChangeFromPlugin(this.mssProgramMgr.ActiveProgram.Name);
         }
 
         public void InitVstHost(IVstHost vstHost)
@@ -175,7 +178,7 @@ namespace MidiShapeShifter.Framework
             this._activeProgram.IsActive = true;
 
             this.Programs[0].Name = program.Name;
-            this.mssProgramMgr.OnProgramChanged(program.Name);
+            this.mssProgramMgr.ActivateProgramByName(program.Name);
 
             if (ProgramActivated != null)
             {

@@ -139,9 +139,7 @@ namespace MidiShapeShifter.Mss.Programs
         public void SaveActiveProgramAsNewProgram()
         {
             SaveFileDialog dlg = new SaveFileDialog();
-            dlg.Filter = "MSS Program (*." + MssProgramInfo.MSS_PROGRAM_FILE_EXT + ")" + 
-                         "|*." + MssProgramInfo.MSS_PROGRAM_FILE_EXT + 
-                         "|All files (*.*)|*.*";
+            dlg.Filter = MssProgramInfo.MSS_PROGRAM_FILE_FILTER;
 
             if (this.ActiveProgram.ProgramType == MssProgramType.User)
             {
@@ -190,7 +188,7 @@ namespace MidiShapeShifter.Mss.Programs
             }
         }
 
-        public void OnProgramChanged(string newActiveProgramName)
+        public void ActivateProgramByName(string newActiveProgramName)
         {
             if (newActiveProgramName == this.ActiveProgram.Name)
             {
@@ -202,38 +200,37 @@ namespace MidiShapeShifter.Mss.Programs
 
             if (newActiveProgram != null)
             {
-                OnProgramChanged(newActiveProgram);
+                ActivateProgramByPath(newActiveProgram.FilePath);
             }
         }
 
-        public void OnProgramChanged(MssProgramInfo newActiveProgram)
+        public void ActivateProgramByMssProgramInfo(MssProgramInfo newActiveProgram)
         {
             if (newActiveProgram != this.ActiveProgram)
             {
-                //We don't need to set this.ActiveProgram because it will be deserialized when the
-                //new instance of MssComponentHub is loaded
+                ActivateProgramByPath(newActiveProgram.FilePath);
+            }
+        }
 
+        public void ActivateProgramByPath(string programFilePath)
+        {
+            //We don't need to set this.ActiveProgram because it will be deserialized when the
+            //new instance of MssComponentHub is loaded
 
-                if (this.LoadProgramRequest != null)
+            if (this.LoadProgramRequest != null)
+            {
+                try
                 {
-                    try
-                    {
-                        FileStream loadProgramStream = new
-                            FileStream(newActiveProgram.FilePath, FileMode.Open);
+                    FileStream loadProgramStream = new
+                        FileStream(programFilePath, FileMode.Open);
 
-                        this.LoadProgramRequest(loadProgramStream);
-                        loadProgramStream.Close();
+                    this.LoadProgramRequest(loadProgramStream);
+                    loadProgramStream.Close();
 
-                    }
-                    catch (FileNotFoundException)
-                    {
-
-                    }
                 }
-
-                if (this.ActiveProgramChanged != null)
+                catch (FileNotFoundException)
                 {
-                    this.ActiveProgramChanged(newActiveProgram.Name);
+
                 }
             }
         }

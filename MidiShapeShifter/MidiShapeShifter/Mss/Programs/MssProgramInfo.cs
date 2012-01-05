@@ -13,6 +13,10 @@ namespace MidiShapeShifter.Mss.Programs
     public class MssProgramInfo
     {
         public const string MSS_PROGRAM_FILE_EXT = "mpgm";
+        public const string MSS_PROGRAM_FILE_FILTER = 
+            "MSS Program (*." + MssProgramInfo.MSS_PROGRAM_FILE_EXT + ")" + 
+            "|*." + MssProgramInfo.MSS_PROGRAM_FILE_EXT + 
+            "|All files (*.*)|*.*";
 
         public string Name { get; set; }
 
@@ -26,8 +30,6 @@ namespace MidiShapeShifter.Mss.Programs
 
         public void Init(MssProgramType programType, string filePath)
         {
-            Debug.Assert(programType != MssProgramType.External);
-
             this.ProgramType = programType;
             this.Name = Path.GetFileNameWithoutExtension(filePath);
             this.FilePath = filePath;

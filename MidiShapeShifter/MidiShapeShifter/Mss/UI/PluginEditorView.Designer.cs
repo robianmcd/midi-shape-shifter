@@ -33,6 +33,7 @@
             this.presetParam1Knob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
             this.presetParam1Value = new System.Windows.Forms.Label();
             this.curveGroup = new System.Windows.Forms.GroupBox();
+            this.equationBookBtn = new System.Windows.Forms.Button();
             this.presetParam4Title = new System.Windows.Forms.Label();
             this.presetParam4Value = new System.Windows.Forms.Label();
             this.presetParam4Knob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
@@ -85,27 +86,26 @@
             this.outParamsColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.overrideColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.mappingGroupBox = new System.Windows.Forms.GroupBox();
+            this.moveMappingDownBtn = new System.Windows.Forms.Button();
+            this.moveMappingUpBtn = new System.Windows.Forms.Button();
+            this.addMappingBtn = new System.Windows.Forms.Button();
+            this.editMappingBtn = new System.Windows.Forms.Button();
+            this.deleteMappingBtn = new System.Windows.Forms.Button();
             this.generatorGroupBox = new System.Windows.Forms.GroupBox();
             this.generatorListView = new System.Windows.Forms.ListView();
             this.generaotrNameColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.generatorPeriodColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.generatorLoopColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.generatorEnabledColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.addGeneratorBtn = new System.Windows.Forms.Button();
+            this.editGeneratorBtn = new System.Windows.Forms.Button();
+            this.deleteGeneratorBtn = new System.Windows.Forms.Button();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.openProgram = new System.Windows.Forms.ToolStripButton();
             this.saveSplitButton = new System.Windows.Forms.ToolStripSplitButton();
             this.saveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.programList = new System.Windows.Forms.ToolStripDropDownButton();
-            this.addGeneratorBtn = new System.Windows.Forms.Button();
-            this.editGeneratorBtn = new System.Windows.Forms.Button();
-            this.deleteGeneratorBtn = new System.Windows.Forms.Button();
-            this.equationBookBtn = new System.Windows.Forms.Button();
-            this.moveMappingDownBtn = new System.Windows.Forms.Button();
-            this.moveMappingUpBtn = new System.Windows.Forms.Button();
-            this.addMappingBtn = new System.Windows.Forms.Button();
-            this.editMappingBtn = new System.Windows.Forms.Button();
-            this.deleteMappingBtn = new System.Windows.Forms.Button();
             this.curveGroup.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.mappingGroupBox.SuspendLayout();
@@ -184,6 +184,17 @@
             this.curveGroup.TabIndex = 6;
             this.curveGroup.TabStop = false;
             this.curveGroup.Text = "Transformation";
+            // 
+            // equationBookBtn
+            // 
+            this.equationBookBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgNotebookBlue;
+            this.equationBookBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.equationBookBtn.Location = new System.Drawing.Point(242, 21);
+            this.equationBookBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.equationBookBtn.Name = "equationBookBtn";
+            this.equationBookBtn.Size = new System.Drawing.Size(24, 24);
+            this.equationBookBtn.TabIndex = 9;
+            this.equationBookBtn.UseVisualStyleBackColor = true;
             // 
             // presetParam4Title
             // 
@@ -776,172 +787,6 @@
             this.mappingGroupBox.TabStop = false;
             this.mappingGroupBox.Text = "Mapings";
             // 
-            // generatorGroupBox
-            // 
-            this.generatorGroupBox.BackColor = System.Drawing.SystemColors.Control;
-            this.generatorGroupBox.Controls.Add(this.generatorListView);
-            this.generatorGroupBox.Controls.Add(this.addGeneratorBtn);
-            this.generatorGroupBox.Controls.Add(this.editGeneratorBtn);
-            this.generatorGroupBox.Controls.Add(this.deleteGeneratorBtn);
-            this.generatorGroupBox.Location = new System.Drawing.Point(5, 205);
-            this.generatorGroupBox.Name = "generatorGroupBox";
-            this.generatorGroupBox.Size = new System.Drawing.Size(351, 133);
-            this.generatorGroupBox.TabIndex = 15;
-            this.generatorGroupBox.TabStop = false;
-            this.generatorGroupBox.Text = "Generators";
-            // 
-            // generatorListView
-            // 
-            this.generatorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.generaotrNameColHeader,
-            this.generatorPeriodColHeader,
-            this.generatorLoopColHeader,
-            this.generatorEnabledColHeader});
-            this.generatorListView.Font = new System.Drawing.Font("Arial", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.generatorListView.FullRowSelect = true;
-            this.generatorListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.generatorListView.HideSelection = false;
-            this.generatorListView.Location = new System.Drawing.Point(8, 19);
-            this.generatorListView.MultiSelect = false;
-            this.generatorListView.Name = "generatorListView";
-            this.generatorListView.Size = new System.Drawing.Size(337, 84);
-            this.generatorListView.TabIndex = 13;
-            this.generatorListView.UseCompatibleStateImageBehavior = false;
-            this.generatorListView.View = System.Windows.Forms.View.Details;
-            this.generatorListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.generatorListView_ItemSelectionChanged);
-            // 
-            // generaotrNameColHeader
-            // 
-            this.generaotrNameColHeader.Text = "Name";
-            this.generaotrNameColHeader.Width = 133;
-            // 
-            // generatorPeriodColHeader
-            // 
-            this.generatorPeriodColHeader.Text = "Period";
-            this.generatorPeriodColHeader.Width = 92;
-            // 
-            // generatorLoopColHeader
-            // 
-            this.generatorLoopColHeader.Text = "Loop";
-            this.generatorLoopColHeader.Width = 50;
-            // 
-            // generatorEnabledColHeader
-            // 
-            this.generatorEnabledColHeader.Text = "Enabled";
-            this.generatorEnabledColHeader.Width = 58;
-            // 
-            // toolStrip
-            // 
-            this.toolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(236)))));
-            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openProgram,
-            this.saveSplitButton,
-            this.programList});
-            this.toolStrip.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(641, 32);
-            this.toolStrip.TabIndex = 16;
-            this.toolStrip.Text = "Tool Strip";
-            // 
-            // openProgram
-            // 
-            this.openProgram.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.openProgram.Image = global::MidiShapeShifter.Properties.Resources.imgOpenBlue;
-            this.openProgram.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.openProgram.Name = "openProgram";
-            this.openProgram.Size = new System.Drawing.Size(23, 29);
-            this.openProgram.Text = "Open Program";
-            // 
-            // saveSplitButton
-            // 
-            this.saveSplitButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.saveSplitButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveMenuItem,
-            this.saveAsMenuItem});
-            this.saveSplitButton.Image = global::MidiShapeShifter.Properties.Resources.imgSaveBlue;
-            this.saveSplitButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.saveSplitButton.Name = "saveSplitButton";
-            this.saveSplitButton.Size = new System.Drawing.Size(32, 29);
-            this.saveSplitButton.Text = "Save Program";
-            this.saveSplitButton.ButtonClick += new System.EventHandler(this.saveProgram_Click);
-            // 
-            // saveMenuItem
-            // 
-            this.saveMenuItem.Image = global::MidiShapeShifter.Properties.Resources.imgSaveBlue;
-            this.saveMenuItem.Name = "saveMenuItem";
-            this.saveMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.saveMenuItem.Text = "Save Program";
-            this.saveMenuItem.Click += new System.EventHandler(this.saveProgram_Click);
-            // 
-            // saveAsMenuItem
-            // 
-            this.saveAsMenuItem.Name = "saveAsMenuItem";
-            this.saveAsMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.saveAsMenuItem.Text = "Save Program As...";
-            this.saveAsMenuItem.Click += new System.EventHandler(this.saveProgramAs_Click);
-            // 
-            // programList
-            // 
-            this.programList.AutoSize = false;
-            this.programList.BackColor = System.Drawing.Color.White;
-            this.programList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.programList.Image = ((System.Drawing.Image)(resources.GetObject("programList.Image")));
-            this.programList.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.programList.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
-            this.programList.Name = "programList";
-            this.programList.Size = new System.Drawing.Size(120, 22);
-            this.programList.Text = "Blank";
-            this.programList.ToolTipText = "Select a Program";
-            // 
-            // addGeneratorBtn
-            // 
-            this.addGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgAddBlue;
-            this.addGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.addGeneratorBtn.Location = new System.Drawing.Point(8, 103);
-            this.addGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.addGeneratorBtn.Name = "addGeneratorBtn";
-            this.addGeneratorBtn.Size = new System.Drawing.Size(24, 24);
-            this.addGeneratorBtn.TabIndex = 8;
-            this.addGeneratorBtn.UseVisualStyleBackColor = true;
-            this.addGeneratorBtn.Click += new System.EventHandler(this.addGeneratorBtn_Click);
-            // 
-            // editGeneratorBtn
-            // 
-            this.editGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgEditBlue;
-            this.editGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.editGeneratorBtn.Location = new System.Drawing.Point(56, 103);
-            this.editGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.editGeneratorBtn.Name = "editGeneratorBtn";
-            this.editGeneratorBtn.Size = new System.Drawing.Size(24, 24);
-            this.editGeneratorBtn.TabIndex = 10;
-            this.editGeneratorBtn.UseVisualStyleBackColor = true;
-            this.editGeneratorBtn.EnabledChanged += new System.EventHandler(this.editBtn_EnabledChanged);
-            this.editGeneratorBtn.Click += new System.EventHandler(this.editGeneratorBtn_Click);
-            // 
-            // deleteGeneratorBtn
-            // 
-            this.deleteGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDeleteBlue;
-            this.deleteGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.deleteGeneratorBtn.Location = new System.Drawing.Point(32, 103);
-            this.deleteGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.deleteGeneratorBtn.Name = "deleteGeneratorBtn";
-            this.deleteGeneratorBtn.Size = new System.Drawing.Size(24, 24);
-            this.deleteGeneratorBtn.TabIndex = 9;
-            this.deleteGeneratorBtn.UseVisualStyleBackColor = true;
-            this.deleteGeneratorBtn.EnabledChanged += new System.EventHandler(this.deleteBtn_EnabledChanged);
-            this.deleteGeneratorBtn.Click += new System.EventHandler(this.deleteGeneratorBtn_Click);
-            // 
-            // equationBookBtn
-            // 
-            this.equationBookBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgNotebookBlue;
-            this.equationBookBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.equationBookBtn.Location = new System.Drawing.Point(242, 21);
-            this.equationBookBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.equationBookBtn.Name = "equationBookBtn";
-            this.equationBookBtn.Size = new System.Drawing.Size(24, 24);
-            this.equationBookBtn.TabIndex = 9;
-            this.equationBookBtn.UseVisualStyleBackColor = true;
-            // 
             // moveMappingDownBtn
             // 
             this.moveMappingDownBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDownBlue;
@@ -1005,6 +850,162 @@
             this.deleteMappingBtn.UseVisualStyleBackColor = true;
             this.deleteMappingBtn.EnabledChanged += new System.EventHandler(this.deleteBtn_EnabledChanged);
             this.deleteMappingBtn.Click += new System.EventHandler(this.deleteMappingBtn_Click);
+            // 
+            // generatorGroupBox
+            // 
+            this.generatorGroupBox.BackColor = System.Drawing.SystemColors.Control;
+            this.generatorGroupBox.Controls.Add(this.generatorListView);
+            this.generatorGroupBox.Controls.Add(this.addGeneratorBtn);
+            this.generatorGroupBox.Controls.Add(this.editGeneratorBtn);
+            this.generatorGroupBox.Controls.Add(this.deleteGeneratorBtn);
+            this.generatorGroupBox.Location = new System.Drawing.Point(5, 205);
+            this.generatorGroupBox.Name = "generatorGroupBox";
+            this.generatorGroupBox.Size = new System.Drawing.Size(351, 133);
+            this.generatorGroupBox.TabIndex = 15;
+            this.generatorGroupBox.TabStop = false;
+            this.generatorGroupBox.Text = "Generators";
+            // 
+            // generatorListView
+            // 
+            this.generatorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.generaotrNameColHeader,
+            this.generatorPeriodColHeader,
+            this.generatorLoopColHeader,
+            this.generatorEnabledColHeader});
+            this.generatorListView.Font = new System.Drawing.Font("Arial", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.generatorListView.FullRowSelect = true;
+            this.generatorListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.generatorListView.HideSelection = false;
+            this.generatorListView.Location = new System.Drawing.Point(8, 19);
+            this.generatorListView.MultiSelect = false;
+            this.generatorListView.Name = "generatorListView";
+            this.generatorListView.Size = new System.Drawing.Size(337, 84);
+            this.generatorListView.TabIndex = 13;
+            this.generatorListView.UseCompatibleStateImageBehavior = false;
+            this.generatorListView.View = System.Windows.Forms.View.Details;
+            this.generatorListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.generatorListView_ItemSelectionChanged);
+            // 
+            // generaotrNameColHeader
+            // 
+            this.generaotrNameColHeader.Text = "Name";
+            this.generaotrNameColHeader.Width = 133;
+            // 
+            // generatorPeriodColHeader
+            // 
+            this.generatorPeriodColHeader.Text = "Period";
+            this.generatorPeriodColHeader.Width = 92;
+            // 
+            // generatorLoopColHeader
+            // 
+            this.generatorLoopColHeader.Text = "Loop";
+            this.generatorLoopColHeader.Width = 50;
+            // 
+            // generatorEnabledColHeader
+            // 
+            this.generatorEnabledColHeader.Text = "Enabled";
+            this.generatorEnabledColHeader.Width = 58;
+            // 
+            // addGeneratorBtn
+            // 
+            this.addGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgAddBlue;
+            this.addGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.addGeneratorBtn.Location = new System.Drawing.Point(8, 103);
+            this.addGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.addGeneratorBtn.Name = "addGeneratorBtn";
+            this.addGeneratorBtn.Size = new System.Drawing.Size(24, 24);
+            this.addGeneratorBtn.TabIndex = 8;
+            this.addGeneratorBtn.UseVisualStyleBackColor = true;
+            this.addGeneratorBtn.Click += new System.EventHandler(this.addGeneratorBtn_Click);
+            // 
+            // editGeneratorBtn
+            // 
+            this.editGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgEditBlue;
+            this.editGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.editGeneratorBtn.Location = new System.Drawing.Point(56, 103);
+            this.editGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.editGeneratorBtn.Name = "editGeneratorBtn";
+            this.editGeneratorBtn.Size = new System.Drawing.Size(24, 24);
+            this.editGeneratorBtn.TabIndex = 10;
+            this.editGeneratorBtn.UseVisualStyleBackColor = true;
+            this.editGeneratorBtn.EnabledChanged += new System.EventHandler(this.editBtn_EnabledChanged);
+            this.editGeneratorBtn.Click += new System.EventHandler(this.editGeneratorBtn_Click);
+            // 
+            // deleteGeneratorBtn
+            // 
+            this.deleteGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDeleteBlue;
+            this.deleteGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.deleteGeneratorBtn.Location = new System.Drawing.Point(32, 103);
+            this.deleteGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.deleteGeneratorBtn.Name = "deleteGeneratorBtn";
+            this.deleteGeneratorBtn.Size = new System.Drawing.Size(24, 24);
+            this.deleteGeneratorBtn.TabIndex = 9;
+            this.deleteGeneratorBtn.UseVisualStyleBackColor = true;
+            this.deleteGeneratorBtn.EnabledChanged += new System.EventHandler(this.deleteBtn_EnabledChanged);
+            this.deleteGeneratorBtn.Click += new System.EventHandler(this.deleteGeneratorBtn_Click);
+            // 
+            // toolStrip
+            // 
+            this.toolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(236)))));
+            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openProgram,
+            this.saveSplitButton,
+            this.programList});
+            this.toolStrip.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip.Name = "toolStrip";
+            this.toolStrip.Size = new System.Drawing.Size(641, 32);
+            this.toolStrip.TabIndex = 16;
+            this.toolStrip.Text = "Tool Strip";
+            // 
+            // openProgram
+            // 
+            this.openProgram.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.openProgram.Image = global::MidiShapeShifter.Properties.Resources.imgOpenBlue;
+            this.openProgram.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.openProgram.Name = "openProgram";
+            this.openProgram.Size = new System.Drawing.Size(23, 29);
+            this.openProgram.Text = "Open Program";
+            this.openProgram.Click += new System.EventHandler(this.openProgram_Click);
+            // 
+            // saveSplitButton
+            // 
+            this.saveSplitButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.saveSplitButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveMenuItem,
+            this.saveAsMenuItem});
+            this.saveSplitButton.Image = global::MidiShapeShifter.Properties.Resources.imgSaveBlue;
+            this.saveSplitButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.saveSplitButton.Name = "saveSplitButton";
+            this.saveSplitButton.Size = new System.Drawing.Size(32, 29);
+            this.saveSplitButton.Text = "Save Program";
+            this.saveSplitButton.ButtonClick += new System.EventHandler(this.saveProgram_Click);
+            // 
+            // saveMenuItem
+            // 
+            this.saveMenuItem.Image = global::MidiShapeShifter.Properties.Resources.imgSaveBlue;
+            this.saveMenuItem.Name = "saveMenuItem";
+            this.saveMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.saveMenuItem.Text = "Save Program";
+            this.saveMenuItem.Click += new System.EventHandler(this.saveProgram_Click);
+            // 
+            // saveAsMenuItem
+            // 
+            this.saveAsMenuItem.Name = "saveAsMenuItem";
+            this.saveAsMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.saveAsMenuItem.Text = "Save Program As...";
+            this.saveAsMenuItem.Click += new System.EventHandler(this.saveProgramAs_Click);
+            // 
+            // programList
+            // 
+            this.programList.AutoSize = false;
+            this.programList.BackColor = System.Drawing.Color.White;
+            this.programList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.programList.Image = ((System.Drawing.Image)(resources.GetObject("programList.Image")));
+            this.programList.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.programList.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.programList.Name = "programList";
+            this.programList.Size = new System.Drawing.Size(120, 22);
+            this.programList.Text = "Blank";
+            this.programList.ToolTipText = "Select a Program";
             // 
             // PluginEditorView
             // 
