@@ -680,7 +680,10 @@ namespace MidiShapeShifter.Mss.UI
 
         protected void repopulateProgramList()
         {
-            this.programList.Text = this.programMgr.ActiveProgram.Name;
+            this.programList.Text = 
+                CustomStringUtil.CreateStringWithMaxWidth(this.programMgr.ActiveProgram.Name, 
+                                                          this.programList.Width - 10,
+                                                          this.programList.Font);
             this.programList.DropDownItems.Clear();
 
             populateDropDownItemsFromProgramTreeNode(this.programList.DropDownItems, 

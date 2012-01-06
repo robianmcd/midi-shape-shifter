@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
@@ -22,13 +24,21 @@ namespace MidiShapeShifter.Framework
         protected IVstHost vstHost;
 
         /// <summary>
+        /// VstPrograms have a limit on the length of their names so this list maintains the full
+        /// name of each program
+        /// </summary>
+        protected List<string> ProgramFullNames;
+
+        /// <summary>
         /// Constructs a new instance.
         /// </summary>
         /// <param name="plugin">A reference to the plugin root object.</param>
         public PluginPrograms()
         {
-            ParameterCategories = new VstParameterCategoryCollection();
-            ParameterInfos = new VstParameterInfoCollection();
+            this.ParameterCategories = new VstParameterCategoryCollection();
+            this.ParameterInfos = new VstParameterInfoCollection();
+
+            this.ProgramFullNames = new List<string>();
         }
 
         public void Init(Func<MssProgramMgr> getMssProgramMgr)
@@ -109,10 +119,41 @@ namespace MidiShapeShifter.Framework
             foreach(MssProgramInfo progInfo in this.mssProgramMgr.FlatProgramList)
             {
                 VstProgram program = CreateProgram(ParameterInfos);
-                program.Name = progInfo.Name;
+                this.ProgramFullNames.Add(progInfo.Name);
+                program.Name = GetValidProgramName(progInfo.Name);
                 newPrograms.Add(program);
             }
             return newPrograms;
+        }
+
+        protected string GetValidProgramName(string inputProgramName)
+        {
+            if (inputProgramName.Length > Jacobi.Vst.Core.Constants.MaxProgramNameLength)
+            {
+                return inputProgramName.Substring(0, Jacobi.Vst.Core.Constants.MaxProgramNameLength);
+            }
+            else
+            {
+                return inputProgramName;    
+            }
+        }
+
+        protected string GetFullNameOfProgram(VstProgram program)
+        {
+            string fullName = "";
+
+            int programIndex = this.Programs.IndexOf(program);
+            if (programIndex > -1)
+            {
+                fullName = this.ProgramFullNames[programIndex];
+            }
+            else
+            {
+                //program should always be an element of this.Programs
+                Debug.Assert(false);
+            }
+
+            return fullName;
         }
 
         // create a program with all parameters.
@@ -175,7 +216,8 @@ namespace MidiShapeShifter.Framework
                 this._activeProgram.IsActive = true;
 
                 this.Programs[0].Name = program.Name;
-                this.mssProgramMgr.ActivateProgramByName(program.Name);
+                this.ProgramFullNames[0] = this.ProgramFullNames[this.Programs.IndexOf(program)];
+                this.mssProgramMgr.ActivateProgramByName(GetFullNameOfProgram(program));
 
                 if (ProgramActivated != null)
                 {
@@ -209,7 +251,8 @@ namespace MidiShapeShifter.Framework
 
             if (matchingProgramFound == false)
             {
-                this.Programs[0].Name = programName;
+                this.ProgramFullNames[0] = programName;
+                this.Programs[0].Name = GetValidProgramName(programName);
                 ActivateProgram(this.Programs[0]);
             }
         }

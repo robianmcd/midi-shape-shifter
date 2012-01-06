@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="CSharpUtil\DeserializationBinderForPlugins.cs" />
     <Compile Include="CSharpUtil\ReturnStatus.cs" />
+    <Compile Include="CSharpUtil\CustomStringUtil.cs" />
     <Compile Include="CSharpUtil\TwoWayDictionary.cs" />
     <Compile Include="Framework\VstParameters.cs" />
     <Compile Include="Framework\VstPluginPersistence.cs" />

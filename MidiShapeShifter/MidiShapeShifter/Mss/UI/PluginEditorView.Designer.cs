@@ -1003,7 +1003,7 @@
             this.programList.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.programList.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.programList.Name = "programList";
-            this.programList.Size = new System.Drawing.Size(120, 22);
+            this.programList.Size = new System.Drawing.Size(160, 22);
             this.programList.Text = "Blank";
             this.programList.ToolTipText = "Select a Program";
             // 
