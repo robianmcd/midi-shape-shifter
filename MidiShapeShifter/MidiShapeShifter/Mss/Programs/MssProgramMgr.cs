@@ -13,21 +13,48 @@ namespace MidiShapeShifter.Mss.Programs
     public delegate void LoadProgramRequestEventHandler(Stream loadLocation);
     public delegate void ActiveProgramChangedEventHandler(string programName);
 
-
+    /// <summary>
+    /// MssProgramMgr is responsible for storing the programs available in the plugin. The list of
+    /// programs is made up of factory programs and user programs. Factory program are distributed
+    /// with the Midi Shape Shifter installer and user programs can be created by the user. This
+    /// Class should by other classes to coordinate program information with the host and to set
+    /// the active program. 
+    /// </summary>
     [Serializable]
     public class MssProgramMgr
     {
+        /// <summary>
+        /// SaveProgramRequest is sent out when the active program should be saved to the specified
+        /// stream.
+        /// </summary>
         [field:NonSerialized]
         public event SaveProgramRequestEventHandler SaveProgramRequest;
+
+        /// <summary>
+        /// SaveProgramRequest is sent out when the active program should be loaded from the 
+        /// specified stream.
+        /// </summary>
         [field: NonSerialized]
         public event LoadProgramRequestEventHandler LoadProgramRequest;
+
+        /// <summary>
+        /// ActiveProgramChanged will be raised when MssProgramMgr's active program changes. This 
+        /// should be used to coordinate the active program shown in the plugin's GUI and the 
+        /// active program shown in the host.
+        /// </summary>
         [field: NonSerialized]
         public event ActiveProgramChangedEventHandler ActiveProgramChanged;
 
+        /// <summary>
+        /// Program info for the program that is currently loaded.
+        /// </summary>
         public MssProgramInfo ActiveProgram { get; protected set; }
 
         [NonSerialized]
         private MssProgramTreeNode _programTree;
+        /// <summary>
+        /// Stores the tree representation of the available programs.
+        /// </summary>
         public MssProgramTreeNode ProgramTree
         {
             get { return this._programTree; }
@@ -36,6 +63,9 @@ namespace MidiShapeShifter.Mss.Programs
 
         [NonSerialized]
         protected List<MssProgramInfo> _flatProgramList;
+        /// <summary>
+        /// Stores the list of available programs.
+        /// </summary>
         public List<MssProgramInfo> FlatProgramList { get { return this._flatProgramList; }
                                                       protected set { this._flatProgramList = value; } }
 
@@ -54,6 +84,7 @@ namespace MidiShapeShifter.Mss.Programs
         public void Init()
         {
             this.ActiveProgram = new MssProgramInfo();
+            //Sets the default program
             this.ActiveProgram.Init(MssProgramType.Factory, 
                                     MssFileSystemLocations.FactoryProgramsFolder + "Blank." + 
                                         MssProgramInfo.MSS_PROGRAM_FILE_EXT);
@@ -66,11 +97,19 @@ namespace MidiShapeShifter.Mss.Programs
             ReinitializeProgramCollections();
         }
 
+        /// <summary>
+        /// Reinitializes the collections containing available programs. These collections are
+        /// populated from program serializations stored on the file system.
+        /// </summary>
         protected void ReinitializeProgramCollections()
         {
+            //Clear the previously stored programs
             this.ProgramTree = new MssProgramTreeNode();
             this.FlatProgramList.Clear();
 
+            //This first program in the flat program list will always be the active program. This
+            //will ensure that the active program's name will not be changed due to a namming 
+            //conflict. 
             this.FlatProgramList.Add(this.ActiveProgram);
 
             this.ProgramTree.Init("root", null);
@@ -226,12 +265,10 @@ namespace MidiShapeShifter.Mss.Programs
             {
                 try
                 {
-                    FileStream loadProgramStream = new
-                        FileStream(programFilePath, FileMode.Open);
+                    FileStream loadProgramStream = new FileStream(programFilePath, FileMode.Open);
 
                     this.LoadProgramRequest(loadProgramStream);
                     loadProgramStream.Close();
-
                 }
                 catch (FileNotFoundException)
                 {

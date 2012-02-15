@@ -5,7 +5,7 @@ namespace MidiShapeShifter.Mss
 {
     public interface IMssEvaluator
     {
-        ReturnStatus<double> Evaluate(string expressionString, double input);
-        ReturnStatus<double[]> EvaluateMultipleInputValues(string expressionString, double[] inputValues);
+        ReturnStatus<double> Evaluate(string expressionString, MssEvaluatorInput input);
+        ReturnStatus<double[]> SampleExpressionWithDefaultInputValues(string expressionString, int numSamplePoints);
     }
 }

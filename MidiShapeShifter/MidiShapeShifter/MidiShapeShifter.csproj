@@ -142,6 +142,7 @@
     <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\MssMsgRangeEntryMetadata.cs" />
     <Compile Include="Mss\MssComponentHub.cs" />
     <Compile Include="Mss\MssEvaluator.cs" />
+    <Compile Include="Mss\MssEvaluatorInput.cs" />
     <Compile Include="Mss\MssEvent.cs" />
     <Compile Include="Mss\MssFileSystemLocations.cs" />
     <Compile Include="Mss\MssMsg.cs" />
