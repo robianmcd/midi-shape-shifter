@@ -93,6 +93,9 @@ namespace MidiShapeShifter.Mss.Mapping
                 //Initializes inMsgMetadata and outMsgMetadata
                 this.inTypeCombo.SelectedIndex = 0;
 
+                this.mappingEntry.CurveShapeInfo = new CurveShapeInfo();
+                this.mappingEntry.CurveShapeInfo.InitWithDefaultValues();
+
                 this.outSameAsInCheckBox.Checked = true;
             }
 
@@ -215,13 +218,9 @@ namespace MidiShapeShifter.Mss.Mapping
 
             if (allFieldsAreValid)
             {
-                CurveShapeInfo curveInfo = new CurveShapeInfo();
-                curveInfo.InitWithDefaultValues();
-
-                mappingEntry.InitAllMembers(this.inMsgMetadata.CreateValidMsgRange(),
-                                            this.outMsgMetadata.CreateValidMsgRange(),
-                                            this.inOverrideDupsCheckBox.Checked,
-                                            curveInfo);
+                mappingEntry.InMssMsgRange = this.inMsgMetadata.CreateValidMsgRange();
+                mappingEntry.OutMssMsgRange = this.outMsgMetadata.CreateValidMsgRange();
+                mappingEntry.OverrideDuplicates = this.inOverrideDupsCheckBox.Checked;
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
