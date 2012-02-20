@@ -630,6 +630,16 @@ namespace MidiShapeShifter.Mss.UI
             {
                 double[] GraphYValues = evalReturnStatus.ReturnVal;
 
+                //If values are outside of the range 0 to 1 then they will not be mapped
+                //So they should not be shown on the graph.
+                for (int i = 0; i < GraphYValues.Length; i++ )
+                {
+                    if (GraphYValues[i] < 0 || GraphYValues[i] > 1)
+                    {
+                        GraphYValues[i] = -1;
+                    }
+                }
+
                 ActiveGraphableEntry.CurveShapeInfo.Equation = expressionString;
 
                 LineItem mainCurve = GetMainCurve();
@@ -639,10 +649,14 @@ namespace MidiShapeShifter.Mss.UI
             }
             else
             {
-                if (this.ActiveGraphableEntry == null)
+               if (this.ActiveGraphableEntry == null)
                 {
                     GetMainCurve().Points = new PointPairList();
                     this.mainGraphControl.Invalidate();
+                }
+                else
+                {
+                    //TODO: show that the line is not using the current formula.
                 }
             }
 
@@ -650,26 +664,12 @@ namespace MidiShapeShifter.Mss.UI
 
         protected void InitiaizeGraph()
         {
+            EqGraphConfig.ConfigureEqGraph(this.mainGraphControl);
+
+            LineItem mainCurve =  EqGraphConfig.CreateEqCurve(GRAPH_MAIN_CURVE_LABEL);
+            
             // get a reference to the GraphPane
             GraphPane pane = this.mainGraphControl.GraphPane;
-
-            // Set the Titles
-            pane.Title.Text = "";
-
-            pane.XAxis.Title.Text = "Input";
-            pane.XAxis.Scale.Min = 0;
-            pane.XAxis.Scale.Max = 1;
-
-            pane.YAxis.Title.Text = "Output";
-            pane.YAxis.Scale.Min = 0;
-            pane.YAxis.Scale.Max = 1;
-
-
-            LineItem mainCurve = new LineItem(GRAPH_MAIN_CURVE_LABEL);
-            mainCurve.Color = Color.Blue;
-            mainCurve.Label.IsVisible = false;
-            mainCurve.Symbol.IsVisible = false;
-
             pane.CurveList.Add(mainCurve);
         }
 
