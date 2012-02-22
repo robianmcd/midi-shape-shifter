@@ -59,10 +59,11 @@ namespace MidiShapeShifter.Mss.Generator
         public void Init(IHostInfoOutputPort hostInfoOutputPort, 
                          IWetMssEventOutputPort wetMssEventOutputPort, 
                          IDryMssEventInputPort dryMssEventInputPort,
-                         IGeneratorMappingManager generatorMappingMgr)
+                         IGeneratorMappingManager generatorMappingMgr,
+                         IMssParameterViewer mssParameters)
         {
             this.generatorMappingMgr = generatorMappingMgr;
-            this.mssMsgProcessor.Init(generatorMappingMgr);
+            this.mssMsgProcessor.Init(generatorMappingMgr, mssParameters);
 
             //Adds listener for generator toggle messages.
             wetMssEventOutputPort.WetMssEventsReceived += new 

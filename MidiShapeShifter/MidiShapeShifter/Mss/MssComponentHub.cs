@@ -132,11 +132,15 @@ namespace MidiShapeShifter.Mss
             this.msgInfoFactory.Init(this.genMappingMgr);
 
             this.sendEventsToHostTrigger.Init(this.HostInfoOutputPort, this.WetMssEventInputPort);
-            this.dryMssEventHandler.Init(this.DryMssEventOutputPort, this.WetMssEventInputPort, this.mappingMgr);
+            this.dryMssEventHandler.Init(this.DryMssEventOutputPort, 
+                                         this.WetMssEventInputPort, 
+                                         this.mappingMgr, 
+                                         this.MssParameters);
             this.mssEventGenrator.Init(this.HostInfoOutputPort,
                                        this.WetMssEventOutputPort,
                                        this.DryMssEventInputPort,
-                                       this.genMappingMgr);
+                                       this.genMappingMgr,
+                                       this.MssParameters);
         }
 
         [OnDeserializing]

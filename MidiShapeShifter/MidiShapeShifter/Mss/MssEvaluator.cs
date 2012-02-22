@@ -22,7 +22,8 @@ namespace MidiShapeShifter.Mss
             return EvaluateExpression(expression, input);
         }
 
-        public ReturnStatus<double[]> SampleExpressionWithDefaultInputValues(string expressionString, int numSamplePoints)
+        public ReturnStatus<double[]> SampleExpressionWithDefaultInputValues(
+                string expressionString, int numSamplePoints, IMssParameterViewer mssParameterViewer)
         {
             double[] outputValues = new double[numSamplePoints];
             bool outputIsValid;
@@ -42,9 +43,14 @@ namespace MidiShapeShifter.Mss
                 MssEvaluatorInput defaultInput = new MssEvaluatorInput();
                 for (int i = 0; i < numSamplePoints; i++)
                 {
-                    defaultInput.Reinit((double)i / (double) numSamplePoints,
-                                      (double)i / (double) numSamplePoints,
-                                      (double)i / (double) numSamplePoints);
+                    defaultInput.Reinit(
+                        (double)i / (double) numSamplePoints,
+                        (double)i / (double) numSamplePoints,
+                        (double)i / (double) numSamplePoints,
+                        mssParameterViewer.GetParameterValue(MssParameterID.VariableA),
+                        mssParameterViewer.GetParameterValue(MssParameterID.VariableB),
+                        mssParameterViewer.GetParameterValue(MssParameterID.VariableC),
+                        mssParameterViewer.GetParameterValue(MssParameterID.VariableD));
                     ReturnStatus<double> evalReturnStatus = EvaluateExpression(expression, defaultInput);
                     if (evalReturnStatus.IsValid == true)
                     {
@@ -101,6 +107,11 @@ namespace MidiShapeShifter.Mss
             expression.Parameters["vel"] = input.RelData3;
             expression.Parameters["velocity"] = input.RelData3;
             expression.Parameters["ccval"] = input.RelData3;
+
+            expression.Parameters["a"] = input.varA;
+            expression.Parameters["b"] = input.varB;
+            expression.Parameters["c"] = input.varC;
+            expression.Parameters["d"] = input.varD;
         }
 
 

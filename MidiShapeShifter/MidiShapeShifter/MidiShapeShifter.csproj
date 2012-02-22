@@ -121,6 +121,7 @@
     <Compile Include="Mss\IMssEvaluator.cs" />
     <Compile Include="Mss\IMssMsgProcessor.cs" />
     <Compile Include="Mss\IMssMsgRange.cs" />
+    <Compile Include="Mss\IMssParameterViewer.cs" />
     <Compile Include="Mss\Mapping\IGraphableMappingManager.cs" />
     <Compile Include="Mss\Mapping\IMappingEntry.cs" />
     <Compile Include="Mss\Mapping\IMappingManager.cs" />

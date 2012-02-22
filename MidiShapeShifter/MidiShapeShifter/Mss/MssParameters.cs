@@ -22,7 +22,7 @@ namespace MidiShapeShifter.Mss
     ///     classes can subscribe to if they want to be notified of changes to parameter information.
     /// </summary>
     [Serializable]
-    public class MssParameters
+    public class MssParameters : MidiShapeShifter.Mss.IMssParameterViewer
     {
         //These events will be thrown whenever a parameter is modified
         [field: NonSerialized]

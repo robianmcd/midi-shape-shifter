@@ -21,6 +21,7 @@ namespace MidiShapeShifter.Mss
     {
         protected IGraphableMappingManager mappingMgr;
 
+        protected IMssParameterViewer mssParameterViewer;
         protected IMssEvaluator evaluator;
 
         public MssMsgProcessor()
@@ -28,11 +29,12 @@ namespace MidiShapeShifter.Mss
             this.evaluator = IocMgr.Kernal.Get<IMssEvaluator>();
         }
 
-        public void Init(IGraphableMappingManager mappingMgr)
+        public void Init(IGraphableMappingManager mappingMgr, IMssParameterViewer mssParameterViewer)
         {
             Debug.Assert(mappingMgr != null);
 
-            this.mappingMgr = mappingMgr;            
+            this.mssParameterViewer = mssParameterViewer;
+            this.mappingMgr = mappingMgr;
         }
 
         /// <summary>
@@ -54,11 +56,7 @@ namespace MidiShapeShifter.Mss
             {
                 foreach (IMappingEntry entry in mappingEntries)
                 {
-                    double relativeData1 = (double)mssMsg.Data1 / (double)entry.InMssMsgRange.MsgInfo.MaxData1Value;
-                    double relativeData2 = (double)mssMsg.Data2 / (double)entry.InMssMsgRange.MsgInfo.MaxData2Value;
-                    double relativeData3 = (double)mssMsg.Data3 / (double)entry.InMssMsgRange.MsgInfo.MaxData3Value;
-                    MssEvaluatorInput evalInput = new MssEvaluatorInput();
-                    evalInput.Reinit(relativeData1, relativeData2, relativeData3);
+                    MssEvaluatorInput evalInput = CreateEvalInput(entry, mssMsg);
                     ReturnStatus<double> evalReturnStatus = this.evaluator.Evaluate(entry.CurveShapeInfo.Equation, evalInput);
 
                     //The return value must be valid because the equation in the mapping entry must be valid.
@@ -92,6 +90,22 @@ namespace MidiShapeShifter.Mss
             }
 
             return outMessages;
+        }
+
+        protected MssEvaluatorInput CreateEvalInput(IMappingEntry entry, MssMsg mssMsg)
+        {
+            double relativeData1 = (double)mssMsg.Data1 / (double)entry.InMssMsgRange.MsgInfo.MaxData1Value;
+            double relativeData2 = (double)mssMsg.Data2 / (double)entry.InMssMsgRange.MsgInfo.MaxData2Value;
+            double relativeData3 = (double)mssMsg.Data3 / (double)entry.InMssMsgRange.MsgInfo.MaxData3Value;
+ 
+            MssEvaluatorInput evalInput = new MssEvaluatorInput();
+            evalInput.Reinit(relativeData1, relativeData2, relativeData3,
+                             this.mssParameterViewer.GetParameterValue(MssParameterID.VariableA),
+                             this.mssParameterViewer.GetParameterValue(MssParameterID.VariableB),
+                             this.mssParameterViewer.GetParameterValue(MssParameterID.VariableC),
+                             this.mssParameterViewer.GetParameterValue(MssParameterID.VariableD));
+
+            return evalInput;
         }
 
         /// <summary>

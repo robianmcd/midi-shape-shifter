@@ -49,31 +49,15 @@
             this.curveShapePresetRadio = new System.Windows.Forms.RadioButton();
             this.curveShapeEquationRadio = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.variableDMinLbl = new System.Windows.Forms.Label();
-            this.variableDMin = new System.Windows.Forms.TextBox();
-            this.variableDMax = new System.Windows.Forms.TextBox();
-            this.variableDMaxLbl = new System.Windows.Forms.Label();
             this.variableDValue = new System.Windows.Forms.Label();
             this.variableDTitle = new System.Windows.Forms.Label();
             this.variableDKnob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
-            this.variableCMinLbl = new System.Windows.Forms.Label();
-            this.variableCMin = new System.Windows.Forms.TextBox();
-            this.variableCMax = new System.Windows.Forms.TextBox();
-            this.variableCMaxLbl = new System.Windows.Forms.Label();
             this.variableCValue = new System.Windows.Forms.Label();
             this.variableCTitle = new System.Windows.Forms.Label();
             this.variableCKnob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
-            this.variableBMinLbl = new System.Windows.Forms.Label();
-            this.variableBMin = new System.Windows.Forms.TextBox();
-            this.variableBMax = new System.Windows.Forms.TextBox();
-            this.variableBMaxLbl = new System.Windows.Forms.Label();
             this.variableBValue = new System.Windows.Forms.Label();
             this.variableBTitle = new System.Windows.Forms.Label();
             this.variableBKnob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
-            this.variableAMinLbl = new System.Windows.Forms.Label();
-            this.variableAMin = new System.Windows.Forms.TextBox();
-            this.variableAMax = new System.Windows.Forms.TextBox();
-            this.variableAMaxLbl = new System.Windows.Forms.Label();
             this.variableAValue = new System.Windows.Forms.Label();
             this.variableATitle = new System.Windows.Forms.Label();
             this.variableAKnob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
@@ -389,80 +373,30 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.variableDMinLbl);
-            this.groupBox1.Controls.Add(this.variableDMin);
-            this.groupBox1.Controls.Add(this.variableDMax);
-            this.groupBox1.Controls.Add(this.variableDMaxLbl);
             this.groupBox1.Controls.Add(this.variableDValue);
             this.groupBox1.Controls.Add(this.variableDTitle);
             this.groupBox1.Controls.Add(this.variableDKnob);
-            this.groupBox1.Controls.Add(this.variableCMinLbl);
-            this.groupBox1.Controls.Add(this.variableCMin);
-            this.groupBox1.Controls.Add(this.variableCMax);
-            this.groupBox1.Controls.Add(this.variableCMaxLbl);
             this.groupBox1.Controls.Add(this.variableCValue);
             this.groupBox1.Controls.Add(this.variableCTitle);
             this.groupBox1.Controls.Add(this.variableCKnob);
-            this.groupBox1.Controls.Add(this.variableBMinLbl);
-            this.groupBox1.Controls.Add(this.variableBMin);
-            this.groupBox1.Controls.Add(this.variableBMax);
-            this.groupBox1.Controls.Add(this.variableBMaxLbl);
             this.groupBox1.Controls.Add(this.variableBValue);
             this.groupBox1.Controls.Add(this.variableBTitle);
             this.groupBox1.Controls.Add(this.variableBKnob);
-            this.groupBox1.Controls.Add(this.variableAMinLbl);
-            this.groupBox1.Controls.Add(this.variableAMin);
-            this.groupBox1.Controls.Add(this.variableAMax);
-            this.groupBox1.Controls.Add(this.variableAMaxLbl);
             this.groupBox1.Controls.Add(this.variableAValue);
             this.groupBox1.Controls.Add(this.variableATitle);
             this.groupBox1.Controls.Add(this.variableAKnob);
-            this.groupBox1.Location = new System.Drawing.Point(5, 344);
+            this.groupBox1.Location = new System.Drawing.Point(5, 388);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(351, 140);
+            this.groupBox1.Size = new System.Drawing.Size(351, 96);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Variables";
             // 
-            // variableDMinLbl
-            // 
-            this.variableDMinLbl.AutoSize = true;
-            this.variableDMinLbl.Location = new System.Drawing.Point(266, 113);
-            this.variableDMinLbl.Name = "variableDMinLbl";
-            this.variableDMinLbl.Size = new System.Drawing.Size(27, 13);
-            this.variableDMinLbl.TabIndex = 43;
-            this.variableDMinLbl.Text = "Min:";
-            // 
-            // variableDMin
-            // 
-            this.variableDMin.Location = new System.Drawing.Point(296, 110);
-            this.variableDMin.Name = "variableDMin";
-            this.variableDMin.Size = new System.Drawing.Size(40, 20);
-            this.variableDMin.TabIndex = 42;
-            this.variableDMin.Text = "0";
-            // 
-            // variableDMax
-            // 
-            this.variableDMax.Location = new System.Drawing.Point(296, 84);
-            this.variableDMax.Name = "variableDMax";
-            this.variableDMax.Size = new System.Drawing.Size(40, 20);
-            this.variableDMax.TabIndex = 41;
-            this.variableDMax.Text = "1";
-            // 
-            // variableDMaxLbl
-            // 
-            this.variableDMaxLbl.AutoSize = true;
-            this.variableDMaxLbl.Location = new System.Drawing.Point(266, 87);
-            this.variableDMaxLbl.Name = "variableDMaxLbl";
-            this.variableDMaxLbl.Size = new System.Drawing.Size(30, 13);
-            this.variableDMaxLbl.TabIndex = 40;
-            this.variableDMaxLbl.Text = "Max:";
-            // 
             // variableDValue
             // 
             this.variableDValue.BackColor = System.Drawing.Color.White;
-            this.variableDValue.Location = new System.Drawing.Point(296, 63);
+            this.variableDValue.Location = new System.Drawing.Point(280, 68);
             this.variableDValue.Name = "variableDValue";
             this.variableDValue.Size = new System.Drawing.Size(40, 16);
             this.variableDValue.TabIndex = 39;
@@ -471,7 +405,7 @@
             // variableDTitle
             // 
             this.variableDTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.variableDTitle.Location = new System.Drawing.Point(286, 14);
+            this.variableDTitle.Location = new System.Drawing.Point(270, 19);
             this.variableDTitle.Name = "variableDTitle";
             this.variableDTitle.Size = new System.Drawing.Size(10, 13);
             this.variableDTitle.TabIndex = 37;
@@ -487,7 +421,7 @@
             this.variableDKnob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("variableDKnob.KnobCenter")));
             this.variableDKnob.KnobColor = System.Drawing.Color.Silver;
             this.variableDKnob.KnobRect = ((System.Drawing.RectangleF)(resources.GetObject("variableDKnob.KnobRect")));
-            this.variableDKnob.Location = new System.Drawing.Point(296, 20);
+            this.variableDKnob.Location = new System.Drawing.Point(280, 25);
             this.variableDKnob.MaxValue = 1F;
             this.variableDKnob.MinValue = 0F;
             this.variableDKnob.Name = "variableDKnob";
@@ -500,44 +434,10 @@
             this.variableDKnob.Value = 0F;
             this.variableDKnob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.lbKnob_KnobChangeValue);
             // 
-            // variableCMinLbl
-            // 
-            this.variableCMinLbl.AutoSize = true;
-            this.variableCMinLbl.Location = new System.Drawing.Point(183, 113);
-            this.variableCMinLbl.Name = "variableCMinLbl";
-            this.variableCMinLbl.Size = new System.Drawing.Size(27, 13);
-            this.variableCMinLbl.TabIndex = 36;
-            this.variableCMinLbl.Text = "Min:";
-            // 
-            // variableCMin
-            // 
-            this.variableCMin.Location = new System.Drawing.Point(213, 110);
-            this.variableCMin.Name = "variableCMin";
-            this.variableCMin.Size = new System.Drawing.Size(40, 20);
-            this.variableCMin.TabIndex = 35;
-            this.variableCMin.Text = "0";
-            // 
-            // variableCMax
-            // 
-            this.variableCMax.Location = new System.Drawing.Point(213, 84);
-            this.variableCMax.Name = "variableCMax";
-            this.variableCMax.Size = new System.Drawing.Size(40, 20);
-            this.variableCMax.TabIndex = 34;
-            this.variableCMax.Text = "1";
-            // 
-            // variableCMaxLbl
-            // 
-            this.variableCMaxLbl.AutoSize = true;
-            this.variableCMaxLbl.Location = new System.Drawing.Point(183, 87);
-            this.variableCMaxLbl.Name = "variableCMaxLbl";
-            this.variableCMaxLbl.Size = new System.Drawing.Size(30, 13);
-            this.variableCMaxLbl.TabIndex = 33;
-            this.variableCMaxLbl.Text = "Max:";
-            // 
             // variableCValue
             // 
             this.variableCValue.BackColor = System.Drawing.Color.White;
-            this.variableCValue.Location = new System.Drawing.Point(213, 63);
+            this.variableCValue.Location = new System.Drawing.Point(197, 68);
             this.variableCValue.Name = "variableCValue";
             this.variableCValue.Size = new System.Drawing.Size(40, 16);
             this.variableCValue.TabIndex = 32;
@@ -546,7 +446,7 @@
             // variableCTitle
             // 
             this.variableCTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.variableCTitle.Location = new System.Drawing.Point(203, 14);
+            this.variableCTitle.Location = new System.Drawing.Point(187, 19);
             this.variableCTitle.Name = "variableCTitle";
             this.variableCTitle.Size = new System.Drawing.Size(10, 13);
             this.variableCTitle.TabIndex = 30;
@@ -562,7 +462,7 @@
             this.variableCKnob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("variableCKnob.KnobCenter")));
             this.variableCKnob.KnobColor = System.Drawing.Color.Silver;
             this.variableCKnob.KnobRect = ((System.Drawing.RectangleF)(resources.GetObject("variableCKnob.KnobRect")));
-            this.variableCKnob.Location = new System.Drawing.Point(213, 20);
+            this.variableCKnob.Location = new System.Drawing.Point(197, 25);
             this.variableCKnob.MaxValue = 1F;
             this.variableCKnob.MinValue = 0F;
             this.variableCKnob.Name = "variableCKnob";
@@ -575,44 +475,10 @@
             this.variableCKnob.Value = 0F;
             this.variableCKnob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.lbKnob_KnobChangeValue);
             // 
-            // variableBMinLbl
-            // 
-            this.variableBMinLbl.AutoSize = true;
-            this.variableBMinLbl.Location = new System.Drawing.Point(100, 113);
-            this.variableBMinLbl.Name = "variableBMinLbl";
-            this.variableBMinLbl.Size = new System.Drawing.Size(27, 13);
-            this.variableBMinLbl.TabIndex = 29;
-            this.variableBMinLbl.Text = "Min:";
-            // 
-            // variableBMin
-            // 
-            this.variableBMin.Location = new System.Drawing.Point(130, 110);
-            this.variableBMin.Name = "variableBMin";
-            this.variableBMin.Size = new System.Drawing.Size(40, 20);
-            this.variableBMin.TabIndex = 28;
-            this.variableBMin.Text = "0";
-            // 
-            // variableBMax
-            // 
-            this.variableBMax.Location = new System.Drawing.Point(130, 84);
-            this.variableBMax.Name = "variableBMax";
-            this.variableBMax.Size = new System.Drawing.Size(40, 20);
-            this.variableBMax.TabIndex = 27;
-            this.variableBMax.Text = "1";
-            // 
-            // variableBMaxLbl
-            // 
-            this.variableBMaxLbl.AutoSize = true;
-            this.variableBMaxLbl.Location = new System.Drawing.Point(100, 87);
-            this.variableBMaxLbl.Name = "variableBMaxLbl";
-            this.variableBMaxLbl.Size = new System.Drawing.Size(30, 13);
-            this.variableBMaxLbl.TabIndex = 26;
-            this.variableBMaxLbl.Text = "Max:";
-            // 
             // variableBValue
             // 
             this.variableBValue.BackColor = System.Drawing.Color.White;
-            this.variableBValue.Location = new System.Drawing.Point(130, 63);
+            this.variableBValue.Location = new System.Drawing.Point(114, 68);
             this.variableBValue.Name = "variableBValue";
             this.variableBValue.Size = new System.Drawing.Size(40, 16);
             this.variableBValue.TabIndex = 25;
@@ -621,7 +487,7 @@
             // variableBTitle
             // 
             this.variableBTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.variableBTitle.Location = new System.Drawing.Point(120, 14);
+            this.variableBTitle.Location = new System.Drawing.Point(104, 19);
             this.variableBTitle.Name = "variableBTitle";
             this.variableBTitle.Size = new System.Drawing.Size(10, 13);
             this.variableBTitle.TabIndex = 23;
@@ -637,7 +503,7 @@
             this.variableBKnob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("variableBKnob.KnobCenter")));
             this.variableBKnob.KnobColor = System.Drawing.Color.Silver;
             this.variableBKnob.KnobRect = ((System.Drawing.RectangleF)(resources.GetObject("variableBKnob.KnobRect")));
-            this.variableBKnob.Location = new System.Drawing.Point(130, 20);
+            this.variableBKnob.Location = new System.Drawing.Point(114, 25);
             this.variableBKnob.MaxValue = 1F;
             this.variableBKnob.MinValue = 0F;
             this.variableBKnob.Name = "variableBKnob";
@@ -650,44 +516,10 @@
             this.variableBKnob.Value = 0F;
             this.variableBKnob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.lbKnob_KnobChangeValue);
             // 
-            // variableAMinLbl
-            // 
-            this.variableAMinLbl.AutoSize = true;
-            this.variableAMinLbl.Location = new System.Drawing.Point(17, 114);
-            this.variableAMinLbl.Name = "variableAMinLbl";
-            this.variableAMinLbl.Size = new System.Drawing.Size(27, 13);
-            this.variableAMinLbl.TabIndex = 22;
-            this.variableAMinLbl.Text = "Min:";
-            // 
-            // variableAMin
-            // 
-            this.variableAMin.Location = new System.Drawing.Point(47, 111);
-            this.variableAMin.Name = "variableAMin";
-            this.variableAMin.Size = new System.Drawing.Size(40, 20);
-            this.variableAMin.TabIndex = 21;
-            this.variableAMin.Text = "0";
-            // 
-            // variableAMax
-            // 
-            this.variableAMax.Location = new System.Drawing.Point(47, 85);
-            this.variableAMax.Name = "variableAMax";
-            this.variableAMax.Size = new System.Drawing.Size(40, 20);
-            this.variableAMax.TabIndex = 20;
-            this.variableAMax.Text = "1";
-            // 
-            // variableAMaxLbl
-            // 
-            this.variableAMaxLbl.AutoSize = true;
-            this.variableAMaxLbl.Location = new System.Drawing.Point(17, 88);
-            this.variableAMaxLbl.Name = "variableAMaxLbl";
-            this.variableAMaxLbl.Size = new System.Drawing.Size(30, 13);
-            this.variableAMaxLbl.TabIndex = 19;
-            this.variableAMaxLbl.Text = "Max:";
-            // 
             // variableAValue
             // 
             this.variableAValue.BackColor = System.Drawing.Color.White;
-            this.variableAValue.Location = new System.Drawing.Point(47, 64);
+            this.variableAValue.Location = new System.Drawing.Point(31, 69);
             this.variableAValue.Name = "variableAValue";
             this.variableAValue.Size = new System.Drawing.Size(40, 16);
             this.variableAValue.TabIndex = 18;
@@ -696,7 +528,7 @@
             // variableATitle
             // 
             this.variableATitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.variableATitle.Location = new System.Drawing.Point(37, 15);
+            this.variableATitle.Location = new System.Drawing.Point(21, 20);
             this.variableATitle.Name = "variableATitle";
             this.variableATitle.Size = new System.Drawing.Size(10, 13);
             this.variableATitle.TabIndex = 0;
@@ -712,7 +544,7 @@
             this.variableAKnob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("variableAKnob.KnobCenter")));
             this.variableAKnob.KnobColor = System.Drawing.Color.Silver;
             this.variableAKnob.KnobRect = ((System.Drawing.RectangleF)(resources.GetObject("variableAKnob.KnobRect")));
-            this.variableAKnob.Location = new System.Drawing.Point(47, 21);
+            this.variableAKnob.Location = new System.Drawing.Point(31, 26);
             this.variableAKnob.MaxValue = 1F;
             this.variableAKnob.MinValue = 0F;
             this.variableAKnob.Name = "variableAKnob";
@@ -742,7 +574,7 @@
             this.mappingListView.Location = new System.Drawing.Point(8, 16);
             this.mappingListView.MultiSelect = false;
             this.mappingListView.Name = "mappingListView";
-            this.mappingListView.Size = new System.Drawing.Size(337, 118);
+            this.mappingListView.Size = new System.Drawing.Size(337, 135);
             this.mappingListView.TabIndex = 13;
             this.mappingListView.UseCompatibleStateImageBehavior = false;
             this.mappingListView.View = System.Windows.Forms.View.Details;
@@ -793,7 +625,7 @@
             this.mappingGroupBox.Controls.Add(this.deleteMappingBtn);
             this.mappingGroupBox.Location = new System.Drawing.Point(5, 35);
             this.mappingGroupBox.Name = "mappingGroupBox";
-            this.mappingGroupBox.Size = new System.Drawing.Size(351, 164);
+            this.mappingGroupBox.Size = new System.Drawing.Size(351, 181);
             this.mappingGroupBox.TabIndex = 14;
             this.mappingGroupBox.TabStop = false;
             this.mappingGroupBox.Text = "Mapings";
@@ -802,7 +634,7 @@
             // 
             this.moveMappingDownBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDownBlue;
             this.moveMappingDownBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.moveMappingDownBtn.Location = new System.Drawing.Point(105, 137);
+            this.moveMappingDownBtn.Location = new System.Drawing.Point(105, 154);
             this.moveMappingDownBtn.Margin = new System.Windows.Forms.Padding(0);
             this.moveMappingDownBtn.Name = "moveMappingDownBtn";
             this.moveMappingDownBtn.Size = new System.Drawing.Size(24, 24);
@@ -815,7 +647,7 @@
             // 
             this.moveMappingUpBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgUpBlue;
             this.moveMappingUpBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.moveMappingUpBtn.Location = new System.Drawing.Point(81, 137);
+            this.moveMappingUpBtn.Location = new System.Drawing.Point(81, 154);
             this.moveMappingUpBtn.Margin = new System.Windows.Forms.Padding(0);
             this.moveMappingUpBtn.Name = "moveMappingUpBtn";
             this.moveMappingUpBtn.Size = new System.Drawing.Size(24, 24);
@@ -828,7 +660,7 @@
             // 
             this.addMappingBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgAddBlue;
             this.addMappingBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.addMappingBtn.Location = new System.Drawing.Point(8, 137);
+            this.addMappingBtn.Location = new System.Drawing.Point(8, 154);
             this.addMappingBtn.Margin = new System.Windows.Forms.Padding(0);
             this.addMappingBtn.Name = "addMappingBtn";
             this.addMappingBtn.Size = new System.Drawing.Size(24, 24);
@@ -840,7 +672,7 @@
             // 
             this.editMappingBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgEditBlue;
             this.editMappingBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.editMappingBtn.Location = new System.Drawing.Point(57, 137);
+            this.editMappingBtn.Location = new System.Drawing.Point(57, 154);
             this.editMappingBtn.Margin = new System.Windows.Forms.Padding(0);
             this.editMappingBtn.Name = "editMappingBtn";
             this.editMappingBtn.Size = new System.Drawing.Size(24, 24);
@@ -853,7 +685,7 @@
             // 
             this.deleteMappingBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDeleteBlue;
             this.deleteMappingBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.deleteMappingBtn.Location = new System.Drawing.Point(32, 137);
+            this.deleteMappingBtn.Location = new System.Drawing.Point(32, 154);
             this.deleteMappingBtn.Margin = new System.Windows.Forms.Padding(0);
             this.deleteMappingBtn.Name = "deleteMappingBtn";
             this.deleteMappingBtn.Size = new System.Drawing.Size(24, 24);
@@ -869,9 +701,9 @@
             this.generatorGroupBox.Controls.Add(this.addGeneratorBtn);
             this.generatorGroupBox.Controls.Add(this.editGeneratorBtn);
             this.generatorGroupBox.Controls.Add(this.deleteGeneratorBtn);
-            this.generatorGroupBox.Location = new System.Drawing.Point(5, 199);
+            this.generatorGroupBox.Location = new System.Drawing.Point(5, 222);
             this.generatorGroupBox.Name = "generatorGroupBox";
-            this.generatorGroupBox.Size = new System.Drawing.Size(351, 139);
+            this.generatorGroupBox.Size = new System.Drawing.Size(351, 160);
             this.generatorGroupBox.TabIndex = 15;
             this.generatorGroupBox.TabStop = false;
             this.generatorGroupBox.Text = "Generators";
@@ -890,7 +722,7 @@
             this.generatorListView.Location = new System.Drawing.Point(8, 19);
             this.generatorListView.MultiSelect = false;
             this.generatorListView.Name = "generatorListView";
-            this.generatorListView.Size = new System.Drawing.Size(337, 90);
+            this.generatorListView.Size = new System.Drawing.Size(337, 111);
             this.generatorListView.TabIndex = 13;
             this.generatorListView.UseCompatibleStateImageBehavior = false;
             this.generatorListView.View = System.Windows.Forms.View.Details;
@@ -920,7 +752,7 @@
             // 
             this.addGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgAddBlue;
             this.addGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.addGeneratorBtn.Location = new System.Drawing.Point(8, 112);
+            this.addGeneratorBtn.Location = new System.Drawing.Point(8, 133);
             this.addGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
             this.addGeneratorBtn.Name = "addGeneratorBtn";
             this.addGeneratorBtn.Size = new System.Drawing.Size(24, 24);
@@ -932,7 +764,7 @@
             // 
             this.editGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgEditBlue;
             this.editGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.editGeneratorBtn.Location = new System.Drawing.Point(57, 112);
+            this.editGeneratorBtn.Location = new System.Drawing.Point(57, 133);
             this.editGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
             this.editGeneratorBtn.Name = "editGeneratorBtn";
             this.editGeneratorBtn.Size = new System.Drawing.Size(24, 24);
@@ -945,7 +777,7 @@
             // 
             this.deleteGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDeleteBlue;
             this.deleteGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.deleteGeneratorBtn.Location = new System.Drawing.Point(32, 112);
+            this.deleteGeneratorBtn.Location = new System.Drawing.Point(32, 133);
             this.deleteGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
             this.deleteGeneratorBtn.Name = "deleteGeneratorBtn";
             this.deleteGeneratorBtn.Size = new System.Drawing.Size(24, 24);
@@ -1033,7 +865,6 @@
             this.curveGroup.ResumeLayout(false);
             this.curveGroup.PerformLayout();
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.mappingGroupBox.ResumeLayout(false);
             this.generatorGroupBox.ResumeLayout(false);
             this.toolStrip.ResumeLayout(false);
@@ -1067,28 +898,12 @@
         private System.Windows.Forms.Label variableATitle;
         private System.Windows.Forms.Label variableAValue;
         private LBSoft.IndustrialCtrls.Knobs.LBKnob variableAKnob;
-        private System.Windows.Forms.Label variableAMaxLbl;
-        private System.Windows.Forms.Label variableAMinLbl;
-        private System.Windows.Forms.TextBox variableAMin;
-        private System.Windows.Forms.TextBox variableAMax;
-        private System.Windows.Forms.Label variableDMinLbl;
-        private System.Windows.Forms.TextBox variableDMin;
-        private System.Windows.Forms.TextBox variableDMax;
-        private System.Windows.Forms.Label variableDMaxLbl;
         private System.Windows.Forms.Label variableDValue;
         private System.Windows.Forms.Label variableDTitle;
         private LBSoft.IndustrialCtrls.Knobs.LBKnob variableDKnob;
-        private System.Windows.Forms.Label variableCMinLbl;
-        private System.Windows.Forms.TextBox variableCMin;
-        private System.Windows.Forms.TextBox variableCMax;
-        private System.Windows.Forms.Label variableCMaxLbl;
         private System.Windows.Forms.Label variableCValue;
         private System.Windows.Forms.Label variableCTitle;
         private LBSoft.IndustrialCtrls.Knobs.LBKnob variableCKnob;
-        private System.Windows.Forms.Label variableBMinLbl;
-        private System.Windows.Forms.TextBox variableBMin;
-        private System.Windows.Forms.TextBox variableBMax;
-        private System.Windows.Forms.Label variableBMaxLbl;
         private System.Windows.Forms.Label variableBValue;
         private System.Windows.Forms.Label variableBTitle;
         private LBSoft.IndustrialCtrls.Knobs.LBKnob variableBKnob;

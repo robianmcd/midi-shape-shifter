@@ -36,8 +36,6 @@ namespace MidiShapeShifter.Mss.UI
 
         public TwoWayDictionary<MssParameterID, LBKnob> ParameterValueKnobControlDict = new TwoWayDictionary<MssParameterID, LBKnob>();
         public TwoWayDictionary<MssParameterID, Label> ParameterValueLabelControlDict = new TwoWayDictionary<MssParameterID, Label>();
-        public TwoWayDictionary<MssParameterID, TextBox> ParameterMaxValueControlDict = new TwoWayDictionary<MssParameterID, TextBox>();
-        public TwoWayDictionary<MssParameterID, TextBox> ParameterMinValueControlDict = new TwoWayDictionary<MssParameterID, TextBox>();
         public TwoWayDictionary<MssParameterID, Label> ParameterNameControlDict = new TwoWayDictionary<MssParameterID, Label>();
 
         protected MssEvaluator evaluator;
@@ -165,16 +163,6 @@ namespace MidiShapeShifter.Mss.UI
             ParameterValueLabelControlDict.Add(MssParameterID.Preset3, this.presetParam3Value);
             ParameterValueLabelControlDict.Add(MssParameterID.Preset4, this.presetParam4Value);
 
-            ParameterMinValueControlDict.Add(MssParameterID.VariableA, this.variableAMin);
-            ParameterMinValueControlDict.Add(MssParameterID.VariableB, this.variableBMin);
-            ParameterMinValueControlDict.Add(MssParameterID.VariableC, this.variableCMin);
-            ParameterMinValueControlDict.Add(MssParameterID.VariableD, this.variableDMin);
-
-            ParameterMaxValueControlDict.Add(MssParameterID.VariableA, this.variableAMax);
-            ParameterMaxValueControlDict.Add(MssParameterID.VariableB, this.variableBMax);
-            ParameterMaxValueControlDict.Add(MssParameterID.VariableC, this.variableCMax);
-            ParameterMaxValueControlDict.Add(MssParameterID.VariableD, this.variableDMax);
-
             ParameterNameControlDict.Add(MssParameterID.VariableA, this.variableATitle);
             ParameterNameControlDict.Add(MssParameterID.VariableB, this.variableBTitle);
             ParameterNameControlDict.Add(MssParameterID.VariableC, this.variableCTitle);
@@ -255,7 +243,6 @@ namespace MidiShapeShifter.Mss.UI
             }
         }
 
-        //TODO: add handlers like this for changes to max and min value text boxes
         private void lbKnob_KnobChangeValue(object sender, LBKnobEventArgs e) {
             LBKnob knob = (LBKnob)sender;
             MssParameterID paramId;
@@ -278,7 +265,7 @@ namespace MidiShapeShifter.Mss.UI
                 this.mssParameters.SetParameterValue(paramId, knob.Value);
             }
         }
-        
+
         protected string FormatRawParameterValue(double value)
         {
             return System.Math.Round(value, 2).ToString();
@@ -544,6 +531,8 @@ namespace MidiShapeShifter.Mss.UI
                     knob.Value = (float)value;
                 }
             }
+
+            UpdateEquationCurve();
         }
 
         private void MssParameters_MinValueChanged(MssParameterID paramId, int minValue)
@@ -554,13 +543,10 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
-            TextBox minValueTextBox;
-            if (ParameterMinValueControlDict.TryGetRightByLeft(paramId, out minValueTextBox) == true)
+            LBKnob knob;
+            if (ParameterValueKnobControlDict.TryGetRightByLeft(paramId, out knob) == true)
             {
-                if (minValueTextBox.Text != minValue.ToString())
-                {
-                    minValueTextBox.Text = minValue.ToString();
-                }
+                knob.MinValue = minValue;
             }
         }
 
@@ -572,13 +558,10 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
-            TextBox maxValueTextBox;
-            if (ParameterMaxValueControlDict.TryGetRightByLeft(paramId, out maxValueTextBox) == true)
+            LBKnob knob;
+            if (ParameterValueKnobControlDict.TryGetRightByLeft(paramId, out knob) == true)
             {
-                if (maxValueTextBox.Text != maxValue.ToString())
-                {
-                    maxValueTextBox.Text = maxValue.ToString();
-                }
+                knob.MaxValue = maxValue;
             }
         }
 
@@ -623,16 +606,23 @@ namespace MidiShapeShifter.Mss.UI
 
         private void curveEquationTextBox_TextChanged(object sender, System.EventArgs e)
         {
-            string expressionString = ((TextBox)sender).Text;
-            ReturnStatus<double[]> evalReturnStatus = 
-                this.evaluator.SampleExpressionWithDefaultInputValues(expressionString, NUM_GRAPH_POINTS);
+            UpdateEquationCurve();
+        }
+
+        protected void UpdateEquationCurve()
+        {
+            string expressionString = this.curveEquationTextBox.Text;
+            ReturnStatus<double[]> evalReturnStatus =
+                this.evaluator.SampleExpressionWithDefaultInputValues(expressionString,
+                                                                      NUM_GRAPH_POINTS,
+                                                                      this.mssParameters);
             if (evalReturnStatus.IsValid == true)
             {
                 double[] GraphYValues = evalReturnStatus.ReturnVal;
 
                 //If values are outside of the range 0 to 1 then they will not be mapped
                 //So they should not be shown on the graph.
-                for (int i = 0; i < GraphYValues.Length; i++ )
+                for (int i = 0; i < GraphYValues.Length; i++)
                 {
                     if (GraphYValues[i] < 0 || GraphYValues[i] > 1)
                     {
@@ -649,7 +639,7 @@ namespace MidiShapeShifter.Mss.UI
             }
             else
             {
-               if (this.ActiveGraphableEntry == null)
+                if (this.ActiveGraphableEntry == null)
                 {
                     GetMainCurve().Points = new PointPairList();
                     this.mainGraphControl.Invalidate();
@@ -659,7 +649,6 @@ namespace MidiShapeShifter.Mss.UI
                     //TODO: show that the line is not using the current formula.
                 }
             }
-
         }
 
         protected void InitiaizeGraph()
@@ -871,6 +860,5 @@ namespace MidiShapeShifter.Mss.UI
                 this.programMgr.ActivateProgramByPath(dlg.FileName);
             }
         }
-
     }
 }

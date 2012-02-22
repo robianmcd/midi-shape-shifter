@@ -1,9 +1,13 @@
 ﻿using System;
+
+using MidiShapeShifter.Mss;
+using MidiShapeShifter.Mss.Mapping;
+
 namespace MidiShapeShifter.Mss
 {
     public interface IMssMsgProcessor
     {
-        void Init(MidiShapeShifter.Mss.Mapping.IGraphableMappingManager mappingMgr);
+        void Init(IGraphableMappingManager mappingMgr, IMssParameterViewer mssParameters);
         System.Collections.Generic.List<MssMsg> ProcessMssMsg(MssMsg mssMsg);
     }
 }

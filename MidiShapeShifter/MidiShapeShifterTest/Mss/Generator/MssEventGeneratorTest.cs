@@ -29,6 +29,8 @@ namespace MidiShapeShifterTest.Mss.Generator
 
         protected Mock<IGeneratorMappingManager> genMappingMgrMock;
 
+        protected Mock<IMssParameterViewer> mssParameterViewerMock;
+
         protected List<IGeneratorMappingEntry> genMappingEntryList = new List<IGeneratorMappingEntry>();
 
         //Host info
@@ -62,6 +64,8 @@ namespace MidiShapeShifterTest.Mss.Generator
             this.msgProcessorMock.Setup(processor => processor.ProcessMssMsg(It.IsAny<MssMsg>()))
                                  .Returns((MssMsg msg) => ProcessMssMsg_CopyData3(msg));
             IocMgr.Kernal.Rebind<IMssMsgProcessor>().ToConstant(msgProcessorMock.Object);
+
+            this.mssParameterViewerMock = new Mock<IMssParameterViewer>();
 
             this.hostInfoRelayMock = new Mock<IHostInfoRelay>();
 
@@ -121,7 +125,8 @@ namespace MidiShapeShifterTest.Mss.Generator
             eventGenerator.Init(this.hostInfoRelayMock.Object,
                                 this.wetEventRelayMock.Object,
                                 this.dryEventRelayMock.Object,
-                                this.genMappingMgrMock.Object);
+                                this.genMappingMgrMock.Object,
+                                this.mssParameterViewerMock.Object);
         }
 
         [TearDown]
