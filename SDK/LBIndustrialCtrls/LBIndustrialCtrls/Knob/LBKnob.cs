@@ -356,23 +356,24 @@ namespace LBSoft.IndustrialCtrls.Knobs
 		
 			PointF center = this.KnobCenter;
 			
-			if ( position.X <= center.X )
+			if ( position.X < center.X )
 			{
 				degree  = (center.Y - position.Y ) /  (center.X - position.X );
 				degree = (float)Math.Atan(degree);
 				degree = (float)((degree) * (180F / Math.PI) + 45F);
 				v = (degree * ( this.MaxValue - this.MinValue )/ 270F);
 			}
-			else
+			else if ( position.X > center.X )
 			{
-				if ( position.X > center.X )
-				{
-					degree  = (position.Y - center.Y ) /  (position.X - center.X );
-					degree = (float)Math.Atan(degree);
-					degree = (float)(225F + (degree) * (180F / Math.PI));
-					v = (degree * ( this.MaxValue - this.MinValue ) / 270F);
-				}
+				degree  = (position.Y - center.Y ) /  (position.X - center.X );
+				degree = (float)Math.Atan(degree);
+				degree = (float)(225F + (degree) * (180F / Math.PI));
+				v = (degree * ( this.MaxValue - this.MinValue ) / 270F);
 			}
+            else
+            {
+                v = this.Value;
+            }
 		
 			if ( v > this.MaxValue )
 				v = this.MaxValue;
