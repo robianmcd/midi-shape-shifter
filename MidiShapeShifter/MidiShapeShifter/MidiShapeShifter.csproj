@@ -95,9 +95,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSharpUtil\DeserializationBinderForPlugins.cs" />
+    <Compile Include="CSharpUtil\MathUtil.cs" />
     <Compile Include="CSharpUtil\ReturnStatus.cs" />
     <Compile Include="CSharpUtil\CustomStringUtil.cs" />
     <Compile Include="CSharpUtil\TwoWayDictionary.cs" />
+    <Compile Include="CSharpUtil\XyPoint.cs" />
     <Compile Include="Framework\VstParameters.cs" />
     <Compile Include="Framework\VstPluginPersistence.cs" />
     <Compile Include="Framework\VstTimeInfoTransmitter.cs" />
@@ -142,6 +144,7 @@
     <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\MidiMsgRangeEntryMetadata.cs" />
     <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\MssMsgRangeEntryMetadata.cs" />
     <Compile Include="Mss\MssComponentHub.cs" />
+    <Compile Include="Mss\MssConstants.cs" />
     <Compile Include="Mss\MssEvaluator.cs" />
     <Compile Include="Mss\MssEvaluatorInput.cs" />
     <Compile Include="Mss\MssEvent.cs" />
@@ -284,10 +287,49 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\imgSaveAsBlue.png" />
+    <None Include="Resources\images\imgFirstBlack.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\images\imgSaveAsBlue.png" />
+    <None Include="Resources\images\imgLastBlack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgNextBlack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgPrevBlack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\imgLeftBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\imgLeftGrey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\imgRightBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\imgRightGrey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\imgTrashBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgLeftBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgLeftGrey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgRightBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgRightGrey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgTrashBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgTrashGrey.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

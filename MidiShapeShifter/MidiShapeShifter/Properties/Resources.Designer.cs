@@ -109,6 +109,20 @@ namespace MidiShapeShifter.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap imgLeftBlue {
+            get {
+                object obj = ResourceManager.GetObject("imgLeftBlue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap imgLeftGrey {
+            get {
+                object obj = ResourceManager.GetObject("imgLeftGrey", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap imgNotebookBlue {
             get {
                 object obj = ResourceManager.GetObject("imgNotebookBlue", resourceCulture);
@@ -123,9 +137,37 @@ namespace MidiShapeShifter.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap imgRightBlue {
+            get {
+                object obj = ResourceManager.GetObject("imgRightBlue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap imgRightGrey {
+            get {
+                object obj = ResourceManager.GetObject("imgRightGrey", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap imgSaveBlue {
             get {
                 object obj = ResourceManager.GetObject("imgSaveBlue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap imgTrashBlue {
+            get {
+                object obj = ResourceManager.GetObject("imgTrashBlue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap imgTrashGrey {
+            get {
+                object obj = ResourceManager.GetObject("imgTrashGrey", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

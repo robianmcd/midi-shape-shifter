@@ -54,5 +54,10 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         {
             return Data3.ToString();
         }
+
+        public override string Data1Name
+        {
+            get { return DATA1_NAME_CHANNEL; }
+        }
     }
 }

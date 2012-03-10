@@ -14,6 +14,10 @@ namespace MidiShapeShifter.Mss.UI
     /// </summary>
     public static class EqGraphConfig
     {
+        private static readonly Color FILL_COLOR = Color.FromArgb(212, 235, 244); //H198 S13 V96
+        private static readonly Color LINE_COLOR = Color.FromArgb(119, 189, 216); //H198 S45 V85
+        private static readonly Color HIGHLIGHT_LINE_COLOR = Color.FromArgb(44, 140, 224); //H207 S75 V88
+
         /// <summary>
         /// Configures the appearance of an existing ZedGraphControl to be used as an equation 
         /// graph.
@@ -23,9 +27,15 @@ namespace MidiShapeShifter.Mss.UI
             // get a reference to the GraphPane
             GraphPane pane = eqGraph.GraphPane;
 
-            pane.Border.IsVisible = false;
+            //Specifies how far away (in pixels) a click must be from an exsisting point to create a 
+            //new point instead of dragging the exsisting point.
+            ZedGraph.GraphPane.Default.NearestTol = 7;
 
+            pane.Border.IsVisible = false;
+            pane.Legend.IsVisible = false;
             pane.Title.IsVisible = false;
+            pane.Margin.Bottom = 60;
+            pane.Margin.Left = 30;
 
             pane.XAxis.Title.IsVisible = false;
             pane.XAxis.Scale.FontSpec.Size = 18;
@@ -52,10 +62,19 @@ namespace MidiShapeShifter.Mss.UI
         ///     Label for the LineItem being created. This can later be used to identify it.
         /// </param>
         /// <returns></returns>
-        public static LineItem CreateEqCurve(string curveLabel)
+        public static LineItem CreateEqCurve(string curveLabel, bool highlight)
         {
             LineItem eqCurve = new LineItem(curveLabel);
-            eqCurve.Color = Color.FromArgb(0,151,217);
+            if (highlight)
+            {
+                eqCurve.Color = HIGHLIGHT_LINE_COLOR;
+                eqCurve.Line.Width = 2.5f;
+            } 
+            else
+            {
+                eqCurve.Color = LINE_COLOR;
+                eqCurve.Line.Width = 2;
+            }
             eqCurve.Label.IsVisible = false;
             eqCurve.Symbol.IsVisible = false;
 
@@ -67,11 +86,30 @@ namespace MidiShapeShifter.Mss.UI
             eqCurve.Line.SmoothTension = 0.3F;
 
 
-            eqCurve.Line.Width = 3;
-
-            eqCurve.Line.Fill = new Fill(Color.FromArgb(240, 240, 240), Color.FromArgb(203, 230, 242));
+            eqCurve.Line.IsAntiAlias = true;
+            eqCurve.Line.Fill = new Fill(FILL_COLOR);
 
             return eqCurve;
+        }
+
+        public static LineItem CreadControlPointsCurve(string curveLabel)
+        {
+            LineItem pointsCurve = new LineItem(curveLabel);
+
+            //Configure appearance
+            pointsCurve.Symbol = new Symbol(SymbolType.Circle, Color.Transparent);
+            pointsCurve.Symbol.Fill = new Fill(LINE_COLOR, HIGHLIGHT_LINE_COLOR);
+            pointsCurve.Symbol.Fill.Type = FillType.GradientByColorValue;
+            pointsCurve.Symbol.Fill.SecondaryValueGradientColor = Color.Empty;
+            pointsCurve.Symbol.Fill.RangeMin = 0;
+            pointsCurve.Symbol.Fill.RangeMax = 1;
+            pointsCurve.Symbol.Fill.RangeDefault = 0;
+            pointsCurve.Symbol.Fill.IsVisible = true;
+            pointsCurve.Symbol.Size = 17;
+            pointsCurve.Symbol.IsAntiAlias = true;
+            pointsCurve.Line.IsVisible = false;
+
+            return pointsCurve;
         }
     }
 }

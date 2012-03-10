@@ -56,13 +56,14 @@ namespace MidiShapeShifter.Mss
             {
                 foreach (IMappingEntry entry in mappingEntries)
                 {
-                    MssEvaluatorInput evalInput = CreateEvalInput(entry, mssMsg);
-                    ReturnStatus<double> evalReturnStatus = this.evaluator.Evaluate(entry.CurveShapeInfo.Equation, evalInput);
+                    MssEvaluatorInput evalInput = new MssEvaluatorInput();
+                    evalInput.InitForCurveEquation(mssMsg, this.mssParameterViewer, entry);
+                    ReturnStatus<double> evalReturnStatus = this.evaluator.Evaluate(evalInput);
 
                     //The return value must be valid because the equation in the mapping entry must be valid.
                     Debug.Assert(evalReturnStatus.IsValid);
 
-                    double mappedRelativeData3 = evalReturnStatus.ReturnVal;
+                    double mappedRelativeData3 = evalReturnStatus.Value;
                     double mappedData3 = mappedRelativeData3 * entry.OutMssMsgRange.MsgInfo.MaxData3Value;
 
                     //If data3 has been mapped outside of the range of values for its message type then this 
@@ -90,22 +91,6 @@ namespace MidiShapeShifter.Mss
             }
 
             return outMessages;
-        }
-
-        protected MssEvaluatorInput CreateEvalInput(IMappingEntry entry, MssMsg mssMsg)
-        {
-            double relativeData1 = (double)mssMsg.Data1 / (double)entry.InMssMsgRange.MsgInfo.MaxData1Value;
-            double relativeData2 = (double)mssMsg.Data2 / (double)entry.InMssMsgRange.MsgInfo.MaxData2Value;
-            double relativeData3 = (double)mssMsg.Data3 / (double)entry.InMssMsgRange.MsgInfo.MaxData3Value;
- 
-            MssEvaluatorInput evalInput = new MssEvaluatorInput();
-            evalInput.Reinit(relativeData1, relativeData2, relativeData3,
-                             this.mssParameterViewer.GetParameterValue(MssParameterID.VariableA),
-                             this.mssParameterViewer.GetParameterValue(MssParameterID.VariableB),
-                             this.mssParameterViewer.GetParameterValue(MssParameterID.VariableC),
-                             this.mssParameterViewer.GetParameterValue(MssParameterID.VariableD));
-
-            return evalInput;
         }
 
         /// <summary>

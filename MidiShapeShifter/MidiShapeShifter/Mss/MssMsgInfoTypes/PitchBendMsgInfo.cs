@@ -29,5 +29,15 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         {
             get { return MidiUtil.MAX_LARGE_MIDI_PARAM_VAL; }
         }
+
+        public override string Data2Name
+        {
+            get { return DATA_NAME_UNUSED; }
+        }
+
+        public override string Data3Name
+        {
+            get { return "Pitch Bend"; }
+        }
     }
 }

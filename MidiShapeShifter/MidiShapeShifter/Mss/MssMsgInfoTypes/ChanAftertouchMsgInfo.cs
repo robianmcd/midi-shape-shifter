@@ -12,5 +12,20 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         {
             get { return MssMsgType.ChanAftertouch; }
         }
+
+        public override string Data1Name
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override string Data2Name
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override string Data3Name
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

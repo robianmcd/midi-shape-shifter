@@ -66,5 +66,20 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         {
             throw new NotImplementedException();
         }
+
+        public override string Data1Name
+        {
+            get { return DATA1_NAME_GEN_ID; }
+        }
+
+        public override string Data2Name
+        {
+            get { return DATA_NAME_UNUSED; }
+        }
+
+        public override string Data3Name
+        {
+            get { return "Toggle Generator"; }
+        }
     }
 }

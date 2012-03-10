@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 
 using System.Drawing;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes;
@@ -83,6 +84,7 @@ namespace MidiShapeShifter.Mss
                 return this._pluginEditorView; 
             } 
         }
+
         protected SerializablePluginEditorInfo pluginEditorInfo;
 
         public MssComponentHub()
@@ -187,6 +189,7 @@ namespace MidiShapeShifter.Mss
             if (this._pluginEditorView == null)
             {
                 this._pluginEditorView = new PluginEditorView();
+
                 this._pluginEditorView.CreateControl();
                 this._pluginEditorView.Init(this.MssParameters, 
                                             this.mappingMgr, 
@@ -196,5 +199,6 @@ namespace MidiShapeShifter.Mss
                                             this.pluginEditorInfo);
             }
         }
+
     }
 }

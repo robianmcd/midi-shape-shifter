@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss
 {
@@ -23,6 +24,10 @@ namespace MidiShapeShifter.Mss
         Unsupported     //  N/A                 N/A                     N/A
     };
 
+    //Used to distinguish between the three data fields in an mss msg.
+    public enum MssMsgDataField { 
+        Data1, Data2, Data3
+    }
 
     /// <summary>
     ///     An MSS message is similar to a MIDI message. Infact most MIDI messages can be represented by MSS messages 
@@ -75,6 +80,28 @@ namespace MidiShapeShifter.Mss
             this.Data1 = data1;
             this.Data2 = data2;
             this.Data3 = data3;
+        }
+
+        public double GetDataField(MssMsgDataField field)
+        {
+            if (field == MssMsgDataField.Data1)
+            {
+                return this.Data1;
+            }
+            else if (field == MssMsgDataField.Data2)
+            {
+                return this.Data2;
+            }
+            else if (field == MssMsgDataField.Data3)
+            {
+                return this.Data3;
+            }
+            else
+            {
+                //unknown MssMsgDataField
+                Debug.Assert(false);
+                return -1;
+            }
         }
 
         public override bool Equals(object o) 

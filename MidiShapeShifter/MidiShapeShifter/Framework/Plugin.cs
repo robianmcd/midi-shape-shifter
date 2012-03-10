@@ -16,8 +16,8 @@ namespace MidiShapeShifter.Framework
     {
         //TODO: Register an actual code for this
         private static readonly int UniquePluginId = new FourCharacterCode("1132").ToInt32();
-        private static readonly string PluginName = "Midi Shape Shifter";
-        private static readonly string ProductName = "Midi Shape Shifter";
+        private static readonly string PluginName = MssConstants.APP_NAME;
+        private static readonly string ProductName = MssConstants.APP_NAME;
         private static readonly string VendorName = "SpeqSoft";
         private static readonly int PluginVersion = 1;
 

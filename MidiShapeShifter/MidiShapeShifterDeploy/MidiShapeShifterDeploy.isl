@@ -1920,7 +1920,7 @@
 		<row><td>blank.mpgm</td><td>ISX_DEFAULTCOMPONENT4</td><td>BLANK~1.MPG|Blank.mpgm</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\Blank.mpgm</td><td>1</td><td/></row>
 		<row><td>jacobi.vst.core.dll</td><td>Jacobi.Vst.Core.dll</td><td>JACOBI~1.DLL|Jacobi.Vst.Core.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\Jacobi.Vst.Core.dll</td><td>1</td><td/></row>
 		<row><td>jacobi.vst.framework.dll</td><td>Jacobi.Vst.Framework.dll</td><td>JACOBI~1.DLL|Jacobi.Vst.Framework.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\Jacobi.Vst.Framework.dll</td><td>1</td><td/></row>
-		<row><td>korg_kaossilator_pro_note_co</td><td>ISX_DEFAULTCOMPONENT5</td><td>KORGKA~1.MPG|Korg Kaossilator Pro Note Control.mpgm</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\Devices\Korg Kaossilator Pro Note Control.mpgm</td><td>1</td><td/></row>
+		<row><td>korg_kaossilator_pro_88-note</td><td>ISX_DEFAULTCOMPONENT5</td><td>KORGKA~1.MPG|Korg Kaossilator Pro 88-Note Control.mpgm</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\Devices\Korg Kaossilator Pro 88-Note Control.mpgm</td><td>1</td><td/></row>
 		<row><td>lbindustrialctrls.dll</td><td>LBIndustrialCtrls.dll</td><td>LBINDU~1.DLL|LBIndustrialCtrls.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\LBIndustrialCtrls.dll</td><td>1</td><td/></row>
 		<row><td>midishapeshifter.dll</td><td>MidiShapeShifter.dll</td><td>MIDISH~1.DLL|MidiShapeShifter.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\MidiShapeShifter\bin\vst-dist\MidiShapeShifter.dll</td><td>1</td><td/></row>
 		<row><td>midishapeshifter.net.vstdll</td><td>ISX_DEFAULTCOMPONENT2</td><td>MIDISH~1.VST|MidiShapeShifter.net.vstdll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\MidiShapeShifter\bin\vst-dist\MidiShapeShifter.net.vstdll</td><td>1</td><td/></row>
@@ -4548,7 +4548,7 @@ QwBEAF8AUgBPAE0AAQBFAHgAcAByAGUAcwBzAA==
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{11BE5F71-5333-4744-A44F-D290DF97F102}</td><td/></row>
 		<row><td>ProductName</td><td>Midi Shape Shifter</td><td/></row>
-		<row><td>ProductVersion</td><td>0.01.0001</td><td/></row>
+		<row><td>ProductVersion</td><td>1.0.4</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>

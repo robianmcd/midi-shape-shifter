@@ -6,15 +6,15 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MidiShapeShifter")]
-[assembly: AssemblyDescription("VST.NET Plugin")]
+[assembly: AssemblyDescription("VST MIDI Plugin for mapping generating and transforming midi data.")]
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]
 #else
 [assembly: AssemblyConfiguration("Release")]
 #endif
-[assembly: AssemblyCompany("MyVendor")]
-[assembly: AssemblyProduct("VstNetProjectTemplates")]
-[assembly: AssemblyCopyright("Copyright © MyVendor 2011")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct(MidiShapeShifter.Mss.MssConstants.APP_NAME)]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -36,5 +36,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.4.*")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

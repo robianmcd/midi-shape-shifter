@@ -75,5 +75,22 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         {
             return Math.Round(Data3 * 100).ToString() + "%";
         }
+
+        public override string Data1Name
+        {
+            //This field is used for the Generator ID which should not be used as a source of input 
+            //on the graph so DATA_NAME_UNUSED is returned instead of DATA1_NAME_GEN_ID.
+            get { return DATA_NAME_UNUSED; }
+        }
+
+        public override string Data2Name
+        {
+            get { return DATA_NAME_UNUSED; }
+        }
+
+        public override string Data3Name
+        {
+            get { return DATA3_NAME_PERIOD_POSITION; }
+        }
     }
 }
