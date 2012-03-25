@@ -197,7 +197,9 @@ namespace MidiShapeShifter.Mss.Evaluation
 
         protected override void FunctionHandler(string funcName, FunctionArgs args)
         {
-            if (funcName == FUNC_NAME_SNAP && args.Parameters.Count() == 1)
+            int numParams = args.Parameters.Count();
+
+            if (funcName == FUNC_NAME_SNAP && numParams == 1)
             {
                 HandleSnapFunc(args);
             }

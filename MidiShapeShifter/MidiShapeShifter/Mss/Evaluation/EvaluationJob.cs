@@ -12,6 +12,8 @@ namespace MidiShapeShifter.Mss.Evaluation
 {
     public abstract class EvaluationJob
     {
+        public const string FUNC_NAME_LIMIT = "limit";
+
         public double OutputVal {
             get {
                 if (OutputIsValid == false)
@@ -73,6 +75,8 @@ namespace MidiShapeShifter.Mss.Evaluation
 
         protected bool InitializeExpressionMembers(string expressionStr)
         {
+            expressionStr = FUNC_NAME_LIMIT + "(" + expressionStr + ")";
+
             //Only regenerate the expression if it has changed
             if (this.expressionStr != expressionStr.ToLower())
             {
@@ -168,6 +172,27 @@ namespace MidiShapeShifter.Mss.Evaluation
         //Return true if the function was handled
         protected bool BaseFunctionHandler(string funcName, FunctionArgs args)
         {
+            int numParams = args.Parameters.Count();
+
+            if (funcName == FUNC_NAME_LIMIT && numParams == 1)
+            {
+                ReturnStatus<double> evaluateStatus = EvaluateExpression(args.Parameters[0]);
+                if (evaluateStatus.IsValid)
+                {
+                    if (evaluateStatus.Value > 1)
+                    {
+                        args.Result = 1;
+                    }
+                    else if (evaluateStatus.Value < 0)
+                    {
+                        args.Result = 0;
+                    }
+                    else
+                    {
+                        args.Result = evaluateStatus.Value;
+                    }
+                }
+            }
             return false;
             //TODO: handel functions here
         }
