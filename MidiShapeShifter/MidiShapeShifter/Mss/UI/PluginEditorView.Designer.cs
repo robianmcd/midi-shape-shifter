@@ -13,9 +13,14 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                OnDispose();
+
+                if (components != null)
+                {
+                    components.Dispose();                    
+                }
             }
             base.Dispose(disposing);
         }
@@ -305,6 +310,7 @@
             this.graphInputTypeCombo.Name = "graphInputTypeCombo";
             this.graphInputTypeCombo.Size = new System.Drawing.Size(118, 21);
             this.graphInputTypeCombo.TabIndex = 4;
+            this.graphInputTypeCombo.SelectedIndexChanged += new System.EventHandler(this.graphInputTypeCombo_SelectedIndexChanged);
             // 
             // graphInputLable
             // 

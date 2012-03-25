@@ -2,22 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Diagnostics;
 
 using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.MssMsgInfoTypes;
+using System.Diagnostics;
 
-namespace MidiShapeShifter.Mss
+namespace MidiShapeShifter.Mss.Evaluation
 {
-    public class MssEvaluatorInput
+    public class EvaluationCurveInput : EvaluationInput
     {
-        public EquationType equationType { get; set; }
-
-        public double varA { get; set; }
-        public double varB { get; set; }
-        public double varC { get; set; }
-        public double varD { get; set; }
-
         //These fields are only needed if this is input for a curve equation
         public MssMsgDataField PrimaryInputSource { get; set; }
 
@@ -28,23 +22,8 @@ namespace MidiShapeShifter.Mss
         public List<string> CurveEquations { get; set; }
         public List<XyPoint<string>> PointEquations { get; set; }
 
-        public MssEvaluatorInput()
-        {
-            setDefaultsForOptionFields();
-        }
-
-        protected void setDefaultsForOptionFields()
-        {
-            RelData1 = double.NaN;
-            RelData2 = double.NaN;
-            RelData3 = double.NaN;
-
-            CurveEquations = null;
-            PointEquations = null;
-        }
-
         //Can be called multiple times.
-        public void InitForCurveEquation(double relData1, double relData2, double relData3,
+        public void Init(double relData1, double relData2, double relData3,
                            double varA, double varB, double varC, double varD,
                            IMappingEntry mappingEntry)
         {
@@ -65,30 +44,21 @@ namespace MidiShapeShifter.Mss
             this.PointEquations = mappingEntry.CurveShapeInfo.PointEquations;
         }
 
-        public void InitForCurveEquation(MssMsg mssMsg,
+        public void Init(MssMsg mssMsg,
                            IMssParameterViewer parameterViewer,
                            IMappingEntry mappingEntry)
         {
-            double relativeData1 = (double)mssMsg.Data1 / (double)mappingEntry.InMssMsgRange.MsgInfo.MaxData1Value;
-            double relativeData2 = (double)mssMsg.Data2 / (double)mappingEntry.InMssMsgRange.MsgInfo.MaxData2Value;
-            double relativeData3 = (double)mssMsg.Data3 / (double)mappingEntry.InMssMsgRange.MsgInfo.MaxData3Value;
+            MssMsgInfo inMsgInfo = mappingEntry.InMssMsgRange.MsgInfo;
+            double relativeData1 = (double)mssMsg.Data1 / (double)(inMsgInfo.MaxData1Value - inMsgInfo.MinData1Value);
+            double relativeData2 = (double)mssMsg.Data2 / (double)(inMsgInfo.MaxData2Value - inMsgInfo.MinData2Value);
+            double relativeData3 = (double)mssMsg.Data3 / (double)(inMsgInfo.MaxData3Value - inMsgInfo.MinData3Value);
 
-            this.InitForCurveEquation(relativeData1, relativeData2, relativeData3,
+            this.Init(relativeData1, relativeData2, relativeData3,
                         parameterViewer.GetParameterValue(MssParameterID.VariableA),
                         parameterViewer.GetParameterValue(MssParameterID.VariableB),
                         parameterViewer.GetParameterValue(MssParameterID.VariableC),
                         parameterViewer.GetParameterValue(MssParameterID.VariableD),
                         mappingEntry);
-        }
-
-        public void InitForPointEquation(double varA, double varB, double varC, double varD)
-        {
-            this.equationType = EquationType.Point;
-
-            this.varA = varA;
-            this.varB = varB;
-            this.varC = varC;
-            this.varD = varD;
         }
 
         public double getPrimaryInputVal()
@@ -113,9 +83,25 @@ namespace MidiShapeShifter.Mss
             }
         }
 
-        public MssEvaluatorInput Clone()
+        public void setPrimaryInputVal(double primaryInputVal)
         {
-            return (MssEvaluatorInput)this.MemberwiseClone();
+            if (this.PrimaryInputSource == MssMsgDataField.Data1)
+            {
+                this.RelData1 = primaryInputVal;
+            }
+            else if (this.PrimaryInputSource == MssMsgDataField.Data2)
+            {
+                this.RelData2 = primaryInputVal;
+            }
+            else if (this.PrimaryInputSource == MssMsgDataField.Data3)
+            {
+                this.RelData3 = primaryInputVal;
+            }
+            else
+            {
+                //unknown MssMsgDataField
+                Debug.Assert(false);
+            }
         }
     }
 }

@@ -5,19 +5,20 @@ using System.Text;
 
 using Ninject;
 using MidiShapeShifter.Mss;
+using MidiShapeShifter.Mss.Evaluation;
 
 namespace MidiShapeShifter.Ioc
 {
     public static class IocMgr
     {
-        public static IKernel Kernal;
+        public static IKernel Kernel;
 
         static IocMgr()
         {
-            Kernal = new StandardKernel();
+            Kernel = new StandardKernel();
 
-            Kernal.Bind<IMssEvaluator>().To<MssEvaluator>();
-            Kernal.Bind<IMssMsgProcessor>().To<MssMsgProcessor>();
+            Kernel.Bind<IEvaluator>().To<Evaluator>();
+            Kernel.Bind<IMssMsgProcessor>().To<MssMsgProcessor>();
         }
     }
 }

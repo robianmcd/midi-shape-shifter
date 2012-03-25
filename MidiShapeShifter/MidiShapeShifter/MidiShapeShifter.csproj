@@ -95,7 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSharpUtil\DeserializationBinderForPlugins.cs" />
-    <Compile Include="CSharpUtil\MathUtil.cs" />
     <Compile Include="CSharpUtil\ReturnStatus.cs" />
     <Compile Include="CSharpUtil\CustomStringUtil.cs" />
     <Compile Include="CSharpUtil\TwoWayDictionary.cs" />
@@ -105,6 +104,10 @@
     <Compile Include="Framework\VstTimeInfoTransmitter.cs" />
     <Compile Include="Ioc\IocMgr.cs" />
     <Compile Include="Midi\MidiUtil.cs" />
+    <Compile Include="Mss\Evaluation\EvaluationControlPointInput.cs" />
+    <Compile Include="Mss\Evaluation\EvaluationControlPointJob.cs" />
+    <Compile Include="Mss\Evaluation\EvaluationCurveInput.cs" />
+    <Compile Include="Mss\Evaluation\EvaluationCurveJob.cs" />
     <Compile Include="Mss\Generator\GenEntryHistoryInfo.cs" />
     <Compile Include="Mss\Generator\GeneratorDlg.cs">
       <SubType>Form</SubType>
@@ -120,7 +123,7 @@
     <Compile Include="Mss\Generator\MssEventGenerator.cs" />
     <Compile Include="Mss\ICurveShapeInfoContainer.cs" />
     <Compile Include="Mss\CurveShapeInfo.cs" />
-    <Compile Include="Mss\IMssEvaluator.cs" />
+    <Compile Include="Mss\Evaluation\IEvaluator.cs" />
     <Compile Include="Mss\IMssMsgProcessor.cs" />
     <Compile Include="Mss\IMssMsgRange.cs" />
     <Compile Include="Mss\IMssParameterViewer.cs" />
@@ -145,8 +148,9 @@
     <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\MssMsgRangeEntryMetadata.cs" />
     <Compile Include="Mss\MssComponentHub.cs" />
     <Compile Include="Mss\MssConstants.cs" />
-    <Compile Include="Mss\MssEvaluator.cs" />
-    <Compile Include="Mss\MssEvaluatorInput.cs" />
+    <Compile Include="Mss\Evaluation\EvaluationJob.cs" />
+    <Compile Include="Mss\Evaluation\Evaluator.cs" />
+    <Compile Include="Mss\Evaluation\EvaluationInput.cs" />
     <Compile Include="Mss\MssEvent.cs" />
     <Compile Include="Mss\MssFileSystemLocations.cs" />
     <Compile Include="Mss\MssMsg.cs" />

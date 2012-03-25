@@ -14,6 +14,7 @@ using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
 using MidiShapeShifter.Mss.Generator;
+using MidiShapeShifter.Mss.Evaluation;
 
 namespace MidiShapeShifterTest.Mss
 {
@@ -193,10 +194,10 @@ namespace MidiShapeShifterTest.Mss
             }
 
             //Setup the MssEvaluator that msgProcessor will use so that it always just returns the input
-            var mssEvanuatorMock = new Mock<IMssEvaluator>();
-            mssEvanuatorMock.Setup(evaluator => evaluator.Evaluate(It.IsAny<MssEvaluatorInput>()))
-                            .Returns((string equation, MssEvaluatorInput input) => new ReturnStatus<double>(input.RelData3 * inputMultiple, true));
-            IocMgr.Kernal.Rebind<IMssEvaluator>().ToConstant(mssEvanuatorMock.Object);
+            var mssEvanuatorMock = new Mock<IEvaluator>();
+            mssEvanuatorMock.Setup(evaluator => evaluator.Evaluate(It.IsAny<EvaluationCurveInput>()))
+                            .Returns((string equation, EvaluationCurveInput input) => new ReturnStatus<double>(input.RelData3 * inputMultiple, true));
+            IocMgr.Kernel.Rebind<IEvaluator>().ToConstant(mssEvanuatorMock.Object);
             
             MssMsgProcessor msgProcessor = new MssMsgProcessor();
 

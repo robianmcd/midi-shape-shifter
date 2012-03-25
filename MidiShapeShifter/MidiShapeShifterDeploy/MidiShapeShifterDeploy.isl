@@ -345,7 +345,6 @@
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{B8C4CE18-851F-4C89-A776-9E789FF3B675}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT3</td><td>{A931FE10-7EEE-4A02-A5D1-B46396AC81B1}</td><td>FACTORY_SETTINGS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT4</td><td>{64B0A94E-F0FB-43BE-A3C8-BBC8F5F6A436}</td><td>PROGRAMS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT5</td><td>{21A8E895-1D29-44B6-A772-2722A624710D}</td><td>DEVICES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT6</td><td>{CABF2BB7-0D1E-468C-8863-D8E3BE63E818}</td><td>LOFS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT7</td><td>{E73D3040-0E56-42BD-928A-BCB021D23771}</td><td>USER_SETTINGS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT8</td><td>{84F21DDD-6D00-43A7-A7BA-85C28B1E7741}</td><td>PROGRAMS1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -1153,7 +1152,6 @@
 		<row><td>CommonAppDataFolder</td><td>TARGETDIR</td><td>.:Common~1|CommonAppData</td><td/><td>0</td><td/></row>
 		<row><td>CommonFilesFolder</td><td>TARGETDIR</td><td>.:Common</td><td/><td>0</td><td/></row>
 		<row><td>DATABASEDIR</td><td>ISYourDataBaseDir</td><td>.</td><td/><td>0</td><td/></row>
-		<row><td>DEVICES</td><td>PROGRAMS</td><td>Devices</td><td/><td>0</td><td/></row>
 		<row><td>DIRPROPERTY1</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DIRPROPERTY2</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DIRPROPERTY3</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
@@ -1891,7 +1889,6 @@
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT2</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT3</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT4</td></row>
-		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT5</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT6</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT7</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT8</td></row>
@@ -1920,7 +1917,6 @@
 		<row><td>blank.mpgm</td><td>ISX_DEFAULTCOMPONENT4</td><td>BLANK~1.MPG|Blank.mpgm</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\Blank.mpgm</td><td>1</td><td/></row>
 		<row><td>jacobi.vst.core.dll</td><td>Jacobi.Vst.Core.dll</td><td>JACOBI~1.DLL|Jacobi.Vst.Core.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\Jacobi.Vst.Core.dll</td><td>1</td><td/></row>
 		<row><td>jacobi.vst.framework.dll</td><td>Jacobi.Vst.Framework.dll</td><td>JACOBI~1.DLL|Jacobi.Vst.Framework.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\Jacobi.Vst.Framework.dll</td><td>1</td><td/></row>
-		<row><td>korg_kaossilator_pro_88-note</td><td>ISX_DEFAULTCOMPONENT5</td><td>KORGKA~1.MPG|Korg Kaossilator Pro 88-Note Control.mpgm</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\Devices\Korg Kaossilator Pro 88-Note Control.mpgm</td><td>1</td><td/></row>
 		<row><td>lbindustrialctrls.dll</td><td>LBIndustrialCtrls.dll</td><td>LBINDU~1.DLL|LBIndustrialCtrls.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\LBIndustrialCtrls.dll</td><td>1</td><td/></row>
 		<row><td>midishapeshifter.dll</td><td>MidiShapeShifter.dll</td><td>MIDISH~1.DLL|MidiShapeShifter.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\MidiShapeShifter\bin\vst-dist\MidiShapeShifter.dll</td><td>1</td><td/></row>
 		<row><td>midishapeshifter.net.vstdll</td><td>ISX_DEFAULTCOMPONENT2</td><td>MIDISH~1.VST|MidiShapeShifter.net.vstdll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\MidiShapeShifter\bin\vst-dist\MidiShapeShifter.net.vstdll</td><td>1</td><td/></row>
@@ -2188,7 +2184,6 @@
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_FFAB5719_76BB_461A_B668_ED3812C5DE98_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT3</td><td/><td/><td>_3D53B227_00CA_434F_84F4_1A4F19B8077A_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT4</td><td/><td/><td>_6380682F_476F_49BD_A016_50F90573407F_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT5</td><td/><td/><td>_F2C494AB_3E46_4F69_83D4_0B0EE54729B8_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT6</td><td/><td/><td>_5ECF156E_03AE_46D2_B48D_1FA11A5CF986_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT7</td><td/><td/><td>_8BF4C031_D478_46D2_8BA8_50B0F463AC77_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT8</td><td/><td/><td>_A6B9DC17_EF2D_4CAA_BEBF_DF8C9B243062_FILTER</td><td/><td/><td/><td/></row>

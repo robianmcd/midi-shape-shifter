@@ -63,7 +63,7 @@ namespace MidiShapeShifterTest.Mss.Generator
             this.msgProcessorMock = new Mock<IMssMsgProcessor>();
             this.msgProcessorMock.Setup(processor => processor.ProcessMssMsg(It.IsAny<MssMsg>()))
                                  .Returns((MssMsg msg) => ProcessMssMsg_CopyData3(msg));
-            IocMgr.Kernal.Rebind<IMssMsgProcessor>().ToConstant(msgProcessorMock.Object);
+            IocMgr.Kernel.Rebind<IMssMsgProcessor>().ToConstant(msgProcessorMock.Object);
 
             this.mssParameterViewerMock = new Mock<IMssParameterViewer>();
 

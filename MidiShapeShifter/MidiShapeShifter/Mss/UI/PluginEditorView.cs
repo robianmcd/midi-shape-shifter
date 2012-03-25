@@ -5,6 +5,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
+using Ninject;
+using MidiShapeShifter.Ioc;
+
 using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Framework;
 using MidiShapeShifter.Mss;
@@ -14,6 +17,8 @@ using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.Relays;
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
 using MidiShapeShifter.Mss.Programs;
+using MidiShapeShifter.Mss.Evaluation;
+
 
 using LBSoft.IndustrialCtrls.Knobs;
 
@@ -43,7 +48,7 @@ namespace MidiShapeShifter.Mss.UI
         public TwoWayDictionary<MssParameterID, Label> ParameterValueLabelControlDict = new TwoWayDictionary<MssParameterID, Label>();
         public TwoWayDictionary<MssParameterID, Label> ParameterNameControlDict = new TwoWayDictionary<MssParameterID, Label>();
 
-        protected MssEvaluator evaluator;
+        protected IEvaluator evaluator;
 
         protected MssParameters mssParameters;
         protected MappingManager mappingMgr;
@@ -60,6 +65,7 @@ namespace MidiShapeShifter.Mss.UI
         protected List<MssMsgDataField> DataFieldsInGraphInputCombo;
 
         protected bool ignoreEquationTextBoxChangeHandlers;
+        protected bool ignoreInputTypeComboSelectionChangeHandlers;
 
         public IMappingEntry ActiveGraphableEntry 
         {
@@ -101,11 +107,12 @@ namespace MidiShapeShifter.Mss.UI
             PopulateControlDictionaries();
 
             this.DataFieldsInGraphInputCombo = new List<MssMsgDataField>();
-            this.evaluator = new MssEvaluator();
+            this.evaluator = IocMgr.Kernel.Get<IEvaluator>();
             this.msgMetadataFactory = new Factory_MssMsgRangeEntryMetadata();
             this.msgInfoFactory = new Factory_MssMsgInfo();
 
             this.ignoreEquationTextBoxChangeHandlers = false;
+            this.ignoreInputTypeComboSelectionChangeHandlers = false;
         }
 
         public void Init(MssParameters mssParameters, 
@@ -147,6 +154,14 @@ namespace MidiShapeShifter.Mss.UI
             //Only time this won't get called by repopulateProgramList() is when a blank program
             //is loaded.
             OnActiveGraphableEntryChanged();
+        }
+
+        protected void OnDispose()
+        {
+            this.mssParameters.ParameterValueChanged -= new ParameterValueChangedEventHandler(MssParameters_ValueChanged);
+            this.mssParameters.ParameterNameChanged -= new ParameterNameChangedEventHandler(MssParameters_NameChanged);
+            this.mssParameters.ParameterMinValueChanged -= new ParameterMinValueChangedEventHandler(MssParameters_MinValueChanged);
+            this.mssParameters.ParameterMaxValueChanged -= new ParameterMaxValueChangedEventHandler(MssParameters_MaxValueChanged);
         }
 
         protected void PopulateControlDictionaries()
@@ -437,9 +452,11 @@ namespace MidiShapeShifter.Mss.UI
 
                         if (this.ActiveGraphableEntry.CurveShapeInfo.PrimaryInputSource == dataField)
                         {
+                            ignoreInputTypeComboSelectionChangeHandlers = true;
                             //Select the item that was just added.
                             this.graphInputTypeCombo.SelectedIndex = 
-                                this.graphInputTypeCombo.Items.Count - 1;                            
+                                this.graphInputTypeCombo.Items.Count - 1;
+                            ignoreInputTypeComboSelectionChangeHandlers = false;
                         }
                     }
                 }
@@ -650,7 +667,7 @@ namespace MidiShapeShifter.Mss.UI
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Action<MssParameterID, string>(MssParameters_NameChanged), paramId, name);
+                this.BeginInvoke(new Action<MssParameterID, string>(MssParameters_NameChanged), paramId, name);
                 return;
             }
 
@@ -668,7 +685,7 @@ namespace MidiShapeShifter.Mss.UI
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Action<MssParameterID, double>(MssParameters_ValueChanged), paramId, value);
+                this.BeginInvoke(new Action<MssParameterID, double>(MssParameters_ValueChanged), paramId, value);
                 return;
             }
 
@@ -688,7 +705,7 @@ namespace MidiShapeShifter.Mss.UI
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Action<MssParameterID, int>(MssParameters_MinValueChanged), paramId, minValue);
+                this.BeginInvoke(new Action<MssParameterID, int>(MssParameters_MinValueChanged), paramId, minValue);
                 return;
             }
 
@@ -703,7 +720,7 @@ namespace MidiShapeShifter.Mss.UI
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new Action<MssParameterID, int>(MssParameters_MaxValueChanged), paramId, maxValue);
+                this.BeginInvoke(new Action<MssParameterID, int>(MssParameters_MaxValueChanged), paramId, maxValue);
                 return;
             }
 
@@ -1183,8 +1200,8 @@ namespace MidiShapeShifter.Mss.UI
                     }
 
                     //Adjust the new point's Y value so that it is on the equation line.
-                    MssEvaluatorInput evalInput = new MssEvaluatorInput();
-                    evalInput.InitForCurveEquation(newPoint.X, newPoint.X, newPoint.X,
+                    EvaluationCurveInput evalInput = new EvaluationCurveInput();
+                    evalInput.Init(newPoint.X, newPoint.X, newPoint.X,
                         this.mssParameters.GetParameterValue(MssParameterID.VariableA),
                         this.mssParameters.GetParameterValue(MssParameterID.VariableB),
                         this.mssParameters.GetParameterValue(MssParameterID.VariableC),
@@ -1501,6 +1518,19 @@ namespace MidiShapeShifter.Mss.UI
 
                 curveInfo.SelectedEquationIndex = 0;
                 curveInfo.SelectedEquationType = EquationType.Curve;
+
+                UpdateCurveShapeControls();
+            }
+        }
+
+        private void graphInputTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ignoreInputTypeComboSelectionChangeHandlers == false &&
+                this.ActiveGraphableEntry != null)
+            {
+                ComboBox inputTypeCombo = (ComboBox)sender;
+                this.ActiveGraphableEntry.CurveShapeInfo.PrimaryInputSource =
+                    this.DataFieldsInGraphInputCombo[inputTypeCombo.SelectedIndex];
 
                 UpdateCurveShapeControls();
             }

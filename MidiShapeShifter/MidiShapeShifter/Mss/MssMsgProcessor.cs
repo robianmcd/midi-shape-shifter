@@ -10,6 +10,7 @@ using MidiShapeShifter.Ioc;
 
 using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.Evaluation;
 
 namespace MidiShapeShifter.Mss
 {
@@ -22,11 +23,11 @@ namespace MidiShapeShifter.Mss
         protected IGraphableMappingManager mappingMgr;
 
         protected IMssParameterViewer mssParameterViewer;
-        protected IMssEvaluator evaluator;
+        protected IEvaluator evaluator;
 
         public MssMsgProcessor()
         {
-            this.evaluator = IocMgr.Kernal.Get<IMssEvaluator>();
+            this.evaluator = IocMgr.Kernel.Get<IEvaluator>();
         }
 
         public void Init(IGraphableMappingManager mappingMgr, IMssParameterViewer mssParameterViewer)
@@ -56,8 +57,8 @@ namespace MidiShapeShifter.Mss
             {
                 foreach (IMappingEntry entry in mappingEntries)
                 {
-                    MssEvaluatorInput evalInput = new MssEvaluatorInput();
-                    evalInput.InitForCurveEquation(mssMsg, this.mssParameterViewer, entry);
+                    EvaluationCurveInput evalInput = new EvaluationCurveInput();
+                    evalInput.Init(mssMsg, this.mssParameterViewer, entry);
                     ReturnStatus<double> evalReturnStatus = this.evaluator.Evaluate(evalInput);
 
                     //The return value must be valid because the equation in the mapping entry must be valid.

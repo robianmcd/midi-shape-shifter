@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Mapping;
 
-namespace MidiShapeShifter.Mss
+namespace MidiShapeShifter.Mss.Evaluation
 {
-    public interface IMssEvaluator
+    public interface IEvaluator
     {
-        ReturnStatus<double> Evaluate(MssEvaluatorInput input);
+        ReturnStatus<double> Evaluate(EvaluationCurveInput input);
         bool SampleExpressionWithDefaultInputValues(
                 int numSamplePoints, 
                 IMssParameterViewer mssParameters,

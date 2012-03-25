@@ -29,7 +29,7 @@ namespace MidiShapeShifter.Mss
 
         public DryMssEventHandler()
         {
-            this.mssMsgProcessor = IocMgr.Kernal.Get<IMssMsgProcessor>();
+            this.mssMsgProcessor = IocMgr.Kernel.Get<IMssMsgProcessor>();
         }
 
         /// <summary>

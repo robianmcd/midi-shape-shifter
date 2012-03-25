@@ -52,7 +52,7 @@ namespace MidiShapeShifter.Mss.Generator
         //Constructor
         public MssEventGenerator()
         {
-            this.mssMsgProcessor = IocMgr.Kernal.Get<IMssMsgProcessor>();
+            this.mssMsgProcessor = IocMgr.Kernel.Get<IMssMsgProcessor>();
         }
 
 
