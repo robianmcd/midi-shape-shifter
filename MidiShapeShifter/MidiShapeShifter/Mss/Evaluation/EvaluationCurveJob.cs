@@ -10,6 +10,9 @@ using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {
+    /// <summary>
+    /// This class is responsible for evaluating an equation associated with a curve.
+    /// </summary>
     public class EvaluationCurveJob : EvaluationJob
     {
         /// <summary>
@@ -21,9 +24,21 @@ namespace MidiShapeShifter.Mss.Evaluation
         public const string FUNC_NAME_SNAP = "snap";
 
 
+        /// <summary>
+        /// Stores the x and y coordinates of each control point. This information is 
+        /// nessesary for determining which curve equation to use given an X value.
+        /// </summary>
         public List<XyPoint<double>> controlPointValues { get; protected set; }
 
+        /// <summary>
+        /// The input for this job
+        /// </summary>
         protected EvaluationCurveInput evalInput;
+
+        /// <summary>
+        /// The previous input for this job. This is kept around to see what information actually 
+        /// needs to be reinitialized when a new EvaluationCurveInput is passed in.
+        /// </summary>
         protected EvaluationCurveInput previousEvalInput;
 
         public EvaluationCurveJob()
@@ -31,14 +46,18 @@ namespace MidiShapeShifter.Mss.Evaluation
             this.controlPointValues = new List<XyPoint<double>>();
         }
 
+        /// <summary>
+        /// Initializes this class.
+        /// </summary>
         public void Configure(EvaluationCurveInput evalInput)
         {
-            this.InputIsValid = true;
+            this.inputIsValid = true;
             this.OutputIsValid = false;
 
             this.previousEvalInput = this.evalInput;
             this.evalInput = (EvaluationCurveInput) evalInput.Clone();
 
+            //Calculate the values for this.controlPointValues
             if (CalculateControlPointValues() == false)
             {
                 return;
@@ -47,6 +66,8 @@ namespace MidiShapeShifter.Mss.Evaluation
             //Get the index of the curve equation for the given primary input value.
             int curveIndex = GetCurveIndex();
 
+            //Add the snap function to the equation. This will snap the endpoints of a curve to the 
+            //control points on either side of it.
             string tmpExpressionStr = FUNC_NAME_SNAP + "(" + 
                                         this.evalInput.CurveEquations[curveIndex] + ")";
             if (InitializeExpressionMembers(tmpExpressionStr) == false)
@@ -61,9 +82,14 @@ namespace MidiShapeShifter.Mss.Evaluation
             }
         }
 
-        //return true on success
+        /// <summary>
+        /// Calculates the X and Y coordinates of each control point and stores them in this.controlPointValues
+        /// </summary>
+        /// <returns>True on success, False if the control point equations could not be evaluated.</returns>
         protected bool CalculateControlPointValues()
         {
+            //If the point equations and variables have not changed then the previously calculated 
+            //control point values can be used.
             if (PointEquationChanged() == false &&
                 VariableChanged() == false)
             {
@@ -72,6 +98,8 @@ namespace MidiShapeShifter.Mss.Evaluation
 
             this.controlPointValues.Clear();
 
+            //Create the input for the control point jobs. The expression string will be 
+            //individually set for each equation.
             EvaluationControlPointInput pointEvalInput = new EvaluationControlPointInput();
             pointEvalInput.Init(this.evalInput.varA,
                                 this.evalInput.varB,
@@ -79,29 +107,36 @@ namespace MidiShapeShifter.Mss.Evaluation
                                 this.evalInput.varD,
                                 "");
 
+            //Create jobs to evaluate the x and y coordinates for a control point
             EvaluationControlPointJob pointXEvalJob = new EvaluationControlPointJob();
             EvaluationControlPointJob pointYEvalJob = new EvaluationControlPointJob();
 
 
             double previousPointXVal = 0;
+            //Itterate through each control point equation and evaluate it's X and Y coordinates.
             foreach (XyPoint<string> pointEquation in this.evalInput.PointEquations)
             {
+                //Evaluate the equation for the current control point's X value
                 pointEvalInput.EquationStr = pointEquation.X;
                 pointXEvalJob.Configure(pointEvalInput);
                 pointXEvalJob.Execute();
 
+                //Evaluate the equation for the current control point's Y value
                 pointEvalInput.EquationStr = pointEquation.Y;
                 pointYEvalJob.Configure(pointEvalInput);
                 pointYEvalJob.Execute();
 
+                //If one of the equations could not be evaluated or if the X values for the 
+                //control points are not in order from smallest to largest then return false.
                 if (pointXEvalJob.OutputIsValid == false || 
                     pointXEvalJob.OutputVal < previousPointXVal ||
                     pointYEvalJob.OutputIsValid == false)
                 {
-                    this.InputIsValid = false;
+                    this.inputIsValid = false;
                     return false;
                 }
 
+                //Store the current control point's X and Y coordinates in this.controlPointValues.
                 XyPoint<double> curPoint = new XyPoint<double>(pointXEvalJob.OutputVal, pointYEvalJob.OutputVal);
                 this.controlPointValues.Add(curPoint);
 
@@ -111,6 +146,10 @@ namespace MidiShapeShifter.Mss.Evaluation
             return true;
         }
 
+        /// <summary>
+        /// Determines whether a variable has changed since the last time this job was configured.
+        /// </summary>
+        /// <returns>True if a variable has changed. False otherwise.</returns>
         protected bool VariableChanged()
         {
             if (this.previousEvalInput == null)
@@ -131,6 +170,10 @@ namespace MidiShapeShifter.Mss.Evaluation
             }
         }
 
+        /// <summary>
+        /// Determines whether a point equation has changed since the last time this job was configured.
+        /// </summary>
+        /// <returns>True if a point equation has changed. False otherwise.</returns>
         protected bool PointEquationChanged()
         {
             if (this.previousEvalInput == null ||
@@ -151,6 +194,10 @@ namespace MidiShapeShifter.Mss.Evaluation
             return false;
         }
 
+        /// <summary>
+        /// Gets the index of the curve equation that will be evaluated when execute is called. The 
+        /// values in this.controlPointValues should be initialized before calling this function.
+        /// </summary>
         private int GetCurveIndex()
         {
             int curveIndex = 0;
@@ -167,6 +214,9 @@ namespace MidiShapeShifter.Mss.Evaluation
             return curveIndex;
         }
 
+        /// <summary>
+        /// Set the parameters for the expression specified by exp that are associated with a curve equation.
+        /// </summary>
         protected void SetExpressionCurveParameters(EvaluationCurveInput curveEvalInput, Expression exp)
         {
             if (exp != null)
@@ -195,6 +245,7 @@ namespace MidiShapeShifter.Mss.Evaluation
             }
         }
 
+        //See EvaluationJob.FunctionHandler for documentation
         protected override void FunctionHandler(string funcName, FunctionArgs args)
         {
             int numParams = args.Parameters.Count();
@@ -209,22 +260,28 @@ namespace MidiShapeShifter.Mss.Evaluation
             }
         }
 
+        /// <summary>
+        /// The snap function will transform a curve so that it starts and ends at the control points on either side of it.
+        /// </summary>
+        /// <param name="args">args should have 1 parameter that stores an equation to apply snap to.</param>
         protected void HandleSnapFunc(FunctionArgs args)
         {
+            //Get the index of the curve to apply snap to.
             int curveIndex = GetCurveIndex();
 
+            //True if there is a control point before the curve.
             bool pointBeforeCurveExists = (curveIndex > 0);
+            //True if there is a control point after the curve.
             bool pointAfterCurveExists = (curveIndex < this.controlPointValues.Count);
-
-            //TODO: evaluate parameter 0 then set the input to the start point and evaluate again
-            //then set the input to the end point and evaluate again. Don't need to create 
-            //any new expressions!!
 
             Expression remainingExpression = args.Parameters[0];
 
+            //Evaluate the equation to get the raw output before snap function is applied.
             ReturnStatus<double> evaluateStatus = EvaluateExpression(remainingExpression);
             double snapOutputValue = evaluateStatus.Value;
 
+            //If there is a control point on either side of the equation then snap will need to 
+            //modify the output.
             if (evaluateStatus.IsValid && 
                 (pointBeforeCurveExists || pointAfterCurveExists))
             {
@@ -237,6 +294,8 @@ namespace MidiShapeShifter.Mss.Evaluation
 
                 EvaluationCurveInput endpointInput = (EvaluationCurveInput)this.evalInput.Clone();
 
+                //If there is a control point before the equation then we need to evaluate the 
+                //equation at this point.
                 if (pointBeforeCurveExists)
                 {
                     pointBeforeCurve = controlPointValues[curveIndex - 1];
@@ -249,6 +308,8 @@ namespace MidiShapeShifter.Mss.Evaluation
 
                 }
 
+                //If there is a control point after the equation then we need to evaluate the 
+                //equation at this point.
                 if (pointAfterCurveExists && evaluateStatus.IsValid)
                 {
                     pointAfterCurve = controlPointValues[curveIndex];
@@ -290,6 +351,19 @@ namespace MidiShapeShifter.Mss.Evaluation
             }
         }
 
+        /// <summary>
+        /// This method will essentially find a line that can be added to a function which will 
+        /// cause the function to pass through the point (snapAtX, snapToY) without affecting the 
+        /// functions value where X = dontAffectAtX. Instead of operating on a function this method
+        /// operates on a point so the amount of Y offset to apply to the function when X = XInput
+        /// is returned.
+        /// </summary>
+        /// <param name="snapToY">The Y value that the function should pass through when X = snapAtX</param>
+        /// <param name="snapFromY">The Y value of the function when X = snapAtX</param>
+        /// <param name="snapAtX">See snapToY and snapFromY</param>
+        /// <param name="dontAffectAtX">The X value where the function should not be affected after</param>
+        /// <param name="XInput">The X value that the function is currently being evaluated at</param>
+        /// <returns>Y offset to apply to the function when X = XInput</returns>
         protected double GetEndPointSnapOffset(double snapToY, double snapFromY, 
                                              double snapAtX, double dontAffectAtX,
                                              double XInput)

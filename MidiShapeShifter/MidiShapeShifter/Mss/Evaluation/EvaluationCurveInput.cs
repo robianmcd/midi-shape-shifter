@@ -10,9 +10,11 @@ using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {
+    /// <summary>
+    /// Stores the input information that is needed by an EvaluationCurveJob
+    /// </summary>
     public class EvaluationCurveInput : EvaluationInput
     {
-        //These fields are only needed if this is input for a curve equation
         public MssMsgDataField PrimaryInputSource { get; set; }
 
         public double RelData1 { get; set; }
@@ -61,6 +63,10 @@ namespace MidiShapeShifter.Mss.Evaluation
                         mappingEntry);
         }
 
+        /// <summary>
+        /// Get the value of the RelData field that is associated with the 
+        /// primary input type.
+        /// </summary>
         public double getPrimaryInputVal()
         {
             if (this.PrimaryInputSource == MssMsgDataField.Data1)
@@ -83,6 +89,10 @@ namespace MidiShapeShifter.Mss.Evaluation
             }
         }
 
+        /// <summary>
+        /// Set the RelData fields that is associated with the promary input 
+        /// type to primaryInputVal.
+        /// </summary>
         public void setPrimaryInputVal(double primaryInputVal)
         {
             if (this.PrimaryInputSource == MssMsgDataField.Data1)

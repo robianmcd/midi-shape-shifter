@@ -5,6 +5,9 @@ using System.Text;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {
+    /// <summary>
+    /// Stores the input information that is needed by an EvaluationControlPointJob
+    /// </summary>
     public class EvaluationControlPointInput : EvaluationInput
     {
         public string EquationStr { get; set; }

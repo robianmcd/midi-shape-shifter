@@ -10,6 +10,10 @@ using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {
+    /// <summary>
+    /// This class wraps up all of the input information that is sent to an 
+    /// EvaluationJob.
+    /// </summary>
     public abstract class EvaluationInput : ICloneable
     {
         public EquationType equationType { get; protected set; }
