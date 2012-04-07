@@ -45,7 +45,7 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// This should be set to false if there is an error during 
         /// configuration due to invalid input.
         /// </summary>
-        protected bool inputIsValid { get; protected set; }
+        protected bool inputIsValid { get; set; }
 
         /// <summary>
         /// Specifies whether OutputVal is valid.
