@@ -15,6 +15,7 @@ using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
 using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.Evaluation;
+using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifterTest.Mss
 {

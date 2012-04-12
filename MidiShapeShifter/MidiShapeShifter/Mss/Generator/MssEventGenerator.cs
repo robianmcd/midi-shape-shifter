@@ -9,6 +9,7 @@ using MidiShapeShifter.Ioc;
 
 using MidiShapeShifter.Mss.Relays;
 using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Mss.Generator
 {

@@ -15,6 +15,7 @@ using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.UI;
 using MidiShapeShifter.Mss.Relays;
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
+using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Mss
 {

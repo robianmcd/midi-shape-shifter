@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MidiShapeShifter.Mss
+namespace MidiShapeShifter.Mss.Parameters
 {
     public interface IMssParameterViewer
     {

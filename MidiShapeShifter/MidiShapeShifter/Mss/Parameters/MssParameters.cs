@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
-namespace MidiShapeShifter.Mss
+namespace MidiShapeShifter.Mss.Parameters
 {
     /// <summary>
     ///     There is a unique MssParameterID for each parameter which is used to distinguish between parameters.
@@ -22,7 +22,7 @@ namespace MidiShapeShifter.Mss
     ///     classes can subscribe to if they want to be notified of changes to parameter information.
     /// </summary>
     [Serializable]
-    public class MssParameters : MidiShapeShifter.Mss.IMssParameterViewer
+    public class MssParameters : IMssParameterViewer
     {
         //These events will be thrown whenever a parameter is modified
         [field: NonSerialized]

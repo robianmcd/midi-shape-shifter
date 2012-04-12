@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using MidiShapeShifter.Mss.Parameters;
 
 using MidiShapeShifter.CSharpUtil;
 

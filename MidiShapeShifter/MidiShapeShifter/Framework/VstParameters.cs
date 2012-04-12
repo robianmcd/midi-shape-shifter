@@ -10,6 +10,7 @@ using Jacobi.Vst.Framework;
 
 using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss;
+using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Framework
 {

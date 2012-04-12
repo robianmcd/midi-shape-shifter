@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {

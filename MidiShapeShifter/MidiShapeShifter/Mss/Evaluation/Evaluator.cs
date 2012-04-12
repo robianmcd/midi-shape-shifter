@@ -8,6 +8,7 @@ using NCalc;
 
 using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {

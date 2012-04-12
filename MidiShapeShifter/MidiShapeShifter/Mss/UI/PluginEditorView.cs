@@ -17,6 +17,7 @@ using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.Relays;
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
 using MidiShapeShifter.Mss.Evaluation;
+using MidiShapeShifter.Mss.Parameters;
 
 
 using LBSoft.IndustrialCtrls.Knobs;

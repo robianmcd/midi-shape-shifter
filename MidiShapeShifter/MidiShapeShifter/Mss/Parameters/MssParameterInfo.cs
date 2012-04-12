@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MidiShapeShifter.Mss
+namespace MidiShapeShifter.Mss.Parameters
 {
     /// <summary>
     ///     A representation of a parameter in Midi Shape Shifter.

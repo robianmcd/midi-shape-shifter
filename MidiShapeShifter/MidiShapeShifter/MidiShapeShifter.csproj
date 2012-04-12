@@ -132,7 +132,7 @@
     <Compile Include="Mss\Evaluation\IEvaluator.cs" />
     <Compile Include="Mss\IMssMsgProcessor.cs" />
     <Compile Include="Mss\IMssMsgRange.cs" />
-    <Compile Include="Mss\IMssParameterViewer.cs" />
+    <Compile Include="Mss\Parameters\IMssParameterViewer.cs" />
     <Compile Include="Mss\Mapping\IGraphableMappingManager.cs" />
     <Compile Include="Mss\Mapping\IMappingEntry.cs" />
     <Compile Include="Mss\Mapping\IMappingManager.cs" />
@@ -189,8 +189,8 @@
     <Compile Include="Framework\PluginCommandStub.cs" />
     <Compile Include="Framework\PluginEditor.cs" />
     <Compile Include="Framework\PluginPrograms.cs" />
-    <Compile Include="Mss\MssParameterInfo.cs" />
-    <Compile Include="Mss\MssParameters.cs" />
+    <Compile Include="Mss\Parameters\MssParameterInfo.cs" />
+    <Compile Include="Mss\Parameters\MssParameters.cs" />
     <Compile Include="Mss\MssProgramMgr.cs" />
     <Compile Include="Mss\Relays\DryMssEventRelay.cs" />
     <Compile Include="Mss\Relays\IDryMssEventOutputPort.cs" />

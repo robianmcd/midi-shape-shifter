@@ -2,6 +2,7 @@
 
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Mss
 {

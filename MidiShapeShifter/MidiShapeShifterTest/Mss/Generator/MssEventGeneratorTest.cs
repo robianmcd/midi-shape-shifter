@@ -12,6 +12,7 @@ using Moq;
 using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Relays;
+using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifterTest.Mss.Generator
 {

@@ -11,6 +11,7 @@ using MidiShapeShifter.Ioc;
 using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.Evaluation;
+using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Mss
 {

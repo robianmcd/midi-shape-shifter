@@ -7,6 +7,7 @@ using System.Diagnostics;
 using NCalc;
 
 using MidiShapeShifter.CSharpUtil;
+using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {
