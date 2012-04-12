@@ -126,10 +126,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                     relData1,
                     relData2,
                     relData3,
-                    mssParameterViewer.GetParameterValue(MssParameterID.VariableA),
-                    mssParameterViewer.GetParameterValue(MssParameterID.VariableB),
-                    mssParameterViewer.GetParameterValue(MssParameterID.VariableC),
-                    mssParameterViewer.GetParameterValue(MssParameterID.VariableD),
+                    mssParameterViewer.GetVariableParamInfoList(),
                     mappingEntry);
 
                 evalJob.Configure(evalInput);

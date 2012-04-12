@@ -43,6 +43,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -85,6 +86,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -95,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSharpUtil\DeserializationBinderForPlugins.cs" />
+    <Compile Include="CSharpUtil\FileTreeFolderNode.cs" />
     <Compile Include="CSharpUtil\ReturnStatus.cs" />
     <Compile Include="CSharpUtil\CustomStringUtil.cs" />
     <Compile Include="CSharpUtil\TwoWayDictionary.cs" />
@@ -104,6 +107,9 @@
     <Compile Include="Framework\VstTimeInfoTransmitter.cs" />
     <Compile Include="Ioc\IocMgr.cs" />
     <Compile Include="Midi\MidiUtil.cs" />
+    <Compile Include="Mss\BaseSettingsFileMgr.cs" />
+    <Compile Include="Mss\SettingsFileInfo.cs" />
+    <Compile Include="Mss\TransformPresetMgr.cs" />
     <Compile Include="Mss\Evaluation\EvaluationControlPointInput.cs" />
     <Compile Include="Mss\Evaluation\EvaluationControlPointJob.cs" />
     <Compile Include="Mss\Evaluation\EvaluationCurveInput.cs" />
@@ -185,9 +191,7 @@
     <Compile Include="Framework\PluginPrograms.cs" />
     <Compile Include="Mss\MssParameterInfo.cs" />
     <Compile Include="Mss\MssParameters.cs" />
-    <Compile Include="Mss\Programs\MssProgramInfo.cs" />
-    <Compile Include="Mss\Programs\MssProgramMgr.cs" />
-    <Compile Include="Mss\Programs\MssProgramTreeNode.cs" />
+    <Compile Include="Mss\MssProgramMgr.cs" />
     <Compile Include="Mss\Relays\DryMssEventRelay.cs" />
     <Compile Include="Mss\Relays\IDryMssEventOutputPort.cs" />
     <Compile Include="Mss\Relays\IDryMssEventInputPort.cs" />
@@ -334,6 +338,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\images\imgTrashGrey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgOpenGrey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images\imgSaveGrey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Mss\Programs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

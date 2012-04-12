@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -18,6 +19,8 @@ namespace MidiShapeShifter.Mss.Mapping
     [Serializable]
     public class MappingEntry : IMappingEntry
     {
+        protected const MssMsgDataField DEFAULT_INPUT_TYPE = MssMsgDataField.Data3;
+
         /// <summary>
         ///     Specifies which MSS messages will be accepted for input as well as additional information about the 
         ///     input type
@@ -49,9 +52,21 @@ namespace MidiShapeShifter.Mss.Mapping
         public CurveShapeInfo CurveShapeInfo { get { return this._curveShapeInfo; }
                                                set { this._curveShapeInfo = value; } }
 
+        /// <summary>
+        /// Specifies the primary input field. E.G. if this class was for a velocity curve then this 
+        /// field would be Data3.
+        /// </summary>
+        [OptionalField(VersionAdded = 2)]
+        protected MssMsgDataField _primaryInputSource;
+        public MssMsgDataField PrimaryInputSource
+        {
+            get { return this._primaryInputSource; }
+            set { this._primaryInputSource = value; }
+        }
+
         public MappingEntry() 
         {
-            
+            this.PrimaryInputSource = DEFAULT_INPUT_TYPE;
         }
 
         public void InitAllMembers(IMssMsgRange inMsgRange, IMssMsgRange outMsgRange,
@@ -61,6 +76,17 @@ namespace MidiShapeShifter.Mss.Mapping
             this.OutMssMsgRange = outMsgRange;
             this.OverrideDuplicates = overrideDuplicates;
             this.CurveShapeInfo = curveShapeInfo;
+        }
+
+        private void InitOptionalFieldsWithDefaultValues()
+        {
+            this.PrimaryInputSource = DEFAULT_INPUT_TYPE;
+        }
+
+        [OnDeserializing]
+        private void BeforeDeserializing(StreamingContext sc)
+        {
+            InitOptionalFieldsWithDefaultValues();
         }
 
         /// <summary>

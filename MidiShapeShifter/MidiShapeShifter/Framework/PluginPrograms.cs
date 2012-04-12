@@ -5,7 +5,7 @@ using System.Diagnostics;
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
 
-using MidiShapeShifter.Mss.Programs;
+using MidiShapeShifter.Mss;
 
 namespace MidiShapeShifter.Framework
 {
@@ -58,7 +58,7 @@ namespace MidiShapeShifter.Framework
             AttachHandlersToMssProgramMgrEvents();
 
             //Check to see if there is a new program
-            OnProgramChangeFromPlugin(this.mssProgramMgr.ActiveProgram.Name);
+            OnProgramChangeFromPlugin(this.mssProgramMgr.ActiveSettingsFile.Name);
         }
 
         public void InitVstHost(IVstHost vstHost)
@@ -116,7 +116,7 @@ namespace MidiShapeShifter.Framework
         {
             VstProgramCollection newPrograms = new VstProgramCollection();
 
-            foreach(MssProgramInfo progInfo in this.mssProgramMgr.FlatProgramList)
+            foreach (SettingsFileInfo progInfo in this.mssProgramMgr.FlatSettingsFileList)
             {
                 VstProgram program = CreateProgram(ParameterInfos);
                 this.ProgramFullNames.Add(progInfo.Name);
@@ -217,7 +217,7 @@ namespace MidiShapeShifter.Framework
 
                 this.Programs[0].Name = program.Name;
                 this.ProgramFullNames[0] = this.ProgramFullNames[this.Programs.IndexOf(program)];
-                this.mssProgramMgr.ActivateProgramByName(GetFullNameOfProgram(program));
+                this.mssProgramMgr.LoadAndActivateSettingsFromName(GetFullNameOfProgram(program));
 
                 if (ProgramActivated != null)
                 {

@@ -6,7 +6,7 @@ namespace MidiShapeShifter.Mss.Mapping
         IMssMsgRange InMssMsgRange { get; set; }
         IMssMsgRange OutMssMsgRange { get; set; }
         bool OverrideDuplicates { get; set; }
-
+        MssMsgDataField PrimaryInputSource{get; set;}
 
         string GetReadableMsgType(IoType ioCategory);
         string GetReadableOverrideDuplicates();

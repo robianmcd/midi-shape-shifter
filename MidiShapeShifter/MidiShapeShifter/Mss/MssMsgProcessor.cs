@@ -58,7 +58,7 @@ namespace MidiShapeShifter.Mss
                 foreach (IMappingEntry entry in mappingEntries)
                 {
                     EvaluationCurveInput evalInput = new EvaluationCurveInput();
-                    evalInput.Init(mssMsg, this.mssParameterViewer, entry);
+                    evalInput.Init(mssMsg, this.mssParameterViewer.GetVariableParamInfoList(), entry);
                     ReturnStatus<double> evalReturnStatus = this.evaluator.Evaluate(evalInput);
 
                     //The return value must be valid because the equation in the mapping entry must be valid.

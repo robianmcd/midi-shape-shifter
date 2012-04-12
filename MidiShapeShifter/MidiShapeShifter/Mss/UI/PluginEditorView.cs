@@ -16,7 +16,6 @@ using MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes;
 using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.Relays;
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
-using MidiShapeShifter.Mss.Programs;
 using MidiShapeShifter.Mss.Evaluation;
 
 
@@ -52,6 +51,7 @@ namespace MidiShapeShifter.Mss.UI
 
         protected MssParameters mssParameters;
         protected MappingManager mappingMgr;
+        protected TransformPresetMgr transformPresetMgr;
         protected GeneratorMappingManager genMappingMgr;
         protected IDryMssEventOutputPort dryMssEventOutputPort;
 
@@ -119,6 +119,7 @@ namespace MidiShapeShifter.Mss.UI
                          MappingManager mappingMgr, 
                          GeneratorMappingManager genMappingMgr,
                          MssProgramMgr programMgr,
+                         TransformPresetMgr transformPresetMgr,
                          IDryMssEventOutputPort dryMssEventOutputPort,
                          SerializablePluginEditorInfo serializablePluginEditorInfo)
         {
@@ -126,8 +127,10 @@ namespace MidiShapeShifter.Mss.UI
 
             this.mssParameters = mssParameters;
             this.mappingMgr = mappingMgr;
+            this.transformPresetMgr = transformPresetMgr;
             this.genMappingMgr = genMappingMgr;
             this.programMgr = programMgr;
+            
             this.dryMssEventOutputPort = dryMssEventOutputPort;
             this.persistantInfo = serializablePluginEditorInfo;
 
@@ -148,11 +151,13 @@ namespace MidiShapeShifter.Mss.UI
             RefreshMappingListView();
             RefreshGeneratorListView();
 
-            repopulateProgramList();
+            //Populate the program list
+            repopulateProgramsList();
+            //Populate the transform preset list
+            repopulateTransformPresetList();
 
-            //TODO: once the TransformController is done see if this call is really nessary. The
-            //Only time this won't get called by repopulateProgramList() is when a blank program
-            //is loaded.
+            //The only time this won't get called by repopulateProgramList() is when a blank
+            //program is loaded.
             OnActiveGraphableEntryChanged();
         }
 
@@ -294,15 +299,26 @@ namespace MidiShapeShifter.Mss.UI
 
         protected void OnActiveGraphableEntryChanged()
         {
-            UpdateCurveShapeControls();
+            OnActiveCurveShapeChanged();
             UpdateGraphableEntryButtonsEnabledStatus();
+        }
+
+        protected void OnActiveCurveShapeChanged()
+        {
+            //Attach the preset parameter info from the active graphable entry to MssParameters
+            if (this.ActiveGraphableEntry != null)
+            {
+                this.mssParameters.SetPresetParamInfoList(
+                    this.ActiveGraphableEntry.CurveShapeInfo.ParamInfoList);
+            }
+
+            UpdateCurveShapeControls();
         }
 
         protected void UpdateCurveShapeControls()
         {
             bool activeEntryExists = (this.ActiveGraphableEntry != null);
 
-            curvePresetCombo.Enabled = activeEntryExists;
             presetParam1Knob.Enabled = activeEntryExists;
             presetParam2Knob.Enabled = activeEntryExists;
             presetParam3Knob.Enabled = activeEntryExists;
@@ -315,7 +331,10 @@ namespace MidiShapeShifter.Mss.UI
                 CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
 
             //Update preset controls
-                this.curvePresetCombo.SelectedIndex = ActiveGraphableEntry.CurveShapeInfo.PresetIndex;
+                curvePresetList.Enabled = true;
+                repopulateTransformPresetList();
+                this.savePresetBtn.Enabled = true;
+                this.openPresetBtn.Enabled = true;
 
             //Update Graph controls (the equation curve is not updated until the end)
                 SetGraphOutputLabelText(this.ActiveGraphableEntry.OutMssMsgRange.MsgInfo.Data3Name);
@@ -337,6 +356,7 @@ namespace MidiShapeShifter.Mss.UI
                     Debug.Assert(false);
                 }
                 this.resetGraphBtn.Enabled = true;
+                
 
             //Update equations controls
                 EnableAppropriateEquationControls(curveInfo.SelectedEquationType);
@@ -360,19 +380,34 @@ namespace MidiShapeShifter.Mss.UI
                 }
 
             //Update Parameter controls
-                this.presetParam1Knob.Value = (float)ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[0];
-                this.presetParam2Knob.Value = (float)ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[1];
-                this.presetParam3Knob.Value = (float)ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[2];
-                this.presetParam4Knob.Value = (float)ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[3];
-                this.presetParam1Value.Text = FormatRawParameterValue(ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[0]);
-                this.presetParam2Value.Text = FormatRawParameterValue(ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[1]);
-                this.presetParam3Value.Text = FormatRawParameterValue(ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[2]);
-                this.presetParam4Value.Text = FormatRawParameterValue(ActiveGraphableEntry.CurveShapeInfo.PresetParamValues[3]);
+                foreach(MssParameterID curId in MssParameters.PRESET_PARAM_ID_LIST)
+                {
+                    LBKnob curKnob;
+                    Label curValueLabel;
+                    bool knobFound;
+                    bool labelFound;
+                    knobFound = this.ParameterValueKnobControlDict.TryGetRightByLeft(curId, out curKnob);
+                    labelFound = this.ParameterValueLabelControlDict.TryGetRightByLeft(curId, out curValueLabel);
+
+                    if (knobFound == false || labelFound == false)
+                    {
+                        //Could not find a control. They should have been added to the dictionaries
+                        //in PopulateControlDictionaries().
+                        Debug.Assert(false);
+                        break;
+                    }
+
+                    curKnob.Value = (float)this.mssParameters.GetParameterValue(curId);
+                    curValueLabel.Text = FormatRawParameterValue(this.mssParameters.GetParameterValue(curId));
+                }
             }
             else //Active mapping does not exsist
             {
             //Update preset controls
-                this.curvePresetCombo.SelectedIndex = -1;
+                curvePresetList.Enabled = false;
+                
+                this.savePresetBtn.Enabled = false;
+                this.openPresetBtn.Enabled = false;
 
             //Update Graph controls (the equation curve is not updated until the end)
                 SetGraphOutputLabelText(GRAPH_DEFAULT_OUTPUT_LABEL);
@@ -439,10 +474,12 @@ namespace MidiShapeShifter.Mss.UI
 
             if (this.ActiveGraphableEntry != null)
             {
+                this.graphInputTypeCombo.Enabled = true;
+
                 MssMsgInfo inputInfo = this.ActiveGraphableEntry.InMssMsgRange.MsgInfo;
                 MssMsgDataField[] dataFieldArray = (MssMsgDataField[])Enum.GetValues(typeof(MssMsgDataField));
 
-                foreach(MssMsgDataField dataField in dataFieldArray)
+                foreach (MssMsgDataField dataField in dataFieldArray)
                 {
                     string dataFieldName = inputInfo.GetDataFieldName(dataField);
                     if (dataFieldName != MssMsgInfo.DATA_NAME_UNUSED)
@@ -450,16 +487,20 @@ namespace MidiShapeShifter.Mss.UI
                         this.DataFieldsInGraphInputCombo.Add(dataField);
                         this.graphInputTypeCombo.Items.Add(dataFieldName);
 
-                        if (this.ActiveGraphableEntry.CurveShapeInfo.PrimaryInputSource == dataField)
+                        if (this.ActiveGraphableEntry.PrimaryInputSource == dataField)
                         {
                             ignoreInputTypeComboSelectionChangeHandlers = true;
                             //Select the item that was just added.
-                            this.graphInputTypeCombo.SelectedIndex = 
+                            this.graphInputTypeCombo.SelectedIndex =
                                 this.graphInputTypeCombo.Items.Count - 1;
                             ignoreInputTypeComboSelectionChangeHandlers = false;
                         }
                     }
                 }
+            }
+            else
+            {
+                this.graphInputTypeCombo.Enabled = false;
             }
         }
 
@@ -940,42 +981,78 @@ namespace MidiShapeShifter.Mss.UI
                 new ZedGraphControl.ContextMenuBuilderEventHandler(ZedGraphContextMenuBuilder);
         }
 
-        protected void repopulateProgramList()
+        protected void repopulateProgramsList()
         {
-            this.programList.Text = 
-                CustomStringUtil.CreateStringWithMaxWidth(this.programMgr.ActiveProgram.Name, 
-                                                          this.programList.Width - 10,
-                                                          this.programList.Font);
-            this.programList.DropDownItems.Clear();
-
-            populateDropDownItemsFromProgramTreeNode(this.programList.DropDownItems, 
-                                                     this.programMgr.ProgramTree);
+            repopulateSettingsFileList(this.programList,
+                                       this.programMgr,
+                                       onProgramClicked);
         }
 
-        protected void populateDropDownItemsFromProgramTreeNode(ToolStripItemCollection dropDownItems, 
-                                                                MssProgramTreeNode programTreeNode)
+        protected void repopulateTransformPresetList()
         {
-            foreach (MssProgramInfo program in programTreeNode.ChildProgramsList)
+            repopulateSettingsFileList(this.curvePresetList,
+                                       this.transformPresetMgr,
+                                       onTransformPresetClicked);
+        }
+
+        protected void repopulateSettingsFileList(
+                ToolStripDropDownButton settingsList, 
+                BaseSettingsFileMgr settingsFileMgr,
+                EventHandler itemClickedHandler)
+        {
+            if (settingsFileMgr.ActiveSettingsFile != null)
+            {
+                settingsList.Text = CustomStringUtil.CreateStringWithMaxWidth(
+                        settingsFileMgr.ActiveSettingsFile.Name,
+                        settingsList.Width - 10,
+                        settingsList.Font);
+            }
+            else
+            {
+                settingsList.Text = "";
+            }
+            settingsList.DropDownItems.Clear();
+
+            populateSettingsFileList(settingsList.DropDownItems, 
+                                     settingsFileMgr.SettingsFileTree, 
+                                     itemClickedHandler);
+        }
+
+        protected void populateSettingsFileList(
+                ToolStripItemCollection dropDownItems,
+                FileTreeFolderNode<SettingsFileInfo> programTreeNode,
+                EventHandler itemClickedHandler)
+        {
+            foreach (SettingsFileInfo program in programTreeNode.ChildFileList)
             {
                 var programMenuItem = new ToolStripMenuItem(program.Name);
                 programMenuItem.Tag = program;
-                programMenuItem.Click += new EventHandler(onProgramClicked);
+                programMenuItem.Click += new EventHandler(itemClickedHandler);
                 dropDownItems.Add(programMenuItem);
             }
 
-            foreach (MssProgramTreeNode childNode in programTreeNode.ChildTreeNodesList)
+            foreach (FileTreeFolderNode<SettingsFileInfo> childNode in programTreeNode.ChildFolderList)
             {
                 var programFolder = new ToolStripMenuItem(childNode.NodeName);
                 dropDownItems.Add(programFolder);
-                populateDropDownItemsFromProgramTreeNode(programFolder.DropDownItems, childNode);
+                populateSettingsFileList(programFolder.DropDownItems, childNode, itemClickedHandler);
             }
         }
 
         private void onProgramClicked(object sender, EventArgs e)
         {
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
-            this.programMgr.ActivateProgramByMssProgramInfo((MssProgramInfo) menuItem.Tag);
+            this.programMgr.LoadAndActivateSettingsFromSettingsFileInfo((SettingsFileInfo)menuItem.Tag);
         }
+
+        private void onTransformPresetClicked(object sender, EventArgs e)
+        {
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+            this.transformPresetMgr.LoadAndActivateSettingsFromSettingsFileInfo((SettingsFileInfo)menuItem.Tag);
+            OnActiveCurveShapeChanged();
+        }
+
+
 
         private void generatorListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
@@ -1111,25 +1188,51 @@ namespace MidiShapeShifter.Mss.UI
 
         private void saveProgram_Click(object sender, EventArgs e)
         {
-            this.programMgr.SaveActiveProgram();
-            repopulateProgramList();
+            this.programMgr.SaveActiveSettingsFile();
+            repopulateProgramsList();
         }
 
         private void saveProgramAs_Click(object sender, EventArgs e)
         {
-            this.programMgr.SaveActiveProgramAsNewProgram();
-            repopulateProgramList();
+            this.programMgr.SaveAsActiveSettingsFile();
+            repopulateProgramsList();
         }
 
         private void openProgram_Click(object sender, EventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Filter = MssProgramInfo.MSS_PROGRAM_FILE_FILTER;
+            dlg.Filter = this.programMgr.GetSettingsFileFilter();
             dlg.InitialDirectory = MssFileSystemLocations.UserProgramsFolder;
 
             if (dlg.ShowDialog() == DialogResult.OK)
             {
-                this.programMgr.ActivateProgramByPath(dlg.FileName);
+                this.programMgr.LoadAndActivateSettingsFromPath(dlg.FileName);
+            }
+        }
+
+        private void saveTransformPreset_Click(object sender, EventArgs e)
+        {
+            this.transformPresetMgr.SaveActiveSettingsFile();
+            repopulateTransformPresetList();
+        }
+
+        private void saveTransformPresetAs_Click(object sender, EventArgs e)
+        {
+            this.transformPresetMgr.SaveAsActiveSettingsFile();
+            repopulateTransformPresetList();
+        }
+
+        private void openTransformPreset_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = this.transformPresetMgr.GetSettingsFileFilter();
+            dlg.InitialDirectory = MssFileSystemLocations.UserTransformPresetFolder;
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                this.transformPresetMgr.LoadAndActivateSettingsFromPath(dlg.FileName);
+                OnActiveCurveShapeChanged();
+
             }
         }
 
@@ -1202,10 +1305,7 @@ namespace MidiShapeShifter.Mss.UI
                     //Adjust the new point's Y value so that it is on the equation line.
                     EvaluationCurveInput evalInput = new EvaluationCurveInput();
                     evalInput.Init(newPoint.X, newPoint.X, newPoint.X,
-                        this.mssParameters.GetParameterValue(MssParameterID.VariableA),
-                        this.mssParameters.GetParameterValue(MssParameterID.VariableB),
-                        this.mssParameters.GetParameterValue(MssParameterID.VariableC),
-                        this.mssParameters.GetParameterValue(MssParameterID.VariableD),
+                        this.mssParameters.GetVariableParamInfoList(),
                         this.ActiveGraphableEntry);
                     ReturnStatus<double> evalReturnStatus = this.evaluator.Evaluate(evalInput);
                     if (evalReturnStatus.IsValid == false)
@@ -1529,7 +1629,7 @@ namespace MidiShapeShifter.Mss.UI
                 this.ActiveGraphableEntry != null)
             {
                 ComboBox inputTypeCombo = (ComboBox)sender;
-                this.ActiveGraphableEntry.CurveShapeInfo.PrimaryInputSource =
+                this.ActiveGraphableEntry.PrimaryInputSource =
                     this.DataFieldsInGraphInputCombo[inputTypeCombo.SelectedIndex];
 
                 UpdateCurveShapeControls();

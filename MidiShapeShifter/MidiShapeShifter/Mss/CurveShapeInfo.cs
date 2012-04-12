@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 using MidiShapeShifter.CSharpUtil;
-using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss
 {
@@ -20,8 +20,6 @@ namespace MidiShapeShifter.Mss
     public class CurveShapeInfo
     {
         public const string DEFAULT_EQUATION = "input";
-        public const int DEFAULT_PRESET_INDEX = -1;
-        public const double DEFAULT_PRESET_VALUE = 0;
 
         /// <summary>
         ///     This field is obsolete. In old version it was used to map an MSS message's data3
@@ -58,27 +56,18 @@ namespace MidiShapeShifter.Mss
         public EquationType SelectedEquationType;
 
         /// <summary>
-        /// Specifies the primary input field. E.G. if this cass was for a velocity curve then this 
-        /// field would be Data3.
-        /// </summary>
-        [OptionalField(VersionAdded = 2)]
-        public MssMsgDataField PrimaryInputSource;
-
-        /// <summary>
         ///     Index if the selected preset
         /// </summary>
-        public int PresetIndex;
+        public SettingsFileInfo ActiveTransformPreset;
+
+        [OptionalField(VersionAdded = 3)]
+        public List<MssParameterInfo> ParamInfoList;
 
         /// <summary>
-        ///     Values of the preset knobs
-        /// </summary>
-        public double[] PresetParamValues;
-
-        /// <summary>
-        ///     Stores the most up to date version of this class. This should be incrimented every 
+        ///     Stores the most up to date version for this class. This should be incrimented every 
         ///     time a serializable field is added or removed.
         /// </summary>
-        private const int CURRENT_SERIALIZATION_VERSION = 2;
+        private const int CURRENT_SERIALIZATION_VERSION = 3;
 
         /// <summary>
         /// This field is used while deserializing to check if the instance being deserialized is 
@@ -97,10 +86,6 @@ namespace MidiShapeShifter.Mss
             InitOptionalFieldsWithDefaultValues();
 
             this.CurveEquations.Add(DEFAULT_EQUATION);
-
-            this.PresetIndex = DEFAULT_PRESET_INDEX;
-            this.PresetParamValues = new double[4] { DEFAULT_PRESET_VALUE, DEFAULT_PRESET_VALUE, 
-                                                            DEFAULT_PRESET_VALUE, DEFAULT_PRESET_VALUE };
         }
 
         private void InitOptionalFieldsWithDefaultValues()
@@ -111,7 +96,9 @@ namespace MidiShapeShifter.Mss
             this.SelectedEquationIndex = 0;
             this.SelectedEquationType = EquationType.Curve;
 
-            this.PrimaryInputSource = MssMsgDataField.Data3;
+            this.ParamInfoList = MssParameters.CreateDefaultPresetParamInfoList();
+
+            this.ActiveTransformPreset = TransformPresetMgr.CreateDefaultTransformPresetFileInfo();
         }
 
         [OnDeserializing]

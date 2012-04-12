@@ -22,6 +22,8 @@ namespace MidiShapeShifter.Mss.Evaluation
     {
         public const string FUNC_NAME_LIMIT = "limit";
 
+        protected bool functionHandlingErrorEncountered;
+
         /// <summary>
         /// Stores the value of the evaluated equation if OutputIsValid is 
         /// true.
@@ -107,8 +109,18 @@ namespace MidiShapeShifter.Mss.Evaluation
         {
             try
             {
+                functionHandlingErrorEncountered = false;
                 double output = System.Convert.ToDouble(exp.Evaluate());
-                return new ReturnStatus<double>(output, true);
+
+                if (functionHandlingErrorEncountered == true)
+                {
+                    functionHandlingErrorEncountered = false;
+                    return new ReturnStatus<double>(double.NaN, false);
+                }
+                else
+                {
+                    return new ReturnStatus<double>(output, true);
+                }
             }
             catch
             {
@@ -213,10 +225,26 @@ namespace MidiShapeShifter.Mss.Evaluation
         {
             if (this.expression != null)
             {
-                this.expression.Parameters["a"] = input.varA;
-                this.expression.Parameters["b"] = input.varB;
-                this.expression.Parameters["c"] = input.varC;
-                this.expression.Parameters["d"] = input.varD;
+                char charVarName = 'a';
+                foreach(MssParameterInfo varInfo in input.VariableParamInfoList)
+                {
+                    this.expression.Parameters[varInfo.Name.ToLower()] = varInfo.Value;
+
+                    if (charVarName <= 'z')
+                    {
+                        this.expression.Parameters[charVarName.ToString()] = varInfo.Value;
+                        charVarName++;
+                    }
+                }
+
+                int paramNum = 1;
+                foreach (MssParameterInfo varInfo in input.TransformParamInfoList)
+                {
+                    this.expression.Parameters[varInfo.Name.ToLower()] = varInfo.Value;
+
+                    this.expression.Parameters["p" + paramNum.ToString()] = varInfo.Value;
+                    paramNum++;
+                }
             }
             else
             {
@@ -258,6 +286,11 @@ namespace MidiShapeShifter.Mss.Evaluation
                     {
                         args.Result = evaluateStatus.Value;
                     }
+                }
+                else
+                {
+                    args.Result = double.NaN;
+                    this.functionHandlingErrorEncountered = true;
                 }
             }
             return false;

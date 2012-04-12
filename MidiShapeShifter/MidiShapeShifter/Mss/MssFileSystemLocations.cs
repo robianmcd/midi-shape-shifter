@@ -56,6 +56,22 @@ namespace MidiShapeShifter.Mss
             }
         }
 
+        public static string FactoryTransformPresetFolder
+        {
+            get
+            {
+                return FactorySettingsFolder + @"Transformation Presets\";
+            }
+        }
+
+        public static string UserTransformPresetFolder
+        {
+            get
+            {
+                return UserSettingsFolder + @"Transformation Presets\";
+            }
+        }
+
         private static RegistryKey CreateMssLocalMachineRegKey()
         {
             return Registry.LocalMachine.OpenSubKey(@"SOFTWARE\" + MssConstants.APP_NAME);

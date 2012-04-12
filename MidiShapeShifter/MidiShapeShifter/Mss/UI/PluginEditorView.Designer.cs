@@ -38,6 +38,14 @@
             this.presetParam1Knob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
             this.presetParam1Value = new System.Windows.Forms.Label();
             this.curveGroup = new System.Windows.Forms.GroupBox();
+            this.coverUpUglyLine = new System.Windows.Forms.Label();
+            this.presetToolStrip = new System.Windows.Forms.ToolStrip();
+            this.curvePresetLabel = new System.Windows.Forms.ToolStripLabel();
+            this.curvePresetList = new System.Windows.Forms.ToolStripDropDownButton();
+            this.openPresetBtn = new System.Windows.Forms.ToolStripButton();
+            this.savePresetBtn = new System.Windows.Forms.ToolStripSplitButton();
+            this.savePresetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SavePresetAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pointYEquationTextBox = new System.Windows.Forms.TextBox();
             this.pointYEquationLabel = new System.Windows.Forms.Label();
             this.pointXEquationLabel = new System.Windows.Forms.Label();
@@ -48,7 +56,6 @@
             this.graphOutputTypeImg = new System.Windows.Forms.PictureBox();
             this.graphInputTypeCombo = new System.Windows.Forms.ComboBox();
             this.graphInputLable = new System.Windows.Forms.Label();
-            this.curvePresetLabel = new System.Windows.Forms.Label();
             this.presetParam4Title = new System.Windows.Forms.Label();
             this.presetParam4Value = new System.Windows.Forms.Label();
             this.presetParam4Knob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
@@ -59,7 +66,6 @@
             this.presetParam2Value = new System.Windows.Forms.Label();
             this.presetParam2Knob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
             this.presetParam1Title = new System.Windows.Forms.Label();
-            this.curvePresetCombo = new System.Windows.Forms.ComboBox();
             this.pointXEquationTextBox = new System.Windows.Forms.TextBox();
             this.curveEquationTextBox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -101,18 +107,20 @@
             this.addGeneratorBtn = new System.Windows.Forms.Button();
             this.editGeneratorBtn = new System.Windows.Forms.Button();
             this.deleteGeneratorBtn = new System.Windows.Forms.Button();
-            this.toolStrip = new System.Windows.Forms.ToolStrip();
+            this.programToolStrip = new System.Windows.Forms.ToolStrip();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.programList = new System.Windows.Forms.ToolStripDropDownButton();
             this.openProgram = new System.Windows.Forms.ToolStripButton();
             this.saveSplitButton = new System.Windows.Forms.ToolStripSplitButton();
             this.saveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.programList = new System.Windows.Forms.ToolStripDropDownButton();
             this.curveGroup.SuspendLayout();
+            this.presetToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.graphOutputTypeImg)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.mappingGroupBox.SuspendLayout();
             this.generatorGroupBox.SuspendLayout();
-            this.toolStrip.SuspendLayout();
+            this.programToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainGraphControl
@@ -180,6 +188,8 @@
             // curveGroup
             // 
             this.curveGroup.BackColor = System.Drawing.SystemColors.Control;
+            this.curveGroup.Controls.Add(this.coverUpUglyLine);
+            this.curveGroup.Controls.Add(this.presetToolStrip);
             this.curveGroup.Controls.Add(this.pointYEquationTextBox);
             this.curveGroup.Controls.Add(this.pointYEquationLabel);
             this.curveGroup.Controls.Add(this.pointXEquationLabel);
@@ -190,7 +200,6 @@
             this.curveGroup.Controls.Add(this.graphOutputTypeImg);
             this.curveGroup.Controls.Add(this.graphInputTypeCombo);
             this.curveGroup.Controls.Add(this.graphInputLable);
-            this.curveGroup.Controls.Add(this.curvePresetLabel);
             this.curveGroup.Controls.Add(this.presetParam4Title);
             this.curveGroup.Controls.Add(this.presetParam4Value);
             this.curveGroup.Controls.Add(this.presetParam4Knob);
@@ -202,7 +211,6 @@
             this.curveGroup.Controls.Add(this.presetParam2Value);
             this.curveGroup.Controls.Add(this.presetParam2Knob);
             this.curveGroup.Controls.Add(this.presetParam1Title);
-            this.curveGroup.Controls.Add(this.curvePresetCombo);
             this.curveGroup.Controls.Add(this.presetParam1Value);
             this.curveGroup.Controls.Add(this.presetParam1Knob);
             this.curveGroup.Controls.Add(this.pointXEquationTextBox);
@@ -213,6 +221,89 @@
             this.curveGroup.TabIndex = 3;
             this.curveGroup.TabStop = false;
             this.curveGroup.Text = "Transformation";
+            // 
+            // coverUpUglyLine
+            // 
+            this.coverUpUglyLine.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(236)))));
+            this.coverUpUglyLine.Location = new System.Drawing.Point(253, 15);
+            this.coverUpUglyLine.Name = "coverUpUglyLine";
+            this.coverUpUglyLine.Size = new System.Drawing.Size(2, 30);
+            this.coverUpUglyLine.TabIndex = 29;
+            // 
+            // presetToolStrip
+            // 
+            this.presetToolStrip.AutoSize = false;
+            this.presetToolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(236)))));
+            this.presetToolStrip.Dock = System.Windows.Forms.DockStyle.None;
+            this.presetToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.presetToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.curvePresetLabel,
+            this.curvePresetList,
+            this.openPresetBtn,
+            this.savePresetBtn});
+            this.presetToolStrip.Location = new System.Drawing.Point(6, 14);
+            this.presetToolStrip.Name = "presetToolStrip";
+            this.presetToolStrip.Size = new System.Drawing.Size(249, 32);
+            this.presetToolStrip.TabIndex = 28;
+            this.presetToolStrip.Text = "toolStrip1";
+            // 
+            // curvePresetLabel
+            // 
+            this.curvePresetLabel.Name = "curvePresetLabel";
+            this.curvePresetLabel.Size = new System.Drawing.Size(42, 29);
+            this.curvePresetLabel.Text = "Preset:";
+            // 
+            // curvePresetList
+            // 
+            this.curvePresetList.AutoSize = false;
+            this.curvePresetList.BackColor = System.Drawing.Color.White;
+            this.curvePresetList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.curvePresetList.Image = ((System.Drawing.Image)(resources.GetObject("curvePresetList.Image")));
+            this.curvePresetList.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.curvePresetList.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.curvePresetList.Name = "curvePresetList";
+            this.curvePresetList.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.curvePresetList.Size = new System.Drawing.Size(145, 22);
+            this.curvePresetList.Text = "Line";
+            this.curvePresetList.ToolTipText = "Select a transformation preset.";
+            // 
+            // openPresetBtn
+            // 
+            this.openPresetBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.openPresetBtn.Image = global::MidiShapeShifter.Properties.Resources.imgOpenBlue;
+            this.openPresetBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.openPresetBtn.Name = "openPresetBtn";
+            this.openPresetBtn.Size = new System.Drawing.Size(23, 29);
+            this.openPresetBtn.Text = "Open Program";
+            this.openPresetBtn.Click += new System.EventHandler(this.openTransformPreset_Click);
+            // 
+            // savePresetBtn
+            // 
+            this.savePresetBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.savePresetBtn.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.savePresetMenuItem,
+            this.SavePresetAsMenuItem});
+            this.savePresetBtn.Image = global::MidiShapeShifter.Properties.Resources.imgSaveBlue;
+            this.savePresetBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.savePresetBtn.Name = "savePresetBtn";
+            this.savePresetBtn.Size = new System.Drawing.Size(32, 20);
+            this.savePresetBtn.Text = "Save Program";
+            this.savePresetBtn.ButtonClick += new System.EventHandler(this.saveTransformPreset_Click);
+            // 
+            // savePresetMenuItem
+            // 
+            this.savePresetMenuItem.Image = global::MidiShapeShifter.Properties.Resources.imgSaveBlue;
+            this.savePresetMenuItem.Name = "savePresetMenuItem";
+            this.savePresetMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.savePresetMenuItem.Text = "Save Preset";
+            this.savePresetMenuItem.Click += new System.EventHandler(this.saveTransformPreset_Click);
+            // 
+            // SavePresetAsMenuItem
+            // 
+            this.SavePresetAsMenuItem.Name = "SavePresetAsMenuItem";
+            this.SavePresetAsMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.SavePresetAsMenuItem.Text = "Save Preset As...";
+            this.SavePresetAsMenuItem.Click += new System.EventHandler(this.saveTransformPresetAs_Click);
             // 
             // pointYEquationTextBox
             // 
@@ -320,15 +411,6 @@
             this.graphInputLable.Size = new System.Drawing.Size(36, 16);
             this.graphInputLable.TabIndex = 3;
             this.graphInputLable.Text = "Input:";
-            // 
-            // curvePresetLabel
-            // 
-            this.curvePresetLabel.AutoSize = true;
-            this.curvePresetLabel.Location = new System.Drawing.Point(6, 20);
-            this.curvePresetLabel.Name = "curvePresetLabel";
-            this.curvePresetLabel.Size = new System.Drawing.Size(40, 13);
-            this.curvePresetLabel.TabIndex = 0;
-            this.curvePresetLabel.Text = "Preset:";
             // 
             // presetParam4Title
             // 
@@ -465,16 +547,6 @@
             this.presetParam1Title.TabIndex = 14;
             this.presetParam1Title.Text = "Param1";
             this.presetParam1Title.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // curvePresetCombo
-            // 
-            this.curvePresetCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.curvePresetCombo.Enabled = false;
-            this.curvePresetCombo.FormattingEnabled = true;
-            this.curvePresetCombo.Location = new System.Drawing.Point(51, 16);
-            this.curvePresetCombo.Name = "curvePresetCombo";
-            this.curvePresetCombo.Size = new System.Drawing.Size(204, 21);
-            this.curvePresetCombo.TabIndex = 1;
             // 
             // pointXEquationTextBox
             // 
@@ -955,18 +1027,39 @@
             this.deleteGeneratorBtn.EnabledChanged += new System.EventHandler(this.deleteBtn_EnabledChanged);
             this.deleteGeneratorBtn.Click += new System.EventHandler(this.deleteGeneratorBtn_Click);
             // 
-            // toolStrip
+            // programToolStrip
             // 
-            this.toolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(236)))));
-            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.programToolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(236)))));
+            this.programToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.programToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabel2,
+            this.programList,
             this.openProgram,
-            this.saveSplitButton,
-            this.programList});
-            this.toolStrip.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(714, 32);
-            this.toolStrip.TabIndex = 0;
-            this.toolStrip.Text = "Tool Strip";
+            this.saveSplitButton});
+            this.programToolStrip.Location = new System.Drawing.Point(0, 0);
+            this.programToolStrip.Name = "programToolStrip";
+            this.programToolStrip.Size = new System.Drawing.Size(714, 32);
+            this.programToolStrip.TabIndex = 0;
+            this.programToolStrip.Text = "Tool Strip";
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(56, 29);
+            this.toolStripLabel2.Text = "Program:";
+            // 
+            // programList
+            // 
+            this.programList.AutoSize = false;
+            this.programList.BackColor = System.Drawing.Color.White;
+            this.programList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.programList.Image = ((System.Drawing.Image)(resources.GetObject("programList.Image")));
+            this.programList.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.programList.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.programList.Name = "programList";
+            this.programList.Size = new System.Drawing.Size(160, 22);
+            this.programList.Text = "Blank";
+            this.programList.ToolTipText = "Select a program.";
             // 
             // openProgram
             // 
@@ -1006,25 +1099,12 @@
             this.saveAsMenuItem.Text = "Save Program As...";
             this.saveAsMenuItem.Click += new System.EventHandler(this.saveProgramAs_Click);
             // 
-            // programList
-            // 
-            this.programList.AutoSize = false;
-            this.programList.BackColor = System.Drawing.Color.White;
-            this.programList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.programList.Image = ((System.Drawing.Image)(resources.GetObject("programList.Image")));
-            this.programList.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.programList.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
-            this.programList.Name = "programList";
-            this.programList.Size = new System.Drawing.Size(160, 22);
-            this.programList.Text = "Blank";
-            this.programList.ToolTipText = "Select a Program";
-            // 
             // PluginEditorView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.Controls.Add(this.toolStrip);
+            this.Controls.Add(this.programToolStrip);
             this.Controls.Add(this.generatorGroupBox);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.mappingGroupBox);
@@ -1034,12 +1114,14 @@
             this.Size = new System.Drawing.Size(714, 405);
             this.curveGroup.ResumeLayout(false);
             this.curveGroup.PerformLayout();
+            this.presetToolStrip.ResumeLayout(false);
+            this.presetToolStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.graphOutputTypeImg)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.mappingGroupBox.ResumeLayout(false);
             this.generatorGroupBox.ResumeLayout(false);
-            this.toolStrip.ResumeLayout(false);
-            this.toolStrip.PerformLayout();
+            this.programToolStrip.ResumeLayout(false);
+            this.programToolStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1052,7 +1134,6 @@
         private System.Windows.Forms.Label presetParam1Value;
         private System.Windows.Forms.GroupBox curveGroup;
         private System.Windows.Forms.Label presetParam1Title;
-        private System.Windows.Forms.ComboBox curvePresetCombo;
         private System.Windows.Forms.TextBox curveEquationTextBox;
         private System.Windows.Forms.Label presetParam4Title;
         private System.Windows.Forms.Label presetParam4Value;
@@ -1096,7 +1177,7 @@
         private System.Windows.Forms.Button addGeneratorBtn;
         private System.Windows.Forms.Button editGeneratorBtn;
         private System.Windows.Forms.Button deleteGeneratorBtn;
-        private System.Windows.Forms.ToolStrip toolStrip;
+        private System.Windows.Forms.ToolStrip programToolStrip;
         private System.Windows.Forms.ToolStripButton openProgram;
         private System.Windows.Forms.ColumnHeader generatorPeriodColHeader;
         private System.Windows.Forms.ColumnHeader generatorLoopColHeader;
@@ -1105,7 +1186,6 @@
         private System.Windows.Forms.ToolStripSplitButton saveSplitButton;
         private System.Windows.Forms.ToolStripMenuItem saveMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsMenuItem;
-        private System.Windows.Forms.Label curvePresetLabel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private LBSoft.IndustrialCtrls.Knobs.LBKnob lbKnob1;
@@ -1120,6 +1200,15 @@
         private System.Windows.Forms.Label pointYEquationLabel;
         private System.Windows.Forms.Label pointXEquationLabel;
         private System.Windows.Forms.TextBox pointXEquationTextBox;
+        private System.Windows.Forms.ToolStrip presetToolStrip;
+        private System.Windows.Forms.ToolStripButton openPresetBtn;
+        private System.Windows.Forms.ToolStripSplitButton savePresetBtn;
+        private System.Windows.Forms.ToolStripMenuItem savePresetMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SavePresetAsMenuItem;
+        private System.Windows.Forms.ToolStripDropDownButton curvePresetList;
+        private System.Windows.Forms.ToolStripLabel curvePresetLabel;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.Label coverUpUglyLine;
 
     }
 }

@@ -16,12 +16,10 @@ namespace MidiShapeShifter.Mss.Evaluation
     /// </summary>
     public abstract class EvaluationInput : ICloneable
     {
-        public EquationType equationType { get; protected set; }
+        public abstract EquationType equationType { get; }
 
-        public double varA { get; set; }
-        public double varB { get; set; }
-        public double varC { get; set; }
-        public double varD { get; set; }
+        public List<MssParameterInfo> VariableParamInfoList;
+        public List<MssParameterInfo> TransformParamInfoList;
 
 
         public object Clone()

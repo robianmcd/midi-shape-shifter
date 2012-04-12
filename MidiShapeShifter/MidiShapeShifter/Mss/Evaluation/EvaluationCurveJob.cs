@@ -101,10 +101,8 @@ namespace MidiShapeShifter.Mss.Evaluation
             //Create the input for the control point jobs. The expression string will be 
             //individually set for each equation.
             EvaluationControlPointInput pointEvalInput = new EvaluationControlPointInput();
-            pointEvalInput.Init(this.evalInput.varA,
-                                this.evalInput.varB,
-                                this.evalInput.varC,
-                                this.evalInput.varD,
+            pointEvalInput.Init(this.evalInput.VariableParamInfoList, 
+                                this.evalInput.TransformParamInfoList,
                                 "");
 
             //Create jobs to evaluate the x and y coordinates for a control point
@@ -157,17 +155,15 @@ namespace MidiShapeShifter.Mss.Evaluation
                 return true;
             }
 
-            if (this.previousEvalInput.varA == this.evalInput.varA &&
-                this.previousEvalInput.varB == this.evalInput.varB &&
-                this.previousEvalInput.varC == this.evalInput.varC &&
-                this.previousEvalInput.varD == this.evalInput.varD)
+            for (int i = 0; i < this.evalInput.VariableParamInfoList.Count; i++)
             {
-                return false;
+                if (this.previousEvalInput.VariableParamInfoList[i] != 
+                    this.evalInput.VariableParamInfoList[i])
+                {
+                    return true;
+                }
             }
-            else
-            {
-                return true;
-            }
+            return false;
         }
 
         /// <summary>
@@ -348,6 +344,11 @@ namespace MidiShapeShifter.Mss.Evaluation
             if (evaluateStatus.IsValid)
             {
                 args.Result = snapOutputValue;
+            }
+            else
+            {
+                args.Result = double.NaN;
+                this.functionHandlingErrorEncountered = true;
             }
         }
 

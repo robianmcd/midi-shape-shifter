@@ -12,16 +12,19 @@ namespace MidiShapeShifter.Mss.Evaluation
     {
         public string EquationStr { get; set; }
 
-        public void Init(double varA, double varB, double varC, double varD, string equationStr)
+        public void Init(List<MssParameterInfo> variableParamInfoList, 
+                         List<MssParameterInfo> transformParamInfoList,
+                        string equationStr)
         {
-            this.equationType = EquationType.Point;
-
-            this.varA = varA;
-            this.varB = varB;
-            this.varC = varC;
-            this.varD = varD;
+            this.VariableParamInfoList = variableParamInfoList;
+            this.TransformParamInfoList = transformParamInfoList;
 
             this.EquationStr = equationStr;
+        }
+
+        public override EquationType equationType
+        {
+            get { return EquationType.Point; }
         }
     }
 }

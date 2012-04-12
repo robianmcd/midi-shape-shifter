@@ -26,17 +26,12 @@ namespace MidiShapeShifter.Mss.Evaluation
 
         //Can be called multiple times.
         public void Init(double relData1, double relData2, double relData3,
-                           double varA, double varB, double varC, double varD,
+                           List<MssParameterInfo> variableParamInfoList,
                            IMappingEntry mappingEntry)
         {
-            this.equationType = EquationType.Curve;
-
-            this.varA = varA;
-            this.varB = varB;
-            this.varC = varC;
-            this.varD = varD;
-
-            this.PrimaryInputSource = mappingEntry.CurveShapeInfo.PrimaryInputSource;
+            this.VariableParamInfoList = variableParamInfoList;
+            this.TransformParamInfoList = mappingEntry.CurveShapeInfo.ParamInfoList;
+            this.PrimaryInputSource = mappingEntry.PrimaryInputSource;
 
             this.RelData1 = relData1;
             this.RelData2 = relData2;
@@ -47,7 +42,7 @@ namespace MidiShapeShifter.Mss.Evaluation
         }
 
         public void Init(MssMsg mssMsg,
-                           IMssParameterViewer parameterViewer,
+                           List<MssParameterInfo> variableParamInfoList,
                            IMappingEntry mappingEntry)
         {
             MssMsgInfo inMsgInfo = mappingEntry.InMssMsgRange.MsgInfo;
@@ -56,11 +51,8 @@ namespace MidiShapeShifter.Mss.Evaluation
             double relativeData3 = (double)mssMsg.Data3 / (double)(inMsgInfo.MaxData3Value - inMsgInfo.MinData3Value);
 
             this.Init(relativeData1, relativeData2, relativeData3,
-                        parameterViewer.GetParameterValue(MssParameterID.VariableA),
-                        parameterViewer.GetParameterValue(MssParameterID.VariableB),
-                        parameterViewer.GetParameterValue(MssParameterID.VariableC),
-                        parameterViewer.GetParameterValue(MssParameterID.VariableD),
-                        mappingEntry);
+                      variableParamInfoList,
+                      mappingEntry);
         }
 
         /// <summary>
@@ -112,6 +104,11 @@ namespace MidiShapeShifter.Mss.Evaluation
                 //unknown MssMsgDataField
                 Debug.Assert(false);
             }
+        }
+
+        public override EquationType equationType
+        {
+            get { return EquationType.Curve; }
         }
     }
 }
