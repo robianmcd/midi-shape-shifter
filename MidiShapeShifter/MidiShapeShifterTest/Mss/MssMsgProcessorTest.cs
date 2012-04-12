@@ -196,7 +196,7 @@ namespace MidiShapeShifterTest.Mss
             //Setup the MssEvaluator that msgProcessor will use so that it always just returns the input
             var mssEvanuatorMock = new Mock<IEvaluator>();
             mssEvanuatorMock.Setup(evaluator => evaluator.Evaluate(It.IsAny<EvaluationCurveInput>()))
-                            .Returns((string equation, EvaluationCurveInput input) => new ReturnStatus<double>(input.RelData3 * inputMultiple, true));
+                            .Returns((EvaluationCurveInput input) => new ReturnStatus<double>(input.RelData3 * inputMultiple, true));
             IocMgr.Kernel.Rebind<IEvaluator>().ToConstant(mssEvanuatorMock.Object);
             
             MssMsgProcessor msgProcessor = new MssMsgProcessor();
