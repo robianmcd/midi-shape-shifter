@@ -27,7 +27,7 @@ namespace MidiShapeShifter.Mss.Evaluation
 
         //Can be called multiple times.
         public void Init(double relData1, double relData2, double relData3,
-                           List<MssParameterInfo> variableParamInfoList,
+                           List<MssParamInfo> variableParamInfoList,
                            IMappingEntry mappingEntry)
         {
             this.VariableParamInfoList = variableParamInfoList;
@@ -43,7 +43,7 @@ namespace MidiShapeShifter.Mss.Evaluation
         }
 
         public void Init(MssMsg mssMsg,
-                           List<MssParameterInfo> variableParamInfoList,
+                           List<MssParamInfo> variableParamInfoList,
                            IMappingEntry mappingEntry)
         {
             MssMsgInfo inMsgInfo = mappingEntry.InMssMsgRange.MsgInfo;

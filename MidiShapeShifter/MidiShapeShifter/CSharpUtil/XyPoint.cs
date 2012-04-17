@@ -5,7 +5,6 @@ using System.Text;
 
 namespace MidiShapeShifter.CSharpUtil
 {
-    [Serializable]
     public class XyPoint<CoordinateType>
     {
         public CoordinateType X { get; set; }

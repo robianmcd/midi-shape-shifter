@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
 using MidiShapeShifter.Mss.Generator;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    [Serializable]
+    [DataContract]
     public class GeneratorToggleMsgInfo : MssMsgInfo
     {
+        [DataMember(Name = "GenMappingMgr")]
         protected IGeneratorMappingManager genMappingMgr;
 
         public void Init(IGeneratorMappingManager genMappingMgr)

@@ -5,8 +5,8 @@ namespace MidiShapeShifter.Mss.Parameters
 {
     public interface IMssParameterViewer
     {
-        List<MssParameterInfo> GetVariableParamInfoList();
-        List<MssParameterInfo> GetPresetParamInfoList();
+        List<MssParamInfo> GetVariableParamInfoList();
+        List<MssParamInfo> GetPresetParamInfoList();
 
         int GetParameterMaxValue(MssParameterID parameterId);
         int GetParameterMinValue(MssParameterID parameterId);

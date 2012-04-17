@@ -88,6 +88,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="ZedGraph, Version=5.1.5.28844, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
@@ -96,7 +97,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CSharpUtil\DeserializationBinderForPlugins.cs" />
+    <Compile Include="CSharpUtil\ContractSerializer.cs" />
     <Compile Include="CSharpUtil\FileTreeFolderNode.cs" />
     <Compile Include="CSharpUtil\ReturnStatus.cs" />
     <Compile Include="CSharpUtil\CustomStringUtil.cs" />
@@ -108,6 +109,13 @@
     <Compile Include="Ioc\IocMgr.cs" />
     <Compile Include="Midi\MidiUtil.cs" />
     <Compile Include="Mss\BaseSettingsFileMgr.cs" />
+    <Compile Include="Mss\Parameters\MssNumberParamInfo.cs" />
+    <Compile Include="Mss\Parameters\ParameterEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Mss\Parameters\ParameterEditor.Designer.cs">
+      <DependentUpon>ParameterEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mss\SettingsFileInfo.cs" />
     <Compile Include="Mss\TransformPresetMgr.cs" />
     <Compile Include="Mss\Evaluation\EvaluationControlPointInput.cs" />
@@ -189,7 +197,7 @@
     <Compile Include="Framework\PluginCommandStub.cs" />
     <Compile Include="Framework\PluginEditor.cs" />
     <Compile Include="Framework\PluginPrograms.cs" />
-    <Compile Include="Mss\Parameters\MssParameterInfo.cs" />
+    <Compile Include="Mss\Parameters\MssParamInfo.cs" />
     <Compile Include="Mss\Parameters\MssParameters.cs" />
     <Compile Include="Mss\MssProgramMgr.cs" />
     <Compile Include="Mss\Relays\DryMssEventRelay.cs" />
@@ -225,6 +233,9 @@
     <EmbeddedResource Include="Mss\Generator\GeneratorDlg.resx">
       <DependentUpon>GeneratorDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mss\Parameters\ParameterEditor.resx">
+      <DependentUpon>ParameterEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -345,9 +356,7 @@
   <ItemGroup>
     <None Include="Resources\images\imgSaveGrey.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mss\Programs\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

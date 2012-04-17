@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Runtime.Serialization;
+using MidiShapeShifter.Mss.Generator;
+
 namespace MidiShapeShifter.Mss.Mapping
 {
     public interface IMappingEntry : ICurveShapeInfoContainer

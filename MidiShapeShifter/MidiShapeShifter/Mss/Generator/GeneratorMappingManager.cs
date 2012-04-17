@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
+using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.Generator
 {
@@ -14,7 +15,7 @@ namespace MidiShapeShifter.Mss.Generator
     ///     The GeneratorMappingManager is responsible for storing, retrieving and interpreting 
     ///     GeneratorMappingEntry objects.
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class GeneratorMappingManager : IGeneratorMappingManager
     {
 
@@ -22,6 +23,7 @@ namespace MidiShapeShifter.Mss.Generator
         /// Each GeneratorMappingEntry has a unique ID. nextGenId keeps track of the next 
         /// available unique ID.
         /// </summary>
+        [DataMember(Name = "NextGenId")]
         protected int nextGenId = 0;
 
         /// <summary>
@@ -29,6 +31,7 @@ namespace MidiShapeShifter.Mss.Generator
         ///     GeneratorMappingEntry in this list corresponds to a row in the generator list view
         ///     on the PluginEditorView dialog.
         /// </summary>
+        [DataMember(Name = "GenMappingEntryList")]
         protected List<IGeneratorMappingEntry> genMappingEntryList = new List<IGeneratorMappingEntry>();
 
         /// <summary>

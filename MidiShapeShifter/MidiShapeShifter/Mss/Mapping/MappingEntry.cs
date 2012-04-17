@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using MidiShapeShifter.Mss.Generator;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -16,7 +17,7 @@ namespace MidiShapeShifter.Mss.Mapping
     ///     2. Information about how to modify incomeing MSS messages. OnMssMsgRange is used to map the incoming MSS 
     ///         message's type, data1, and data2. The equation is used to map the incoming MSS message's data3.
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class MappingEntry : IMappingEntry
     {
         protected const MssMsgDataField DEFAULT_INPUT_TYPE = MssMsgDataField.Data3;
@@ -25,6 +26,7 @@ namespace MidiShapeShifter.Mss.Mapping
         ///     Specifies which MSS messages will be accepted for input as well as additional information about the 
         ///     input type
         /// </summary>
+        [DataMember(Name = "InMssMsgRange")]
         protected IMssMsgRange _inMssMsgRange;
         public IMssMsgRange InMssMsgRange { get { return this._inMssMsgRange; } 
                                             set { this._inMssMsgRange = value; } }
@@ -33,6 +35,7 @@ namespace MidiShapeShifter.Mss.Mapping
         ///     Specifies the range of messages that can be output as well as additional information about the output 
         ///     type.
         /// </summary>
+        [DataMember(Name = "OutMssMsgRange")]
         protected IMssMsgRange _outMssMsgRange;
         public IMssMsgRange OutMssMsgRange { get { return this._outMssMsgRange; }
                                              set { this._outMssMsgRange = value; } }
@@ -43,11 +46,13 @@ namespace MidiShapeShifter.Mss.Mapping
         ///     If there are two mapping entries with an overlapping inMsgRange and overrideDuplicates is set to 
         ///     true for each one, then the one closer to the top of the mapping list box overrides the other.
         /// </summary>
+        [DataMember]
         public bool OverrideDuplicates { get; set; }
 
         /// <summary>
         ///     Contains information about the curve shape for this mapping and how it is being entered.
         /// </summary>
+        [DataMember(Name = "CurveShapeInfo")]        
         protected CurveShapeInfo _curveShapeInfo;        
         public CurveShapeInfo CurveShapeInfo { get { return this._curveShapeInfo; }
                                                set { this._curveShapeInfo = value; } }
@@ -56,7 +61,7 @@ namespace MidiShapeShifter.Mss.Mapping
         /// Specifies the primary input field. E.G. if this class was for a velocity curve then this 
         /// field would be Data3.
         /// </summary>
-        [OptionalField(VersionAdded = 2)]
+        [DataMember(Name = "PrimaryInputSource")]
         protected MssMsgDataField _primaryInputSource;
         public MssMsgDataField PrimaryInputSource
         {
@@ -76,17 +81,6 @@ namespace MidiShapeShifter.Mss.Mapping
             this.OutMssMsgRange = outMsgRange;
             this.OverrideDuplicates = overrideDuplicates;
             this.CurveShapeInfo = curveShapeInfo;
-        }
-
-        private void InitOptionalFieldsWithDefaultValues()
-        {
-            this.PrimaryInputSource = DEFAULT_INPUT_TYPE;
-        }
-
-        [OnDeserializing]
-        private void BeforeDeserializing(StreamingContext sc)
-        {
-            InitOptionalFieldsWithDefaultValues();
         }
 
         /// <summary>

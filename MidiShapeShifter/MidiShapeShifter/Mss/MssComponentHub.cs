@@ -25,26 +25,24 @@ namespace MidiShapeShifter.Mss
     ///     MidiShapeShifter.Framework namespace. This will make it much easier to extend this plugin to other 
     ///     frameworks or to a standalone application.
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class MssComponentHub
     {
         [DllImport("user32.dll")]
         public static extern IntPtr SetParent(IntPtr child, IntPtr newParent);
 
-        [NonSerialized]
         protected SendMssEventsToHostTrigger sendEventsToHostTrigger;
-        [NonSerialized]
         protected DryMssEventHandler dryMssEventHandler;
+        [DataMember(Name = "MappingMgr")]
         protected MappingManager mappingMgr;
 
-        [NonSerialized]
         protected MssEventGenerator mssEventGenrator;
+        [DataMember(Name = "GenMappingMgr")]
         protected GeneratorMappingManager genMappingMgr;
         
         /// <summary>
         ///     Passes unprocessed MssEvents from the "Framework" namespace to the "Mss" namespace.
         /// </summary>
-        [NonSerialized]
         protected DryMssEventRelay _dryMssEventRelay;
         public IDryMssEventInputPort DryMssEventInputPort { get { return this._dryMssEventRelay; } }
         public IDryMssEventOutputPort DryMssEventOutputPort { get { return this._dryMssEventRelay; } }
@@ -52,7 +50,6 @@ namespace MidiShapeShifter.Mss
         /// <summary>
         ///     Passes processed MssEvents from the "Mss" namespace to the "Framework" namespace.
         /// </summary>
-        [NonSerialized]
         protected WetMssEventRelay _wetMssEventRelay;
         public IWetMssEventInputPort WetMssEventInputPort { get { return this._wetMssEventRelay; } }
         public IWetMssEventOutputPort WetMssEventOutputPort { get { return this._wetMssEventRelay; } }
@@ -60,28 +57,23 @@ namespace MidiShapeShifter.Mss
         /// <summary>
         ///     Passes information about the host from the "Framework" namespace to the "Mss" namespace
         /// </summary>
-        [NonSerialized]
         protected HostInfoRelay _hostInfoRelay;
         public IHostInfoInputPort HostInfoInputPort { get { return this._hostInfoRelay; } }
         public IHostInfoOutputPort HostInfoOutputPort { get { return this._hostInfoRelay; } }
 
+        [DataMember(Name = "MssParameters")]
         protected MssParameters _mssParameters;
         public MssParameters MssParameters { get { return this._mssParameters; } }
 
-        [OptionalField(VersionAdded = 2)]
+        [DataMember(Name = "MssProgramMgr")]
         protected MssProgramMgr _mssProgramMgr;
         public MssProgramMgr MssProgramMgr { get { return this._mssProgramMgr; } }
 
-        [NonSerialized]
         protected TransformPresetMgr transformPresetMgr;
 
-
-        [NonSerialized]
         protected Factory_MssMsgRangeEntryMetadata msgEntryMetadataFactory;
-        [NonSerialized]
         protected IFactory_MssMsgInfo msgInfoFactory;
 
-        [NonSerialized]
         protected PluginEditorView _pluginEditorView;
         public PluginEditorView PluginEditorView { 
             get 
@@ -91,14 +83,16 @@ namespace MidiShapeShifter.Mss
             } 
         }
 
+        [DataMember(Name = "PluginEditorInfo")]
         protected SerializablePluginEditorInfo pluginEditorInfo;
 
         public MssComponentHub()
         {
             ConstructNonSerializableMembers();
-            ConstructOptionallySerializedMembers();
 
             //Construct Serializable members
+            this._mssProgramMgr = new MssProgramMgr();
+
             this.mappingMgr = new MappingManager();
             this.genMappingMgr = new GeneratorMappingManager();
 
@@ -124,20 +118,15 @@ namespace MidiShapeShifter.Mss
             transformPresetMgr = new TransformPresetMgr();
         }
 
-        protected void ConstructOptionallySerializedMembers()
-        {
-            this._mssProgramMgr = new MssProgramMgr();
-        }
-
         /// <summary>
         ///     Initialized members
         /// </summary>
         public void Init()
         {
             InitializeNonSerializableMembers();
-            InitializeOptionallySerializedMembers();
             //Initialize serializable members
             this._mssParameters.Init();
+            this.MssProgramMgr.Init();
         }
 
         protected void InitializeNonSerializableMembers()
@@ -159,17 +148,11 @@ namespace MidiShapeShifter.Mss
             transformPresetMgr.Init(this.pluginEditorInfo, this.mappingMgr, this.genMappingMgr);
         }
 
-        protected void InitializeOptionallySerializedMembers()
-        {
-            this.MssProgramMgr.Init();
-        }
 
         [OnDeserializing]
         protected void OnDeserializing(StreamingContext context)
         {
             ConstructNonSerializableMembers();
-            ConstructOptionallySerializedMembers();
-            InitializeOptionallySerializedMembers();
         }
 
         [OnDeserialized]

@@ -9,7 +9,6 @@ using MidiShapeShifter.Mss.Mapping;
 
 namespace MidiShapeShifter.Mss.Generator
 {
-    
     /// <summary>
     /// This class describes how and when generator messages will be generated. Instances of this
     /// class are stored in GeneratorMappingManager and each instances corresponds to a row in the
@@ -18,9 +17,10 @@ namespace MidiShapeShifter.Mss.Generator
     /// GeneratorMappingEntries will always map one of the relative bar position MSS message types
     /// to a generator mss message. 
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class GeneratorMappingEntry : MappingEntry, IGeneratorMappingEntry
     {
+        [DataMember(Name = "GenConfigInfo")]
         protected GenEntryConfigInfo _genConfigInfo;
         public GenEntryConfigInfo GenConfigInfo { get { return this._genConfigInfo; } 
                                                   set { this._genConfigInfo = value; } }
@@ -28,7 +28,6 @@ namespace MidiShapeShifter.Mss.Generator
         /// <summary>
         /// Stores information about previously generated events.
         /// </summary>
-        [NonSerialized]
         protected GenEntryHistoryInfo _genHistoryInfo;
         public GenEntryHistoryInfo GenHistoryInfo { get { return this._genHistoryInfo; } 
                                                     set { this._genHistoryInfo = value; } }
@@ -48,7 +47,7 @@ namespace MidiShapeShifter.Mss.Generator
         }
 
         [OnDeserializing]
-        protected void OnDeserializing(StreamingContext context)
+        protected void OnBeforeDeserialize(StreamingContext context)
         {
             this.GenHistoryInfo = new GenEntryHistoryInfo();
         }

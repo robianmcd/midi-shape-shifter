@@ -1,5 +1,6 @@
 ﻿using System;
 using MidiShapeShifter.Mss.Mapping;
+using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.Generator
 {

@@ -19,8 +19,8 @@ namespace MidiShapeShifter.Mss.Evaluation
     {
         public abstract EquationType equationType { get; }
 
-        public List<MssParameterInfo> VariableParamInfoList;
-        public List<MssParameterInfo> TransformParamInfoList;
+        public List<MssParamInfo> VariableParamInfoList;
+        public List<MssParamInfo> TransformParamInfoList;
 
 
         public object Clone()

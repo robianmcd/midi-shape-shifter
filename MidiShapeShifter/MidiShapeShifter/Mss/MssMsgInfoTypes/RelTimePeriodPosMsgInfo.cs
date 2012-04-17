@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    [Serializable]
+    [DataContract]
     public class RelTimePeriodPosMsgInfo : GenericRelitivePosMsgInfo
     {
         public override MssMsgType MsgType

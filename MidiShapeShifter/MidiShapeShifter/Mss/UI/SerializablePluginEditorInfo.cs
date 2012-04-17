@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.UI
 {
     public enum GraphableEntryType { Mapping, Generator }
 
-    [Serializable]
+    [DataContract]
     public class SerializablePluginEditorInfo
     {
-        public int activeGraphableEntryIndex = -1;
-        public GraphableEntryType activeGraphableEntryType;
+        [DataMember]
+        public int ActiveGraphableEntryIndex = -1;
+        [DataMember]
+        public GraphableEntryType ActiveGraphableEntryType;
     }
 }

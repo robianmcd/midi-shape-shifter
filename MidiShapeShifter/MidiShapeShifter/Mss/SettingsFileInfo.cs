@@ -4,17 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss
 {
     public enum SettingsFileLocationType { Factory, User, External }
 
-    [Serializable]
+    [DataContract]
     public class SettingsFileInfo
     {
+        [DataMember]
         public string Name { get; set; }
 
-        public SettingsFileLocationType FileLocationType{ get; private set; }
+        [DataMember]
+        public SettingsFileLocationType FileLocationType { get; private set; }
+        [DataMember]
         public string FilePath { get; private set; }
 
         public SettingsFileInfo()

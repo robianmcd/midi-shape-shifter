@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.Parameters
 {
@@ -21,17 +22,13 @@ namespace MidiShapeShifter.Mss.Parameters
     ///     MssParameterInfo is mapped to a unique id for each parameter. MssParameters provides events that other 
     ///     classes can subscribe to if they want to be notified of changes to parameter information.
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class MssParameters : IMssParameterViewer
     {
         //These events will be thrown whenever a parameter is modified
-        [field: NonSerialized]
         public event ParameterNameChangedEventHandler ParameterNameChanged;
-        [field: NonSerialized]
         public event ParameterValueChangedEventHandler ParameterValueChanged;
-        [field: NonSerialized]
         public event ParameterMinValueChangedEventHandler ParameterMinValueChanged;
-        [field: NonSerialized]
         public event ParameterMaxValueChangedEventHandler ParameterMaxValueChanged;
 
         public const int NUM_VARIABLE_PARAMS = 4;
@@ -39,17 +36,14 @@ namespace MidiShapeShifter.Mss.Parameters
         public static readonly List<MssParameterID> VARIABLE_PARAM_ID_LIST;
         public static readonly List<MssParameterID> PRESET_PARAM_ID_LIST;
 
-        protected const double DEFAULT_PRAM_VALUE = 0;
-        protected const int DEFAULT_PRAM_MIN_VALUE = 0;
-        protected const int DEFAULT_PRAM_MAX_VALUE = 1;
-
         /// <summary>
         ///     Stores all of the information about each parameter.
         /// </summary>
-        protected Dictionary<MssParameterID, MssParameterInfo> paramDict;
+        [DataMember]
+        protected Dictionary<MssParameterID, MssParamInfo> paramDict;
 
         //Used to prevent parameter change events from being recursively triggered.
-        protected bool acceptParameterChanges = true;
+        protected bool acceptParameterChanges;
 
         static MssParameters()
         {
@@ -68,7 +62,7 @@ namespace MidiShapeShifter.Mss.Parameters
 
         public MssParameters()
         {
-            paramDict = new Dictionary<MssParameterID, MssParameterInfo>();
+            paramDict = new Dictionary<MssParameterID, MssParamInfo>();
         }
 
         /// <summary>
@@ -76,14 +70,12 @@ namespace MidiShapeShifter.Mss.Parameters
         /// </summary>
         public void Init()
         {
-            
+            InitNonSerializableFields();
 
-            MssParameterInfo defaultParameterInfo = new MssParameterInfo();
-            defaultParameterInfo.Value = DEFAULT_PRAM_VALUE;
-            defaultParameterInfo.MinValue = DEFAULT_PRAM_MIN_VALUE;
-            defaultParameterInfo.MaxValue = DEFAULT_PRAM_MAX_VALUE;
+            MssParamInfo defaultParameterInfo = new MssNumberParamInfo();
+            defaultParameterInfo.Init("");
 
-            MssParameterInfo tempParameterInfo;
+            MssParamInfo tempParameterInfo;
 
             //Populate paramDict with default values for each parameter
             tempParameterInfo = defaultParameterInfo.Clone();
@@ -103,23 +95,32 @@ namespace MidiShapeShifter.Mss.Parameters
             this.paramDict.Add(MssParameterID.VariableD, tempParameterInfo);
 
 
-            List<MssParameterInfo> defaultPresetParamList = CreateDefaultPresetParamInfoList();
+            List<MssParamInfo> defaultPresetParamList = CreateDefaultPresetParamInfoList();
             for (int i = 0; i < defaultPresetParamList.Count; i++ )
             {
                 this.paramDict.Add(PRESET_PARAM_ID_LIST[i], defaultPresetParamList[i]);
             }
         }
 
-        public static List<MssParameterInfo> CreateDefaultPresetParamInfoList()
+        [OnDeserializing]
+        private void BeforeDeserializing(StreamingContext sc)
         {
-            List<MssParameterInfo> presetParamInfoList = new List<MssParameterInfo>();
+            InitNonSerializableFields();
+        }
 
-            MssParameterInfo defaultParameterInfo = new MssParameterInfo();
-            defaultParameterInfo.Value = DEFAULT_PRAM_VALUE;
-            defaultParameterInfo.MinValue = DEFAULT_PRAM_MIN_VALUE;
-            defaultParameterInfo.MaxValue = DEFAULT_PRAM_MAX_VALUE;
+        protected void InitNonSerializableFields()
+        {
+            acceptParameterChanges = true;
+        }
 
-            MssParameterInfo tempParameterInfo;
+        public static List<MssParamInfo> CreateDefaultPresetParamInfoList()
+        {
+            List<MssParamInfo> presetParamInfoList = new List<MssParamInfo>();
+
+            MssParamInfo defaultParameterInfo = new MssNumberParamInfo();
+            defaultParameterInfo.Init("");
+
+            MssParamInfo tempParameterInfo;
 
             tempParameterInfo = defaultParameterInfo.Clone();
             tempParameterInfo.Name = "Preset1";
@@ -140,9 +141,9 @@ namespace MidiShapeShifter.Mss.Parameters
             return presetParamInfoList;
         }
 
-        public List<MssParameterInfo> GetVariableParamInfoList()
+        public List<MssParamInfo> GetVariableParamInfoList()
         {
-            List<MssParameterInfo> varParamInfoList = new List<MssParameterInfo>();
+            List<MssParamInfo> varParamInfoList = new List<MssParamInfo>();
             foreach (MssParameterID paramId in VARIABLE_PARAM_ID_LIST)
             {
                 varParamInfoList.Add(paramDict[paramId]);
@@ -151,9 +152,9 @@ namespace MidiShapeShifter.Mss.Parameters
             return varParamInfoList;
         }
 
-        public List<MssParameterInfo> GetPresetParamInfoList()
+        public List<MssParamInfo> GetPresetParamInfoList()
         {
-            List<MssParameterInfo> presetParamInfoList = new List<MssParameterInfo>();
+            List<MssParamInfo> presetParamInfoList = new List<MssParamInfo>();
             foreach (MssParameterID paramId in PRESET_PARAM_ID_LIST)
             {
                 presetParamInfoList.Add(paramDict[paramId]);
@@ -162,15 +163,15 @@ namespace MidiShapeShifter.Mss.Parameters
             return presetParamInfoList;
         }
 
-        public void SetPresetParamInfoList(List<MssParameterInfo> parameterInfoList)
+        public void SetPresetParamInfoList(List<MssParamInfo> parameterInfoList)
         {
             Debug.Assert(parameterInfoList.Count == NUM_VARIABLE_PARAMS);
             for (int i = 0; i < parameterInfoList.Count; i++)
             {
                 MssParameterID curId = PRESET_PARAM_ID_LIST[i];
 
-                MssParameterInfo curParamInfo = parameterInfoList[i];
-                MssParameterInfo prevParamInfo = this.paramDict[curId];
+                MssParamInfo curParamInfo = parameterInfoList[i];
+                MssParamInfo prevParamInfo = this.paramDict[curId];
 
                 this.paramDict[curId] = curParamInfo;
 
@@ -179,9 +180,9 @@ namespace MidiShapeShifter.Mss.Parameters
                     ParameterNameChanged(curId, curParamInfo.Name);
                 }
 
-                if (prevParamInfo.Value != curParamInfo.Value && ParameterValueChanged != null)
+                if (prevParamInfo.RawValue != curParamInfo.RawValue && ParameterValueChanged != null)
                 {
-                    ParameterValueChanged(curId, curParamInfo.Value);
+                    ParameterValueChanged(curId, curParamInfo.RawValue);
                 }
 
                 if (prevParamInfo.MaxValue != curParamInfo.MaxValue && ParameterMaxValueChanged != null)
@@ -240,7 +241,7 @@ namespace MidiShapeShifter.Mss.Parameters
                 return 0;
             }
 
-            return this.paramDict[parameterId].Value;
+            return this.paramDict[parameterId].RawValue;
         }
 
         public void SetParameterValue(MssParameterID parameterId, double value)
@@ -252,9 +253,9 @@ namespace MidiShapeShifter.Mss.Parameters
                 return;
             }
 
-            if (this.acceptParameterChanges && paramDict[parameterId].Value != value)
+            if (this.acceptParameterChanges && paramDict[parameterId].RawValue != value)
             {
-                paramDict[parameterId].Value = value;
+                paramDict[parameterId].RawValue = value;
                 if (ParameterValueChanged != null)
                 {
                     this.acceptParameterChanges = false;

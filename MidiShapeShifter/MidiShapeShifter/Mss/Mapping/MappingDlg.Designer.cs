@@ -71,7 +71,7 @@
             this.inGroup.Controls.Add(this.inEntryField1Lbl);
             this.inGroup.Controls.Add(this.inTypeCombo);
             this.inGroup.Controls.Add(this.inTypeLbl);
-            this.inGroup.Location = new System.Drawing.Point(12, 12);
+            this.inGroup.Location = new System.Drawing.Point(10, 9);
             this.inGroup.Name = "inGroup";
             this.inGroup.Size = new System.Drawing.Size(135, 218);
             this.inGroup.TabIndex = 0;
@@ -187,7 +187,7 @@
             this.outGroup.Controls.Add(this.outEntryField1Lbl);
             this.outGroup.Controls.Add(this.outTypeCombo);
             this.outGroup.Controls.Add(this.outTypeLbl);
-            this.outGroup.Location = new System.Drawing.Point(153, 12);
+            this.outGroup.Location = new System.Drawing.Point(151, 9);
             this.outGroup.Name = "outGroup";
             this.outGroup.Size = new System.Drawing.Size(135, 218);
             this.outGroup.TabIndex = 1;
@@ -291,7 +291,7 @@
             // 
             // OkBtn
             // 
-            this.OkBtn.Location = new System.Drawing.Point(72, 241);
+            this.OkBtn.Location = new System.Drawing.Point(70, 238);
             this.OkBtn.Name = "OkBtn";
             this.OkBtn.Size = new System.Drawing.Size(75, 23);
             this.OkBtn.TabIndex = 2;
@@ -303,7 +303,7 @@
             // 
             this.cancelBtn.CausesValidation = false;
             this.cancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelBtn.Location = new System.Drawing.Point(153, 241);
+            this.cancelBtn.Location = new System.Drawing.Point(151, 238);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
             this.cancelBtn.TabIndex = 3;
@@ -321,11 +321,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelBtn;
-            this.ClientSize = new System.Drawing.Size(295, 271);
+            this.ClientSize = new System.Drawing.Size(296, 271);
             this.Controls.Add(this.cancelBtn);
             this.Controls.Add(this.OkBtn);
             this.Controls.Add(this.outGroup);
             this.Controls.Add(this.inGroup);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "MappingDlg";
             this.ShowIcon = false;

@@ -227,23 +227,23 @@ namespace MidiShapeShifter.Mss.Evaluation
             if (this.expression != null)
             {
                 char charVarName = 'a';
-                foreach(MssParameterInfo varInfo in input.VariableParamInfoList)
+                foreach(MssParamInfo varInfo in input.VariableParamInfoList)
                 {
-                    this.expression.Parameters[varInfo.Name.ToLower()] = varInfo.Value;
+                    this.expression.Parameters[varInfo.Name.ToLower()] = varInfo.RawValue;
 
                     if (charVarName <= 'z')
                     {
-                        this.expression.Parameters[charVarName.ToString()] = varInfo.Value;
+                        this.expression.Parameters[charVarName.ToString()] = varInfo.RawValue;
                         charVarName++;
                     }
                 }
 
                 int paramNum = 1;
-                foreach (MssParameterInfo varInfo in input.TransformParamInfoList)
+                foreach (MssParamInfo varInfo in input.TransformParamInfoList)
                 {
-                    this.expression.Parameters[varInfo.Name.ToLower()] = varInfo.Value;
+                    this.expression.Parameters[varInfo.Name.ToLower()] = varInfo.RawValue;
 
-                    this.expression.Parameters["p" + paramNum.ToString()] = varInfo.Value;
+                    this.expression.Parameters["p" + paramNum.ToString()] = varInfo.RawValue;
                     paramNum++;
                 }
             }

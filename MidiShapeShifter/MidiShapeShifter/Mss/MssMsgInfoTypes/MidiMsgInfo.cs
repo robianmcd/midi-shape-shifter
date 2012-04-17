@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
 using MidiShapeShifter.Midi;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    [Serializable]
+    [DataContract]
     public abstract class MidiMsgInfo : MssMsgInfo
     {
         public override double MaxData1Value

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    [Serializable]
+    [DataContract]
     public abstract class MssMsgInfo
     {
         protected const string DATA1_NAME_CHANNEL = "Channel";

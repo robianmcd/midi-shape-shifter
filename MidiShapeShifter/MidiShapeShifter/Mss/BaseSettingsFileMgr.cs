@@ -19,7 +19,7 @@ namespace MidiShapeShifter.Mss
     /// system. This class is responsible for keeping track of the settings that are currently 
     /// in use and saving/loading them to/from the file system.
     /// </summary>
-    [Serializable]
+    [DataContract]
     public abstract class BaseSettingsFileMgr
     {
         /// <summary>
@@ -53,9 +53,9 @@ namespace MidiShapeShifter.Mss
         /// Info about the active settings file. This will not necessarily reference an item in 
         /// SettingsFileTree.
         /// </summary>
-        abstract public SettingsFileInfo ActiveSettingsFile {get; protected set;}
+        [DataMember]
+        abstract public SettingsFileInfo ActiveSettingsFile { get; protected set; }
 
-        [NonSerialized]
         private FileTreeFolderNode<SettingsFileInfo> _settingsFileTree;
         /// <summary>
         /// Stores the tree representation of the available settings files.
@@ -66,7 +66,6 @@ namespace MidiShapeShifter.Mss
             private set { this._settingsFileTree = value; }
         }
 
-        [NonSerialized]
         protected List<SettingsFileInfo> _flatSettingsFileList;
         /// <summary>
         /// Stores the list of available settings files.

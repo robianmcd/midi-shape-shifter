@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
@@ -13,19 +14,21 @@ namespace MidiShapeShifter.Mss
     ///     classes MsgType and its Data1 and Data2 fall into the ranges specified in this class. This class is
     ///     used to describe the set of messages affected by a mapping.
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class MssMsgRange : IMssMsgRange
     {
         /// <summary>
         ///     Contains information about the message type specified by MsgType. If MsgType has not been set then 
         ///     MsgInfo will be null.
         /// </summary>
+        [DataMember]
         public MssMsgInfo MsgInfo { get; protected set; }
 
         /// <summary>
         ///     The message type of all MssMsgs that match this range. When MsgType is changed, MsgInfo will be
         ///     recreated so that it contains information about the new MssMsgType
         /// </summary>
+        [DataMember(Name = "MsgType")]
         protected MssMsgType _msgType;
         public MssMsgType MsgType
         {
@@ -45,9 +48,11 @@ namespace MidiShapeShifter.Mss
         ///     Specifies the range of accepted Data1 values
         /// </summary>
 
+        [DataMember(Name = "Data1RangeBottom")]
         protected int _data1RangeBottom;
         public int Data1RangeBottom { get { return this._data1RangeBottom; }
                                       set { this._data1RangeBottom = value; } }
+        [DataMember(Name = "Data1RangeTop")]
         protected int _data1RangeTop;
         public int Data1RangeTop { get { return this._data1RangeTop; }
                                       set { this._data1RangeTop = value; } }
@@ -55,13 +60,16 @@ namespace MidiShapeShifter.Mss
         /// <summary>
         ///     Specifies the range of accepted Data2 values
         /// </summary>
+        [DataMember(Name = "Data2RangeBottom")]
         protected int _data2RangeBottom;
         public int Data2RangeBottom { get { return this._data2RangeBottom; } 
                                       set { this._data2RangeBottom = value; } }
+        [DataMember(Name = "Data2RangeTop")]
         protected int _data2RangeTop;
         public int Data2RangeTop { get { return this._data2RangeTop; } 
                                       set { this._data2RangeTop = value; } }
 
+        [DataMember(Name = "MsgInfoFactory")]
         protected IFactory_MssMsgInfo msgInfoFactory;
 
         public void Init(IFactory_MssMsgInfo msgInfoFactory)

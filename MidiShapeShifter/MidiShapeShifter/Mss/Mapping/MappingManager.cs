@@ -4,6 +4,7 @@ using System.Text;
 using System.Linq;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -11,13 +12,14 @@ namespace MidiShapeShifter.Mss.Mapping
     /// <summary>
     ///     The MappingManager is responsible for storing, retrieving and interpreting MappingEntry objects.
     /// </summary>
-    [Serializable]    
+    [DataContract]
     public class MappingManager : IMappingManager
     {
         /// <summary>
         ///     List that stores all of the MappingEntry objects. The mapping list box on the main GUI is basically a 
         ///     visualization of this list.
         /// </summary>
+        [DataMember(Name = "MappingEntryList")]
         protected List<IMappingEntry> mappingEntryList = new List<IMappingEntry>();
 
         public void AddMappingEntry(IMappingEntry newEntry) 

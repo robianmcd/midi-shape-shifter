@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
 using Jacobi.Vst.Core;
@@ -117,9 +113,8 @@ namespace MidiShapeShifter.Framework
                 BeforePluginDeserialized();
             }
 
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Binder = new DeserializationBinderForPlugins();
-            SerializableRootType deserializedRoot = (SerializableRootType)formatter.Deserialize(stream);
+            SerializableRootType deserializedRoot;
+            deserializedRoot = ContractSerializer.Deserialize<SerializableRootType>(stream);
 
             if (programs != null)
             {
@@ -147,8 +142,7 @@ namespace MidiShapeShifter.Framework
         /// </summary>
         public void WritePrograms(Stream stream, VstProgramCollection programs)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(stream, getSerializableRootFromPlugin());
+            ContractSerializer.Serialize<SerializableRootType>(stream, getSerializableRootFromPlugin());
         }
     }
 }

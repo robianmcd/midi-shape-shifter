@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Diagnostics;
-using System.Runtime.Serialization.Formatters.Binary;
+﻿using System.Diagnostics;
+using System.Runtime.Serialization;
 
 using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Mapping;
@@ -19,9 +14,10 @@ namespace MidiShapeShifter.Mss
     /// is stored in the CurveShapeInfo for the active mapping entry. For more info see
     /// BaseSettingsFileMgr.cs.
     /// </summary>
+    [DataContract]
     public class TransformPresetMgr : BaseSettingsFileMgr
     {
-        public const string TRANSFORM_PRESET_FILE_EXTENSION = "tpst";
+        public const string TRANSFORM_PRESET_FILE_EXTENSION = "xml";
 
         SerializablePluginEditorInfo pluginEditorInfo;
         MappingManager mappingMgr;
@@ -80,7 +76,7 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         protected IMappingEntry getActiveMapping()
         {
-            if (this.pluginEditorInfo.activeGraphableEntryIndex < 0)
+            if (this.pluginEditorInfo.ActiveGraphableEntryIndex < 0)
             {
                 return null;
             }
@@ -88,15 +84,15 @@ namespace MidiShapeShifter.Mss
             {
                 IMappingEntry activeEntry;
 
-                if (this.pluginEditorInfo.activeGraphableEntryType == GraphableEntryType.Mapping)
+                if (this.pluginEditorInfo.ActiveGraphableEntryType == GraphableEntryType.Mapping)
                 {
                     activeEntry = this.mappingMgr.GetMappingEntry(
-                            this.pluginEditorInfo.activeGraphableEntryIndex);
+                            this.pluginEditorInfo.ActiveGraphableEntryIndex);
                 }
-                else if (this.pluginEditorInfo.activeGraphableEntryType == GraphableEntryType.Generator)
+                else if (this.pluginEditorInfo.ActiveGraphableEntryType == GraphableEntryType.Generator)
                 {
                     activeEntry = this.genMappingMgr.GetGenMappingEntryByIndex(
-                            this.pluginEditorInfo.activeGraphableEntryIndex);
+                            this.pluginEditorInfo.ActiveGraphableEntryIndex);
                 }
                 else
                 {
@@ -159,8 +155,7 @@ namespace MidiShapeShifter.Mss
                 return;
             }
 
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(fs, getActiveMapping().CurveShapeInfo);
+            ContractSerializer.Serialize<CurveShapeInfo>(fs, getActiveMapping().CurveShapeInfo);
         }
 
         protected override void LoadSettingsFromFileStream(System.IO.FileStream fs)
@@ -173,9 +168,7 @@ namespace MidiShapeShifter.Mss
                 return;
             }
 
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Binder = new DeserializationBinderForPlugins();
-            getActiveMapping().CurveShapeInfo = (CurveShapeInfo)formatter.Deserialize(fs);
+            getActiveMapping().CurveShapeInfo = ContractSerializer.Deserialize<CurveShapeInfo>(fs);
         }
 
     }

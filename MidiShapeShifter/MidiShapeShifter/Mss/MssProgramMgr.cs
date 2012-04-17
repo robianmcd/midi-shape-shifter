@@ -22,21 +22,19 @@ namespace MidiShapeShifter.Mss
     /// Class should be used by other classes to coordinate program information with the host and 
     /// to set the active program. See BaseSettingsFileMgr for more info.
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class MssProgramMgr : BaseSettingsFileMgr
     {
         /// <summary>
         /// SaveProgramRequest is sent out when the active program should be saved to the specified
         /// stream.
         /// </summary>
-        [field:NonSerialized]
         public event SaveProgramRequestEventHandler SaveProgramRequest;
 
         /// <summary>
         /// SaveProgramRequest is sent out when the active program should be loaded from the 
         /// specified stream.
         /// </summary>
-        [field: NonSerialized]
         public event LoadProgramRequestEventHandler LoadProgramRequest;
 
         /// <summary>
@@ -44,10 +42,10 @@ namespace MidiShapeShifter.Mss
         /// should be used to coordinate the active program shown in the plugin's GUI and the 
         /// active program shown in the host.
         /// </summary>
-        [field: NonSerialized]
         public event ActiveProgramChangedEventHandler ActiveProgramChanged;
 
         protected SettingsFileInfo _activeSettingsFile;
+        [DataMember]
         public override SettingsFileInfo ActiveSettingsFile
         {
             get
@@ -75,7 +73,7 @@ namespace MidiShapeShifter.Mss
 
         public override string SettingsFileExtension
         {
-            get { return "mpgm"; }
+            get { return "xml"; }
         }
 
         public override string TypeOfSettingsName

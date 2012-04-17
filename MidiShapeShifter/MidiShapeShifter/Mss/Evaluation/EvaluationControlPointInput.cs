@@ -14,8 +14,8 @@ namespace MidiShapeShifter.Mss.Evaluation
     {
         public string EquationStr { get; set; }
 
-        public void Init(List<MssParameterInfo> variableParamInfoList, 
-                         List<MssParameterInfo> transformParamInfoList,
+        public void Init(List<MssParamInfo> variableParamInfoList, 
+                         List<MssParamInfo> transformParamInfoList,
                         string equationStr)
         {
             this.VariableParamInfoList = variableParamInfoList;
