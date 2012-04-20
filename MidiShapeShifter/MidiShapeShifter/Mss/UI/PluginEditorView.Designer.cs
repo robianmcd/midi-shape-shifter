@@ -33,11 +33,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PluginEditorView));
             this.mainGraphControl = new ZedGraph.ZedGraphControl();
             this.presetParam1Knob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
+            this.paramContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editParamMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.presetParam1Value = new System.Windows.Forms.Label();
             this.curveGroup = new System.Windows.Forms.GroupBox();
+            this.presetParam5Title = new System.Windows.Forms.Label();
+            this.presetParam5Value = new System.Windows.Forms.Label();
+            this.presetParam5Knob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
             this.coverUpUglyLine = new System.Windows.Forms.Label();
             this.presetToolStrip = new System.Windows.Forms.ToolStrip();
             this.curvePresetLabel = new System.Windows.Forms.ToolStripLabel();
@@ -69,9 +75,9 @@
             this.pointXEquationTextBox = new System.Windows.Forms.TextBox();
             this.curveEquationTextBox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.lbKnob1 = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
+            this.variableEValue = new System.Windows.Forms.Label();
+            this.variableETitle = new System.Windows.Forms.Label();
+            this.variableEKnob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
             this.variableDValue = new System.Windows.Forms.Label();
             this.variableDTitle = new System.Windows.Forms.Label();
             this.variableDKnob = new LBSoft.IndustrialCtrls.Knobs.LBKnob();
@@ -114,6 +120,7 @@
             this.saveSplitButton = new System.Windows.Forms.ToolStripSplitButton();
             this.saveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.paramContextMenu.SuspendLayout();
             this.curveGroup.SuspendLayout();
             this.presetToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.graphOutputTypeImg)).BeginInit();
@@ -129,6 +136,7 @@
             this.mainGraphControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.mainGraphControl.EditButtons = System.Windows.Forms.MouseButtons.Left;
             this.mainGraphControl.EditModifierKeys = System.Windows.Forms.Keys.None;
+            this.mainGraphControl.Enabled = false;
             this.mainGraphControl.IsEnableHEdit = true;
             this.mainGraphControl.IsEnableHPan = false;
             this.mainGraphControl.IsEnableHZoom = false;
@@ -148,7 +156,7 @@
             this.mainGraphControl.ScrollMinX = 0D;
             this.mainGraphControl.ScrollMinY = 0D;
             this.mainGraphControl.ScrollMinY2 = 0D;
-            this.mainGraphControl.Size = new System.Drawing.Size(249, 181);
+            this.mainGraphControl.Size = new System.Drawing.Size(259, 187);
             this.mainGraphControl.TabIndex = 2;
             this.mainGraphControl.MouseDownEvent += new ZedGraph.ZedGraphControl.ZedMouseEventHandler(this.mainGraphControl_MouseDownEvent);
             this.mainGraphControl.EditDragEvent += new ZedGraph.ZedGraphControl.ZedEditDragHandler(this.mainGraphControl_EditDragEvent);
@@ -156,14 +164,15 @@
             // presetParam1Knob
             // 
             this.presetParam1Knob.BackColor = System.Drawing.Color.Transparent;
+            this.presetParam1Knob.ContextMenuStrip = this.paramContextMenu;
             this.presetParam1Knob.DrawRatio = 0.2F;
             this.presetParam1Knob.Enabled = false;
             this.presetParam1Knob.IndicatorColor = System.Drawing.Color.Black;
             this.presetParam1Knob.IndicatorOffset = 7F;
             this.presetParam1Knob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("presetParam1Knob.KnobCenter")));
-            this.presetParam1Knob.KnobColor = System.Drawing.Color.Silver;
+            this.presetParam1Knob.KnobColor = System.Drawing.Color.FromArgb(((int)(((byte)(164)))), ((int)(((byte)(193)))), ((int)(((byte)(216)))));
             this.presetParam1Knob.KnobRect = ((System.Drawing.RectangleF)(resources.GetObject("presetParam1Knob.KnobRect")));
-            this.presetParam1Knob.Location = new System.Drawing.Point(18, 299);
+            this.presetParam1Knob.Location = new System.Drawing.Point(9, 310);
             this.presetParam1Knob.MaxValue = 1F;
             this.presetParam1Knob.MinValue = 0F;
             this.presetParam1Knob.Name = "presetParam1Knob";
@@ -176,18 +185,38 @@
             this.presetParam1Knob.Value = 0F;
             this.presetParam1Knob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.lbKnob_KnobChangeValue);
             // 
+            // paramContextMenu
+            // 
+            this.paramContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editParamMenuItem});
+            this.paramContextMenu.Name = "paramContextMenu";
+            this.paramContextMenu.Size = new System.Drawing.Size(95, 26);
+            // 
+            // editParamMenuItem
+            // 
+            this.editParamMenuItem.Name = "editParamMenuItem";
+            this.editParamMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.editParamMenuItem.Text = "Edit";
+            this.editParamMenuItem.Click += new System.EventHandler(this.editParamMenuItem_Click);
+            // 
             // presetParam1Value
             // 
-            this.presetParam1Value.BackColor = System.Drawing.Color.White;
-            this.presetParam1Value.Location = new System.Drawing.Point(18, 342);
+            this.presetParam1Value.BackColor = System.Drawing.SystemColors.Control;
+            this.presetParam1Value.ContextMenuStrip = this.paramContextMenu;
+            this.presetParam1Value.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.presetParam1Value.Location = new System.Drawing.Point(5, 349);
             this.presetParam1Value.Name = "presetParam1Value";
-            this.presetParam1Value.Size = new System.Drawing.Size(40, 16);
+            this.presetParam1Value.Size = new System.Drawing.Size(48, 16);
             this.presetParam1Value.TabIndex = 16;
             this.presetParam1Value.Text = "0";
+            this.presetParam1Value.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // curveGroup
             // 
             this.curveGroup.BackColor = System.Drawing.SystemColors.Control;
+            this.curveGroup.Controls.Add(this.presetParam5Title);
+            this.curveGroup.Controls.Add(this.presetParam5Value);
+            this.curveGroup.Controls.Add(this.presetParam5Knob);
             this.curveGroup.Controls.Add(this.coverUpUglyLine);
             this.curveGroup.Controls.Add(this.presetToolStrip);
             this.curveGroup.Controls.Add(this.pointYEquationTextBox);
@@ -217,15 +246,62 @@
             this.curveGroup.Controls.Add(this.curveEquationTextBox);
             this.curveGroup.Location = new System.Drawing.Point(362, 35);
             this.curveGroup.Name = "curveGroup";
-            this.curveGroup.Size = new System.Drawing.Size(261, 365);
+            this.curveGroup.Size = new System.Drawing.Size(271, 369);
             this.curveGroup.TabIndex = 3;
             this.curveGroup.TabStop = false;
             this.curveGroup.Text = "Transformation";
             // 
+            // presetParam5Title
+            // 
+            this.presetParam5Title.ContextMenuStrip = this.paramContextMenu;
+            this.presetParam5Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.presetParam5Title.Location = new System.Drawing.Point(217, 297);
+            this.presetParam5Title.Name = "presetParam5Title";
+            this.presetParam5Title.Size = new System.Drawing.Size(48, 13);
+            this.presetParam5Title.TabIndex = 30;
+            this.presetParam5Title.Text = "P5";
+            this.presetParam5Title.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // presetParam5Value
+            // 
+            this.presetParam5Value.BackColor = System.Drawing.SystemColors.Control;
+            this.presetParam5Value.ContextMenuStrip = this.paramContextMenu;
+            this.presetParam5Value.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.presetParam5Value.Location = new System.Drawing.Point(217, 349);
+            this.presetParam5Value.Name = "presetParam5Value";
+            this.presetParam5Value.Size = new System.Drawing.Size(48, 16);
+            this.presetParam5Value.TabIndex = 32;
+            this.presetParam5Value.Text = "0";
+            this.presetParam5Value.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // presetParam5Knob
+            // 
+            this.presetParam5Knob.BackColor = System.Drawing.Color.Transparent;
+            this.presetParam5Knob.ContextMenuStrip = this.paramContextMenu;
+            this.presetParam5Knob.DrawRatio = 0.2F;
+            this.presetParam5Knob.Enabled = false;
+            this.presetParam5Knob.IndicatorColor = System.Drawing.Color.Black;
+            this.presetParam5Knob.IndicatorOffset = 7F;
+            this.presetParam5Knob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("presetParam5Knob.KnobCenter")));
+            this.presetParam5Knob.KnobColor = System.Drawing.Color.FromArgb(((int)(((byte)(164)))), ((int)(((byte)(193)))), ((int)(((byte)(216)))));
+            this.presetParam5Knob.KnobRect = ((System.Drawing.RectangleF)(resources.GetObject("presetParam5Knob.KnobRect")));
+            this.presetParam5Knob.Location = new System.Drawing.Point(221, 310);
+            this.presetParam5Knob.MaxValue = 1F;
+            this.presetParam5Knob.MinValue = 0F;
+            this.presetParam5Knob.Name = "presetParam5Knob";
+            this.presetParam5Knob.Renderer = null;
+            this.presetParam5Knob.ScaleColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.presetParam5Knob.Size = new System.Drawing.Size(40, 40);
+            this.presetParam5Knob.StepValue = 0.1F;
+            this.presetParam5Knob.Style = LBSoft.IndustrialCtrls.Knobs.LBKnob.KnobStyle.Circular;
+            this.presetParam5Knob.TabIndex = 31;
+            this.presetParam5Knob.Value = 0F;
+            this.presetParam5Knob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.lbKnob_KnobChangeValue);
+            // 
             // coverUpUglyLine
             // 
             this.coverUpUglyLine.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(236)))));
-            this.coverUpUglyLine.Location = new System.Drawing.Point(253, 15);
+            this.coverUpUglyLine.Location = new System.Drawing.Point(263, 15);
             this.coverUpUglyLine.Name = "coverUpUglyLine";
             this.coverUpUglyLine.Size = new System.Drawing.Size(2, 30);
             this.coverUpUglyLine.TabIndex = 29;
@@ -243,7 +319,7 @@
             this.savePresetBtn});
             this.presetToolStrip.Location = new System.Drawing.Point(6, 14);
             this.presetToolStrip.Name = "presetToolStrip";
-            this.presetToolStrip.Size = new System.Drawing.Size(249, 32);
+            this.presetToolStrip.Size = new System.Drawing.Size(259, 32);
             this.presetToolStrip.TabIndex = 28;
             this.presetToolStrip.Text = "toolStrip1";
             // 
@@ -263,7 +339,7 @@
             this.curvePresetList.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
             this.curvePresetList.Name = "curvePresetList";
             this.curvePresetList.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.curvePresetList.Size = new System.Drawing.Size(145, 22);
+            this.curvePresetList.Size = new System.Drawing.Size(155, 22);
             this.curvePresetList.Text = "Line";
             this.curvePresetList.ToolTipText = "Select a transformation preset.";
             // 
@@ -286,7 +362,7 @@
             this.savePresetBtn.Image = global::MidiShapeShifter.Properties.Resources.imgSaveBlue;
             this.savePresetBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.savePresetBtn.Name = "savePresetBtn";
-            this.savePresetBtn.Size = new System.Drawing.Size(32, 20);
+            this.savePresetBtn.Size = new System.Drawing.Size(32, 29);
             this.savePresetBtn.Text = "Save Program";
             this.savePresetBtn.ButtonClick += new System.EventHandler(this.saveTransformPreset_Click);
             // 
@@ -308,16 +384,16 @@
             // pointYEquationTextBox
             // 
             this.pointYEquationTextBox.Enabled = false;
-            this.pointYEquationTextBox.Location = new System.Drawing.Point(159, 259);
+            this.pointYEquationTextBox.Location = new System.Drawing.Point(164, 265);
             this.pointYEquationTextBox.Name = "pointYEquationTextBox";
-            this.pointYEquationTextBox.Size = new System.Drawing.Size(96, 20);
+            this.pointYEquationTextBox.Size = new System.Drawing.Size(101, 20);
             this.pointYEquationTextBox.TabIndex = 13;
             this.pointYEquationTextBox.Visible = false;
             this.pointYEquationTextBox.TextChanged += new System.EventHandler(this.pointEquationTextBox_TextChanged);
             // 
             // pointYEquationLabel
             // 
-            this.pointYEquationLabel.Location = new System.Drawing.Point(132, 262);
+            this.pointYEquationLabel.Location = new System.Drawing.Point(137, 268);
             this.pointYEquationLabel.Name = "pointYEquationLabel";
             this.pointYEquationLabel.Size = new System.Drawing.Size(27, 18);
             this.pointYEquationLabel.TabIndex = 12;
@@ -327,7 +403,7 @@
             // 
             // pointXEquationLabel
             // 
-            this.pointXEquationLabel.Location = new System.Drawing.Point(6, 262);
+            this.pointXEquationLabel.Location = new System.Drawing.Point(6, 268);
             this.pointXEquationLabel.Name = "pointXEquationLabel";
             this.pointXEquationLabel.Size = new System.Drawing.Size(27, 18);
             this.pointXEquationLabel.TabIndex = 10;
@@ -339,7 +415,7 @@
             // 
             this.resetGraphBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgTrashBlue;
             this.resetGraphBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.resetGraphBtn.Location = new System.Drawing.Point(54, 228);
+            this.resetGraphBtn.Location = new System.Drawing.Point(54, 234);
             this.resetGraphBtn.Margin = new System.Windows.Forms.Padding(0);
             this.resetGraphBtn.Name = "resetGraphBtn";
             this.resetGraphBtn.Size = new System.Drawing.Size(24, 24);
@@ -352,7 +428,7 @@
             // 
             this.nextEquationBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgRightBlue;
             this.nextEquationBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.nextEquationBtn.Location = new System.Drawing.Point(30, 228);
+            this.nextEquationBtn.Location = new System.Drawing.Point(30, 234);
             this.nextEquationBtn.Margin = new System.Windows.Forms.Padding(0);
             this.nextEquationBtn.Name = "nextEquationBtn";
             this.nextEquationBtn.Size = new System.Drawing.Size(24, 24);
@@ -365,7 +441,7 @@
             // 
             this.prevEquationBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgLeftBlue;
             this.prevEquationBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.prevEquationBtn.Location = new System.Drawing.Point(6, 228);
+            this.prevEquationBtn.Location = new System.Drawing.Point(6, 234);
             this.prevEquationBtn.Margin = new System.Windows.Forms.Padding(0);
             this.prevEquationBtn.Name = "prevEquationBtn";
             this.prevEquationBtn.Size = new System.Drawing.Size(24, 24);
@@ -376,7 +452,7 @@
             // 
             // curveEquationLabel
             // 
-            this.curveEquationLabel.Location = new System.Drawing.Point(6, 262);
+            this.curveEquationLabel.Location = new System.Drawing.Point(6, 268);
             this.curveEquationLabel.Name = "curveEquationLabel";
             this.curveEquationLabel.Size = new System.Drawing.Size(27, 18);
             this.curveEquationLabel.TabIndex = 8;
@@ -386,7 +462,7 @@
             // graphOutputTypeImg
             // 
             this.graphOutputTypeImg.BackColor = System.Drawing.Color.White;
-            this.graphOutputTypeImg.Location = new System.Drawing.Point(14, 62);
+            this.graphOutputTypeImg.Location = new System.Drawing.Point(16, 65);
             this.graphOutputTypeImg.Name = "graphOutputTypeImg";
             this.graphOutputTypeImg.Size = new System.Drawing.Size(19, 117);
             this.graphOutputTypeImg.TabIndex = 25;
@@ -397,7 +473,7 @@
             // 
             this.graphInputTypeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.graphInputTypeCombo.FormattingEnabled = true;
-            this.graphInputTypeCombo.Location = new System.Drawing.Point(100, 196);
+            this.graphInputTypeCombo.Location = new System.Drawing.Point(105, 202);
             this.graphInputTypeCombo.Name = "graphInputTypeCombo";
             this.graphInputTypeCombo.Size = new System.Drawing.Size(118, 21);
             this.graphInputTypeCombo.TabIndex = 4;
@@ -406,7 +482,7 @@
             // graphInputLable
             // 
             this.graphInputLable.BackColor = System.Drawing.Color.White;
-            this.graphInputLable.Location = new System.Drawing.Point(63, 201);
+            this.graphInputLable.Location = new System.Drawing.Point(70, 205);
             this.graphInputLable.Name = "graphInputLable";
             this.graphInputLable.Size = new System.Drawing.Size(36, 16);
             this.graphInputLable.TabIndex = 3;
@@ -414,34 +490,39 @@
             // 
             // presetParam4Title
             // 
-            this.presetParam4Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.presetParam4Title.Location = new System.Drawing.Point(192, 283);
+            this.presetParam4Title.ContextMenuStrip = this.paramContextMenu;
+            this.presetParam4Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.presetParam4Title.Location = new System.Drawing.Point(164, 297);
             this.presetParam4Title.Name = "presetParam4Title";
-            this.presetParam4Title.Size = new System.Drawing.Size(60, 13);
+            this.presetParam4Title.Size = new System.Drawing.Size(48, 13);
             this.presetParam4Title.TabIndex = 22;
-            this.presetParam4Title.Text = "Param4";
+            this.presetParam4Title.Text = "P4";
             this.presetParam4Title.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // presetParam4Value
             // 
-            this.presetParam4Value.BackColor = System.Drawing.Color.White;
-            this.presetParam4Value.Location = new System.Drawing.Point(202, 342);
+            this.presetParam4Value.BackColor = System.Drawing.SystemColors.Control;
+            this.presetParam4Value.ContextMenuStrip = this.paramContextMenu;
+            this.presetParam4Value.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.presetParam4Value.Location = new System.Drawing.Point(164, 349);
             this.presetParam4Value.Name = "presetParam4Value";
-            this.presetParam4Value.Size = new System.Drawing.Size(40, 16);
+            this.presetParam4Value.Size = new System.Drawing.Size(48, 16);
             this.presetParam4Value.TabIndex = 24;
             this.presetParam4Value.Text = "0";
+            this.presetParam4Value.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // presetParam4Knob
             // 
             this.presetParam4Knob.BackColor = System.Drawing.Color.Transparent;
+            this.presetParam4Knob.ContextMenuStrip = this.paramContextMenu;
             this.presetParam4Knob.DrawRatio = 0.2F;
             this.presetParam4Knob.Enabled = false;
             this.presetParam4Knob.IndicatorColor = System.Drawing.Color.Black;
             this.presetParam4Knob.IndicatorOffset = 7F;
             this.presetParam4Knob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("presetParam4Knob.KnobCenter")));
-            this.presetParam4Knob.KnobColor = System.Drawing.Color.Silver;
+            this.presetParam4Knob.KnobColor = System.Drawing.Color.FromArgb(((int)(((byte)(164)))), ((int)(((byte)(193)))), ((int)(((byte)(216)))));
             this.presetParam4Knob.KnobRect = ((System.Drawing.RectangleF)(resources.GetObject("presetParam4Knob.KnobRect")));
-            this.presetParam4Knob.Location = new System.Drawing.Point(202, 299);
+            this.presetParam4Knob.Location = new System.Drawing.Point(168, 310);
             this.presetParam4Knob.MaxValue = 1F;
             this.presetParam4Knob.MinValue = 0F;
             this.presetParam4Knob.Name = "presetParam4Knob";
@@ -456,34 +537,39 @@
             // 
             // presetParam3Title
             // 
-            this.presetParam3Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.presetParam3Title.Location = new System.Drawing.Point(131, 283);
+            this.presetParam3Title.ContextMenuStrip = this.paramContextMenu;
+            this.presetParam3Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.presetParam3Title.Location = new System.Drawing.Point(111, 297);
             this.presetParam3Title.Name = "presetParam3Title";
-            this.presetParam3Title.Size = new System.Drawing.Size(60, 13);
+            this.presetParam3Title.Size = new System.Drawing.Size(48, 13);
             this.presetParam3Title.TabIndex = 19;
-            this.presetParam3Title.Text = "Param3";
+            this.presetParam3Title.Text = "P3";
             this.presetParam3Title.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // presetParam3Value
             // 
-            this.presetParam3Value.BackColor = System.Drawing.Color.White;
-            this.presetParam3Value.Location = new System.Drawing.Point(141, 342);
+            this.presetParam3Value.BackColor = System.Drawing.SystemColors.Control;
+            this.presetParam3Value.ContextMenuStrip = this.paramContextMenu;
+            this.presetParam3Value.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.presetParam3Value.Location = new System.Drawing.Point(111, 349);
             this.presetParam3Value.Name = "presetParam3Value";
-            this.presetParam3Value.Size = new System.Drawing.Size(40, 16);
+            this.presetParam3Value.Size = new System.Drawing.Size(48, 16);
             this.presetParam3Value.TabIndex = 21;
             this.presetParam3Value.Text = "0";
+            this.presetParam3Value.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // presetParam3Knob
             // 
             this.presetParam3Knob.BackColor = System.Drawing.Color.Transparent;
+            this.presetParam3Knob.ContextMenuStrip = this.paramContextMenu;
             this.presetParam3Knob.DrawRatio = 0.2F;
             this.presetParam3Knob.Enabled = false;
             this.presetParam3Knob.IndicatorColor = System.Drawing.Color.Black;
             this.presetParam3Knob.IndicatorOffset = 7F;
             this.presetParam3Knob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("presetParam3Knob.KnobCenter")));
-            this.presetParam3Knob.KnobColor = System.Drawing.Color.Silver;
+            this.presetParam3Knob.KnobColor = System.Drawing.Color.FromArgb(((int)(((byte)(164)))), ((int)(((byte)(193)))), ((int)(((byte)(216)))));
             this.presetParam3Knob.KnobRect = ((System.Drawing.RectangleF)(resources.GetObject("presetParam3Knob.KnobRect")));
-            this.presetParam3Knob.Location = new System.Drawing.Point(141, 299);
+            this.presetParam3Knob.Location = new System.Drawing.Point(115, 310);
             this.presetParam3Knob.MaxValue = 1F;
             this.presetParam3Knob.MinValue = 0F;
             this.presetParam3Knob.Name = "presetParam3Knob";
@@ -498,34 +584,39 @@
             // 
             // presetParam2Title
             // 
-            this.presetParam2Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.presetParam2Title.Location = new System.Drawing.Point(69, 283);
+            this.presetParam2Title.ContextMenuStrip = this.paramContextMenu;
+            this.presetParam2Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.presetParam2Title.Location = new System.Drawing.Point(58, 297);
             this.presetParam2Title.Name = "presetParam2Title";
-            this.presetParam2Title.Size = new System.Drawing.Size(60, 13);
+            this.presetParam2Title.Size = new System.Drawing.Size(48, 13);
             this.presetParam2Title.TabIndex = 16;
-            this.presetParam2Title.Text = "Param2";
+            this.presetParam2Title.Text = "P2";
             this.presetParam2Title.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // presetParam2Value
             // 
-            this.presetParam2Value.BackColor = System.Drawing.Color.White;
-            this.presetParam2Value.Location = new System.Drawing.Point(79, 342);
+            this.presetParam2Value.BackColor = System.Drawing.SystemColors.Control;
+            this.presetParam2Value.ContextMenuStrip = this.paramContextMenu;
+            this.presetParam2Value.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.presetParam2Value.Location = new System.Drawing.Point(58, 349);
             this.presetParam2Value.Name = "presetParam2Value";
-            this.presetParam2Value.Size = new System.Drawing.Size(40, 16);
+            this.presetParam2Value.Size = new System.Drawing.Size(48, 16);
             this.presetParam2Value.TabIndex = 18;
             this.presetParam2Value.Text = "0";
+            this.presetParam2Value.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // presetParam2Knob
             // 
             this.presetParam2Knob.BackColor = System.Drawing.Color.Transparent;
+            this.presetParam2Knob.ContextMenuStrip = this.paramContextMenu;
             this.presetParam2Knob.DrawRatio = 0.2F;
             this.presetParam2Knob.Enabled = false;
             this.presetParam2Knob.IndicatorColor = System.Drawing.Color.Black;
             this.presetParam2Knob.IndicatorOffset = 7F;
             this.presetParam2Knob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("presetParam2Knob.KnobCenter")));
-            this.presetParam2Knob.KnobColor = System.Drawing.Color.Silver;
+            this.presetParam2Knob.KnobColor = System.Drawing.Color.FromArgb(((int)(((byte)(164)))), ((int)(((byte)(193)))), ((int)(((byte)(216)))));
             this.presetParam2Knob.KnobRect = ((System.Drawing.RectangleF)(resources.GetObject("presetParam2Knob.KnobRect")));
-            this.presetParam2Knob.Location = new System.Drawing.Point(79, 299);
+            this.presetParam2Knob.Location = new System.Drawing.Point(62, 310);
             this.presetParam2Knob.MaxValue = 1F;
             this.presetParam2Knob.MinValue = 0F;
             this.presetParam2Knob.Name = "presetParam2Knob";
@@ -540,20 +631,21 @@
             // 
             // presetParam1Title
             // 
-            this.presetParam1Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.presetParam1Title.Location = new System.Drawing.Point(8, 283);
+            this.presetParam1Title.ContextMenuStrip = this.paramContextMenu;
+            this.presetParam1Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.presetParam1Title.Location = new System.Drawing.Point(5, 297);
             this.presetParam1Title.Name = "presetParam1Title";
-            this.presetParam1Title.Size = new System.Drawing.Size(60, 13);
+            this.presetParam1Title.Size = new System.Drawing.Size(48, 13);
             this.presetParam1Title.TabIndex = 14;
-            this.presetParam1Title.Text = "Param1";
+            this.presetParam1Title.Text = "P1";
             this.presetParam1Title.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // pointXEquationTextBox
             // 
             this.pointXEquationTextBox.Enabled = false;
-            this.pointXEquationTextBox.Location = new System.Drawing.Point(33, 259);
+            this.pointXEquationTextBox.Location = new System.Drawing.Point(33, 265);
             this.pointXEquationTextBox.Name = "pointXEquationTextBox";
-            this.pointXEquationTextBox.Size = new System.Drawing.Size(96, 20);
+            this.pointXEquationTextBox.Size = new System.Drawing.Size(101, 20);
             this.pointXEquationTextBox.TabIndex = 11;
             this.pointXEquationTextBox.Visible = false;
             this.pointXEquationTextBox.TextChanged += new System.EventHandler(this.pointEquationTextBox_TextChanged);
@@ -561,18 +653,19 @@
             // curveEquationTextBox
             // 
             this.curveEquationTextBox.Enabled = false;
-            this.curveEquationTextBox.Location = new System.Drawing.Point(33, 259);
+            this.curveEquationTextBox.Location = new System.Drawing.Point(33, 265);
             this.curveEquationTextBox.Name = "curveEquationTextBox";
-            this.curveEquationTextBox.Size = new System.Drawing.Size(222, 20);
+            this.curveEquationTextBox.Size = new System.Drawing.Size(232, 20);
             this.curveEquationTextBox.TabIndex = 9;
+            this.curveEquationTextBox.Text = " ";
             this.curveEquationTextBox.TextChanged += new System.EventHandler(this.curveEquationTextBox_TextChanged);
             // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.lbKnob1);
+            this.groupBox1.Controls.Add(this.variableEValue);
+            this.groupBox1.Controls.Add(this.variableETitle);
+            this.groupBox1.Controls.Add(this.variableEKnob);
             this.groupBox1.Controls.Add(this.variableDValue);
             this.groupBox1.Controls.Add(this.variableDTitle);
             this.groupBox1.Controls.Add(this.variableDKnob);
@@ -585,69 +678,79 @@
             this.groupBox1.Controls.Add(this.variableAValue);
             this.groupBox1.Controls.Add(this.variableATitle);
             this.groupBox1.Controls.Add(this.variableAKnob);
-            this.groupBox1.Location = new System.Drawing.Point(629, 35);
+            this.groupBox1.Location = new System.Drawing.Point(639, 35);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(79, 365);
+            this.groupBox1.Size = new System.Drawing.Size(68, 369);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Variables";
             // 
-            // label1
+            // variableEValue
             // 
-            this.label1.BackColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(20, 342);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(40, 16);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "0";
+            this.variableEValue.BackColor = System.Drawing.SystemColors.Control;
+            this.variableEValue.ContextMenuStrip = this.paramContextMenu;
+            this.variableEValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.variableEValue.Location = new System.Drawing.Point(6, 348);
+            this.variableEValue.Name = "variableEValue";
+            this.variableEValue.Size = new System.Drawing.Size(56, 16);
+            this.variableEValue.TabIndex = 14;
+            this.variableEValue.Text = "0";
+            this.variableEValue.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // label2
+            // variableETitle
             // 
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(10, 293);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(10, 13);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "E";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.variableETitle.ContextMenuStrip = this.paramContextMenu;
+            this.variableETitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.variableETitle.Location = new System.Drawing.Point(6, 296);
+            this.variableETitle.Name = "variableETitle";
+            this.variableETitle.Size = new System.Drawing.Size(56, 13);
+            this.variableETitle.TabIndex = 12;
+            this.variableETitle.Text = "E";
+            this.variableETitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // lbKnob1
+            // variableEKnob
             // 
-            this.lbKnob1.BackColor = System.Drawing.Color.Transparent;
-            this.lbKnob1.DrawRatio = 0.2F;
-            this.lbKnob1.IndicatorColor = System.Drawing.Color.Black;
-            this.lbKnob1.IndicatorOffset = 7F;
-            this.lbKnob1.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("lbKnob1.KnobCenter")));
-            this.lbKnob1.KnobColor = System.Drawing.Color.Silver;
-            this.lbKnob1.KnobRect = ((System.Drawing.RectangleF)(resources.GetObject("lbKnob1.KnobRect")));
-            this.lbKnob1.Location = new System.Drawing.Point(20, 299);
-            this.lbKnob1.MaxValue = 1F;
-            this.lbKnob1.MinValue = 0F;
-            this.lbKnob1.Name = "lbKnob1";
-            this.lbKnob1.Renderer = null;
-            this.lbKnob1.ScaleColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lbKnob1.Size = new System.Drawing.Size(40, 40);
-            this.lbKnob1.StepValue = 0.1F;
-            this.lbKnob1.Style = LBSoft.IndustrialCtrls.Knobs.LBKnob.KnobStyle.Circular;
-            this.lbKnob1.TabIndex = 13;
-            this.lbKnob1.Value = 0F;
+            this.variableEKnob.BackColor = System.Drawing.Color.Transparent;
+            this.variableEKnob.ContextMenuStrip = this.paramContextMenu;
+            this.variableEKnob.DrawRatio = 0.2F;
+            this.variableEKnob.IndicatorColor = System.Drawing.Color.Black;
+            this.variableEKnob.IndicatorOffset = 7F;
+            this.variableEKnob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("variableEKnob.KnobCenter")));
+            this.variableEKnob.KnobColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(245)))), ((int)(((byte)(255)))));
+            this.variableEKnob.KnobRect = ((System.Drawing.RectangleF)(resources.GetObject("variableEKnob.KnobRect")));
+            this.variableEKnob.Location = new System.Drawing.Point(14, 309);
+            this.variableEKnob.MaxValue = 1F;
+            this.variableEKnob.MinValue = 0F;
+            this.variableEKnob.Name = "variableEKnob";
+            this.variableEKnob.Renderer = null;
+            this.variableEKnob.ScaleColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.variableEKnob.Size = new System.Drawing.Size(40, 40);
+            this.variableEKnob.StepValue = 0.1F;
+            this.variableEKnob.Style = LBSoft.IndustrialCtrls.Knobs.LBKnob.KnobStyle.Circular;
+            this.variableEKnob.TabIndex = 13;
+            this.variableEKnob.Value = 0F;
+            this.variableEKnob.KnobChangeValue += new LBSoft.IndustrialCtrls.Knobs.KnobChangeValue(this.lbKnob_KnobChangeValue);
             // 
             // variableDValue
             // 
-            this.variableDValue.BackColor = System.Drawing.Color.White;
-            this.variableDValue.Location = new System.Drawing.Point(20, 271);
+            this.variableDValue.BackColor = System.Drawing.SystemColors.Control;
+            this.variableDValue.ContextMenuStrip = this.paramContextMenu;
+            this.variableDValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.variableDValue.Location = new System.Drawing.Point(6, 278);
             this.variableDValue.Name = "variableDValue";
-            this.variableDValue.Size = new System.Drawing.Size(40, 16);
+            this.variableDValue.Size = new System.Drawing.Size(56, 16);
             this.variableDValue.TabIndex = 11;
             this.variableDValue.Text = "0";
+            this.variableDValue.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // variableDTitle
             // 
-            this.variableDTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.variableDTitle.Location = new System.Drawing.Point(10, 222);
+            this.variableDTitle.ContextMenuStrip = this.paramContextMenu;
+            this.variableDTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.variableDTitle.Location = new System.Drawing.Point(6, 226);
             this.variableDTitle.Name = "variableDTitle";
-            this.variableDTitle.Size = new System.Drawing.Size(10, 13);
+            this.variableDTitle.Size = new System.Drawing.Size(56, 13);
             this.variableDTitle.TabIndex = 9;
             this.variableDTitle.Text = "D";
             this.variableDTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -655,13 +758,14 @@
             // variableDKnob
             // 
             this.variableDKnob.BackColor = System.Drawing.Color.Transparent;
+            this.variableDKnob.ContextMenuStrip = this.paramContextMenu;
             this.variableDKnob.DrawRatio = 0.2F;
             this.variableDKnob.IndicatorColor = System.Drawing.Color.Black;
             this.variableDKnob.IndicatorOffset = 7F;
             this.variableDKnob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("variableDKnob.KnobCenter")));
-            this.variableDKnob.KnobColor = System.Drawing.Color.Silver;
+            this.variableDKnob.KnobColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(245)))), ((int)(((byte)(255)))));
             this.variableDKnob.KnobRect = ((System.Drawing.RectangleF)(resources.GetObject("variableDKnob.KnobRect")));
-            this.variableDKnob.Location = new System.Drawing.Point(20, 228);
+            this.variableDKnob.Location = new System.Drawing.Point(14, 239);
             this.variableDKnob.MaxValue = 1F;
             this.variableDKnob.MinValue = 0F;
             this.variableDKnob.Name = "variableDKnob";
@@ -676,19 +780,23 @@
             // 
             // variableCValue
             // 
-            this.variableCValue.BackColor = System.Drawing.Color.White;
-            this.variableCValue.Location = new System.Drawing.Point(20, 201);
+            this.variableCValue.BackColor = System.Drawing.SystemColors.Control;
+            this.variableCValue.ContextMenuStrip = this.paramContextMenu;
+            this.variableCValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.variableCValue.Location = new System.Drawing.Point(6, 208);
             this.variableCValue.Name = "variableCValue";
-            this.variableCValue.Size = new System.Drawing.Size(40, 16);
+            this.variableCValue.Size = new System.Drawing.Size(56, 16);
             this.variableCValue.TabIndex = 8;
             this.variableCValue.Text = "0";
+            this.variableCValue.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // variableCTitle
             // 
-            this.variableCTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.variableCTitle.Location = new System.Drawing.Point(10, 152);
+            this.variableCTitle.ContextMenuStrip = this.paramContextMenu;
+            this.variableCTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.variableCTitle.Location = new System.Drawing.Point(6, 156);
             this.variableCTitle.Name = "variableCTitle";
-            this.variableCTitle.Size = new System.Drawing.Size(10, 13);
+            this.variableCTitle.Size = new System.Drawing.Size(56, 13);
             this.variableCTitle.TabIndex = 6;
             this.variableCTitle.Text = "C";
             this.variableCTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -696,13 +804,14 @@
             // variableCKnob
             // 
             this.variableCKnob.BackColor = System.Drawing.Color.Transparent;
+            this.variableCKnob.ContextMenuStrip = this.paramContextMenu;
             this.variableCKnob.DrawRatio = 0.2F;
             this.variableCKnob.IndicatorColor = System.Drawing.Color.Black;
             this.variableCKnob.IndicatorOffset = 7F;
             this.variableCKnob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("variableCKnob.KnobCenter")));
-            this.variableCKnob.KnobColor = System.Drawing.Color.Silver;
+            this.variableCKnob.KnobColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(245)))), ((int)(((byte)(255)))));
             this.variableCKnob.KnobRect = ((System.Drawing.RectangleF)(resources.GetObject("variableCKnob.KnobRect")));
-            this.variableCKnob.Location = new System.Drawing.Point(20, 158);
+            this.variableCKnob.Location = new System.Drawing.Point(14, 169);
             this.variableCKnob.MaxValue = 1F;
             this.variableCKnob.MinValue = 0F;
             this.variableCKnob.Name = "variableCKnob";
@@ -717,19 +826,23 @@
             // 
             // variableBValue
             // 
-            this.variableBValue.BackColor = System.Drawing.Color.White;
-            this.variableBValue.Location = new System.Drawing.Point(20, 133);
+            this.variableBValue.BackColor = System.Drawing.SystemColors.Control;
+            this.variableBValue.ContextMenuStrip = this.paramContextMenu;
+            this.variableBValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.variableBValue.Location = new System.Drawing.Point(6, 138);
             this.variableBValue.Name = "variableBValue";
-            this.variableBValue.Size = new System.Drawing.Size(40, 16);
+            this.variableBValue.Size = new System.Drawing.Size(56, 16);
             this.variableBValue.TabIndex = 5;
             this.variableBValue.Text = "0";
+            this.variableBValue.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // variableBTitle
             // 
-            this.variableBTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.variableBTitle.Location = new System.Drawing.Point(10, 84);
+            this.variableBTitle.ContextMenuStrip = this.paramContextMenu;
+            this.variableBTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.variableBTitle.Location = new System.Drawing.Point(6, 86);
             this.variableBTitle.Name = "variableBTitle";
-            this.variableBTitle.Size = new System.Drawing.Size(10, 13);
+            this.variableBTitle.Size = new System.Drawing.Size(56, 13);
             this.variableBTitle.TabIndex = 3;
             this.variableBTitle.Text = "B";
             this.variableBTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -737,13 +850,14 @@
             // variableBKnob
             // 
             this.variableBKnob.BackColor = System.Drawing.Color.Transparent;
+            this.variableBKnob.ContextMenuStrip = this.paramContextMenu;
             this.variableBKnob.DrawRatio = 0.2F;
             this.variableBKnob.IndicatorColor = System.Drawing.Color.Black;
             this.variableBKnob.IndicatorOffset = 7F;
             this.variableBKnob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("variableBKnob.KnobCenter")));
-            this.variableBKnob.KnobColor = System.Drawing.Color.Silver;
+            this.variableBKnob.KnobColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(245)))), ((int)(((byte)(255)))));
             this.variableBKnob.KnobRect = ((System.Drawing.RectangleF)(resources.GetObject("variableBKnob.KnobRect")));
-            this.variableBKnob.Location = new System.Drawing.Point(20, 90);
+            this.variableBKnob.Location = new System.Drawing.Point(14, 99);
             this.variableBKnob.MaxValue = 1F;
             this.variableBKnob.MinValue = 0F;
             this.variableBKnob.Name = "variableBKnob";
@@ -758,19 +872,23 @@
             // 
             // variableAValue
             // 
-            this.variableAValue.BackColor = System.Drawing.Color.White;
-            this.variableAValue.Location = new System.Drawing.Point(20, 65);
+            this.variableAValue.BackColor = System.Drawing.SystemColors.Control;
+            this.variableAValue.ContextMenuStrip = this.paramContextMenu;
+            this.variableAValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.variableAValue.Location = new System.Drawing.Point(6, 68);
             this.variableAValue.Name = "variableAValue";
-            this.variableAValue.Size = new System.Drawing.Size(40, 16);
+            this.variableAValue.Size = new System.Drawing.Size(56, 16);
             this.variableAValue.TabIndex = 2;
             this.variableAValue.Text = "0";
+            this.variableAValue.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // variableATitle
             // 
-            this.variableATitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.variableATitle.Location = new System.Drawing.Point(10, 16);
+            this.variableATitle.ContextMenuStrip = this.paramContextMenu;
+            this.variableATitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.5F);
+            this.variableATitle.Location = new System.Drawing.Point(6, 16);
             this.variableATitle.Name = "variableATitle";
-            this.variableATitle.Size = new System.Drawing.Size(10, 13);
+            this.variableATitle.Size = new System.Drawing.Size(56, 13);
             this.variableATitle.TabIndex = 0;
             this.variableATitle.Text = "A";
             this.variableATitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -778,13 +896,14 @@
             // variableAKnob
             // 
             this.variableAKnob.BackColor = System.Drawing.Color.Transparent;
+            this.variableAKnob.ContextMenuStrip = this.paramContextMenu;
             this.variableAKnob.DrawRatio = 0.2F;
             this.variableAKnob.IndicatorColor = System.Drawing.Color.Black;
             this.variableAKnob.IndicatorOffset = 7F;
             this.variableAKnob.KnobCenter = ((System.Drawing.PointF)(resources.GetObject("variableAKnob.KnobCenter")));
-            this.variableAKnob.KnobColor = System.Drawing.Color.Silver;
+            this.variableAKnob.KnobColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(245)))), ((int)(((byte)(255)))));
             this.variableAKnob.KnobRect = ((System.Drawing.RectangleF)(resources.GetObject("variableAKnob.KnobRect")));
-            this.variableAKnob.Location = new System.Drawing.Point(20, 22);
+            this.variableAKnob.Location = new System.Drawing.Point(14, 29);
             this.variableAKnob.MaxValue = 1F;
             this.variableAKnob.MinValue = 0F;
             this.variableAKnob.Name = "variableAKnob";
@@ -944,7 +1063,7 @@
             this.generatorGroupBox.Controls.Add(this.deleteGeneratorBtn);
             this.generatorGroupBox.Location = new System.Drawing.Point(5, 230);
             this.generatorGroupBox.Name = "generatorGroupBox";
-            this.generatorGroupBox.Size = new System.Drawing.Size(351, 170);
+            this.generatorGroupBox.Size = new System.Drawing.Size(351, 174);
             this.generatorGroupBox.TabIndex = 2;
             this.generatorGroupBox.TabStop = false;
             this.generatorGroupBox.Text = "Generators";
@@ -963,7 +1082,7 @@
             this.generatorListView.Location = new System.Drawing.Point(8, 19);
             this.generatorListView.MultiSelect = false;
             this.generatorListView.Name = "generatorListView";
-            this.generatorListView.Size = new System.Drawing.Size(337, 120);
+            this.generatorListView.Size = new System.Drawing.Size(337, 124);
             this.generatorListView.TabIndex = 0;
             this.generatorListView.UseCompatibleStateImageBehavior = false;
             this.generatorListView.View = System.Windows.Forms.View.Details;
@@ -993,7 +1112,7 @@
             // 
             this.addGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgAddBlue;
             this.addGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.addGeneratorBtn.Location = new System.Drawing.Point(8, 142);
+            this.addGeneratorBtn.Location = new System.Drawing.Point(8, 146);
             this.addGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
             this.addGeneratorBtn.Name = "addGeneratorBtn";
             this.addGeneratorBtn.Size = new System.Drawing.Size(24, 24);
@@ -1005,7 +1124,7 @@
             // 
             this.editGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgEditBlue;
             this.editGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.editGeneratorBtn.Location = new System.Drawing.Point(57, 142);
+            this.editGeneratorBtn.Location = new System.Drawing.Point(57, 146);
             this.editGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
             this.editGeneratorBtn.Name = "editGeneratorBtn";
             this.editGeneratorBtn.Size = new System.Drawing.Size(24, 24);
@@ -1018,7 +1137,7 @@
             // 
             this.deleteGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDeleteBlue;
             this.deleteGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.deleteGeneratorBtn.Location = new System.Drawing.Point(32, 142);
+            this.deleteGeneratorBtn.Location = new System.Drawing.Point(32, 146);
             this.deleteGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
             this.deleteGeneratorBtn.Name = "deleteGeneratorBtn";
             this.deleteGeneratorBtn.Size = new System.Drawing.Size(24, 24);
@@ -1038,7 +1157,7 @@
             this.saveSplitButton});
             this.programToolStrip.Location = new System.Drawing.Point(0, 0);
             this.programToolStrip.Name = "programToolStrip";
-            this.programToolStrip.Size = new System.Drawing.Size(714, 32);
+            this.programToolStrip.Size = new System.Drawing.Size(712, 32);
             this.programToolStrip.TabIndex = 0;
             this.programToolStrip.Text = "Tool Strip";
             // 
@@ -1111,7 +1230,8 @@
             this.Controls.Add(this.curveGroup);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "PluginEditorView";
-            this.Size = new System.Drawing.Size(714, 405);
+            this.Size = new System.Drawing.Size(712, 409);
+            this.paramContextMenu.ResumeLayout(false);
             this.curveGroup.ResumeLayout(false);
             this.curveGroup.PerformLayout();
             this.presetToolStrip.ResumeLayout(false);
@@ -1186,9 +1306,9 @@
         private System.Windows.Forms.ToolStripSplitButton saveSplitButton;
         private System.Windows.Forms.ToolStripMenuItem saveMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsMenuItem;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private LBSoft.IndustrialCtrls.Knobs.LBKnob lbKnob1;
+        private System.Windows.Forms.Label variableEValue;
+        private System.Windows.Forms.Label variableETitle;
+        private LBSoft.IndustrialCtrls.Knobs.LBKnob variableEKnob;
         private System.Windows.Forms.ComboBox graphInputTypeCombo;
         private System.Windows.Forms.Label graphInputLable;
         private System.Windows.Forms.PictureBox graphOutputTypeImg;
@@ -1209,6 +1329,11 @@
         private System.Windows.Forms.ToolStripLabel curvePresetLabel;
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.Label coverUpUglyLine;
+        private System.Windows.Forms.Label presetParam5Title;
+        private System.Windows.Forms.Label presetParam5Value;
+        private LBSoft.IndustrialCtrls.Knobs.LBKnob presetParam5Knob;
+        private System.Windows.Forms.ContextMenuStrip paramContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem editParamMenuItem;
 
     }
 }

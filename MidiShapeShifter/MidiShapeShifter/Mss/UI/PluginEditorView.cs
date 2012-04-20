@@ -34,7 +34,7 @@ namespace MidiShapeShifter.Mss.UI
         public const int NUM_VARIABLE_PARAMS = 4;
         public const int NUM_PRESET_PARAMS = 4;
 
-        public const int NUM_GRAPH_POINTS = 128;
+        public const int NUM_GRAPH_POINTS = 256;
 
         public const int NUM_DECIMALS_IN_CONTROL_POINT = 3;
 
@@ -42,11 +42,15 @@ namespace MidiShapeShifter.Mss.UI
         protected const string GRAPH_CONTROL_POINTS_LABEL = "ControlPoints";
         protected const string EQUATION_CURVE_LABEL_PREFIX = "Curve";
 
+        private static readonly Color KNOB_COLOR_TRANSFORM = Color.FromArgb(164, 193, 216); //H207 S75 V88
+        private static readonly Color KNOB_COLOR_DISABLED = Color.Silver;
+
         protected string graphOutputLabelText = GRAPH_DEFAULT_OUTPUT_LABEL;
 
         public TwoWayDictionary<MssParameterID, LBKnob> ParameterValueKnobControlDict = new TwoWayDictionary<MssParameterID, LBKnob>();
         public TwoWayDictionary<MssParameterID, Label> ParameterValueLabelControlDict = new TwoWayDictionary<MssParameterID, Label>();
         public TwoWayDictionary<MssParameterID, Label> ParameterNameControlDict = new TwoWayDictionary<MssParameterID, Label>();
+        public Dictionary<Control, MssParameterID> ParameterAllControlsDict = new Dictionary<Control, MssParameterID>();
 
         protected IEvaluator evaluator;
 
@@ -176,28 +180,55 @@ namespace MidiShapeShifter.Mss.UI
             ParameterValueKnobControlDict.Add(MssParameterID.VariableB, this.variableBKnob);
             ParameterValueKnobControlDict.Add(MssParameterID.VariableC, this.variableCKnob);
             ParameterValueKnobControlDict.Add(MssParameterID.VariableD, this.variableDKnob);
+            ParameterValueKnobControlDict.Add(MssParameterID.VariableE, this.variableEKnob);
             ParameterValueKnobControlDict.Add(MssParameterID.Preset1, this.presetParam1Knob);
             ParameterValueKnobControlDict.Add(MssParameterID.Preset2, this.presetParam2Knob);
             ParameterValueKnobControlDict.Add(MssParameterID.Preset3, this.presetParam3Knob);
             ParameterValueKnobControlDict.Add(MssParameterID.Preset4, this.presetParam4Knob);
+            ParameterValueKnobControlDict.Add(MssParameterID.Preset5, this.presetParam5Knob);
 
             ParameterValueLabelControlDict.Add(MssParameterID.VariableA, this.variableAValue);
             ParameterValueLabelControlDict.Add(MssParameterID.VariableB, this.variableBValue);
             ParameterValueLabelControlDict.Add(MssParameterID.VariableC, this.variableCValue);
             ParameterValueLabelControlDict.Add(MssParameterID.VariableD, this.variableDValue);
+            ParameterValueLabelControlDict.Add(MssParameterID.VariableE, this.variableEValue);
             ParameterValueLabelControlDict.Add(MssParameterID.Preset1, this.presetParam1Value);
             ParameterValueLabelControlDict.Add(MssParameterID.Preset2, this.presetParam2Value);
             ParameterValueLabelControlDict.Add(MssParameterID.Preset3, this.presetParam3Value);
             ParameterValueLabelControlDict.Add(MssParameterID.Preset4, this.presetParam4Value);
+            ParameterValueLabelControlDict.Add(MssParameterID.Preset5, this.presetParam5Value);
 
             ParameterNameControlDict.Add(MssParameterID.VariableA, this.variableATitle);
             ParameterNameControlDict.Add(MssParameterID.VariableB, this.variableBTitle);
             ParameterNameControlDict.Add(MssParameterID.VariableC, this.variableCTitle);
             ParameterNameControlDict.Add(MssParameterID.VariableD, this.variableDTitle);
+            ParameterNameControlDict.Add(MssParameterID.VariableE, this.variableETitle);
             ParameterNameControlDict.Add(MssParameterID.Preset1, this.presetParam1Title);
             ParameterNameControlDict.Add(MssParameterID.Preset2, this.presetParam2Title);
             ParameterNameControlDict.Add(MssParameterID.Preset3, this.presetParam3Title);
             ParameterNameControlDict.Add(MssParameterID.Preset4, this.presetParam4Title);
+            ParameterNameControlDict.Add(MssParameterID.Preset5, this.presetParam5Title);
+
+            foreach (LBKnob paramKnob in ParameterValueKnobControlDict.RightKeys)
+            {
+                MssParameterID paramId;
+                ParameterValueKnobControlDict.TryGetLeftByRight(out paramId, paramKnob);
+                ParameterAllControlsDict[paramKnob] = paramId;
+            }
+
+            foreach (Label paramValue in ParameterValueLabelControlDict.RightKeys)
+            {
+                MssParameterID paramId;
+                ParameterValueLabelControlDict.TryGetLeftByRight(out paramId, paramValue);
+                ParameterAllControlsDict[paramValue] = paramId;
+            }
+
+            foreach (Label paramName in ParameterNameControlDict.RightKeys)
+            {
+                MssParameterID paramId;
+                ParameterNameControlDict.TryGetLeftByRight(out paramId, paramName);
+                ParameterAllControlsDict[paramName] = paramId;
+            }
         }
 
         protected void UpdateGraphableEntryButtonsEnabledStatus()
@@ -274,28 +305,12 @@ namespace MidiShapeShifter.Mss.UI
             LBKnob knob = (LBKnob)sender;
             MssParameterID paramId;
             ParameterValueKnobControlDict.TryGetLeftByRight(out paramId, knob);
+            MssParamInfo paramInfo = mssParameters.GetParameterInfo(paramId);
 
-
-            Label parameterValueDisplay;
-            if (ParameterValueLabelControlDict.TryGetRightByLeft(paramId, out parameterValueDisplay) == true)
+            if (paramInfo.RawValue != knob.Value)
             {
-                string valueString = FormatRawParameterValue((double)knob.Value);
-                if (valueString != parameterValueDisplay.Text)
-                {
-                    parameterValueDisplay.Text = valueString;
-                }
+                this.mssParameters.SetParameterRawValue(paramId, knob.Value);
             }
-            
-
-            if (this.mssParameters.GetParameterValue(paramId) != knob.Value)
-            {
-                this.mssParameters.SetParameterValue(paramId, knob.Value);
-            }
-        }
-
-        protected string FormatRawParameterValue(double value)
-        {
-            return System.Math.Round(value, 2).ToString();
         }
 
         protected void OnActiveGraphableEntryChanged()
@@ -320,22 +335,53 @@ namespace MidiShapeShifter.Mss.UI
         {
             bool activeEntryExists = (this.ActiveGraphableEntry != null);
 
-            presetParam1Knob.Enabled = activeEntryExists;
-            presetParam2Knob.Enabled = activeEntryExists;
-            presetParam3Knob.Enabled = activeEntryExists;
-            presetParam4Knob.Enabled = activeEntryExists;
+            //Enable/disable controls in the transformation group box.
+            foreach (Control curveControl in this.curveGroup.Controls)
+            {
+                curveControl.Enabled = activeEntryExists;
+            }
 
             UpdateGraphInputCombo();
+
+
+            //Update Parameter controls
+            foreach (MssParameterID curId in MssParameters.PRESET_PARAM_ID_LIST)
+            {
+                LBKnob curKnob;
+                Label curValueLabel;
+                bool knobFound;
+                bool labelFound;
+                knobFound = this.ParameterValueKnobControlDict.TryGetRightByLeft(curId, out curKnob);
+                labelFound = this.ParameterValueLabelControlDict.TryGetRightByLeft(curId, out curValueLabel);
+
+                if (knobFound == false || labelFound == false)
+                {
+                    //Could not find a control. They should have been added to the dictionaries
+                    //in PopulateControlDictionaries().
+                    Debug.Assert(false);
+                    break;
+                }
+
+                if (activeEntryExists)
+                {
+                    MssParamInfo paramInfo = this.mssParameters.GetParameterInfo(curId);
+
+                    curKnob.Value = (float)paramInfo.RawValue;
+                    curValueLabel.Text = paramInfo.GetValueAsString();
+                    curKnob.KnobColor = KNOB_COLOR_TRANSFORM;
+                }
+                else
+                {
+                    curKnob.KnobColor = KNOB_COLOR_DISABLED;                    
+                }
+            }
 
             if (activeEntryExists)
             {
                 CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
 
             //Update preset controls
-                curvePresetList.Enabled = true;
                 repopulateTransformPresetList();
-                this.savePresetBtn.Enabled = true;
-                this.openPresetBtn.Enabled = true;
 
             //Update Graph controls (the equation curve is not updated until the end)
                 SetGraphOutputLabelText(this.ActiveGraphableEntry.OutMssMsgRange.MsgInfo.Data3Name);
@@ -356,11 +402,9 @@ namespace MidiShapeShifter.Mss.UI
                     //Unknown equation type
                     Debug.Assert(false);
                 }
-                this.resetGraphBtn.Enabled = true;
-                
 
             //Update equations controls
-                EnableAppropriateEquationControls(curveInfo.SelectedEquationType);
+                MakeAppropriateEquationControlsVisable(curveInfo.SelectedEquationType);
                 if (curveInfo.SelectedEquationType == EquationType.Curve)
                 {
                     ignoreEquationTextBoxChangeHandlers = true;
@@ -380,55 +424,27 @@ namespace MidiShapeShifter.Mss.UI
                     Debug.Assert(false);
                 }
 
-            //Update Parameter controls
-                foreach(MssParameterID curId in MssParameters.PRESET_PARAM_ID_LIST)
-                {
-                    LBKnob curKnob;
-                    Label curValueLabel;
-                    bool knobFound;
-                    bool labelFound;
-                    knobFound = this.ParameterValueKnobControlDict.TryGetRightByLeft(curId, out curKnob);
-                    labelFound = this.ParameterValueLabelControlDict.TryGetRightByLeft(curId, out curValueLabel);
-
-                    if (knobFound == false || labelFound == false)
-                    {
-                        //Could not find a control. They should have been added to the dictionaries
-                        //in PopulateControlDictionaries().
-                        Debug.Assert(false);
-                        break;
-                    }
-
-                    curKnob.Value = (float)this.mssParameters.GetParameterValue(curId);
-                    curValueLabel.Text = FormatRawParameterValue(this.mssParameters.GetParameterValue(curId));
-                }
             }
             else //Active mapping does not exsist
             {
             //Update preset controls
-                curvePresetList.Enabled = false;
-                
-                this.savePresetBtn.Enabled = false;
-                this.openPresetBtn.Enabled = false;
+                //Nothing to do.
 
             //Update Graph controls (the equation curve is not updated until the end)
                 SetGraphOutputLabelText(GRAPH_DEFAULT_OUTPUT_LABEL);
 
             //Update the buttons under the graph
-                this.prevEquationBtn.Enabled = false;
-                this.nextEquationBtn.Enabled = false;
-                this.resetGraphBtn.Enabled = false;
+                //Nothing to do.
 
             //Update equations controls
-                EnableAppropriateEquationControls(EquationType.Curve);
+                MakeAppropriateEquationControlsVisable(EquationType.Curve);
                 this.curveEquationTextBox.Text = "";
-                this.curveEquationTextBox.Enabled = false;
-
             }
 
             UpdateEquationCurve();
         }
 
-        protected void EnableAppropriateEquationControls(EquationType equationType)
+        protected void MakeAppropriateEquationControlsVisable(EquationType equationType)
         {
             bool isCurveEquation;
 
@@ -449,14 +465,11 @@ namespace MidiShapeShifter.Mss.UI
 
             this.curveEquationLabel.Visible = isCurveEquation;
             this.curveEquationTextBox.Visible = isCurveEquation;
-            this.curveEquationTextBox.Enabled = isCurveEquation;
 
             this.pointXEquationLabel.Visible = ! isCurveEquation;
             this.pointXEquationTextBox.Visible = ! isCurveEquation;
             this.pointYEquationLabel.Visible = ! isCurveEquation;
             this.pointYEquationTextBox.Visible = ! isCurveEquation;
-            this.pointXEquationTextBox.Enabled = !isCurveEquation;
-            this.pointYEquationTextBox.Enabled = !isCurveEquation;
         }
 
         protected void SetGraphOutputLabelText(string outputText)
@@ -579,10 +592,11 @@ namespace MidiShapeShifter.Mss.UI
 
         protected void UpdateInfoForParameter(MssParameterID paramID)
         {
-            MssParameters_NameChanged(paramID, this.mssParameters.GetParameterName(paramID));
-            MssParameters_ValueChanged(paramID, this.mssParameters.GetParameterValue(paramID));
-            MssParameters_MaxValueChanged(paramID, this.mssParameters.GetParameterMaxValue(paramID));
-            MssParameters_MinValueChanged(paramID, this.mssParameters.GetParameterMinValue(paramID));
+            MssParamInfo paramInfo = this.mssParameters.GetParameterInfo(paramID);
+            MssParameters_NameChanged(paramID, paramInfo.Name);
+            MssParameters_ValueChanged(paramID, paramInfo.GetValue());
+            MssParameters_MaxValueChanged(paramID, paramInfo.MaxValue);
+            MssParameters_MinValueChanged(paramID, paramInfo.MinValue);
         }
 
         private void addMappingBtn_Click(object sender, System.EventArgs e)
@@ -718,7 +732,8 @@ namespace MidiShapeShifter.Mss.UI
             {
                 if (paramNameLabel.Text != name)
                 {
-                    paramNameLabel.Text = name;
+                    paramNameLabel.Text = CustomStringUtil.CreateStringWithMaxWidth(
+                        name, paramNameLabel.Width, paramNameLabel.Font);
                 }
             }
         }
@@ -731,45 +746,61 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
+            MssParamInfo paramInfo = mssParameters.GetParameterInfo(paramId);
+
+            //Update the knob
             LBKnob knob;
             if (ParameterValueKnobControlDict.TryGetRightByLeft(paramId, out knob) == true)
             {
-                if (knob.Value != value)
+                if (knob.Value != paramInfo.RawValue)
                 {
                     knob.Value = (float)value;
                 }
             }
 
+            //Update the value label
+            Label parameterValueDisplay;
+            if (ParameterValueLabelControlDict.TryGetRightByLeft(paramId, out parameterValueDisplay) == true)
+            {
+                string valueString = paramInfo.GetValueAsString();
+                if (valueString != parameterValueDisplay.Text)
+                {
+                    parameterValueDisplay.Text = CustomStringUtil.CreateStringWithMaxWidth(
+                        valueString, parameterValueDisplay.Width, parameterValueDisplay.Font);
+                }
+            }
+
+            //Regenerate the curve to reflect the changed value
             UpdateEquationCurve();
         }
 
-        private void MssParameters_MinValueChanged(MssParameterID paramId, int minValue)
+        private void MssParameters_MinValueChanged(MssParameterID paramId, double minValue)
         {
             if (this.InvokeRequired)
             {
-                this.BeginInvoke(new Action<MssParameterID, int>(MssParameters_MinValueChanged), paramId, minValue);
+                this.BeginInvoke(new Action<MssParameterID, double>(MssParameters_MinValueChanged), paramId, minValue);
                 return;
             }
 
             LBKnob knob;
             if (ParameterValueKnobControlDict.TryGetRightByLeft(paramId, out knob) == true)
             {
-                knob.MinValue = minValue;
+                knob.MinValue = (float)minValue;
             }
         }
 
-        private void MssParameters_MaxValueChanged(MssParameterID paramId, int maxValue)
+        private void MssParameters_MaxValueChanged(MssParameterID paramId, double maxValue)
         {
             if (this.InvokeRequired)
             {
-                this.BeginInvoke(new Action<MssParameterID, int>(MssParameters_MaxValueChanged), paramId, maxValue);
+                this.BeginInvoke(new Action<MssParameterID, double>(MssParameters_MaxValueChanged), paramId, maxValue);
                 return;
             }
 
             LBKnob knob;
             if (ParameterValueKnobControlDict.TryGetRightByLeft(paramId, out knob) == true)
             {
-                knob.MaxValue = maxValue;
+                knob.MaxValue = (float)maxValue;
             }
         }
 
@@ -1634,6 +1665,39 @@ namespace MidiShapeShifter.Mss.UI
                     this.DataFieldsInGraphInputCombo[inputTypeCombo.SelectedIndex];
 
                 UpdateCurveShapeControls();
+            }
+        }
+
+        private void editParamMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripDropDownItem editItem = (ToolStripDropDownItem)sender;
+            ContextMenuStrip contextMenu = (ContextMenuStrip)editItem.Owner;
+            Control paramControl = contextMenu.SourceControl;
+
+            MssParameterID paramId = this.ParameterAllControlsDict[paramControl];
+            MssParamInfo paramInfo = this.mssParameters.GetParameterInfo(paramId);
+
+            ParameterEditor paramEditorDlg = new ParameterEditor();
+            paramEditorDlg.Init(paramInfo);
+
+
+            if (paramEditorDlg.ShowDialog(this) == DialogResult.OK)
+            {
+
+                int paramIndex = MssParameters.PRESET_PARAM_ID_LIST.FindIndex(
+                        curParamId => curParamId == paramId);
+
+                if (paramIndex != -1)
+                {
+                    CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
+                    curveInfo.ParamInfoList[paramIndex] = paramEditorDlg.resultParamInfo;
+                    this.mssParameters.SetPresetParamInfoList(curveInfo.ParamInfoList);
+                }
+                else
+                {
+                    this.mssParameters.SetVariableParamInfo(paramId, paramEditorDlg.resultParamInfo);
+                }
+
             }
         }
 

@@ -22,6 +22,8 @@ namespace MidiShapeShifter.Framework
     public class VstParameters
     {
         protected const string DEFAULT_PARAMETER_CATEGORY_NAME = "Parameter";
+        protected const int VST_PARAM_MAX_VALUE = 1;
+        protected const int VST_PARAM_MIN_VALUE = 0;
 
         protected PluginPrograms pluginPrograms;
 
@@ -55,10 +57,6 @@ namespace MidiShapeShifter.Framework
                 new ParameterValueChangedEventHandler(MssParameters_ValueChanged);
             this.mssParameters.ParameterNameChanged += 
                 new ParameterNameChangedEventHandler(MssParameters_NameChanged);
-            this.mssParameters.ParameterMinValueChanged += 
-                new ParameterMinValueChangedEventHandler(MssParameters_MinValueChanged);
-            this.mssParameters.ParameterMaxValueChanged += 
-                new ParameterMaxValueChangedEventHandler(MssParameters_MaxValueChanged);
         }
 
         public void OnMssParametersInstanceReplaced()
@@ -117,20 +115,25 @@ namespace MidiShapeShifter.Framework
             VstParameterInfo paramInfo = new VstParameterInfo();
             paramInfo.Category = paramCategory;
             paramInfo.CanBeAutomated = true;
-            string paramName = this.mssParameters.GetParameterName(paramId);
-            //Cannot be more then 7 characters
-            paramInfo.Name = paramName.Substring(0, Math.Min(7, paramName.Length)); 
+            MssParamInfo mssParamInfo = this.mssParameters.GetParameterInfo(paramId);
+            paramInfo.Name = GetParamNameFromString(mssParamInfo.Name); 
             paramInfo.Label = "";
             paramInfo.ShortLabel = "";
-            paramInfo.MinInteger = (int)this.mssParameters.GetParameterMinValue(paramId);
-            paramInfo.MaxInteger = (int)this.mssParameters.GetParameterMaxValue(paramId);
-            paramInfo.LargeStepFloat = ((float)(paramInfo.MaxInteger - paramInfo.MinInteger)) / 8;
-            paramInfo.SmallStepFloat = ((float)(paramInfo.MaxInteger - paramInfo.MinInteger)) / 128;
+            paramInfo.MinInteger = VST_PARAM_MIN_VALUE;
+            paramInfo.MaxInteger = VST_PARAM_MAX_VALUE;
+            paramInfo.LargeStepFloat = ((float)(VST_PARAM_MAX_VALUE - VST_PARAM_MIN_VALUE)) / 8;
+            paramInfo.SmallStepFloat = ((float)(VST_PARAM_MAX_VALUE - VST_PARAM_MIN_VALUE)) / 128;
             paramInfo.StepFloat = 0.03125f;
-            paramInfo.DefaultValue = (float)this.mssParameters.GetParameterValue(paramId);
+            paramInfo.DefaultValue = (float)this.mssParameters.GetRelativeParamValue(paramId);
             VstParameterNormalizationInfo.AttachTo(paramInfo);
 
             return paramInfo;
+        }
+
+        //Cannot be more then 7 characters
+        protected string GetParamNameFromString(string name)
+        {
+            return name.Substring(0, Math.Min(7, name.Length));
         }
 
         /// <summary>
@@ -171,7 +174,7 @@ namespace MidiShapeShifter.Framework
                 if (e.PropertyName == VstParameter.ValuePropertyName)
                 {
                     //Notifies MssParameters of the change.
-                    this.mssParameters.SetParameterValue(paramID, changedParam.Value);
+                    this.mssParameters.SetParameterRelativeValue(paramID, changedParam.Value);
                 }
             }
         }
@@ -189,7 +192,7 @@ namespace MidiShapeShifter.Framework
             VstParameterManagerDict.TryGetRightByLeft(paramId, out paramMgr);
             if (paramMgr.ActiveParameter.Info.Name != name)
             {
-                paramMgr.ActiveParameter.Info.Name = name;
+                paramMgr.ActiveParameter.Info.Name = GetParamNameFromString(name);
             }
         }
 
@@ -209,43 +212,9 @@ namespace MidiShapeShifter.Framework
                 if (paramMgr.ActiveParameter.Value != value)
                 {
                     this.ignoreParameterChangesFromHost = true;
-                    paramMgr.ActiveParameter.Value = (float)value;
+                    paramMgr.ActiveParameter.Value = (float)this.mssParameters.GetRelativeParamValue(paramId);
                     this.ignoreParameterChangesFromHost = false;
                 }
-            }
-        }
-
-        /// <summary>
-        ///     Listens to changes made from the MSS namespace to the min value for a parameter and 
-        ///     modifies the associated VstParameterManager to reflect the change.
-        /// </summary>
-        /// <param name="paramId">ID of the changed parameter.</param>
-        /// <param name="minValue">New min value of the changed parameter.</param>
-        private void MssParameters_MinValueChanged(MssParameterID paramId, int minValue)
-        {
-            VstParameterManager paramMgr;
-            //Looks up the VstParameterManager associated with the changed parameter
-            VstParameterManagerDict.TryGetRightByLeft(paramId, out paramMgr);
-            if (paramMgr.ActiveParameter.Info.MinInteger != minValue)
-            {
-                paramMgr.ActiveParameter.Info.MinInteger = minValue;
-            }
-        }
-
-        /// <summary>
-        ///     Listens to changes made from the MSS namespace to the max value for a parameter and 
-        ///     modifies the associated VstParameterManager to reflect the change.
-        /// </summary>
-        /// <param name="paramId">ID of the changed parameter.</param>
-        /// <param name="maxValue">New max value of the changed parameter.</param>
-        private void MssParameters_MaxValueChanged(MssParameterID paramId, int maxValue)
-        {
-            VstParameterManager paramMgr;
-            //Looks up the VstParameterManager associated with the changed parameter
-            VstParameterManagerDict.TryGetRightByLeft(paramId, out paramMgr);
-            if (paramMgr.ActiveParameter.Info.MaxInteger != maxValue)
-            {
-                paramMgr.ActiveParameter.Info.MaxInteger = maxValue;
             }
         }
 
@@ -254,10 +223,9 @@ namespace MidiShapeShifter.Framework
             //Send the info for each parameter from MssParameters to the host.
             foreach (MssParameterID paramId in MssParameterID.GetValues(typeof(MssParameterID)))
             {
-                MssParameters_ValueChanged(paramId, this.mssParameters.GetParameterValue(paramId));
-                MssParameters_NameChanged(paramId, this.mssParameters.GetParameterName(paramId));
-                MssParameters_MaxValueChanged(paramId, this.mssParameters.GetParameterMaxValue(paramId));
-                MssParameters_MinValueChanged(paramId, this.mssParameters.GetParameterMinValue(paramId));
+                MssParamInfo mssParamInfo = this.mssParameters.GetParameterInfo(paramId);
+                MssParameters_ValueChanged(paramId, mssParamInfo.GetValue());
+                MssParameters_NameChanged(paramId, mssParamInfo.Name);
             }
         }
 

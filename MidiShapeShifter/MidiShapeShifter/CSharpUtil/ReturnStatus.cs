@@ -4,8 +4,8 @@
 
     public class ReturnStatus<ReturnType>
     {
-        public ReturnType Value { get; protected set;}
-        public bool IsValid { get; protected set; }
+        public ReturnType Value { get; set;}
+        public bool IsValid { get; set; }
 
         public ReturnStatus(ReturnType returnVal, bool returnValIsValid)
         {
@@ -21,8 +21,8 @@
 
     public class ReturnStatus<ReturnType, StatusType>
     {
-        public ReturnType Value { get; protected set; }
-        public StatusType Status { get; protected set; }
+        public ReturnType Value { get; set; }
+        public StatusType Status { get; set; }
 
         public ReturnStatus(ReturnType returnVal, StatusType returnStatus)
         {

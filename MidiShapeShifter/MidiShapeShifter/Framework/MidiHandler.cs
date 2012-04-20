@@ -166,12 +166,15 @@ namespace MidiShapeShifter.Framework
                     if (midiEvent != null)
                     {
                         this.outEvents.Add(midiEvent);
+                        midiHost.Process(outEvents);
+                        outEvents.Clear();
                     }
                 }
 
+                //TODO: Figure out why it doesn't work to send all of the events at once.
                 //Sends VstMidiEvents to host
-                midiHost.Process(outEvents);
-                outEvents.Clear();
+                //midiHost.Process(outEvents);
+                //outEvents.Clear();
             }
 
             OnProcessingCycleEnd(sampleTimeAtEndOfProcessingCycle);
@@ -186,7 +189,7 @@ namespace MidiShapeShifter.Framework
         public void OnProcessingCycleEnd(long sampleTimeAtEndOfLastProcessingCycle)
         { 
             //Sets the sample time that the next processing cycle will start
-            SampleTimeAtStartOfProcessingCycle = sampleTimeAtEndOfLastProcessingCycle;
+            SampleTimeAtStartOfProcessingCycle = sampleTimeAtEndOfLastProcessingCycle + 1;
         }
 
         /// <summary>

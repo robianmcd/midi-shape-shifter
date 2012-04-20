@@ -9,6 +9,7 @@ namespace MidiShapeShifter.Mss.Generator
         void CreateAndAddEntryFromGenInfo(GenEntryConfigInfo genInfo);
         IGeneratorMappingEntry GetGenMappingEntryById(int id);
         IGeneratorMappingEntry GetGenMappingEntryByIndex(int index);
+        int GetIndexById(int id);
         void RemoveGenMappingEntry(int index);
         void UpdateEntryWithNewGenInfo(GenEntryConfigInfo genInfo);
     }

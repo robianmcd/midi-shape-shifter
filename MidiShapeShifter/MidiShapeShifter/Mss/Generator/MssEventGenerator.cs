@@ -48,7 +48,7 @@ namespace MidiShapeShifter.Mss.Generator
         /// Stores the sample time at the end of the last processing cycle. This should be updated at
         /// the end of the ProcessingCycleEnd event.
         /// </summary>
-        protected long sampleTimeAtEndOfLastCycle = 0;
+        protected long sampleTimeAtEndOfLastCycle = -1;
 
         //Constructor
         public MssEventGenerator()
@@ -158,8 +158,8 @@ namespace MidiShapeShifter.Mss.Generator
                     //generator would fall into the next audio processing cycle. The enabled status
                     //of a generator can change in a call to GenerateEvent() so we need to ensure 
                     //that this generator is still enabled.
-                    while (curEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate + 
-                           SAMPLES_PER_GENERATOR_UPDATE <= sampleTimeAtEndOfCycle && 
+                    while (curEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate +
+                           SAMPLES_PER_GENERATOR_UPDATE <= sampleTimeAtEndOfCycle &&
                            curEntry.GenConfigInfo.Enabled == true)
                     {
                         MssEvent generatedEvent = GenerateEvent(curEntry);
@@ -168,6 +168,10 @@ namespace MidiShapeShifter.Mss.Generator
                             this.dryMssEventInputPort.ReceiveDryMssEvent(generatedEvent);
                         }
                     }
+                }
+                else
+                {
+                    curEntry.GenHistoryInfo.Initialized = false;
                 }
             }
         }
@@ -231,6 +235,7 @@ namespace MidiShapeShifter.Mss.Generator
             //Sample time for new event.
             long updatedSampleTime = genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate +
                                       SAMPLES_PER_GENERATOR_UPDATE;
+
             //Update the generator's history info.
             genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate = updatedSampleTime;
             genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = relPosInPeriod;

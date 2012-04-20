@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MssComponentHub xmlns:i="http://www.w3.org/2001/XMLSchema-instance" z:Id="1" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/" xmlns="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss">
+  <GenMappingMgr xmlns:d2p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Generator" z:Id="2">
+    <d2p1:GenMappingEntryList xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" z:Id="3" z:Size="0" />
+    <d2p1:NextGenId>1</d2p1:NextGenId>
+  </GenMappingMgr>
+  <MappingMgr xmlns:d2p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Mapping" z:Id="4">
+    <d2p1:MappingEntryList xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" z:Id="5" z:Size="0" />
+  </MappingMgr>
+  <MssParameters xmlns:d2p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Parameters" z:Id="6">
+    <d2p1:paramDict xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" z:Id="7" z:Size="10">
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>VariableA</d3p1:Key>
+        <d3p1:Value z:Id="8" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="9">A</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>VariableB</d3p1:Key>
+        <d3p1:Value z:Id="10" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="11">B</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>VariableC</d3p1:Key>
+        <d3p1:Value z:Id="12" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="13">C</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>VariableD</d3p1:Key>
+        <d3p1:Value z:Id="14" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="15">D</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>VariableE</d3p1:Key>
+        <d3p1:Value z:Id="16" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="17">E</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>Preset1</d3p1:Key>
+        <d3p1:Value z:Id="18" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="19">P1</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>Preset2</d3p1:Key>
+        <d3p1:Value z:Id="20" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="21">P2</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>Preset3</d3p1:Key>
+        <d3p1:Value z:Id="22" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="23">P3</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>Preset4</d3p1:Key>
+        <d3p1:Value z:Id="24" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="25">P4</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>Preset5</d3p1:Key>
+        <d3p1:Value z:Id="26" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="27">P5</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+    </d2p1:paramDict>
+  </MssParameters>
+  <MssProgramMgr z:Id="28">
+    <ActiveSettingsFile z:Id="29">
+      <FileLocationType>Factory</FileLocationType>
+      <FilePath z:Id="30">C:\Program Files (x86)\MIDI Shape Shifter\Factory Settings\Programs\Blank.xml</FilePath>
+      <Name z:Id="31">Blank</Name>
+    </ActiveSettingsFile>
+  </MssProgramMgr>
+  <PluginEditorInfo xmlns:d2p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.UI" z:Id="32">
+    <d2p1:ActiveGraphableEntryIndex>-1</d2p1:ActiveGraphableEntryIndex>
+    <d2p1:ActiveGraphableEntryType>Mapping</d2p1:ActiveGraphableEntryType>
+  </PluginEditorInfo>
+</MssComponentHub>

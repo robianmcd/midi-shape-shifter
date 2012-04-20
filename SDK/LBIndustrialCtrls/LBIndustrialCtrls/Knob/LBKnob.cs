@@ -62,7 +62,8 @@ namespace LBSoft.IndustrialCtrls.Knobs
 			set 
 			{ 
 				this.minValue = value;
-				this.Invalidate();
+                this.CalculateDimensions();
+                this.Invalidate();
 			}
 			get { return this.minValue; }
 		}
@@ -76,7 +77,8 @@ namespace LBSoft.IndustrialCtrls.Knobs
 			set 
 			{ 
 				this.maxValue = value;
-				this.Invalidate();
+                this.CalculateDimensions();
+                this.Invalidate();
 			}
 			get { return this.maxValue; }
 		}
@@ -287,6 +289,11 @@ namespace LBSoft.IndustrialCtrls.Knobs
 		
 		void OnMouseUp(object sender, MouseEventArgs e)
 		{
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+
 			this.isKnobRotating = false;
 
             if (this.knobRect.Contains(e.Location) == false)
@@ -302,6 +309,15 @@ namespace LBSoft.IndustrialCtrls.Knobs
 		
 		void OnMouseDown(object sender, MouseEventArgs e)
 		{
+            if (e.Button != MouseButtons.Left)
+            {
+                if (this.ContextMenu != null)
+                {
+                    this.ContextMenu.Show((Control)sender, e.Location);
+                }
+                return;
+            }
+
             if (this.knobRect.Contains(e.Location) == false)
 				return;
 			
@@ -361,14 +377,14 @@ namespace LBSoft.IndustrialCtrls.Knobs
 				degree  = (center.Y - position.Y ) /  (center.X - position.X );
 				degree = (float)Math.Atan(degree);
 				degree = (float)((degree) * (180F / Math.PI) + 45F);
-				v = (degree * ( this.MaxValue - this.MinValue )/ 270F);
+                v = this.MinValue + (degree * (this.MaxValue - this.MinValue) / 270F);
 			}
 			else if ( position.X > center.X )
 			{
 				degree  = (position.Y - center.Y ) /  (position.X - center.X );
 				degree = (float)Math.Atan(degree);
 				degree = (float)(225F + (degree) * (180F / Math.PI));
-				v = (degree * ( this.MaxValue - this.MinValue ) / 270F);
+				v = this.MinValue + (degree * ( this.MaxValue - this.MinValue ) / 270F);
 			}
             else
             {
@@ -394,7 +410,7 @@ namespace LBSoft.IndustrialCtrls.Knobs
 		
 			float _indicatorOffset = this.IndicatorOffset * this.drawRatio;
 			
-			float degree = 270F * val / ( this.MaxValue - this.MinValue );
+			float degree = 270F * (val - this.MinValue) / ( this.MaxValue - this.MinValue );
 			degree = (degree + 135F) * (float)Math.PI / 180F;
 
             pos.X = (int)(Math.Cos(degree) * ((this.knobRect.Width * 0.5F) - indicatorOffset) + this.knobRect.X + (this.knobRect.Width * 0.5F));

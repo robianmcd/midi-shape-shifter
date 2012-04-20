@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.cancelBtn = new System.Windows.Forms.Button();
             this.OkBtn = new System.Windows.Forms.Button();
             this.paramValueTextBox = new System.Windows.Forms.TextBox();
@@ -41,6 +42,8 @@
             this.maxParamValueLabel = new System.Windows.Forms.Label();
             this.minParamValueTextBox = new System.Windows.Forms.TextBox();
             this.minParamValueLabel = new System.Windows.Forms.Label();
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // cancelBtn
@@ -50,17 +53,16 @@
             this.cancelBtn.Location = new System.Drawing.Point(109, 145);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
-            this.cancelBtn.TabIndex = 21;
+            this.cancelBtn.TabIndex = 12;
             this.cancelBtn.Text = "Cancel";
             this.cancelBtn.UseVisualStyleBackColor = true;
-            this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
             // 
             // OkBtn
             // 
             this.OkBtn.Location = new System.Drawing.Point(28, 145);
             this.OkBtn.Name = "OkBtn";
             this.OkBtn.Size = new System.Drawing.Size(75, 23);
-            this.OkBtn.TabIndex = 20;
+            this.OkBtn.TabIndex = 11;
             this.OkBtn.Text = "Ok";
             this.OkBtn.UseVisualStyleBackColor = true;
             this.OkBtn.Click += new System.EventHandler(this.OkBtn_Click);
@@ -70,7 +72,8 @@
             this.paramValueTextBox.Location = new System.Drawing.Point(101, 116);
             this.paramValueTextBox.Name = "paramValueTextBox";
             this.paramValueTextBox.Size = new System.Drawing.Size(105, 20);
-            this.paramValueTextBox.TabIndex = 17;
+            this.paramValueTextBox.TabIndex = 10;
+            this.paramValueTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.paramValueTextBox_Validating);
             // 
             // paramValueCombo
             // 
@@ -87,7 +90,7 @@
             this.parameterValue.Location = new System.Drawing.Point(7, 118);
             this.parameterValue.Name = "parameterValue";
             this.parameterValue.Size = new System.Drawing.Size(37, 13);
-            this.parameterValue.TabIndex = 15;
+            this.parameterValue.TabIndex = 8;
             this.parameterValue.Text = "Value:";
             // 
             // paramTypeCombo
@@ -97,7 +100,8 @@
             this.paramTypeCombo.Location = new System.Drawing.Point(101, 37);
             this.paramTypeCombo.Name = "paramTypeCombo";
             this.paramTypeCombo.Size = new System.Drawing.Size(105, 21);
-            this.paramTypeCombo.TabIndex = 14;
+            this.paramTypeCombo.TabIndex = 3;
+            this.paramTypeCombo.SelectedIndexChanged += new System.EventHandler(this.paramTypeCombo_SelectedIndexChanged);
             // 
             // paramTypeLbl
             // 
@@ -105,7 +109,7 @@
             this.paramTypeLbl.Location = new System.Drawing.Point(7, 40);
             this.paramTypeLbl.Name = "paramTypeLbl";
             this.paramTypeLbl.Size = new System.Drawing.Size(85, 13);
-            this.paramTypeLbl.TabIndex = 13;
+            this.paramTypeLbl.TabIndex = 2;
             this.paramTypeLbl.Text = "Parameter Type:";
             // 
             // paramNameTextBox
@@ -113,7 +117,7 @@
             this.paramNameTextBox.Location = new System.Drawing.Point(101, 10);
             this.paramNameTextBox.Name = "paramNameTextBox";
             this.paramNameTextBox.Size = new System.Drawing.Size(105, 20);
-            this.paramNameTextBox.TabIndex = 12;
+            this.paramNameTextBox.TabIndex = 1;
             // 
             // paramNameLbl
             // 
@@ -121,7 +125,7 @@
             this.paramNameLbl.Location = new System.Drawing.Point(7, 13);
             this.paramNameLbl.Name = "paramNameLbl";
             this.paramNameLbl.Size = new System.Drawing.Size(89, 13);
-            this.paramNameLbl.TabIndex = 11;
+            this.paramNameLbl.TabIndex = 0;
             this.paramNameLbl.Text = "Parameter Name:";
             // 
             // maxParamValueTextBox
@@ -129,7 +133,8 @@
             this.maxParamValueTextBox.Location = new System.Drawing.Point(101, 90);
             this.maxParamValueTextBox.Name = "maxParamValueTextBox";
             this.maxParamValueTextBox.Size = new System.Drawing.Size(105, 20);
-            this.maxParamValueTextBox.TabIndex = 23;
+            this.maxParamValueTextBox.TabIndex = 7;
+            this.maxParamValueTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.maxParamValueTextBox_Validating);
             // 
             // maxParamValueLabel
             // 
@@ -137,7 +142,7 @@
             this.maxParamValueLabel.Location = new System.Drawing.Point(7, 93);
             this.maxParamValueLabel.Name = "maxParamValueLabel";
             this.maxParamValueLabel.Size = new System.Drawing.Size(60, 13);
-            this.maxParamValueLabel.TabIndex = 22;
+            this.maxParamValueLabel.TabIndex = 6;
             this.maxParamValueLabel.Text = "Max Value:";
             // 
             // minParamValueTextBox
@@ -145,7 +150,8 @@
             this.minParamValueTextBox.Location = new System.Drawing.Point(101, 64);
             this.minParamValueTextBox.Name = "minParamValueTextBox";
             this.minParamValueTextBox.Size = new System.Drawing.Size(105, 20);
-            this.minParamValueTextBox.TabIndex = 25;
+            this.minParamValueTextBox.TabIndex = 5;
+            this.minParamValueTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.minParamValueTextBox_Validating);
             // 
             // minParamValueLabel
             // 
@@ -153,14 +159,20 @@
             this.minParamValueLabel.Location = new System.Drawing.Point(7, 67);
             this.minParamValueLabel.Name = "minParamValueLabel";
             this.minParamValueLabel.Size = new System.Drawing.Size(57, 13);
-            this.minParamValueLabel.TabIndex = 24;
+            this.minParamValueLabel.TabIndex = 4;
             this.minParamValueLabel.Text = "Min Value:";
+            // 
+            // errorProvider
+            // 
+            this.errorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errorProvider.ContainerControl = this;
             // 
             // ParameterEditor
             // 
+            this.AcceptButton = this.OkBtn;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(212, 178);
+            this.ClientSize = new System.Drawing.Size(227, 178);
             this.Controls.Add(this.minParamValueTextBox);
             this.Controls.Add(this.minParamValueLabel);
             this.Controls.Add(this.maxParamValueTextBox);
@@ -180,6 +192,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Parameter Editor";
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -200,5 +213,6 @@
         private System.Windows.Forms.Label maxParamValueLabel;
         internal System.Windows.Forms.TextBox minParamValueTextBox;
         private System.Windows.Forms.Label minParamValueLabel;
+        private System.Windows.Forms.ErrorProvider errorProvider;
     }
 }

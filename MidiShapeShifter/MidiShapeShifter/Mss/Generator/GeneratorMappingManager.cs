@@ -211,6 +211,15 @@ namespace MidiShapeShifter.Mss.Generator
         }
 
         /// <summary>
+        /// Returns the index of the GeneratorMappingEntry specified by id or -1 if the id was not
+        /// found.
+        /// </summary>
+        public int GetIndexById(int id)
+        {
+            return genMappingEntryList.FindIndex(entry => entry.GenConfigInfo.Id == id);
+        }
+
+        /// <summary>
         /// Returns a list of MappingEntries from the GeneratorMappingEntries stored in this 
         /// GeneratorMappingManager. A GeneratorMappingEntry will be in this list if 
         /// <paramref name="inputMsg"/> falls into it's input range. Due the the nature of the 

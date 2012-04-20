@@ -7,6 +7,7 @@ using NCalc;
 
 using MidiShapeShifter.CSharpUtil;
 using System.Diagnostics;
+using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {
@@ -22,6 +23,8 @@ namespace MidiShapeShifter.Mss.Evaluation
         public const string DEFAULT_INPUT_STRING = "input";
 
         public const string FUNC_NAME_SNAP = "snap";
+        public const string FUNC_NAME_LFO = "lfo";
+        public const string FUNC_NAME_WAVEFORM = "waveform";
 
 
         /// <summary>
@@ -242,26 +245,155 @@ namespace MidiShapeShifter.Mss.Evaluation
         }
 
         //See EvaluationJob.FunctionHandler for documentation
-        protected override void FunctionHandler(string funcName, FunctionArgs args)
+        protected override ReturnStatus<bool> HandleCustomFunctions(string funcName, 
+                                                      FunctionArgs args, 
+                                                      List<double> evaluatedArgs)
         {
-            int numParams = args.Parameters.Count();
+            ReturnStatus<bool> retStatus = new ReturnStatus<bool>();
 
-            if (funcName == FUNC_NAME_SNAP && numParams == 1)
+            switch (funcName)
             {
-                HandleSnapFunc(args);
+                case FUNC_NAME_SNAP:
+                    retStatus.IsValid = HandleSnapFunc(args, evaluatedArgs);
+                    break;
+                case FUNC_NAME_LFO:
+                    retStatus.IsValid = HandleLfoFunc(args, evaluatedArgs);
+                    break;
+                case FUNC_NAME_WAVEFORM:
+                    retStatus.IsValid = HandleWaveformFunc(args, evaluatedArgs);
+                    break;
+                default:
+                    return HandleBaseFunctions(funcName, args, evaluatedArgs);
+            }
+
+            retStatus.Value = true;
+            return retStatus;
+
+        }
+
+        protected bool HandleLfoFunc(FunctionArgs args, List<double>evaluatedArgs)
+        {
+            if (evaluatedArgs.Count != 6)
+            {
+                return false;
+            }
+
+            double input = evaluatedArgs[0];
+            double attack = evaluatedArgs[1];
+            WaveformShap shape = (WaveformShap)evaluatedArgs[2];
+            double phase = evaluatedArgs[3];
+            double cycles = evaluatedArgs[4];
+            double amount = evaluatedArgs[5];
+
+            if (attack < 0 || attack > 1)
+            {
+                return false;
+            }
+
+            if (Enum.IsDefined(typeof(WaveformShap), shape) == false)
+            {
+                return false;
+            }
+
+            if (amount < -1 || amount > 1)
+            {
+                return false;
+            }
+
+            //input
+            double output = input;
+
+            //cycles
+            output *= cycles;
+
+            //phase
+            output += phase % 360 / 360.0;
+
+            //shape
+            HandleWaveformFunc(output, shape, out output);
+
+            output -= 0.5;
+
+            //attack
+            double attackAtInput;
+            if (attack == 0)
+            {
+                attackAtInput = 1;
             }
             else
             {
-                BaseFunctionHandler(funcName, args);
+                attackAtInput = Math.Min(1, input / attack);
             }
+            output *= attackAtInput;
+
+            //amount
+            output *= amount;
+
+            output += 0.5;
+
+            args.Result = output;
+            return true;
+        }
+
+        protected bool HandleWaveformFunc(FunctionArgs args, List<double> evaluatedArgs)
+        {
+            if (evaluatedArgs.Count != 2)
+            {
+                return false;
+            }
+
+            double output;
+            bool success = HandleWaveformFunc(evaluatedArgs[0], 
+                                              (WaveformShap)evaluatedArgs[1], 
+                                              out output);
+            args.Result = output;
+            return success;
+        }
+
+        protected bool HandleWaveformFunc(double input, WaveformShap shape, out double output)
+        {
+            //simply using "input % 1" does not work for negative values.
+            double inAsRamp = (1 + (input % 1)) % 1;
+
+            switch (shape)
+            { 
+                case WaveformShap.Sin:
+                    output = Math.Sin(2 * Math.PI * input) / 2 + 0.5;
+                    break;
+                case WaveformShap.Triangle:
+                    //Offset the base ramp wave so that the triangle wave starts at 0.5 instead 
+                    //of 0.
+                    double inAsOffsetRamp = (1 + ((input+0.25) % 1)) % 1;
+                    output = 1 - Math.Abs(inAsOffsetRamp - 0.5) * 2;
+                    break;
+                case WaveformShap.Square:
+                    output = System.Convert.ToDouble(inAsRamp < 0.5);
+                    break;
+                case WaveformShap.Ramp:
+                    output = inAsRamp;
+                    break;
+                case WaveformShap.Saw:
+                    output = 1 - inAsRamp;
+                    break;
+                default:
+                    output = double.NaN;
+                    return false;
+            }
+
+            return true;
         }
 
         /// <summary>
         /// The snap function will transform a curve so that it starts and ends at the control points on either side of it.
         /// </summary>
         /// <param name="args">args should have 1 parameter that stores an equation to apply snap to.</param>
-        protected void HandleSnapFunc(FunctionArgs args)
+        protected bool HandleSnapFunc(FunctionArgs args, List<double> evaluatedArgs)
         {
+            if (evaluatedArgs.Count != 1)
+            {
+                return false;
+            }
+
             //Get the index of the curve to apply snap to.
             int curveIndex = GetCurveIndex();
 
@@ -272,18 +404,18 @@ namespace MidiShapeShifter.Mss.Evaluation
 
             Expression remainingExpression = args.Parameters[0];
 
-            //Evaluate the equation to get the raw output before snap function is applied.
-            ReturnStatus<double> evaluateStatus = EvaluateExpression(remainingExpression);
-            double snapOutputValue = evaluateStatus.Value;
+            //Store the raw output of the argument.
+            double snapOutputValue = evaluatedArgs[0];
+
+            bool errorEncountered = false;
+            ReturnStatus<double> evaluateStatus;
 
             //If there is a control point on either side of the equation then snap will need to 
             //modify the output.
-            if (evaluateStatus.IsValid && 
-                (pointBeforeCurveExists || pointAfterCurveExists))
+            if (pointBeforeCurveExists || pointAfterCurveExists)
             {
                 XyPoint<double> pointBeforeCurve = null;
                 XyPoint<double> rawCurveStart = null;
-
 
                 XyPoint<double> pointAfterCurve = null;
                 XyPoint<double> rawCurveEnd = null;
@@ -299,25 +431,26 @@ namespace MidiShapeShifter.Mss.Evaluation
                     SetExpressionCurveParameters(endpointInput, remainingExpression);
 
                     evaluateStatus = EvaluateExpression(remainingExpression);
-
+                    errorEncountered |= !evaluateStatus.IsValid;
                     rawCurveStart = new XyPoint<double>(pointBeforeCurve.X, evaluateStatus.Value);
 
                 }
 
                 //If there is a control point after the equation then we need to evaluate the 
                 //equation at this point.
-                if (pointAfterCurveExists && evaluateStatus.IsValid)
+                if (pointAfterCurveExists && errorEncountered == false)
                 {
                     pointAfterCurve = controlPointValues[curveIndex];
                     endpointInput.setPrimaryInputVal(pointAfterCurve.X);
                     SetExpressionCurveParameters(endpointInput, remainingExpression);
 
                     evaluateStatus = EvaluateExpression(remainingExpression);
+                    errorEncountered |= !evaluateStatus.IsValid;
 
                     rawCurveEnd = new XyPoint<double>(pointAfterCurve.X, evaluateStatus.Value);
                 }
 
-                if (evaluateStatus.IsValid)
+                if (errorEncountered == false)
                 {
                     if (pointBeforeCurveExists && pointAfterCurveExists)
                     {
@@ -341,14 +474,14 @@ namespace MidiShapeShifter.Mss.Evaluation
                 }
             }
 
-            if (evaluateStatus.IsValid)
+            if (errorEncountered)
             {
-                args.Result = snapOutputValue;
+                return false;
             }
             else
             {
-                args.Result = double.NaN;
-                this.functionHandlingErrorEncountered = true;
+                args.Result = snapOutputValue;
+                return true;
             }
         }
 

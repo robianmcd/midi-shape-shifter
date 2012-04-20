@@ -22,7 +22,7 @@ namespace MidiShapeShifter.Framework
         private static readonly int AudioOutputCount = 2;
         private static readonly int InitialTailSize = 0;
 
-        protected long sampleTime = 0;
+        protected long sampleTime = -1;
 
         //Receives information about the audio processing cycle and sends it out to which ever classes need to know 
         //about it.
@@ -59,7 +59,7 @@ namespace MidiShapeShifter.Framework
         //created. These classes will assume that the sample time starts at 0.
         public void OnDeserialized()
         {
-            this.sampleTime = 0;
+            this.sampleTime = -1;
         }
 
         /// <summary>

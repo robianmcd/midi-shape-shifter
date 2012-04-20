@@ -62,8 +62,10 @@ namespace MidiShapeShifter.Mss
                     evalInput.Init(mssMsg, this.mssParameterViewer.GetVariableParamInfoList(), entry);
                     ReturnStatus<double> evalReturnStatus = this.evaluator.Evaluate(evalInput);
 
-                    //The return value must be valid because the equation in the mapping entry must be valid.
-                    Debug.Assert(evalReturnStatus.IsValid);
+                    if (evalReturnStatus.IsValid == false)
+                    {
+                        continue;                        
+                    }
 
                     double mappedRelativeData3 = evalReturnStatus.Value;
                     double mappedData3 = mappedRelativeData3 * entry.OutMssMsgRange.MsgInfo.MaxData3Value;

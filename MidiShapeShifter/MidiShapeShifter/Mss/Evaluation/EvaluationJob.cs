@@ -229,11 +229,11 @@ namespace MidiShapeShifter.Mss.Evaluation
                 char charVarName = 'a';
                 foreach(MssParamInfo varInfo in input.VariableParamInfoList)
                 {
-                    this.expression.Parameters[varInfo.Name.ToLower()] = varInfo.RawValue;
+                    this.expression.Parameters[varInfo.Name.ToLower()] = varInfo.GetValue();
 
                     if (charVarName <= 'z')
                     {
-                        this.expression.Parameters[charVarName.ToString()] = varInfo.RawValue;
+                        this.expression.Parameters[charVarName.ToString()] = varInfo.GetValue();
                         charVarName++;
                     }
                 }
@@ -241,9 +241,9 @@ namespace MidiShapeShifter.Mss.Evaluation
                 int paramNum = 1;
                 foreach (MssParamInfo varInfo in input.TransformParamInfoList)
                 {
-                    this.expression.Parameters[varInfo.Name.ToLower()] = varInfo.RawValue;
+                    this.expression.Parameters[varInfo.Name.ToLower()] = varInfo.GetValue();
 
-                    this.expression.Parameters["p" + paramNum.ToString()] = varInfo.RawValue;
+                    this.expression.Parameters["p" + paramNum.ToString()] = varInfo.GetValue();
                     paramNum++;
                 }
             }
@@ -260,42 +260,83 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// </summary>
         /// <param name="funcName">Name of the function being evaluated</param>
         /// <param name="args">Arguments for the function specified by funcName</param>
-        protected virtual void FunctionHandler(string funcName, FunctionArgs args)
+        protected void FunctionHandler(string funcName, FunctionArgs args)
         {
-            BaseFunctionHandler(funcName, args);
-        }
+            List<double> evaluatedParams = new List<double>(args.Parameters.Length);
 
-        //Return true if the function was handled
-        protected bool BaseFunctionHandler(string funcName, FunctionArgs args)
-        {
-            int numParams = args.Parameters.Count();
-
-            if (funcName == FUNC_NAME_LIMIT && numParams == 1)
+            foreach (Expression curParam in args.Parameters)
             {
-                ReturnStatus<double> evaluateStatus = EvaluateExpression(args.Parameters[0]);
+                ReturnStatus<double> evaluateStatus = EvaluateExpression(curParam);
                 if (evaluateStatus.IsValid)
                 {
-                    if (evaluateStatus.Value > 1)
-                    {
-                        args.Result = 1;
-                    }
-                    else if (evaluateStatus.Value < 0)
-                    {
-                        args.Result = 0;
-                    }
-                    else
-                    {
-                        args.Result = evaluateStatus.Value;
-                    }
+                    evaluatedParams.Add(evaluateStatus.Value);
                 }
                 else
                 {
                     args.Result = double.NaN;
                     this.functionHandlingErrorEncountered = true;
+                    return;
                 }
             }
-            return false;
-            //TODO: handel functions here
+
+            ReturnStatus<bool> retStatus = HandleCustomFunctions(funcName, args, evaluatedParams);
+            if (retStatus.IsValid == false)
+            {
+                args.Result = double.NaN;
+                this.functionHandlingErrorEncountered = true;
+            }
+        }
+
+        protected virtual ReturnStatus<bool> HandleCustomFunctions(string funcName, 
+                                                     FunctionArgs args, 
+                                                     List<double> evaluatedArgs)
+        {
+            return HandleBaseFunctions(funcName, args, evaluatedArgs);
+        }
+
+        //Return true if the function was handled
+        protected ReturnStatus<bool> HandleBaseFunctions(string funcName, 
+                                           FunctionArgs args, 
+                                           List<double> evaluatedArgs)
+        {
+            ReturnStatus<bool> retStatus = new ReturnStatus<bool>();
+
+            switch (funcName)
+            {
+                case FUNC_NAME_LIMIT:
+                    retStatus.IsValid = HandleLimitFunc(args, evaluatedArgs);
+                    break;
+                default:
+                    retStatus.IsValid = true;
+                    retStatus.Value = false;
+                    return retStatus;
+            }
+
+            retStatus.Value = true;
+            return retStatus;
+        }
+
+        protected bool HandleLimitFunc(FunctionArgs args, List<double> evaluatedArgs)
+        {
+            if (evaluatedArgs.Count != 1)
+            {
+                return false;
+            }
+
+            if (evaluatedArgs[0] > 1)
+            {
+                args.Result = 1;
+            }
+            else if (evaluatedArgs[0] < 0)
+            {
+                args.Result = 0;
+            }
+            else
+            {
+                args.Result = evaluatedArgs[0];
+            }
+
+            return true;
         }
 
     }

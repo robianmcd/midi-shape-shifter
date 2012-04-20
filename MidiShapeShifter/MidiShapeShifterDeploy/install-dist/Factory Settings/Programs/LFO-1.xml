@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MssComponentHub xmlns:i="http://www.w3.org/2001/XMLSchema-instance" z:Id="1" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/" xmlns="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss">
+  <GenMappingMgr xmlns:d2p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Generator" z:Id="2">
+    <d2p1:GenMappingEntryList xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" z:Id="3" z:Size="1">
+      <d3p1:anyType z:Id="4" i:type="d2p1:GeneratorMappingEntry">
+        <CurveShapeInfo xmlns:d5p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss" z:Id="5" xmlns="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Mapping">
+          <d5p1:ActiveTransformPreset z:Id="6">
+            <d5p1:FileLocationType>Factory</d5p1:FileLocationType>
+            <d5p1:FilePath z:Id="7">C:\Program Files (x86)\MIDI Shape Shifter\Factory Settings\Transformation Presets\LFO.xml</d5p1:FilePath>
+            <d5p1:Name z:Id="8">LFO</d5p1:Name>
+          </d5p1:ActiveTransformPreset>
+          <d5p1:CurveEquations z:Id="9" z:Size="1">
+            <d3p1:string z:Id="10">if(bypass, 0.5, LFO(input,Attack,Shape,Phase,Cycles,Amount))</d3p1:string>
+          </d5p1:CurveEquations>
+          <d5p1:ParamInfoList xmlns:d6p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Parameters" z:Id="11" z:Size="5">
+            <d6p1:MssParamInfo z:Id="12" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>1</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="13">Attack</d6p1:Name>
+              <d6p1:RawValue>0.25</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="14" i:type="d6p1:MssWaveformParamInfo">
+              <d6p1:MaxValue>4</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="15">Shape</d6p1:Name>
+              <d6p1:RawValue>0</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="16" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>360</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="17">Phase</d6p1:Name>
+              <d6p1:RawValue>0</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="18" i:type="d6p1:MssIntegerParamInfo">
+              <d6p1:MaxValue>64</d6p1:MaxValue>
+              <d6p1:MinValue>1</d6p1:MinValue>
+              <d6p1:Name z:Id="19">Cycles</d6p1:Name>
+              <d6p1:RawValue>8.1351528167724609</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="20" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>1</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="21">Amount</d6p1:Name>
+              <d6p1:RawValue>0.70091152191162109</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+          </d5p1:ParamInfoList>
+          <d5p1:PointEquations xmlns:d6p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.CSharpUtil" z:Id="22" z:Size="0" />
+          <d5p1:SelectedEquationIndex>0</d5p1:SelectedEquationIndex>
+          <d5p1:SelectedEquationType>Curve</d5p1:SelectedEquationType>
+        </CurveShapeInfo>
+        <InMssMsgRange z:Id="23" xmlns:d5p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss" i:type="d5p1:MssMsgRange" xmlns="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Mapping">
+          <d5p1:Data1RangeBottom>0</d5p1:Data1RangeBottom>
+          <d5p1:Data1RangeTop>0</d5p1:Data1RangeTop>
+          <d5p1:Data2RangeBottom>-1</d5p1:Data2RangeBottom>
+          <d5p1:Data2RangeTop>-1</d5p1:Data2RangeTop>
+          <d5p1:MsgInfo xmlns:d6p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.MssMsgInfoTypes" z:Id="24" i:type="d6p1:RelBarPeriodPosMsgInfo" />
+          <d5p1:MsgInfoFactory z:Id="25" xmlns:d6p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.MssMsgInfoTypes" i:type="d6p1:Factory_MssMsgInfo">
+            <d6p1:GenMappingMgr z:Ref="2" i:nil="true" />
+          </d5p1:MsgInfoFactory>
+          <d5p1:MsgType>RelBarPeriodPos</d5p1:MsgType>
+        </InMssMsgRange>
+        <OutMssMsgRange z:Id="26" xmlns:d5p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss" i:type="d5p1:MssMsgRange" xmlns="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Mapping">
+          <d5p1:Data1RangeBottom>0</d5p1:Data1RangeBottom>
+          <d5p1:Data1RangeTop>0</d5p1:Data1RangeTop>
+          <d5p1:Data2RangeBottom>-1</d5p1:Data2RangeBottom>
+          <d5p1:Data2RangeTop>-1</d5p1:Data2RangeTop>
+          <d5p1:MsgInfo xmlns:d6p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.MssMsgInfoTypes" z:Id="27" i:type="d6p1:GeneratorMsgInfo">
+            <d6p1:GenMappingMgr z:Ref="2" i:nil="true" />
+          </d5p1:MsgInfo>
+          <d5p1:MsgInfoFactory z:Ref="25" i:nil="true" />
+          <d5p1:MsgType>Generator</d5p1:MsgType>
+        </OutMssMsgRange>
+        <OverrideDuplicates xmlns="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Mapping">false</OverrideDuplicates>
+        <PrimaryInputSource xmlns="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Mapping">Data3</PrimaryInputSource>
+        <d2p1:GenConfigInfo z:Id="28">
+          <d2p1:BarsPeriod>Bars1</d2p1:BarsPeriod>
+          <d2p1:Enabled>true</d2p1:Enabled>
+          <d2p1:Id>0</d2p1:Id>
+          <d2p1:Loop>true</d2p1:Loop>
+          <d2p1:Name z:Id="29">MyLfo</d2p1:Name>
+          <d2p1:PeriodType>BeatSynced</d2p1:PeriodType>
+          <d2p1:TimePeriodInMs>100</d2p1:TimePeriodInMs>
+        </d2p1:GenConfigInfo>
+      </d3p1:anyType>
+    </d2p1:GenMappingEntryList>
+    <d2p1:NextGenId>1</d2p1:NextGenId>
+  </GenMappingMgr>
+  <MappingMgr xmlns:d2p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Mapping" z:Id="30">
+    <d2p1:MappingEntryList xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" z:Id="31" z:Size="1">
+      <d3p1:anyType z:Id="32" i:type="d2p1:MappingEntry">
+        <d2p1:CurveShapeInfo z:Id="33">
+          <ActiveTransformPreset z:Id="34">
+            <FileLocationType>Factory</FileLocationType>
+            <FilePath z:Id="35">C:\Program Files (x86)\MIDI Shape Shifter\Factory Settings\Programs\Line.xml</FilePath>
+            <Name z:Id="36">Line</Name>
+          </ActiveTransformPreset>
+          <CurveEquations z:Id="37" z:Size="1">
+            <d3p1:string z:Id="38">input</d3p1:string>
+          </CurveEquations>
+          <ParamInfoList xmlns:d6p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Parameters" z:Id="39" z:Size="5">
+            <d6p1:MssParamInfo z:Id="40" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>1</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="41">P1</d6p1:Name>
+              <d6p1:RawValue>0</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="42" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>1</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="43">P2</d6p1:Name>
+              <d6p1:RawValue>0</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="44" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>1</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="45">P3</d6p1:Name>
+              <d6p1:RawValue>0</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="46" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>1</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="47">P4</d6p1:Name>
+              <d6p1:RawValue>0</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="48" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>1</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="49">P5</d6p1:Name>
+              <d6p1:RawValue>0</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+          </ParamInfoList>
+          <PointEquations xmlns:d6p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.CSharpUtil" z:Id="50" z:Size="0" />
+          <SelectedEquationIndex>0</SelectedEquationIndex>
+          <SelectedEquationType>Curve</SelectedEquationType>
+        </d2p1:CurveShapeInfo>
+        <d2p1:InMssMsgRange z:Id="51" i:type="MssMsgRange">
+          <Data1RangeBottom>0</Data1RangeBottom>
+          <Data1RangeTop>0</Data1RangeTop>
+          <Data2RangeBottom>-1</Data2RangeBottom>
+          <Data2RangeTop>-1</Data2RangeTop>
+          <MsgInfo xmlns:d6p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.MssMsgInfoTypes" z:Id="52" i:type="d6p1:GeneratorMsgInfo">
+            <d6p1:GenMappingMgr z:Ref="2" i:nil="true" />
+          </MsgInfo>
+          <MsgInfoFactory z:Id="53" xmlns:d6p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.MssMsgInfoTypes" i:type="d6p1:Factory_MssMsgInfo">
+            <d6p1:GenMappingMgr z:Ref="2" i:nil="true" />
+          </MsgInfoFactory>
+          <MsgType>Generator</MsgType>
+        </d2p1:InMssMsgRange>
+        <d2p1:OutMssMsgRange z:Id="54" i:type="MssMsgRange">
+          <Data1RangeBottom>1</Data1RangeBottom>
+          <Data1RangeTop>1</Data1RangeTop>
+          <Data2RangeBottom>7</Data2RangeBottom>
+          <Data2RangeTop>7</Data2RangeTop>
+          <MsgInfo xmlns:d6p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.MssMsgInfoTypes" z:Id="55" i:type="d6p1:CCMsgInfo" />
+          <MsgInfoFactory z:Ref="53" i:nil="true" />
+          <MsgType>CC</MsgType>
+        </d2p1:OutMssMsgRange>
+        <d2p1:OverrideDuplicates>false</d2p1:OverrideDuplicates>
+        <d2p1:PrimaryInputSource>Data3</d2p1:PrimaryInputSource>
+      </d3p1:anyType>
+    </d2p1:MappingEntryList>
+  </MappingMgr>
+  <MssParameters xmlns:d2p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Parameters" z:Id="56">
+    <d2p1:paramDict xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" z:Id="57" z:Size="10">
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>VariableA</d3p1:Key>
+        <d3p1:Value z:Id="58" i:type="d2p1:MssIntegerParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="59">Bypass</d2p1:Name>
+          <d2p1:RawValue>0.37973633408546448</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>VariableB</d3p1:Key>
+        <d3p1:Value z:Id="60" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="61">B</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>VariableC</d3p1:Key>
+        <d3p1:Value z:Id="62" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="63">C</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>VariableD</d3p1:Key>
+        <d3p1:Value z:Id="64" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="65">D</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>VariableE</d3p1:Key>
+        <d3p1:Value z:Id="66" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="67">E</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>Preset1</d3p1:Key>
+        <d3p1:Value z:Ref="12" i:nil="true" />
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>Preset2</d3p1:Key>
+        <d3p1:Value z:Ref="14" i:nil="true" />
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>Preset3</d3p1:Key>
+        <d3p1:Value z:Ref="16" i:nil="true" />
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>Preset4</d3p1:Key>
+        <d3p1:Value z:Ref="18" i:nil="true" />
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>Preset5</d3p1:Key>
+        <d3p1:Value z:Ref="20" i:nil="true" />
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+    </d2p1:paramDict>
+  </MssParameters>
+  <MssProgramMgr z:Id="68">
+    <ActiveSettingsFile z:Id="69">
+      <FileLocationType>Factory</FileLocationType>
+      <FilePath z:Id="70">C:\Program Files (x86)\MIDI Shape Shifter\Factory Settings\Programs\LFO-1.xml</FilePath>
+      <Name z:Id="71">LFO-1</Name>
+    </ActiveSettingsFile>
+  </MssProgramMgr>
+  <PluginEditorInfo xmlns:d2p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.UI" z:Id="72">
+    <d2p1:ActiveGraphableEntryIndex>0</d2p1:ActiveGraphableEntryIndex>
+    <d2p1:ActiveGraphableEntryType>Generator</d2p1:ActiveGraphableEntryType>
+  </PluginEditorInfo>
+</MssComponentHub>
