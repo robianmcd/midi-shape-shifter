@@ -9,6 +9,9 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 {
     public abstract class MidiMsgRangeEntryMetadata : MssMsgRangeEntryMetadata
     {
+        protected string CHAN_RANGE_STR = "Channel Range:";
+        protected string PARAM_RANGE_STR = "Param Range:";
+
         protected int paramRangeBottom;
         protected int paramRangeTop;
         protected int chanRangeBottom;
@@ -71,12 +74,12 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         protected override void SetMappingDlgEntryFieldCustomProperties()
         {
             this.EntryField1Lbl.Visible = true;
-            this.EntryField1Lbl.Text = "Channel Range:";
+            this.EntryField1Lbl.Text = CHAN_RANGE_STR;
 
             this.EntryField1.Visible = true;
 
             this.EntryField2Lbl.Visible = true;
-            this.EntryField2Lbl.Text = "Param Range:";
+            this.EntryField2Lbl.Text = PARAM_RANGE_STR;
 
             this.EntryField2.Visible = true;
         }

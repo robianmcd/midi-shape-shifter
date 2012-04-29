@@ -109,6 +109,7 @@
             this.inLearnBtn.TabIndex = 9;
             this.inLearnBtn.Text = "Learn";
             this.inLearnBtn.UseVisualStyleBackColor = true;
+            this.inLearnBtn.Click += new System.EventHandler(this.inLearnBtn_Click);
             // 
             // inOverrideDupsCheckBox
             // 

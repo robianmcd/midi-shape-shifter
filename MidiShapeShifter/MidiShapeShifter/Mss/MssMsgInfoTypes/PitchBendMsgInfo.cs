@@ -40,5 +40,10 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         {
             get { return "Pitch Bend"; }
         }
+
+        public override string ConvertData2ToString(double Data2)
+        {
+            return MssMsgUtil.UNUSED_MSS_MSG_STRING;
+        }
     }
 }

@@ -225,10 +225,14 @@ namespace MidiShapeShifter.Framework
                 //mssEvent.Data3 and mssEvent.Data2 is not used.
                 mssEvent.mssMsg.Data2 = MssMsgUtil.UNUSED_MSS_MSG_DATA;
 
-                //TODO: Ensure this conversion actually works.
                 //data1 contains the least significant 7 bits of the pitch bend value and data2 contains the most 
                 //significant 7 bits
                 mssEvent.mssMsg.Data3 = (midiEvent.Data[2] << 7) + midiEvent.Data[1];
+            }
+            else if (msgType == MssMsgType.ChanAftertouch)
+            {
+                mssEvent.mssMsg.Data2 = MssMsgUtil.UNUSED_MSS_MSG_DATA;
+                mssEvent.mssMsg.Data3 = midiEvent.Data[1];
             }
             else
             {
@@ -268,12 +272,16 @@ namespace MidiShapeShifter.Framework
 
             midiData[0] = (byte) (statusByte | channelByte);
 
-            //TODO: ensure case for pitch bend works.
             if (mssEvent.mssMsg.Type == MssMsgType.PitchBend) {
                 //most significant bits
                 int MsbVal = (mssEvent.mssMsg.Data3AsInt) >> 7;
                 midiData[2] = (byte)MsbVal;
                 midiData[1] = (byte)((mssEvent.mssMsg.Data3AsInt) - (MsbVal << 7));
+            }
+            else if (mssEvent.mssMsg.Type == MssMsgType.ChanAftertouch)
+            {
+                midiData[1] = (byte)mssEvent.mssMsg.Data3AsInt;
+                midiData[2] = 0;
             }
             else
             {

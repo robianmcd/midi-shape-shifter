@@ -14,19 +14,19 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
             get { return MssMsgType.ChanAftertouch; }
         }
 
-        public override string Data1Name
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public override string Data2Name
         {
-            get { throw new NotImplementedException(); }
+            get { return DATA_NAME_UNUSED; }
         }
 
         public override string Data3Name
         {
-            get { throw new NotImplementedException(); }
+            get { return DATA3_NAME_PRESSURE; }
+        }
+
+        public override string ConvertData2ToString(double Data2)
+        {
+            return MssMsgUtil.UNUSED_MSS_MSG_STRING;
         }
     }
 }

@@ -602,7 +602,11 @@ namespace MidiShapeShifter.Mss.UI
         private void addMappingBtn_Click(object sender, System.EventArgs e)
         {
             MappingDlg mapDlg = new MappingDlg();
-            mapDlg.Init(new MappingEntry(), false, this.msgMetadataFactory, this.msgInfoFactory);
+            mapDlg.Init(new MappingEntry(), 
+                        false, 
+                        this.msgMetadataFactory, 
+                        this.msgInfoFactory, 
+                        this.dryMssEventOutputPort);
 
             if (mapDlg.ShowDialog(this) == DialogResult.OK)
             {
@@ -630,7 +634,11 @@ namespace MidiShapeShifter.Mss.UI
             }
 
             MappingDlg mapDlg = new MappingDlg();
-            mapDlg.Init(ActiveGraphableEntry, true, this.msgMetadataFactory, this.msgInfoFactory);
+            mapDlg.Init(ActiveGraphableEntry, 
+                        true, 
+                        this.msgMetadataFactory, 
+                        this.msgInfoFactory,
+                        this.dryMssEventOutputPort);
             
 
             if (mapDlg.ShowDialog(this) == DialogResult.OK)

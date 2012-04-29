@@ -10,6 +10,7 @@ using System.Diagnostics;
 using MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes;
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
 using MidiShapeShifter.Mss.Generator;
+using MidiShapeShifter.Mss.Relays;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -70,11 +71,15 @@ namespace MidiShapeShifter.Mss.Mapping
         public void Init(IMappingEntry mappingEntry, 
                          bool useMappingEntryForDefaultValues, 
                          Factory_MssMsgRangeEntryMetadata msgMetadataFactory,
-                         IFactory_MssMsgInfo msgInfoFactory)
+                         IFactory_MssMsgInfo msgInfoFactory,
+                         IDryMssEventOutputPort dryEventOut)
         {
             this.mappingEntry = mappingEntry;
             this.MsgMetadataFactory = msgMetadataFactory;
             this.MsgInfoFactory = msgInfoFactory;
+
+            dryEventOut.DryMssEventRecieved += 
+                new DryMssEventRecievedEventHandler(dryMssEventOutputPort_DryMssEventRecieved);
 
             if (useMappingEntryForDefaultValues == true)
             {
@@ -98,6 +103,15 @@ namespace MidiShapeShifter.Mss.Mapping
 
                 this.outSameAsInCheckBox.Checked = true;
             }
+
+        }
+
+        /// <summary>
+        ///     Event handler for MssEvents coming
+        /// </summary>
+        /// <param name="dryMssEvent"></param>
+        protected void dryMssEventOutputPort_DryMssEventRecieved(MssEvent dryMssEvent)
+        {
 
         }
 
@@ -260,6 +274,11 @@ namespace MidiShapeShifter.Mss.Mapping
         }
 
         private void MappingDlg_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void inLearnBtn_Click(object sender, EventArgs e)
         {
 
         }   
