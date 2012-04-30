@@ -11,36 +11,6 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
     [DataContract]
     public abstract class MidiMsgInfo : MssMsgInfo
     {
-        public override double MaxData1Value
-        {
-            get { return MidiUtil.MAX_MIDI_CHAN_VAL; }
-        }
-
-        public override double MinData1Value
-        {
-            get { return MidiUtil.MIN_MIDI_CHAN_VAL; }
-        }
-
-        public override double MaxData2Value
-        {
-            get { return MidiUtil.MAX_MIDI_PARAM_VAL; }
-        }
-
-        public override double MinData2Value
-        {
-            get { return MidiUtil.MIN_MIDI_PARAM_VAL; }
-        }
-
-        public override double MaxData3Value
-        {
-            get { return MidiUtil.MAX_MIDI_PARAM_VAL; }
-        }
-
-        public override double MinData3Value
-        {
-            get { return MidiUtil.MIN_MIDI_PARAM_VAL; }
-        }
-
         public override string ConvertData1ToString(double Data1)
         {
             return Data1.ToString();
@@ -54,11 +24,6 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         public override string ConvertData3ToString(double Data3)
         {
             return Data3.ToString();
-        }
-
-        public override string Data1Name
-        {
-            get { return DATA1_NAME_CHANNEL; }
         }
     }
 }

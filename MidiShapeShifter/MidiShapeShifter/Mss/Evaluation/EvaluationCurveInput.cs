@@ -46,7 +46,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                            List<MssParamInfo> variableParamInfoList,
                            IMappingEntry mappingEntry)
         {
-            MssMsgInfo inMsgInfo = mappingEntry.InMssMsgRange.MsgInfo;
+            IMssMsgInfo inMsgInfo = mappingEntry.InMssMsgRange.MsgInfo;
             double relativeData1 = (double)mssMsg.Data1 / (double)(inMsgInfo.MaxData1Value - inMsgInfo.MinData1Value);
             double relativeData2 = (double)mssMsg.Data2 / (double)(inMsgInfo.MaxData2Value - inMsgInfo.MinData2Value);
             double relativeData3 = (double)mssMsg.Data3 / (double)(inMsgInfo.MaxData3Value - inMsgInfo.MinData3Value);

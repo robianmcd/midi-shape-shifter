@@ -3,81 +3,65 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
-using System.Runtime.Serialization;
-
-using MidiShapeShifter.Mss.Generator;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    [DataContract]
-    public class Factory_MssMsgInfo : MidiShapeShifter.Mss.MssMsgInfoTypes.IFactory_MssMsgInfo
+    public static class Factory_StaticMssMsgInfo
     {
-        [DataMember(Name = "GenMappingMgr")]
-        protected IGeneratorMappingManager genMappingMgr;
-
-        public void Init(IGeneratorMappingManager genMappingMgr)
+        public static IStaticMssMsgInfo Create(MssMsgType msgInfoType)
         {
-            this.genMappingMgr = genMappingMgr;
-        }
-
-        public IMssMsgInfo Create(MssMsgType msgInfoType)
-        {
-            IMssMsgInfo msgInfo;
+            IStaticMssMsgInfo msgInfo;
 
             switch (msgInfoType)
             {
                 case MssMsgType.NoteOn:
                     {
-                        msgInfo = new NoteOnMsgInfo();
+                        msgInfo = new StaticNoteOnMsgInfo();
                         break;
                     }
                 case MssMsgType.NoteOff:
                     {
-                        msgInfo = new NoteOffMsgInfo();
+                        msgInfo = new StaticNoteOffMsgInfo();
                         break;
                     }
                 case MssMsgType.CC:
                     {
-                        msgInfo = new CCMsgInfo();
+                        msgInfo = new StaticCCMsgInfo();
                         break;
                     }
                 case MssMsgType.PitchBend:
                     {
-                        msgInfo = new PitchBendMsgInfo();
+                        msgInfo = new StaticPitchBendMsgInfo();
                         break;
                     }
                 case MssMsgType.PolyAftertouch:
                     {
-                        msgInfo = new PolyAftertouchMsgInfo();
+                        msgInfo = new StaticPolyAftertouchMsgInfo();
                         break;
                     }
                 case MssMsgType.ChanAftertouch:
                     {
-                        msgInfo = new ChanAftertouchMsgInfo();
+                        msgInfo = new StaticChanAftertouchMsgInfo();
                         break;
                     }
                 case MssMsgType.Generator:
                     {
-                        GeneratorMsgInfo genMsgInfo = new GeneratorMsgInfo();
-                        genMsgInfo.Init(this.genMappingMgr);
-                        msgInfo = genMsgInfo;
+                        msgInfo = new StaticGeneratorMsgInfo();
                         break;
                     }
                 case MssMsgType.GeneratorToggle:
                     {
-                        GeneratorToggleMsgInfo genToggleMsgInfo = new GeneratorToggleMsgInfo();
-                        genToggleMsgInfo.Init(this.genMappingMgr);
-                        msgInfo = genToggleMsgInfo;
+                        msgInfo = new StaticGeneratorToggleMsgInfo();
                         break;
                     }
                 case MssMsgType.RelBarPeriodPos:
                     {
-                        msgInfo = new RelBarPeriodPosMsgInfo();
+                        msgInfo = new StaticRelBarPeriodPosMsgInfo();
                         break;
                     }
                 case MssMsgType.RelTimePeriodPos:
                     {
-                        msgInfo = new RelTimePeriodPosMsgInfo();
+                        msgInfo = new StaticRelTimePeriodPosMsgInfo();
                         break;
                     }
                 default:

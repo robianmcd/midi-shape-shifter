@@ -9,7 +9,7 @@ namespace MidiShapeShifter.Mss
         void Init(MidiShapeShifter.Mss.MssMsgInfoTypes.IFactory_MssMsgInfo msgInfoFactory);
         void InitPublicMembers(MssMsgType msgType, int data1, int data2);
         void InitPublicMembers(MssMsgType msgType, int data1RangeBottom, int data1RangeTop, int data2RangeBottom, int data2RangeTop);
-        MidiShapeShifter.Mss.MssMsgInfoTypes.MssMsgInfo MsgInfo { get; }
+        MidiShapeShifter.Mss.MssMsgInfoTypes.IMssMsgInfo MsgInfo { get; }
         bool MsgIsInRange(MssMsg mssMsg);
         MssMsgType MsgType { get; set; }
         int Data1RangeBottom { get; set; }

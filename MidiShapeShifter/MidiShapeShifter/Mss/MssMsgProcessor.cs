@@ -12,6 +12,7 @@ using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.Evaluation;
 using MidiShapeShifter.Mss.Parameters;
+using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mss
 {
@@ -68,7 +69,10 @@ namespace MidiShapeShifter.Mss
                     }
 
                     double mappedRelativeData3 = evalReturnStatus.Value;
-                    double mappedData3 = mappedRelativeData3 * entry.OutMssMsgRange.MsgInfo.MaxData3Value;
+                    IMssMsgInfo outMsgInfo = entry.OutMssMsgRange.MsgInfo;
+
+                    double data3RangeSize = outMsgInfo.MaxData3Value - outMsgInfo.MinData3Value;
+                    double mappedData3 = mappedRelativeData3 * data3RangeSize + outMsgInfo.MinData3Value;
 
                     //If data3 has been mapped outside of the range of values for its message type then this 
                     //mapping will not output anything.

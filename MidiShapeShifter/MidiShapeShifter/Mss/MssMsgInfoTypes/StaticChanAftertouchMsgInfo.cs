@@ -2,21 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    [DataContract]
-    class ChanAftertouchMsgInfo : MidiMsgInfo
+    public class StaticChanAftertouchMsgInfo : StaticMidiMsgInfo
     {
         public override MssMsgType MsgType
         {
             get { return MssMsgType.ChanAftertouch; }
         }
 
-        public override string ConvertData2ToString(double Data2)
+        public override string Data2Name
         {
-            return MssMsgUtil.UNUSED_MSS_MSG_STRING;
+            get { return DATA_NAME_UNUSED; }
+        }
+
+        public override string Data3Name
+        {
+            get { return DATA3_NAME_PRESSURE; }
         }
     }
 }

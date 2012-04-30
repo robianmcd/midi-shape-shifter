@@ -490,13 +490,13 @@ namespace MidiShapeShifter.Mss.UI
             {
                 this.graphInputTypeCombo.Enabled = true;
 
-                MssMsgInfo inputInfo = this.ActiveGraphableEntry.InMssMsgRange.MsgInfo;
+                IMssMsgInfo inputInfo = this.ActiveGraphableEntry.InMssMsgRange.MsgInfo;
                 MssMsgDataField[] dataFieldArray = (MssMsgDataField[])Enum.GetValues(typeof(MssMsgDataField));
 
                 foreach (MssMsgDataField dataField in dataFieldArray)
                 {
                     string dataFieldName = inputInfo.GetDataFieldName(dataField);
-                    if (dataFieldName != MssMsgInfo.DATA_NAME_UNUSED)
+                    if (dataFieldName != StaticMssMsgInfo.DATA_NAME_UNUSED)
                     {
                         this.DataFieldsInGraphInputCombo.Add(dataField);
                         this.graphInputTypeCombo.Items.Add(dataFieldName);

@@ -24,36 +24,6 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
             get { throw new NotImplementedException(); }
         }
 
-        public override double MaxData1Value
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override double MinData1Value
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override double MaxData2Value
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override double MinData2Value
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override double MaxData3Value
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override double MinData3Value
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public override string ConvertData1ToString(double Data1)
         {
             throw new NotImplementedException();
@@ -67,21 +37,6 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         public override string ConvertData3ToString(double Data3)
         {
             throw new NotImplementedException();
-        }
-
-        public override string Data1Name
-        {
-            get { return DATA1_NAME_GEN_ID; }
-        }
-
-        public override string Data2Name
-        {
-            get { return DATA_NAME_UNUSED; }
-        }
-
-        public override string Data3Name
-        {
-            get { return "Toggle Generator"; }
         }
     }
 }

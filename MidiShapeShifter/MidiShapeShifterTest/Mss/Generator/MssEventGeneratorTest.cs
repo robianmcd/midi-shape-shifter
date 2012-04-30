@@ -272,9 +272,12 @@ namespace MidiShapeShifterTest.Mss.Generator
 
             triggerCycleEnd(MssEventGenerator.SAMPLES_PER_GENERATOR_UPDATE);
 
-            Assert.AreEqual(MssEventGenerator.SAMPLES_PER_GENERATOR_UPDATE, this.generatedEventList[0].sampleTime);
+            //We subtract 1 because sample time starts at 0.
+            int expectedSampleTime = MssEventGenerator.SAMPLES_PER_GENERATOR_UPDATE - 1;
+
+            Assert.AreEqual(expectedSampleTime, this.generatedEventList[0].sampleTime);
             Assert.AreEqual(MssMsgType.Generator, this.generatedEventList[0].mssMsg.Type);
-            Assert.AreEqual(MssEventGenerator.SAMPLES_PER_GENERATOR_UPDATE, this.generatedEventList[1].sampleTime);
+            Assert.AreEqual(expectedSampleTime, this.generatedEventList[1].sampleTime);
             Assert.AreEqual(MssMsgType.Generator, this.generatedEventList[1].mssMsg.Type);
         }
 

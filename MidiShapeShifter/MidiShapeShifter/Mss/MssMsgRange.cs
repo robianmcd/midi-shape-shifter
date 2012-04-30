@@ -22,7 +22,7 @@ namespace MidiShapeShifter.Mss
         ///     MsgInfo will be null.
         /// </summary>
         [DataMember]
-        public MssMsgInfo MsgInfo { get; protected set; }
+        public IMssMsgInfo MsgInfo { get; protected set; }
 
         /// <summary>
         ///     The message type of all MssMsgs that match this range. When MsgType is changed, MsgInfo will be

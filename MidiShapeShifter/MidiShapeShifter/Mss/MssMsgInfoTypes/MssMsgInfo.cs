@@ -7,58 +7,82 @@ using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
+    //See IMssMsgInfo for more doc.
     [DataContract]
-    public abstract class MssMsgInfo
+    public abstract class MssMsgInfo : IMssMsgInfo
     {
-        protected const string DATA1_NAME_CHANNEL = "Channel";
-        protected const string DATA1_NAME_GEN_ID = "Generator ID";
-        
-        protected const string DATA2_NAME_NOTE = "Note Number";
-
-        protected const string DATA3_NAME_VELOCITY = "Velocity";
-        protected const string DATA3_NAME_PERIOD_POSITION = "Position in Period";
-        protected const string DATA3_NAME_PRESSURE = "Pressure";
-
-        public const string DATA_NAME_UNUSED = "";
-
-        public abstract MssMsgType MsgType { get; }
-
-        public abstract double MaxData1Value { get; }
-        public abstract double MinData1Value { get; }
-        public abstract double MaxData2Value { get; }
-        public abstract double MinData2Value { get; }
-        public abstract double MaxData3Value { get; }
-        public abstract double MinData3Value { get; }
-
         public abstract string ConvertData1ToString(double Data1);
         public abstract string ConvertData2ToString(double Data2);
         public abstract string ConvertData3ToString(double Data3);
+        
+        public abstract MssMsgType MsgType { get; }
 
-        public abstract string Data1Name {get; }
-        public abstract string Data2Name { get; }
-        public abstract string Data3Name { get; }
-        public string GetDataFieldName(MssMsgDataField field)
+        private IStaticMssMsgInfo _staticInfo = null;
+        protected IStaticMssMsgInfo staticInfo
         {
-            if (field == MssMsgDataField.Data1)
-            {
-                return this.Data1Name;
-            }
-            else if (field == MssMsgDataField.Data2)
-            {
-                return this.Data2Name;
-            }
-            else if (field == MssMsgDataField.Data3)
-            {
-                return this.Data3Name;
-            }
-            else
-            {
-                //unknown MssMsgDataField
-                Debug.Assert(false);
-                return "";
+            get
+            { 
+                if (_staticInfo == null)
+                {
+                    _staticInfo = Factory_StaticMssMsgInfo.Create(this.MsgType);
+
+                    //Ensure the right type of static info is being used for this class.
+                    Debug.Assert(_staticInfo.MsgType == this.MsgType);
+                }
+                return _staticInfo;
             }
         }
 
-        //TODO: Add graph strings
+        //Static info wrappers
+
+        public string Data1Name
+        {
+            get { return staticInfo.Data1Name; }
+        }
+
+        public string Data2Name
+        {
+            get { return staticInfo.Data2Name; }
+        }
+
+        public string Data3Name
+        {
+            get { return staticInfo.Data3Name; }
+        }
+
+        public string GetDataFieldName(MssMsgDataField field)
+        {
+            return staticInfo.GetDataFieldName(field);
+        }
+
+        public double MaxData1Value
+        {
+            get { return staticInfo.MaxData1Value; }
+        }
+
+        public double MaxData2Value
+        {
+            get { return staticInfo.MaxData2Value; }
+        }
+
+        public double MaxData3Value
+        {
+            get { return staticInfo.MaxData3Value; }
+        }
+
+        public double MinData1Value
+        {
+            get { return staticInfo.MinData1Value; }
+        }
+
+        public double MinData2Value
+        {
+            get { return staticInfo.MinData2Value; }
+        }
+
+        public double MinData3Value
+        {
+            get { return staticInfo.MinData3Value; }
+        }
     }
 }

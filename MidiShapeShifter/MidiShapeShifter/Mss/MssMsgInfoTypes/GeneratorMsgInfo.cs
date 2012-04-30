@@ -24,36 +24,6 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
             get { return MssMsgType.Generator; }
         }
 
-        public override double MaxData1Value
-        {
-            get { return double.MaxValue; }
-        }
-
-        public override double MinData1Value
-        {
-            get { return 0; }
-        }
-
-        public override double MaxData2Value
-        {
-            get { return MssMsgUtil.UNUSED_MSS_MSG_DATA; }
-        }
-
-        public override double MinData2Value
-        {
-            get { return MssMsgUtil.UNUSED_MSS_MSG_DATA; }
-        }
-
-        public override double MaxData3Value
-        {
-            get { return 1; }
-        }
-
-        public override double MinData3Value
-        {
-            get { return 0; }
-        }
-
         public override string ConvertData1ToString(double Data1)
         {
 
@@ -76,23 +46,6 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         public override string ConvertData3ToString(double Data3)
         {
             return Math.Round(Data3 * 100).ToString() + "%";
-        }
-
-        public override string Data1Name
-        {
-            //This field is used for the Generator ID which should not be used as a source of input 
-            //on the graph so DATA_NAME_UNUSED is returned instead of DATA1_NAME_GEN_ID.
-            get { return DATA_NAME_UNUSED; }
-        }
-
-        public override string Data2Name
-        {
-            get { return DATA_NAME_UNUSED; }
-        }
-
-        public override string Data3Name
-        {
-            get { return DATA3_NAME_PERIOD_POSITION; }
         }
     }
 }
