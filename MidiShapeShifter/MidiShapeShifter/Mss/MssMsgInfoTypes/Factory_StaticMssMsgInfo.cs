@@ -14,6 +14,11 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 
             switch (msgInfoType)
             {
+                case MssMsgType.Note:
+                    {
+                        msgInfo = new StaticNoteMsgInfo();
+                        break;
+                    }
                 case MssMsgType.NoteOn:
                     {
                         msgInfo = new StaticNoteOnMsgInfo();

@@ -249,6 +249,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         protected virtual void InitOutMssMsgTypeNames()
         {
             //Default set of valid output types.
+            this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.Note]);
             this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.NoteOn]);
             this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.NoteOff]);
             this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.CC]);

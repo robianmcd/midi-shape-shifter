@@ -176,6 +176,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 
         protected override void InitSameAsInputCompatibleTypes()
         {
+            this.sameAsInputCompatibleTypes.Add(MssMsgType.Note);
             this.sameAsInputCompatibleTypes.Add(MssMsgType.NoteOn);
             this.sameAsInputCompatibleTypes.Add(MssMsgType.NoteOff);
             this.sameAsInputCompatibleTypes.Add(MssMsgType.CC);

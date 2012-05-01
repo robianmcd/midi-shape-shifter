@@ -23,6 +23,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 
             switch (type)
             {
+                case MssMsgType.Note:
+                    {
+                        msgMetadata = new NoteMsgRangeEntryMetadata();
+                        break;
+                    }
                 case MssMsgType.NoteOn:
                     {
                         msgMetadata = new NoteOnMsgRangeEntryMetadata();

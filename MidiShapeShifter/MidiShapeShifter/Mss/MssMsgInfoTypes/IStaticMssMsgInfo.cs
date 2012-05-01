@@ -25,5 +25,11 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         double MinData3Value { get; }
 
         MssMsgType MsgType { get; }
+
+        void ApplyPreMappingQueryProcessing(MssMsg msgToProcess);
+        void ApplyPreProcessing(MssMsg msgToProcess);
+        void ApplyPostProcessing(MssMsg preProcessedMsg, MssMsg msgToProcess);
+
+        bool TypeIsInRange(MssMsgType msgType);
     }
 }

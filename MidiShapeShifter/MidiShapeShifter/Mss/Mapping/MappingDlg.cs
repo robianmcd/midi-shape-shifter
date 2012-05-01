@@ -37,26 +37,29 @@ namespace MidiShapeShifter.Mss.Mapping
         {
             InitializeComponent();
 
-            int CurIndex = (int)MssMsgType.NoteOn;
-            this.inTypeCombo.Items.Insert(CurIndex, MssMsg.MssMsgTypeNames[CurIndex]);
+            int curIndex = (int)MssMsgType.Note;
+            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
 
-            CurIndex = (int)MssMsgType.NoteOff;
-            this.inTypeCombo.Items.Insert(CurIndex, MssMsg.MssMsgTypeNames[CurIndex]);
+            curIndex = (int)MssMsgType.NoteOn;
+            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
 
-            CurIndex = (int)MssMsgType.CC;
-            this.inTypeCombo.Items.Insert(CurIndex, MssMsg.MssMsgTypeNames[CurIndex]);
+            curIndex = (int)MssMsgType.NoteOff;
+            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
 
-            CurIndex = (int)MssMsgType.PitchBend;
-            this.inTypeCombo.Items.Insert(CurIndex, MssMsg.MssMsgTypeNames[CurIndex]);
+            curIndex = (int)MssMsgType.CC;
+            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
 
-            CurIndex = (int)MssMsgType.PolyAftertouch;
-            this.inTypeCombo.Items.Insert(CurIndex, MssMsg.MssMsgTypeNames[CurIndex]);
+            curIndex = (int)MssMsgType.PitchBend;
+            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
 
-            CurIndex = (int)MssMsgType.ChanAftertouch;
-            this.inTypeCombo.Items.Insert(CurIndex, MssMsg.MssMsgTypeNames[CurIndex]);
+            curIndex = (int)MssMsgType.PolyAftertouch;
+            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
 
-            CurIndex = (int)MssMsgType.Generator;
-            this.inTypeCombo.Items.Insert(CurIndex, MssMsg.MssMsgTypeNames[CurIndex]);
+            curIndex = (int)MssMsgType.ChanAftertouch;
+            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
+
+            curIndex = (int)MssMsgType.Generator;
+            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
 
             MsgMetadataFactory = new Factory_MssMsgRangeEntryMetadata();
         }

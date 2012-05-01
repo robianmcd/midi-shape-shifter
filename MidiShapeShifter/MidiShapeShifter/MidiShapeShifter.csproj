@@ -109,6 +109,9 @@
     <Compile Include="Ioc\IocMgr.cs" />
     <Compile Include="Midi\MidiUtil.cs" />
     <Compile Include="Mss\BaseSettingsFileMgr.cs" />
+    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\NoteMsgRangeEntryMetadata.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\NoteMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\StaticNoteMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\Factory_StaticMssMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\IMssMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\IStaticMssMsgInfo.cs" />

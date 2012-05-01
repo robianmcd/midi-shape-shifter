@@ -11,6 +11,7 @@ namespace MidiShapeShifter.Mss
     //each message. The following table sumerizes these meanings. NOTE- % values go from 0 to 1.
     public enum MssMsgType { 
     //  Type                Data1               Data2                   Data3
+        Note,           //  Channel             Note number             Velocity
         NoteOn,         //  Channel             Note number             Velocity
         NoteOff,        //  Channel             Note number             Velocity
         CC,             //  Channel             Controller number       Controller value
@@ -40,12 +41,17 @@ namespace MidiShapeShifter.Mss
     {
 
 
-        public const int NUM_MSS_MSG_TYPES = 11;
-        public static readonly List<string> MssMsgTypeNames = new List<string>(NUM_MSS_MSG_TYPES);
+        public static readonly int NUM_MSS_MSG_TYPES;
+        public static readonly List<string> MssMsgTypeNames;
 
         //Static constructor
         static MssMsg()
         {
+            NUM_MSS_MSG_TYPES = Enum.GetNames(typeof(MssMsgType)).Length;
+
+            MssMsgTypeNames = new List<string>(NUM_MSS_MSG_TYPES);
+
+            MssMsgTypeNames.Insert((int)MssMsgType.Note, "Note");
             MssMsgTypeNames.Insert((int)MssMsgType.NoteOn, "Note On");
             MssMsgTypeNames.Insert((int)MssMsgType.NoteOff, "Note Off");
             MssMsgTypeNames.Insert((int)MssMsgType.CC, "CC");

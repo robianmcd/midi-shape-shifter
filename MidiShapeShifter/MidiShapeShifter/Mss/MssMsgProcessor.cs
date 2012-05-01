@@ -47,6 +47,16 @@ namespace MidiShapeShifter.Mss
         /// <returns> A list resulting messages.</returns>
         public List<MssMsg> ProcessMssMsg(MssMsg mssMsg)
         {
+            //Apply the pre mapping query processing. If this causes the msg type to change then
+            //apply it again for the new type.
+            MssMsgType curMsgType;
+            do 
+            {
+                curMsgType = mssMsg.Type;
+                IStaticMssMsgInfo staticMsgInfo = Factory_StaticMssMsgInfo.Create(mssMsg.Type);
+                staticMsgInfo.ApplyPreMappingQueryProcessing(mssMsg);
+            } while(curMsgType != mssMsg.Type);
+
             //Retrieves mappings from the MappingManager that will affect mssMsg
             IEnumerable<IMappingEntry> mappingEntries = this.mappingMgr.GetAssociatedEntries(mssMsg);
 
@@ -59,8 +69,13 @@ namespace MidiShapeShifter.Mss
             {
                 foreach (IMappingEntry entry in mappingEntries)
                 {
+                    MssMsg inMsg = (MssMsg)mssMsg.Clone();
+                    IMssMsgInfo inMsgInfo = entry.InMssMsgRange.MsgInfo;
+                    inMsgInfo.ApplyPreProcessing(inMsg);
+                    MssMsg preProcessedMsg = (MssMsg)inMsg.Clone();
+
                     EvaluationCurveInput evalInput = new EvaluationCurveInput();
-                    evalInput.Init(mssMsg, this.mssParameterViewer.GetVariableParamInfoList(), entry);
+                    evalInput.Init(inMsg, this.mssParameterViewer.GetVariableParamInfoList(), entry);
                     ReturnStatus<double> evalReturnStatus = this.evaluator.Evaluate(evalInput);
 
                     if (evalReturnStatus.IsValid == false)
@@ -93,6 +108,16 @@ namespace MidiShapeShifter.Mss
                                                                  mssMsg.Data2);
 
                         MssMsg outMsg = new MssMsg(entry.OutMssMsgRange.MsgType, mappedData1, mappedData2, mappedData3);
+
+                        //Apply the post processing. If this causes the msg type to change then
+                        //apply it again for the new type.
+                        do
+                        {
+                            curMsgType = mssMsg.Type;
+                            IStaticMssMsgInfo staticMsgInfo = Factory_StaticMssMsgInfo.Create(outMsg.Type);
+                            staticMsgInfo.ApplyPostProcessing(preProcessedMsg, outMsg);
+                        } while (curMsgType != mssMsg.Type);
+
                         outMessages.Add(outMsg);
                     }
                 }

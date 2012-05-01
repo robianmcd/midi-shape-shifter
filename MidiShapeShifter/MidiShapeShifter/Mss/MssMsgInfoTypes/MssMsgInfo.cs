@@ -84,5 +84,26 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         {
             get { return staticInfo.MinData3Value; }
         }
+
+
+        public void ApplyPreMappingQueryProcessing(MssMsg msgToProcess)
+        {
+            staticInfo.ApplyPreMappingQueryProcessing(msgToProcess);
+        }
+
+        public void ApplyPreProcessing(MssMsg msgToProcess)
+        {
+            staticInfo.ApplyPreProcessing(msgToProcess);
+        }
+
+        public void ApplyPostProcessing(MssMsg preProcessedMsg, MssMsg msgToProcess)
+        {
+            staticInfo.ApplyPostProcessing(preProcessedMsg, msgToProcess);
+        }
+
+        public bool TypeIsInRange(MssMsgType msgType)
+        {
+            return staticInfo.TypeIsInRange(msgType);
+        }
     }
 }

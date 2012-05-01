@@ -54,5 +54,30 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
                 return "";
             }
         }
+
+        /// <summary>
+        /// Applies any processing to msgToProcess that is nessessary before the associated mapping
+        /// entries are querried. By default don't apply any pre-mapping querry processing.
+        /// </summary>
+        public virtual void ApplyPreMappingQueryProcessing(MssMsg msgToProcess)
+        { 
+            
+        }
+
+        public virtual void ApplyPreProcessing(MssMsg msgToProcess)
+        { 
+        
+        }
+
+        public virtual void ApplyPostProcessing(MssMsg preProcessedMsg, MssMsg msgToProcess)
+        { 
+        
+        }
+
+        public virtual bool TypeIsInRange(MssMsgType msgType)
+        {
+            return (msgType == this.MsgType);
+        }
+
     }
 }

@@ -172,7 +172,8 @@ namespace MidiShapeShifter.Mss
         /// <returns>True if mssMsg is a member of this range. False otherwise.</returns>
         public bool MsgIsInRange(MssMsg mssMsg)
         {
-            return mssMsg.Type == this.MsgType &&
+            IStaticMssMsgInfo staticInfo = Factory_StaticMssMsgInfo.Create(this.MsgType);
+            return staticInfo.TypeIsInRange(mssMsg.Type) &&
                 mssMsg.Data1 >= this.Data1RangeBottom && mssMsg.Data1 <= this.Data1RangeTop &&
                 mssMsg.Data2 >= this.Data2RangeBottom && mssMsg.Data2 <= this.Data2RangeTop;
         }
