@@ -5,6 +5,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 
+using MidiShapeShifter.Mss.MssMsgInfoTypes;
+
 namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 {
     public abstract class MidiMsgRangeEntryMetadata : MssMsgRangeEntryMetadata
@@ -16,8 +18,6 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         protected int paramRangeTop;
         protected int chanRangeBottom;
         protected int chanRangeTop;
-
-
 
         protected override Control EntryField1
         {
@@ -61,12 +61,12 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 
         protected override void SetEntryField1FromRange(IMssMsgRange msgRange)
         {
-            EntryField1.Text = msgRange.Data1RangeStr;
+            EntryField1.Text = msgRange.GetData1RangeStr(this.mappingDlg.MsgInfoFactory);
         }
 
         protected override void SetEntryField2FromRange(IMssMsgRange msgRange)
         {
-            EntryField2.Text = msgRange.Data2RangeStr;
+            EntryField2.Text = msgRange.GetData2RangeStr(this.mappingDlg.MsgInfoFactory);
         }
 
         //set the properties of all the the controls in the entryFields member variable whose properties should differ 
@@ -89,8 +89,10 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             string userInput = this.EntryField1.Text;
             int rangeBottom;
             int rangeTop;
-            bool userInputIsValid = GetRangeFromUserInput(userInput, 
-                (int)this.msgRange.MsgInfo.MinData1Value, (int)this.msgRange.MsgInfo.MaxData1Value,
+            IMssMsgInfo msgInfo = this.mappingDlg.MsgInfoFactory.Create(this.MsgType);
+
+            bool userInputIsValid = GetRangeFromUserInput(userInput,
+                (int)msgInfo.MinData1Value, (int)msgInfo.MaxData1Value,
                 out rangeBottom, out rangeTop, 
                 out errorMsg);
 
@@ -105,8 +107,10 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             string userInput = this.EntryField2.Text;
             int rangeBottom;
             int rangeTop;
+            IMssMsgInfo msgInfo = this.mappingDlg.MsgInfoFactory.Create(this.MsgType);
+
             bool userInputIsValid = GetRangeFromUserInput(userInput,
-                (int)this.msgRange.MsgInfo.MinData2Value, (int)this.msgRange.MsgInfo.MaxData2Value,
+                (int)msgInfo.MinData2Value, (int)msgInfo.MaxData2Value,
                 out rangeBottom, out rangeTop,
                 out errorMsg);
 

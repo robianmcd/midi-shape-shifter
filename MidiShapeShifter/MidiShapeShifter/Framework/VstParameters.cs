@@ -30,7 +30,7 @@ namespace MidiShapeShifter.Framework
         private Func<MssParameters> getMssParameters;
         protected MssParameters mssParameters { get { return this.getMssParameters(); } }
 
-        protected bool ignoreParameterChangesFromHost = false;
+        protected HashSet<MssParameterID> parametersBeingModified;
 
         //Used to map MSS parameters to their associated VST parameters.
         public TwoWayDictionary<MssParameterID, VstParameterManager> VstParameterManagerDict = 
@@ -38,6 +38,7 @@ namespace MidiShapeShifter.Framework
 
         public VstParameters()
         {
+            parametersBeingModified = new HashSet<MssParameterID>();
         }
 
         public void Init(Func<MssParameters> getMssParameters, PluginPrograms pluginPrograms)
@@ -164,17 +165,20 @@ namespace MidiShapeShifter.Framework
         /// <param name="sender">The VstParameter that changed.</param>
         private void VstParameter_Changed(object sender, PropertyChangedEventArgs e)
         {
-            if (this.ignoreParameterChangesFromHost == false)
+            VstParameter changedParam = (VstParameter)sender;
+            MssParameterID paramID;
+            //Gets the MssParameterID associated with the changed parameter.
+            VstParameterManagerDict.TryGetLeftByRight(out paramID, changedParam.Info.ParameterManager);
+            
+            if (this.parametersBeingModified.Contains(paramID) == false)
             {
-                VstParameter changedParam = (VstParameter)sender;
-                MssParameterID paramID;
-                //Gets the MssParameterID associated with the changed parameter.
-                VstParameterManagerDict.TryGetLeftByRight(out paramID, changedParam.Info.ParameterManager);
-
                 if (e.PropertyName == VstParameter.ValuePropertyName)
                 {
+                    this.parametersBeingModified.Add(paramID);
                     //Notifies MssParameters of the change.
                     this.mssParameters.SetParameterRelativeValue(paramID, changedParam.Value);
+                    this.parametersBeingModified.Remove(paramID);
+
                 }
             }
         }
@@ -211,9 +215,12 @@ namespace MidiShapeShifter.Framework
             {
                 if (paramMgr.ActiveParameter.Value != value)
                 {
-                    this.ignoreParameterChangesFromHost = true;
-                    paramMgr.ActiveParameter.Value = (float)this.mssParameters.GetRelativeParamValue(paramId);
-                    this.ignoreParameterChangesFromHost = false;
+                    if (this.parametersBeingModified.Contains(paramId) == false)
+                    {
+                        this.parametersBeingModified.Add(paramId);
+                        paramMgr.ActiveParameter.Value = (float)this.mssParameters.GetRelativeParamValue(paramId);
+                        this.parametersBeingModified.Remove(paramId);
+                    }
                 }
             }
         }

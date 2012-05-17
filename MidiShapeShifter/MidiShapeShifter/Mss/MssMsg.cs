@@ -22,6 +22,7 @@ namespace MidiShapeShifter.Mss
         GeneratorToggle,//  Generator ID        N/A                     Less then 1 toggles off
         RelBarPeriodPos,//  N/A                 N/A                     % through beat synced period 
         RelTimePeriodPos,// N/A                 N/A                     % through timed period 
+        Parameter,      //  MssParameterID      N/A                     Relative Parameter Value
         Unsupported     //  N/A                 N/A                     N/A
     };
 
@@ -63,6 +64,7 @@ namespace MidiShapeShifter.Mss
             //The rest of these MssMsgTypeNames are not currently displayed anywhere.
             MssMsgTypeNames.Insert((int)MssMsgType.RelBarPeriodPos, "Beat Synced Period");
             MssMsgTypeNames.Insert((int)MssMsgType.RelTimePeriodPos, "Time based Period");
+            MssMsgTypeNames.Insert((int)MssMsgType.Parameter, "Parameter");
             MssMsgTypeNames.Insert((int)MssMsgType.Unsupported, "Unsupported");
 
         }

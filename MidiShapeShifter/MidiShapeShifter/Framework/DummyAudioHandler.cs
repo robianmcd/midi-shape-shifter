@@ -75,11 +75,13 @@ namespace MidiShapeShifter.Framework
 
             this.timeInfoTransmitter.TransmitTimeInfoToRelay(timeInfo, sampleTime);
 
+            // calling the base class transfers input samples to the output channels unchanged (bypass).
+            base.Process(inChannels, outChannels);
+
             //Informs the HostInfoRelay that the audio processing cycle is ending.
             this.hostInfoInputPort.TriggerProcessingCycleEnd(sampleTime);
 
-            // calling the base class transfers input samples to the output channels unchanged (bypass).
-            base.Process(inChannels, outChannels);
+
         }
 
     }

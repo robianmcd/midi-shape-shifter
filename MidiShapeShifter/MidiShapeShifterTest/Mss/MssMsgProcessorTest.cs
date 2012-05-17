@@ -240,16 +240,10 @@ namespace MidiShapeShifterTest.Mss
             MssMsgType inMsgType, int inData1Bottom, int inData1Top, int inData2Bottom, int inData2Top,
             MssMsgType outMsgType, int outData1Bottom, int outData1Top, int outData2Bottom, int outData2Top)
         {
-            IFactory_MssMsgInfo msgInfoFactory = new Factory_MssMsgInfo();
-            var genMgrMock = new Mock<IGeneratorMappingManager>();
-            msgInfoFactory.Init(genMgrMock.Object);
-
             MssMsgRange inMsgRange = new MssMsgRange();
-            inMsgRange.Init(msgInfoFactory);
             inMsgRange.InitPublicMembers(inMsgType, inData1Bottom, inData1Top, inData2Bottom, inData2Top);
 
             MssMsgRange outMsgRange = new MssMsgRange();
-            outMsgRange.Init(msgInfoFactory);
             outMsgRange.InitPublicMembers(outMsgType, outData1Bottom, outData1Top, outData2Bottom, outData2Top);
 
             IMappingEntry mappingEntry = new MappingEntry();

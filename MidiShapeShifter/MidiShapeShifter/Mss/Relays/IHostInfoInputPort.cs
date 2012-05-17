@@ -17,5 +17,6 @@ namespace MidiShapeShifter.Mss.Relays
         void ReceiveBarPositionDuringUpdate(double barPos, long sampleTime);
 
         void TriggerProcessingCycleEnd(long cycleEndSampleTime);
+        void TriggerIdleProcessing();
     }
 }

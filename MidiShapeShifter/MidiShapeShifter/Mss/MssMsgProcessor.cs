@@ -70,7 +70,7 @@ namespace MidiShapeShifter.Mss
                 foreach (IMappingEntry entry in mappingEntries)
                 {
                     MssMsg inMsg = (MssMsg)mssMsg.Clone();
-                    IMssMsgInfo inMsgInfo = entry.InMssMsgRange.MsgInfo;
+                    IStaticMssMsgInfo inMsgInfo = Factory_StaticMssMsgInfo.Create(entry.InMssMsgRange.MsgType);
                     inMsgInfo.ApplyPreProcessing(inMsg);
                     MssMsg preProcessedMsg = (MssMsg)inMsg.Clone();
 
@@ -84,15 +84,15 @@ namespace MidiShapeShifter.Mss
                     }
 
                     double mappedRelativeData3 = evalReturnStatus.Value;
-                    IMssMsgInfo outMsgInfo = entry.OutMssMsgRange.MsgInfo;
+                    IStaticMssMsgInfo outMsgInfo = Factory_StaticMssMsgInfo.Create(entry.OutMssMsgRange.MsgType);
 
                     double data3RangeSize = outMsgInfo.MaxData3Value - outMsgInfo.MinData3Value;
                     double mappedData3 = mappedRelativeData3 * data3RangeSize + outMsgInfo.MinData3Value;
 
                     //If data3 has been mapped outside of the range of values for its message type then this 
                     //mapping will not output anything.
-                    if (mappedData3 >= entry.OutMssMsgRange.MsgInfo.MinData3Value && 
-                        mappedData3 <= entry.OutMssMsgRange.MsgInfo.MaxData3Value)
+                    if (mappedData3 >= outMsgInfo.MinData3Value &&
+                        mappedData3 <= outMsgInfo.MaxData3Value)
                     {
                         //Calculate what mssMsg.Data1 will be mapped to.
                         double mappedData1 = CalculateLinearMapping(entry.InMssMsgRange.Data1RangeBottom,

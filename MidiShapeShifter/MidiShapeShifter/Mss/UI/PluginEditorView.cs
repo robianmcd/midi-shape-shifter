@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Threading;
 
 using Ninject;
 using MidiShapeShifter.Ioc;
@@ -31,6 +32,8 @@ namespace MidiShapeShifter.Mss.UI
 {
     public partial class PluginEditorView : UserControl
     {
+        public enum EditorCommandId { Generic, UpdateCurveShapeControls, UpdateEquationCurve }
+
         public const int NUM_VARIABLE_PARAMS = 4;
         public const int NUM_PRESET_PARAMS = 4;
 
@@ -47,6 +50,8 @@ namespace MidiShapeShifter.Mss.UI
 
         protected string graphOutputLabelText = GRAPH_DEFAULT_OUTPUT_LABEL;
 
+        protected readonly AutoResetEvent idleProcessingSignal;
+
         public TwoWayDictionary<MssParameterID, LBKnob> ParameterValueKnobControlDict = new TwoWayDictionary<MssParameterID, LBKnob>();
         public TwoWayDictionary<MssParameterID, Label> ParameterValueLabelControlDict = new TwoWayDictionary<MssParameterID, Label>();
         public TwoWayDictionary<MssParameterID, Label> ParameterNameControlDict = new TwoWayDictionary<MssParameterID, Label>();
@@ -58,7 +63,10 @@ namespace MidiShapeShifter.Mss.UI
         protected MappingManager mappingMgr;
         protected TransformPresetMgr transformPresetMgr;
         protected GeneratorMappingManager genMappingMgr;
+        protected CommandQueue<EditorCommandId> commandQueue;
+
         protected IDryMssEventOutputPort dryMssEventOutputPort;
+        protected IHostInfoOutputPort hostInfoOutputPort;
 
         protected Factory_MssMsgRangeEntryMetadata msgMetadataFactory;
         protected IFactory_MssMsgInfo msgInfoFactory;
@@ -71,6 +79,7 @@ namespace MidiShapeShifter.Mss.UI
 
         protected bool ignoreEquationTextBoxChangeHandlers;
         protected bool ignoreInputTypeComboSelectionChangeHandlers;
+        protected bool IgnoreGraphableEntrySelectionChangedHandler;
 
         public IMappingEntry ActiveGraphableEntry 
         {
@@ -115,9 +124,12 @@ namespace MidiShapeShifter.Mss.UI
             this.evaluator = IocMgr.Kernel.Get<IEvaluator>();
             this.msgMetadataFactory = new Factory_MssMsgRangeEntryMetadata();
             this.msgInfoFactory = new Factory_MssMsgInfo();
+            this.idleProcessingSignal = new AutoResetEvent(false);
+            this.commandQueue = new CommandQueue<EditorCommandId>();
 
             this.ignoreEquationTextBoxChangeHandlers = false;
             this.ignoreInputTypeComboSelectionChangeHandlers = false;
+            this.IgnoreGraphableEntrySelectionChangedHandler = false;
         }
 
         public void Init(MssParameters mssParameters, 
@@ -126,6 +138,7 @@ namespace MidiShapeShifter.Mss.UI
                          MssProgramMgr programMgr,
                          TransformPresetMgr transformPresetMgr,
                          IDryMssEventOutputPort dryMssEventOutputPort,
+                         IHostInfoOutputPort hostInfoOutputPort,
                          SerializablePluginEditorInfo serializablePluginEditorInfo)
         {
             InitiaizeGraph();
@@ -137,12 +150,20 @@ namespace MidiShapeShifter.Mss.UI
             this.programMgr = programMgr;
             
             this.dryMssEventOutputPort = dryMssEventOutputPort;
+            this.hostInfoOutputPort = hostInfoOutputPort;
+
             this.persistantInfo = serializablePluginEditorInfo;
+
+            this.commandQueue.Init(EditorCommandId.Generic);
 
             this.mssParameters.ParameterValueChanged += new ParameterValueChangedEventHandler(MssParameters_ValueChanged);
             this.mssParameters.ParameterNameChanged += new ParameterNameChangedEventHandler(MssParameters_NameChanged);
             this.mssParameters.ParameterMinValueChanged += new ParameterMinValueChangedEventHandler(MssParameters_MinValueChanged);
             this.mssParameters.ParameterMaxValueChanged += new ParameterMaxValueChangedEventHandler(MssParameters_MaxValueChanged);
+
+            this.hostInfoOutputPort.DoIdleProcessing += new DoIdleProcessingEventHandler(OnIdleProcessing);
+            //Don't forget to unregister any events added here in OnDispose()
+
 
             //Set parameters from MssParameters
             foreach(MssParameterID paramId in Enum.GetValues(typeof(MssParameterID)))
@@ -150,8 +171,8 @@ namespace MidiShapeShifter.Mss.UI
                 UpdateInfoForParameter(paramId);                
             }
 
-            this.msgMetadataFactory.Init(genMappingMgr);
-            this.msgInfoFactory.Init(genMappingMgr);
+            this.msgMetadataFactory.Init(genMappingMgr, (IMssParameterViewer)mssParameters);
+            this.msgInfoFactory.Init(genMappingMgr, (IMssParameterViewer)mssParameters);
 
             RefreshMappingListView();
             RefreshGeneratorListView();
@@ -172,6 +193,8 @@ namespace MidiShapeShifter.Mss.UI
             this.mssParameters.ParameterNameChanged -= new ParameterNameChangedEventHandler(MssParameters_NameChanged);
             this.mssParameters.ParameterMinValueChanged -= new ParameterMinValueChangedEventHandler(MssParameters_MinValueChanged);
             this.mssParameters.ParameterMaxValueChanged -= new ParameterMaxValueChangedEventHandler(MssParameters_MaxValueChanged);
+
+            this.hostInfoOutputPort.DoIdleProcessing -= new DoIdleProcessingEventHandler(OnIdleProcessing);
         }
 
         protected void PopulateControlDictionaries()
@@ -275,13 +298,45 @@ namespace MidiShapeShifter.Mss.UI
 
             for (int i = 0; i < this.mappingMgr.GetNumEntries(); i++)
             {
-                this.mappingListView.Items.Add(this.mappingMgr.GetListViewRow(i));
+                this.mappingListView.Items.Add(GetMappingListViewRow(i));
             }
 
             if (this.persistantInfo.ActiveGraphableEntryType == GraphableEntryType.Mapping &&
                 this.persistantInfo.ActiveGraphableEntryIndex > -1)
             {
+                this.IgnoreGraphableEntrySelectionChangedHandler = true;
                 this.mappingListView.Items[this.persistantInfo.ActiveGraphableEntryIndex].Selected = true;
+                this.IgnoreGraphableEntrySelectionChangedHandler = false;
+            }
+        }
+
+        /// <summary>
+        ///     Creates a ListViewItem based on the MappingEntry specified by <paramref name="index"/>. This 
+        ///     ListViewItem is intended to be used in the PluginEditorView's mapping list box.
+        /// </summary>
+        /// <returns>The ListViewItem representation of a MappingEntry</returns>
+        public ListViewItem GetMappingListViewRow(int index)
+        {
+            if (index >= 0 && index < this.mappingMgr.readOnlyMappingEntryList.Count)
+            {
+                IMappingEntry entry = this.mappingMgr.readOnlyMappingEntryList[index];
+                ListViewItem mappingItem = new ListViewItem(entry.GetReadableMsgType(IoType.Input));
+                mappingItem.SubItems.Add(entry.InMssMsgRange.GetData1RangeStr(this.msgInfoFactory));
+                mappingItem.SubItems.Add(entry.InMssMsgRange.GetData2RangeStr(this.msgInfoFactory));
+
+                mappingItem.SubItems.Add(entry.GetReadableMsgType(IoType.Output));
+                mappingItem.SubItems.Add(entry.OutMssMsgRange.GetData1RangeStr(this.msgInfoFactory));
+                mappingItem.SubItems.Add(entry.OutMssMsgRange.GetData2RangeStr(this.msgInfoFactory));
+
+                mappingItem.SubItems.Add(entry.GetReadableOverrideDuplicates());
+
+                return mappingItem;
+            }
+            else
+            {
+                //invalid index
+                Debug.Assert(false);
+                return null;
             }
         }
 
@@ -297,7 +352,10 @@ namespace MidiShapeShifter.Mss.UI
             if (this.persistantInfo.ActiveGraphableEntryType == GraphableEntryType.Generator && 
                 this.persistantInfo.ActiveGraphableEntryIndex > -1)
             {
+                this.IgnoreGraphableEntrySelectionChangedHandler = true;
                 this.generatorListView.Items[this.persistantInfo.ActiveGraphableEntryIndex].Selected = true;
+                this.IgnoreGraphableEntrySelectionChangedHandler = false;
+
             }
         }
 
@@ -317,6 +375,9 @@ namespace MidiShapeShifter.Mss.UI
         {
             OnActiveCurveShapeChanged();
             UpdateGraphableEntryButtonsEnabledStatus();
+
+            RefreshMappingListView();
+            RefreshGeneratorListView();
         }
 
         protected void OnActiveCurveShapeChanged()
@@ -328,7 +389,8 @@ namespace MidiShapeShifter.Mss.UI
                     this.ActiveGraphableEntry.CurveShapeInfo.ParamInfoList);
             }
 
-            UpdateCurveShapeControls();
+            this.commandQueue.EnqueueCommandOverwriteDups(
+                EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
         }
 
         protected void UpdateCurveShapeControls()
@@ -379,12 +441,14 @@ namespace MidiShapeShifter.Mss.UI
             if (activeEntryExists)
             {
                 CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
+                IMssMsgInfo outMsgInfo = 
+                    this.msgInfoFactory.Create(this.ActiveGraphableEntry.OutMssMsgRange.MsgType);
 
             //Update preset controls
                 repopulateTransformPresetList();
 
             //Update Graph controls (the equation curve is not updated until the end)
-                SetGraphOutputLabelText(this.ActiveGraphableEntry.OutMssMsgRange.MsgInfo.Data3Name);
+                SetGraphOutputLabelText(outMsgInfo.Data3Name);
 
             //Update the buttons under the graph
                 if (curveInfo.SelectedEquationType == EquationType.Curve)
@@ -490,8 +554,10 @@ namespace MidiShapeShifter.Mss.UI
             {
                 this.graphInputTypeCombo.Enabled = true;
 
-                IMssMsgInfo inputInfo = this.ActiveGraphableEntry.InMssMsgRange.MsgInfo;
-                MssMsgDataField[] dataFieldArray = (MssMsgDataField[])Enum.GetValues(typeof(MssMsgDataField));
+                IMssMsgInfo inputInfo = 
+                    this.msgInfoFactory.Create(this.ActiveGraphableEntry.InMssMsgRange.MsgType);
+                MssMsgDataField[] dataFieldArray = 
+                    (MssMsgDataField[])Enum.GetValues(typeof(MssMsgDataField));
 
                 foreach (MssMsgDataField dataField in dataFieldArray)
                 {
@@ -540,8 +606,6 @@ namespace MidiShapeShifter.Mss.UI
             drawFont.Dispose();
             drawBrush.Dispose();
         }
-
-        protected bool IgnoreGraphableEntrySelectionChangedHandler = false;
 
         protected void GraphableEntrySelectionChanged(
             ListView modifiedListView, 
@@ -599,8 +663,19 @@ namespace MidiShapeShifter.Mss.UI
             MssParameters_MinValueChanged(paramID, paramInfo.MinValue);
         }
 
+        protected void OnIdleProcessing()
+        {
+            this.commandQueue.DoAllCommands();
+
+            //Signal anything blocking the GUI thread to do its processing.
+            this.idleProcessingSignal.Set();
+        }
+
         private void addMappingBtn_Click(object sender, System.EventArgs e)
         {
+            //Wait for the host to be idle before proceeding.
+            this.idleProcessingSignal.WaitOne();
+
             MappingDlg mapDlg = new MappingDlg();
             mapDlg.Init(new MappingEntry(), 
                         false, 
@@ -617,13 +692,15 @@ namespace MidiShapeShifter.Mss.UI
                 this.persistantInfo.ActiveGraphableEntryType = GraphableEntryType.Mapping;
                 this.persistantInfo.ActiveGraphableEntryIndex = newestEntryIndex;
 
-                this.mappingListView.Items.Add(this.mappingMgr.GetListViewRow(newestEntryIndex));
-                this.mappingListView.Items[newestEntryIndex].Selected = true;
+                OnActiveGraphableEntryChanged();
             }
         }
 
         private void editMappingBtn_Click(object sender, System.EventArgs e)
         {
+            //Wait for the host to be idle before proceeding.
+            this.idleProcessingSignal.WaitOne();
+
             if (ActiveGraphableEntry == null || 
                 this.persistantInfo.ActiveGraphableEntryType != GraphableEntryType.Mapping)
             {
@@ -640,13 +717,13 @@ namespace MidiShapeShifter.Mss.UI
                         this.msgInfoFactory,
                         this.dryMssEventOutputPort);
             
-
             if (mapDlg.ShowDialog(this) == DialogResult.OK)
             {
                 RefreshMappingListView();
                 //The equation curve needs to be updated incase the equation uses data1 or data2 
                 //and the input range for these has changed.
-                UpdateEquationCurve();
+                this.commandQueue.EnqueueCommandOverwriteDups(
+                    EditorCommandId.UpdateEquationCurve, () => UpdateEquationCurve());
             }
         }
 
@@ -670,6 +747,11 @@ namespace MidiShapeShifter.Mss.UI
                 //will trigger it.
                 this.mappingListView.Items[this.persistantInfo.ActiveGraphableEntryIndex].Selected = true;
             }
+            else if (this.mappingListView.Items.Count > 0)
+            {
+                this.persistantInfo.ActiveGraphableEntryIndex = this.mappingListView.Items.Count - 1;
+                OnActiveGraphableEntryChanged();
+            }
             else
             {
                 this.persistantInfo.ActiveGraphableEntryIndex = -1;
@@ -684,6 +766,9 @@ namespace MidiShapeShifter.Mss.UI
 
         private void addGeneratorBtn_Click(object sender, System.EventArgs e)
         {
+            //Wait for the host to be idle before proceeding.
+            this.idleProcessingSignal.WaitOne();
+
             GeneratorDlg genDlg = new GeneratorDlg();
             GenEntryConfigInfo genInfo = new GenEntryConfigInfo();
             genInfo.InitWithDefaultValues();
@@ -697,14 +782,15 @@ namespace MidiShapeShifter.Mss.UI
                 this.persistantInfo.ActiveGraphableEntryType = GraphableEntryType.Generator;
                 this.persistantInfo.ActiveGraphableEntryIndex = this.genMappingMgr.GetNumEntries() - 1;
 
-                this.generatorListView.Items.Add(
-                    this.genMappingMgr.GetListViewRow(this.persistantInfo.ActiveGraphableEntryIndex));
-                this.generatorListView.Items[this.persistantInfo.ActiveGraphableEntryIndex].Selected = true;
+                OnActiveGraphableEntryChanged();
             }
         }
 
         private void editGeneratorBtn_Click(object sender, EventArgs e)
         {
+            //Wait for the host to be idle before proceeding.
+            this.idleProcessingSignal.WaitOne();
+
             if (ActiveGraphableEntry == null || 
                 this.persistantInfo.ActiveGraphableEntryType != GraphableEntryType.Generator)
             {
@@ -779,7 +865,8 @@ namespace MidiShapeShifter.Mss.UI
             }
 
             //Regenerate the curve to reflect the changed value
-            UpdateEquationCurve();
+            this.commandQueue.EnqueueCommandOverwriteDups(
+                EditorCommandId.UpdateEquationCurve, () => UpdateEquationCurve());
         }
 
         private void MssParameters_MinValueChanged(MssParameterID paramId, double minValue)
@@ -840,7 +927,8 @@ namespace MidiShapeShifter.Mss.UI
                 curveInfo.PointEquations[curCurve].X = xExpressionString;
                 curveInfo.PointEquations[curCurve].Y = yExpressionString;
 
-                UpdateEquationCurve();
+                this.commandQueue.EnqueueCommandOverwriteDups(
+                    EditorCommandId.UpdateEquationCurve, () => UpdateEquationCurve());
             }
         }
 
@@ -862,7 +950,6 @@ namespace MidiShapeShifter.Mss.UI
                 if (expressionIsValid)
                 {
                     GraphPane graphPane = this.mainGraphControl.GraphPane;
-
 
                     LineItem pointsCurve = (LineItem)graphPane.CurveList.Find(
                             curveItem => curveItem.Label.Text == GRAPH_CONTROL_POINTS_LABEL);
@@ -1183,6 +1270,11 @@ namespace MidiShapeShifter.Mss.UI
                 //will trigger it.
                 this.generatorListView.Items[this.persistantInfo.ActiveGraphableEntryIndex].Selected = true;
             }
+            else if (this.generatorListView.Items.Count > 0)
+            {
+                this.persistantInfo.ActiveGraphableEntryIndex = this.generatorListView.Items.Count - 1;
+                OnActiveGraphableEntryChanged();
+            }
             else
             {
                 this.persistantInfo.ActiveGraphableEntryIndex = -1;
@@ -1443,8 +1535,9 @@ namespace MidiShapeShifter.Mss.UI
                 Math.Round(newPointPosition.X, NUM_DECIMALS_IN_CONTROL_POINT).ToString();
             activeCurveInfo.PointEquations[pointBeingEditedIndex].Y = 
                 Math.Round(newPointPosition.Y, NUM_DECIMALS_IN_CONTROL_POINT).ToString();
-            
-            UpdateCurveShapeControls();
+
+            this.commandQueue.EnqueueCommandOverwriteDups(
+                EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
 
             return true;
         }
@@ -1519,9 +1612,8 @@ namespace MidiShapeShifter.Mss.UI
             {
                 curveInfo.SelectedEquationType = EquationType.Curve;                
             }
-
-
-            UpdateCurveShapeControls();
+            this.commandQueue.EnqueueCommandOverwriteDups(
+                EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
         }
 
         private void nextEquationBtn_Click(object sender, EventArgs e)
@@ -1544,7 +1636,8 @@ namespace MidiShapeShifter.Mss.UI
                     Debug.Assert(false);
                 }
 
-                UpdateCurveShapeControls();
+                this.commandQueue.EnqueueCommandOverwriteDups(
+                    EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
             }
             else
             {
@@ -1573,7 +1666,8 @@ namespace MidiShapeShifter.Mss.UI
                     Debug.Assert(false);
                 }
 
-                UpdateCurveShapeControls();
+                this.commandQueue.EnqueueCommandOverwriteDups(
+                    EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
             }
             else
             {
@@ -1659,7 +1753,8 @@ namespace MidiShapeShifter.Mss.UI
                 curveInfo.SelectedEquationIndex = 0;
                 curveInfo.SelectedEquationType = EquationType.Curve;
 
-                UpdateCurveShapeControls();
+                this.commandQueue.EnqueueCommandOverwriteDups(
+                    EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
             }
         }
 
@@ -1672,7 +1767,8 @@ namespace MidiShapeShifter.Mss.UI
                 this.ActiveGraphableEntry.PrimaryInputSource =
                     this.DataFieldsInGraphInputCombo[inputTypeCombo.SelectedIndex];
 
-                UpdateCurveShapeControls();
+                this.commandQueue.EnqueueCommandOverwriteDups(
+                    EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
             }
         }
 
@@ -1706,6 +1802,8 @@ namespace MidiShapeShifter.Mss.UI
                     this.mssParameters.SetVariableParamInfo(paramId, paramEditorDlg.resultParamInfo);
                 }
 
+                //The mapping ListView needs to be updated as it may display parameter names.
+                RefreshMappingListView();
             }
         }
 

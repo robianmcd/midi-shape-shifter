@@ -32,6 +32,7 @@ namespace MidiShapeShifter.Mss
         public static extern IntPtr SetParent(IntPtr child, IntPtr newParent);
 
         protected SendMssEventsToHostTrigger sendEventsToHostTrigger;
+        protected ParameterMsgHandler paramMsgHandler;
         protected DryMssEventHandler dryMssEventHandler;
         [DataMember(Name = "MappingMgr")]
         protected MappingManager mappingMgr;
@@ -104,6 +105,7 @@ namespace MidiShapeShifter.Mss
         protected void ConstructNonSerializableMembers()
         {
             this.sendEventsToHostTrigger = new SendMssEventsToHostTrigger();
+            this.paramMsgHandler = new ParameterMsgHandler();
             this.dryMssEventHandler = new DryMssEventHandler();
 
             this._dryMssEventRelay = new DryMssEventRelay();
@@ -131,10 +133,15 @@ namespace MidiShapeShifter.Mss
 
         protected void InitializeNonSerializableMembers()
         {
-            this.msgEntryMetadataFactory.Init(this.genMappingMgr);
-            this.msgInfoFactory.Init(this.genMappingMgr);
+            this.msgEntryMetadataFactory.Init(this.genMappingMgr, 
+                                              (IMssParameterViewer)this.MssParameters);
+            this.msgInfoFactory.Init(this.genMappingMgr, (IMssParameterViewer)this.MssParameters);
 
             this.sendEventsToHostTrigger.Init(this.HostInfoOutputPort, this.WetMssEventInputPort);
+            this.paramMsgHandler.Init(this.MssParameters, 
+                                      this.WetMssEventOutputPort, 
+                                      this.DryMssEventInputPort, 
+                                      this.HostInfoOutputPort);
             this.dryMssEventHandler.Init(this.DryMssEventOutputPort, 
                                          this.WetMssEventInputPort, 
                                          this.mappingMgr, 
@@ -201,6 +208,7 @@ namespace MidiShapeShifter.Mss
                                             this.MssProgramMgr,
                                             this.transformPresetMgr,
                                             this.DryMssEventOutputPort,
+                                            this.HostInfoOutputPort,
                                             this.pluginEditorInfo);
             }
         }

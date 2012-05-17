@@ -18,31 +18,11 @@ namespace MidiShapeShifter.Mss
     public class MssMsgRange : IMssMsgRange
     {
         /// <summary>
-        ///     Contains information about the message type specified by MsgType. If MsgType has not been set then 
-        ///     MsgInfo will be null.
-        /// </summary>
-        [DataMember]
-        public IMssMsgInfo MsgInfo { get; protected set; }
-
-        /// <summary>
         ///     The message type of all MssMsgs that match this range. When MsgType is changed, MsgInfo will be
         ///     recreated so that it contains information about the new MssMsgType
         /// </summary>
-        [DataMember(Name = "MsgType")]
-        protected MssMsgType _msgType;
-        public MssMsgType MsgType
-        {
-            get 
-            { 
-                return this._msgType; 
-            }
-
-            set
-            {
-                this._msgType = value;
-                this.MsgInfo = this.msgInfoFactory.Create(value);
-            }
-        }
+        [DataMember]
+        public MssMsgType MsgType {get; set;}
 
         /// <summary>
         ///     Specifies the range of accepted Data1 values
@@ -68,14 +48,6 @@ namespace MidiShapeShifter.Mss
         protected int _data2RangeTop;
         public int Data2RangeTop { get { return this._data2RangeTop; } 
                                       set { this._data2RangeTop = value; } }
-
-        [DataMember(Name = "MsgInfoFactory")]
-        protected IFactory_MssMsgInfo msgInfoFactory;
-
-        public void Init(IFactory_MssMsgInfo msgInfoFactory)
-        {
-            this.msgInfoFactory = msgInfoFactory;
-        }
 
         /// <summary>
         ///     Initializes the public member varialbes of this class. This method does not need to 
@@ -104,31 +76,27 @@ namespace MidiShapeShifter.Mss
         }
 
         /// <summary>
-        ///     A user readable string representing the range of Data1 values
+        ///     Returns a user readable string representing the range of Data1 values
         /// </summary>
-        public string Data1RangeStr
+        public string GetData1RangeStr(IFactory_MssMsgInfo msgInfoFactory)
         {
-            get
-            {
-                return GetRangeString(this.MsgInfo.ConvertData1ToString(this.Data1RangeBottom), 
-                                      this.MsgInfo.ConvertData1ToString(this.Data1RangeTop), 
-                                      this.MsgInfo.ConvertData1ToString(this.MsgInfo.MinData1Value),
-                                      this.MsgInfo.ConvertData1ToString(this.MsgInfo.MaxData1Value));
-            }
+            IMssMsgInfo msgInfo = msgInfoFactory.Create(this.MsgType);
+            return GetRangeString(msgInfo.ConvertData1ToString(this.Data1RangeBottom),
+                                    msgInfo.ConvertData1ToString(this.Data1RangeTop),
+                                    msgInfo.ConvertData1ToString(msgInfo.MinData1Value),
+                                    msgInfo.ConvertData1ToString(msgInfo.MaxData1Value));
         }
 
         /// <summary>
-        ///     A user readable string representing the range of Data1 values
+        ///     Returns a user readable string representing the range of Data1 values
         /// </summary>
-        public string Data2RangeStr
+        public string GetData2RangeStr(IFactory_MssMsgInfo msgInfoFactory)
         {
-            get
-            {
-                return GetRangeString(this.MsgInfo.ConvertData2ToString(this.Data2RangeBottom),
-                                      this.MsgInfo.ConvertData2ToString(this.Data2RangeTop),
-                                      this.MsgInfo.ConvertData2ToString(this.MsgInfo.MinData2Value),
-                                      this.MsgInfo.ConvertData2ToString(this.MsgInfo.MaxData2Value));
-            }
+            IMssMsgInfo msgInfo = msgInfoFactory.Create(this.MsgType);
+            return GetRangeString(msgInfo.ConvertData2ToString(this.Data2RangeBottom),
+                                      msgInfo.ConvertData2ToString(this.Data2RangeTop),
+                                      msgInfo.ConvertData2ToString(msgInfo.MinData2Value),
+                                      msgInfo.ConvertData2ToString(msgInfo.MaxData2Value));
         }
 
         /// <summary>

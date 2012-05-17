@@ -9,6 +9,7 @@ using NCalc;
 using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.Parameters;
+using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {
@@ -99,10 +100,13 @@ namespace MidiShapeShifter.Mss.Evaluation
                 double relData2 = curXVal;
                 double relData3 = curXVal;
 
+                IStaticMssMsgInfo inMsgInfo = 
+                    Factory_StaticMssMsgInfo.Create(mappingEntry.InMssMsgRange.MsgType);
+
                 //If curXVal is outside of the relative input range for data 1 then set 
                 //relData1 to NaN
-                double max = (double)mappingEntry.InMssMsgRange.MsgInfo.MaxData1Value;
-                double min = (double)mappingEntry.InMssMsgRange.MsgInfo.MinData1Value;
+                double max = (double)inMsgInfo.MaxData1Value;
+                double min = (double)inMsgInfo.MinData1Value;
                 double bottom = (double)mappingEntry.InMssMsgRange.Data1RangeBottom;
                 double top = (double)mappingEntry.InMssMsgRange.Data1RangeTop;
                 if (curXVal < ((bottom - min) / (max - min + 1)) ||
@@ -113,8 +117,8 @@ namespace MidiShapeShifter.Mss.Evaluation
 
                 //If curXVal is outside of the relative input range for data 2 then set relData2 
                 //to NaN
-                max = (double)mappingEntry.InMssMsgRange.MsgInfo.MaxData2Value;
-                min = (double)mappingEntry.InMssMsgRange.MsgInfo.MinData2Value;
+                max = (double)inMsgInfo.MaxData2Value;
+                min = (double)inMsgInfo.MinData2Value;
                 bottom = (double)mappingEntry.InMssMsgRange.Data2RangeBottom;
                 top = (double)mappingEntry.InMssMsgRange.Data2RangeTop;
                 if (curXVal < ((bottom - min) / (max - min + 1)) ||

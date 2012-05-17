@@ -295,11 +295,6 @@ namespace MidiShapeShifter.Mss.Evaluation
                 return false;
             }
 
-            if (amount < -1 || amount > 1)
-            {
-                return false;
-            }
-
             //input
             double output = input;
 

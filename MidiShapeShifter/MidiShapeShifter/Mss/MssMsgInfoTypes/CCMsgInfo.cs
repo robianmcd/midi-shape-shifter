@@ -6,7 +6,6 @@ using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    [DataContract]
     public class CCMsgInfo : MidiMsgInfo
     {
         public override MssMsgType MsgType

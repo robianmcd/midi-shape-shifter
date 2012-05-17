@@ -79,16 +79,11 @@ namespace MidiShapeShifter.Mss.Generator
         protected void InitializeEntryFromGenInfo(GenEntryConfigInfo genInfo, 
                                                   IGeneratorMappingEntry mappingEntry)
         {
-            //Creats MssMsgInfo Factory needed to initialize in/out MssMsgRange
-            IFactory_MssMsgInfo msgInfoFactory = new Factory_MssMsgInfo();
-            msgInfoFactory.Init(this);
-
             //Sets mappingEntry.GeneratorInfo
             mappingEntry.GenConfigInfo = genInfo;
 
             //Sets mappingEntry.inMsgRange
             IMssMsgRange inMsgRange = new MssMsgRange();
-            inMsgRange.Init(msgInfoFactory);
 
             if (genInfo.PeriodType == GenPeriodType.BeatSynced)
             {
@@ -113,7 +108,6 @@ namespace MidiShapeShifter.Mss.Generator
 
             //Sets mappingEntry.outMsgRange
             IMssMsgRange outMsgRange = new MssMsgRange();
-            outMsgRange.Init(msgInfoFactory);
             outMsgRange.InitPublicMembers(MssMsgType.Generator,
                                        genInfo.Id,
                                        MssMsgUtil.UNUSED_MSS_MSG_DATA);

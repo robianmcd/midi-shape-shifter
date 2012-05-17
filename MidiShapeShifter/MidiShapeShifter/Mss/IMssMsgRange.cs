@@ -1,15 +1,15 @@
 ﻿using System;
+using MidiShapeShifter.Mss.MssMsgInfoTypes;
+
 namespace MidiShapeShifter.Mss
 {
     public interface IMssMsgRange
     {
-        string Data1RangeStr { get; }
-        string Data2RangeStr { get; }
+        string GetData1RangeStr(IFactory_MssMsgInfo msgInfoFactory);
+        string GetData2RangeStr(IFactory_MssMsgInfo msgInfoFactory);
         bool Equals(object o);
-        void Init(MidiShapeShifter.Mss.MssMsgInfoTypes.IFactory_MssMsgInfo msgInfoFactory);
         void InitPublicMembers(MssMsgType msgType, int data1, int data2);
         void InitPublicMembers(MssMsgType msgType, int data1RangeBottom, int data1RangeTop, int data2RangeBottom, int data2RangeTop);
-        MidiShapeShifter.Mss.MssMsgInfoTypes.IMssMsgInfo MsgInfo { get; }
         bool MsgIsInRange(MssMsg mssMsg);
         MssMsgType MsgType { get; set; }
         int Data1RangeBottom { get; set; }

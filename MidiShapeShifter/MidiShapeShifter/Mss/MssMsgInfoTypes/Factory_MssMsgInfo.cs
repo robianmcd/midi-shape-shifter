@@ -6,18 +6,25 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 
 using MidiShapeShifter.Mss.Generator;
+using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    [DataContract]
-    public class Factory_MssMsgInfo : MidiShapeShifter.Mss.MssMsgInfoTypes.IFactory_MssMsgInfo
+    public class Factory_MssMsgInfo : IFactory_MssMsgInfo
     {
-        [DataMember(Name = "GenMappingMgr")]
         protected IGeneratorMappingManager genMappingMgr;
+        protected IMssParameterViewer paramViewer;
 
-        public void Init(IGeneratorMappingManager genMappingMgr)
+        public void Init(IGeneratorMappingManager genMappingMgr, IMssParameterViewer paramViewer)
         {
             this.genMappingMgr = genMappingMgr;
+            InitOptionallySerializedDependencies(paramViewer);
+
+        }
+
+        public void InitOptionallySerializedDependencies(IMssParameterViewer paramViewer)
+        {
+            this.paramViewer = paramViewer;
         }
 
         public IMssMsgInfo Create(MssMsgType msgInfoType)
@@ -83,6 +90,13 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
                 case MssMsgType.RelTimePeriodPos:
                     {
                         msgInfo = new RelTimePeriodPosMsgInfo();
+                        break;
+                    }
+                case MssMsgType.Parameter:
+                    {
+                        ParameterMsgInfo paramMsgInfo = new ParameterMsgInfo();
+                        paramMsgInfo.Init(this.paramViewer);
+                        msgInfo = paramMsgInfo;
                         break;
                     }
                 default:

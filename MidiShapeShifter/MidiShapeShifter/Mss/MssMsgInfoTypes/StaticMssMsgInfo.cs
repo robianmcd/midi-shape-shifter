@@ -18,6 +18,7 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         public const string DATA3_NAME_VELOCITY = "Velocity";
         public const string DATA3_NAME_PERIOD_POSITION = "Position in Period";
         public const string DATA3_NAME_PRESSURE = "Pressure";
+        public const string DATA3_NAME_REL_PARAM_VAL = "Relative Param Value";
 
         public const string DATA_NAME_UNUSED = "";
 

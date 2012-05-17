@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
-using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
     //See IMssMsgInfo for more doc.
-    [DataContract]
     public abstract class MssMsgInfo : IMssMsgInfo
     {
         public abstract string ConvertData1ToString(double Data1);

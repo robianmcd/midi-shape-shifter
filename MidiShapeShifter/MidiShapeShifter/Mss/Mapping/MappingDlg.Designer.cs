@@ -332,6 +332,7 @@
             this.Name = "MappingDlg";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Mapping Editor";
             this.Load += new System.EventHandler(this.MappingDlg_Load);
             this.inGroup.ResumeLayout(false);

@@ -21,7 +21,7 @@ namespace MidiShapeShifter.Mss.Generator
     /// </summary>
     public class MssEventGenerator
     {
-        public const int SAMPLES_PER_GENERATOR_UPDATE = 200;
+        public const int SAMPLES_PER_GENERATOR_UPDATE = 500;
 
         /// <summary>
         /// This class sends generated events to this input port

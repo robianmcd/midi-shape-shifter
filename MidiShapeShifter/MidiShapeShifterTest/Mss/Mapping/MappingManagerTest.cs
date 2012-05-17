@@ -243,14 +243,10 @@ namespace MidiShapeShifterTest.Mss.Mapping
             int chanRangeBottom, int chanRamgeTop, 
             int paramRangeBottom, int paramRangeTop)
         {
-            var msgInfoFactoryMock = new Mock<IFactory_MssMsgInfo>();
-
             MssMsgRange inMsgRange = new MssMsgRange();
-            inMsgRange.Init(msgInfoFactoryMock.Object);
             inMsgRange.InitPublicMembers(msgType, chanRangeBottom, chanRamgeTop, paramRangeBottom, paramRangeTop);
 
             MssMsgRange outMsgRange = new MssMsgRange();
-            outMsgRange.Init(msgInfoFactoryMock.Object);
             outMsgRange.InitPublicMembers(msgType, chanRangeBottom, chanRamgeTop, paramRangeBottom, paramRangeTop);
 
             IMappingEntry mapEntry = new MappingEntry();

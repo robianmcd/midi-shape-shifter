@@ -105,7 +105,6 @@ namespace MidiShapeShifter.Framework
         {
             if (vstEvents == null || vstEvents.Count == 0 || this.vstHost == null) return;
 
-
             // NOTE: other types of events could be in the collection!
             foreach (VstEvent evnt in vstEvents)
             {
@@ -143,7 +142,7 @@ namespace MidiShapeShifter.Framework
         /// </param>
         public void IWetMssEventOutputPort_SendingWetMssEvents(List<MssEvent> mssEvents, 
             long sampleTimeAtEndOfProcessingCycle)
-        { 
+        {
             if (this.vstHost == null) {
                 return;
             }
@@ -166,15 +165,15 @@ namespace MidiShapeShifter.Framework
                     if (midiEvent != null)
                     {
                         this.outEvents.Add(midiEvent);
-                        midiHost.Process(outEvents);
-                        outEvents.Clear();
+                        //midiHost.Process(outEvents);
+                        //outEvents.Clear();
                     }
                 }
 
                 //TODO: Figure out why it doesn't work to send all of the events at once.
                 //Sends VstMidiEvents to host
-                //midiHost.Process(outEvents);
-                //outEvents.Clear();
+                midiHost.Process(outEvents);
+                outEvents.Clear();
             }
 
             OnProcessingCycleEnd(sampleTimeAtEndOfProcessingCycle);

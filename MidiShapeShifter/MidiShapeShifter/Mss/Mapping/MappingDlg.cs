@@ -37,31 +37,11 @@ namespace MidiShapeShifter.Mss.Mapping
         {
             InitializeComponent();
 
-            int curIndex = (int)MssMsgType.Note;
-            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
-
-            curIndex = (int)MssMsgType.NoteOn;
-            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
-
-            curIndex = (int)MssMsgType.NoteOff;
-            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
-
-            curIndex = (int)MssMsgType.CC;
-            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
-
-            curIndex = (int)MssMsgType.PitchBend;
-            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
-
-            curIndex = (int)MssMsgType.PolyAftertouch;
-            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
-
-            curIndex = (int)MssMsgType.ChanAftertouch;
-            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
-
-            curIndex = (int)MssMsgType.Generator;
-            this.inTypeCombo.Items.Insert(curIndex, MssMsg.MssMsgTypeNames[curIndex]);
-
-            MsgMetadataFactory = new Factory_MssMsgRangeEntryMetadata();
+            //Add the types that are valid for input to the input combo.
+            foreach(MssMsgType msgType in MssMsgRangeEntryMetadata.VALID_INPUT_TYPES)
+            {
+                this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)msgType]);
+            }
         }
 
         /// <summary>
@@ -139,7 +119,7 @@ namespace MidiShapeShifter.Mss.Mapping
             if (((CheckBox)sender).Checked == true)
             {
                 //we cannot just set the outTypeCombo's selected index to the same as in inTypeCombo's selected index
-                //because they may will not contain all of the same items.
+                //because they may not contain all of the same items.
                 MssMsgType inType = GetMessageTypeFromCombo(this.inTypeCombo);
                 string inTypeName = MssMsg.MssMsgTypeNames[(int)inType];
                 this.outTypeCombo.SelectedIndex = this.outTypeCombo.FindStringExact(inTypeName);

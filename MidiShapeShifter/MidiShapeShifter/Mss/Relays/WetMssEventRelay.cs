@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss.Relays
 {
@@ -15,6 +16,8 @@ namespace MidiShapeShifter.Mss.Relays
     /// </remarks>
     public class WetMssEventRelay : IWetMssEventRelay
     {
+        protected object relayLock = new Object();
+
         protected List<MssEvent> mssEventBuffer = new List<MssEvent>();
         protected bool _onlySendOnProcessingCycleEnd = true;
 
@@ -24,11 +27,15 @@ namespace MidiShapeShifter.Mss.Relays
         /// <returns>A list containing the elements that were moved out of mssEventBuffer.</returns>
         protected List<MssEvent> transferMssEventBufferContentToNewList()
         {
-            List<MssEvent> eventsToTransfer = new List<MssEvent>(this.mssEventBuffer.Count);
-            eventsToTransfer.AddRange(this.mssEventBuffer);
+            List<MssEvent> eventsToTransfer;
 
-            this.mssEventBuffer.Clear();
+            lock (this.relayLock)
+            {
+                eventsToTransfer = new List<MssEvent>(this.mssEventBuffer.Count);
+                eventsToTransfer.AddRange(this.mssEventBuffer);
 
+                this.mssEventBuffer.Clear();
+            }
             return eventsToTransfer;
         }
 
@@ -51,8 +58,16 @@ namespace MidiShapeShifter.Mss.Relays
 
         public void ReceiveWetMssEventList(List<MssEvent> mssEventList)
         {
-            this.mssEventBuffer.AddRange(mssEventList);
+            foreach(MssEvent mssEvent in mssEventList)
+            {
+                Debug.Assert(mssEvent != null);
+            }
 
+            lock(this.relayLock)
+            {
+                this.mssEventBuffer.AddRange(mssEventList);
+            }
+            
             if (WetMssEventsReceived != null)
             {
                 WetMssEventsReceived(mssEventList);

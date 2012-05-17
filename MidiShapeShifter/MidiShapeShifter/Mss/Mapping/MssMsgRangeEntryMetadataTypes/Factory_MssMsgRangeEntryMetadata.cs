@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 using MidiShapeShifter.Mss.Generator;
+using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 {
     public class Factory_MssMsgRangeEntryMetadata
     {
         protected IGeneratorMappingManager genMappingMgr;
+        protected IMssParameterViewer paramViewer;
 
-        public void Init(IGeneratorMappingManager genMappingMgr)
+
+        public void Init(IGeneratorMappingManager genMappingMgr, IMssParameterViewer paramViewer)
         {
             this.genMappingMgr = genMappingMgr;
+            this.paramViewer = paramViewer;
+
         }
 
         public MssMsgRangeEntryMetadata Create(MssMsgType type)
@@ -60,18 +66,23 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
                     }
                 case MssMsgType.Generator:
                     {
-                        GeneratorMsgRangeEntryMetadata genMsgMetadata = 
-                                new GeneratorMsgRangeEntryMetadata();
+                        var genMsgMetadata = new GeneratorMsgRangeEntryMetadata();
                         genMsgMetadata.Init(this.genMappingMgr);
                         msgMetadata = genMsgMetadata;
                         break;
                     }
                 case MssMsgType.GeneratorToggle:
                     {
-                        GeneratorToggleMsgRangeEntryMetadata genToggleMsgMetadata =
-                                new GeneratorToggleMsgRangeEntryMetadata();
+                        var genToggleMsgMetadata = new GeneratorToggleMsgRangeEntryMetadata();
                         genToggleMsgMetadata.Init(this.genMappingMgr);
                         msgMetadata = genToggleMsgMetadata;
+                        break;
+                    }
+                case MssMsgType.Parameter:
+                    {
+                        var paramMsgRangeMetadata = new ParameterMsgRangeEntryMetadata();
+                        paramMsgRangeMetadata.Init(this.paramViewer);
+                        msgMetadata = paramMsgRangeMetadata;
                         break;
                     }
                 default:

@@ -2,33 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Runtime.Serialization;
 
 using MidiShapeShifter.Mss.Generator;
+using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    public class GeneratorMsgInfo : MssMsgInfo
+    public class ParameterMsgInfo : MssMsgInfo
     {
-        protected IGeneratorMappingManager genMappingMgr;
+        protected IMssParameterViewer paramViewer;
 
-        public void Init(IGeneratorMappingManager genMappingMgr)
+        public void Init(IMssParameterViewer paramViewer)
         {
-            this.genMappingMgr = genMappingMgr;
+            this.paramViewer = paramViewer;
         }
 
         public override MssMsgType MsgType
         {
-            get { return MssMsgType.Generator; }
+            get { return MssMsgType.Parameter; }
         }
 
         public override string ConvertData1ToString(double Data1)
         {
-
-            IGeneratorMappingEntry genEntry = this.genMappingMgr.GetGenMappingEntryById((int)Data1);
-            if (genEntry != null)
+            if (Enum.IsDefined(typeof(MssParameterID), (int)Data1))
             {
-                return genEntry.GenConfigInfo.Name;
+                MssParamInfo paramInfo = this.paramViewer.GetParameterInfo((MssParameterID)Data1);
+                return paramInfo.Name;
             }
             else
             {

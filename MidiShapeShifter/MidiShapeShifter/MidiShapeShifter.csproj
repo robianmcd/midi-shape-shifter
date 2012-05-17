@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSharpUtil\ContractSerializer.cs" />
+    <Compile Include="CSharpUtil\CustomMathUtils.cs" />
     <Compile Include="CSharpUtil\FileTreeFolderNode.cs" />
     <Compile Include="CSharpUtil\ReturnStatus.cs" />
     <Compile Include="CSharpUtil\CustomStringUtil.cs" />
@@ -109,7 +110,11 @@
     <Compile Include="Ioc\IocMgr.cs" />
     <Compile Include="Midi\MidiUtil.cs" />
     <Compile Include="Mss\BaseSettingsFileMgr.cs" />
+    <Compile Include="Mss\ParameterMsgHandler.cs" />
+    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\ParameterMsgRangeEntryMetadata.cs" />
     <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\NoteMsgRangeEntryMetadata.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\ParameterMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\StaticParameterMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\NoteMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\StaticNoteMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\Factory_StaticMssMsgInfo.cs" />
@@ -128,6 +133,7 @@
     <Compile Include="Mss\MssMsgInfoTypes\StaticPolyAftertouchMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\StaticRelBarPeriodPosMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\StaticRelTimePeriodPosMsgInfo.cs" />
+    <Compile Include="Mss\MssVersionInfo.cs" />
     <Compile Include="Mss\Parameters\Factory_MssParamInfo.cs" />
     <Compile Include="Mss\Parameters\MssIntegerParamInfo.cs" />
     <Compile Include="Mss\Parameters\MssNumberParamInfo.cs" />
@@ -236,6 +242,7 @@
     <Compile Include="Mss\Relays\WetMssEventRelay.cs" />
     <Compile Include="Mss\SendMssEventsToHostTrigger.cs" />
     <Compile Include="Mss\DryMssEventHandler.cs" />
+    <Compile Include="Mss\CommandQueue.cs" />
     <Compile Include="Mss\UI\EqGraphConfig.cs" />
     <Compile Include="Mss\UI\SerializablePluginEditorInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -326,33 +333,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgFirstBlack.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgLastBlack.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgNextBlack.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgPrevBlack.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\imgLeftBlue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\imgLeftGrey.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\imgRightBlue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\imgRightGrey.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\imgTrashBlue.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\images\imgLeftBlue.png" />

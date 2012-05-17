@@ -72,6 +72,7 @@ namespace MidiShapeShifter.Mss.Relays
         public bool TransportPlayingIsInitialized { get; private set; }
         public event TransportPlayingChangedEventHandler TransportPlayingChanged;
 
+        public event DoIdleProcessingEventHandler DoIdleProcessing;
 
         /// <summary>
         /// The sample time that the transport started playing. This value is calculated off of the
@@ -309,5 +310,12 @@ namespace MidiShapeShifter.Mss.Relays
             }
         }
 
+        public void TriggerIdleProcessing()
+        {
+            if (DoIdleProcessing != null)
+            {
+                DoIdleProcessing();
+            }
+        }
     }
 }

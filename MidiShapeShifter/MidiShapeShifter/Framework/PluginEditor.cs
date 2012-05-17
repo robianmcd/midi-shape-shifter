@@ -8,6 +8,7 @@ using Jacobi.Vst.Framework.Common;
 
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.UI;
+using MidiShapeShifter.Mss.Relays;
 
 namespace MidiShapeShifter.Framework
 {
@@ -82,6 +83,21 @@ namespace MidiShapeShifter.Framework
         public void ProcessIdle()
         {
             // keep your processing short!
+
+            MssComponentHub mssHub = this.getMssHub();
+
+            if (mssHub != null)
+            {
+                IHostInfoInputPort hostInputPort = mssHub.HostInfoInputPort;
+
+                if (hostInputPort != null)
+                {
+                    hostInputPort.TriggerIdleProcessing();
+                }
+            }
+
         }
+
+
     }
 }

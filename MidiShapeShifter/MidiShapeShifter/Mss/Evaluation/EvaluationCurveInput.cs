@@ -46,7 +46,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                            List<MssParamInfo> variableParamInfoList,
                            IMappingEntry mappingEntry)
         {
-            IMssMsgInfo inMsgInfo = mappingEntry.InMssMsgRange.MsgInfo;
+            IStaticMssMsgInfo inMsgInfo = Factory_StaticMssMsgInfo.Create(mssMsg.Type);
             double relativeData1 = (double)mssMsg.Data1 / (double)(inMsgInfo.MaxData1Value - inMsgInfo.MinData1Value);
             double relativeData2 = (double)mssMsg.Data2 / (double)(inMsgInfo.MaxData2Value - inMsgInfo.MinData2Value);
             double relativeData3 = (double)mssMsg.Data3 / (double)(inMsgInfo.MaxData3Value - inMsgInfo.MinData3Value);
@@ -62,17 +62,17 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// </summary>
         public double getPrimaryInputVal()
         {
-            if (this.PrimaryInputSource == MssMsgDataField.Data1)
+            if (this.PrimaryInputSource == MssMsgDataField.Data3)
             {
-                return this.RelData1;
+                return this.RelData3;
             }
             else if (this.PrimaryInputSource == MssMsgDataField.Data2)
             {
                 return this.RelData2;
             }
-            else if (this.PrimaryInputSource == MssMsgDataField.Data3)
+            else if (this.PrimaryInputSource == MssMsgDataField.Data1)
             {
-                return this.RelData3;
+                return this.RelData1;
             }
             else
             {

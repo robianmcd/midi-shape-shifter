@@ -10,8 +10,13 @@ namespace MidiShapeShifter.Mss.Parameters
     /// <summary>
     ///     There is a unique MssParameterID for each parameter which is used to distinguish between parameters.
     /// </summary>
-    public enum MssParameterID { VariableA, VariableB, VariableC, VariableD, VariableE,
-                                 Preset1, Preset2, Preset3, Preset4, Preset5 };
+    /// <remarks>
+    /// The number associated with each ID should not be changed to ensure backward compatibility as
+    /// it is sometimes saved as an integer.
+    /// </remarks>
+    public enum MssParameterID { VariableA = 0, VariableB = 1, VariableC = 2, VariableD = 3, 
+                                 VariableE = 4, Preset1 = 5, Preset2 = 6, Preset3 = 7, 
+                                 Preset4 = 8, Preset5 = 9 };
 
     public delegate void ParameterNameChangedEventHandler(MssParameterID paramId, string name);
     public delegate void ParameterValueChangedEventHandler(MssParameterID paramId, double value);
@@ -36,6 +41,7 @@ namespace MidiShapeShifter.Mss.Parameters
         public const int NUM_PRESET_PARAMS = 5;
         public static readonly List<MssParameterID> VARIABLE_PARAM_ID_LIST;
         public static readonly List<MssParameterID> PRESET_PARAM_ID_LIST;
+        public static readonly List<MssParameterID> ALL_PARAMS_ID_LIST;
 
         /// <summary>
         ///     Stores all of the information about each parameter.
@@ -43,24 +49,25 @@ namespace MidiShapeShifter.Mss.Parameters
         [DataMember]
         protected Dictionary<MssParameterID, MssParamInfo> paramDict;
 
-        //Used to prevent parameter change events from being recursively triggered.
-        protected bool acceptParameterChanges;
-
         static MssParameters()
         {
-            VARIABLE_PARAM_ID_LIST = new List<MssParameterID>();
+            VARIABLE_PARAM_ID_LIST = new List<MssParameterID>(NUM_VARIABLE_PARAMS);
             VARIABLE_PARAM_ID_LIST.Add(MssParameterID.VariableA);
             VARIABLE_PARAM_ID_LIST.Add(MssParameterID.VariableB);
             VARIABLE_PARAM_ID_LIST.Add(MssParameterID.VariableC);
             VARIABLE_PARAM_ID_LIST.Add(MssParameterID.VariableD);
             VARIABLE_PARAM_ID_LIST.Add(MssParameterID.VariableE);
 
-            PRESET_PARAM_ID_LIST = new List<MssParameterID>();
+            PRESET_PARAM_ID_LIST = new List<MssParameterID>(NUM_PRESET_PARAMS);
             PRESET_PARAM_ID_LIST.Add(MssParameterID.Preset1);
             PRESET_PARAM_ID_LIST.Add(MssParameterID.Preset2);
             PRESET_PARAM_ID_LIST.Add(MssParameterID.Preset3);
             PRESET_PARAM_ID_LIST.Add(MssParameterID.Preset4);
             PRESET_PARAM_ID_LIST.Add(MssParameterID.Preset5);
+
+            ALL_PARAMS_ID_LIST = new List<MssParameterID>(NUM_VARIABLE_PARAMS + NUM_PRESET_PARAMS);
+            ALL_PARAMS_ID_LIST.AddRange(VARIABLE_PARAM_ID_LIST);
+            ALL_PARAMS_ID_LIST.AddRange(PRESET_PARAM_ID_LIST);
         }
 
         public MssParameters()
@@ -73,8 +80,6 @@ namespace MidiShapeShifter.Mss.Parameters
         /// </summary>
         public void Init()
         {
-            InitNonSerializableFields();
-
             MssParamInfo defaultParameterInfo = new MssNumberParamInfo();
             defaultParameterInfo.Init("");
 
@@ -107,17 +112,6 @@ namespace MidiShapeShifter.Mss.Parameters
             {
                 this.paramDict.Add(PRESET_PARAM_ID_LIST[i], defaultPresetParamList[i]);
             }
-        }
-
-        [OnDeserializing]
-        private void BeforeDeserializing(StreamingContext sc)
-        {
-            InitNonSerializableFields();
-        }
-
-        protected void InitNonSerializableFields()
-        {
-            acceptParameterChanges = true;
         }
 
         public static List<MssParamInfo> CreateDefaultPresetParamInfoList()
@@ -253,14 +247,12 @@ namespace MidiShapeShifter.Mss.Parameters
                 return;
             }
 
-            if (this.acceptParameterChanges && paramDict[parameterId].Name != name)
+            if (paramDict[parameterId].Name != name)
             {
                 paramDict[parameterId].Name = name;
                 if (ParameterNameChanged != null)
                 {
-                    this.acceptParameterChanges = false;
                     ParameterNameChanged(parameterId, name);
-                    this.acceptParameterChanges = true;
                 }
             }
         }
@@ -278,13 +270,11 @@ namespace MidiShapeShifter.Mss.Parameters
             paramDict[parameterId].RawValue = rawValue;
             double newValue = paramDict[parameterId].GetValue();
 
-            if (this.acceptParameterChanges && previousValue != newValue)
+            if (previousValue != newValue)
             {
                 if (ParameterValueChanged != null)
                 {
-                    this.acceptParameterChanges = false;
                     ParameterValueChanged(parameterId, newValue);
-                    this.acceptParameterChanges = true;
                 }
             }
         }
@@ -320,14 +310,12 @@ namespace MidiShapeShifter.Mss.Parameters
                 return;
             }
 
-            if (this.acceptParameterChanges && paramDict[parameterId].MinValue != minValue)
+            if (paramDict[parameterId].MinValue != minValue)
             {
                 paramDict[parameterId].MinValue = minValue;
                 if (ParameterMinValueChanged != null)
                 {
-                    this.acceptParameterChanges = false;
                     ParameterMinValueChanged(parameterId, minValue);
-                    this.acceptParameterChanges = true;
                 }
             }
         }
@@ -342,14 +330,12 @@ namespace MidiShapeShifter.Mss.Parameters
                 return;
             }
 
-            if (this.acceptParameterChanges && paramDict[parameterId].MaxValue != maxValue)
+            if (paramDict[parameterId].MaxValue != maxValue)
             {
                 paramDict[parameterId].MaxValue = maxValue;
                 if (ParameterMaxValueChanged != null)
                 {
-                    this.acceptParameterChanges = false;
                     ParameterMaxValueChanged(parameterId, maxValue);
-                    this.acceptParameterChanges = true;
                 }
             }
         }

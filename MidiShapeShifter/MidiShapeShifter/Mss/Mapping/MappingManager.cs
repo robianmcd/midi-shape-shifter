@@ -5,6 +5,7 @@ using System.Linq;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Runtime.Serialization;
+using System.Collections.ObjectModel;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -20,7 +21,21 @@ namespace MidiShapeShifter.Mss.Mapping
         ///     visualization of this list.
         /// </summary>
         [DataMember(Name = "MappingEntryList")]
-        protected List<IMappingEntry> mappingEntryList = new List<IMappingEntry>();
+        protected List<IMappingEntry> mappingEntryList;
+
+        public ReadOnlyCollection<IMappingEntry> readOnlyMappingEntryList
+        {
+            get
+            {
+                return this.mappingEntryList.AsReadOnly(); 
+            }
+        }
+
+
+        public MappingManager()
+        {
+            mappingEntryList = new List<IMappingEntry>();
+        }
 
         public void AddMappingEntry(IMappingEntry newEntry) 
         {
@@ -122,36 +137,6 @@ namespace MidiShapeShifter.Mss.Mapping
             {
                 //invalid index
                 Debug.Assert(false);
-            }
-        }
-
-        /// <summary>
-        ///     Creates a ListViewItem based on the MappingEntry specified by <paramref name="index"/>. This 
-        ///     ListViewItem is intended to be used in the PluginEditorView's mapping list box.
-        /// </summary>
-        /// <returns>The ListViewItem representation of a MappingEntry</returns>
-        public ListViewItem GetListViewRow(int index)
-        { 
-            if (index >= 0 && index < mappingEntryList.Count)
-            {
-                IMappingEntry entry = mappingEntryList[index];
-                ListViewItem mappingItem = new ListViewItem(entry.GetReadableMsgType(IoType.Input));
-                mappingItem.SubItems.Add(entry.InMssMsgRange.Data1RangeStr);
-                mappingItem.SubItems.Add(entry.InMssMsgRange.Data2RangeStr);
-
-                mappingItem.SubItems.Add(entry.GetReadableMsgType(IoType.Output));
-                mappingItem.SubItems.Add(entry.OutMssMsgRange.Data1RangeStr);
-                mappingItem.SubItems.Add(entry.OutMssMsgRange.Data2RangeStr);
-
-                mappingItem.SubItems.Add(entry.GetReadableOverrideDuplicates());
-
-                return mappingItem;
-            }
-            else
-            {
-                //invalid index
-                Debug.Assert(false);
-                return null;
             }
         }
 

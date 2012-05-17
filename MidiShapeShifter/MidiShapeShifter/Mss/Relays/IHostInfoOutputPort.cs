@@ -24,6 +24,7 @@ namespace MidiShapeShifter.Mss.Relays
     public delegate void TransportPlayingChangedEventHandler(bool cransportPlaying);
     public delegate void CalculatedBarZeroChangedEventHandler(long calculatedBarZeroSampleTime);
     public delegate void HostUpdateFinishedEventHandler(HostInfoFields changedHostFields);
+    public delegate void DoIdleProcessingEventHandler();
 
     public interface IHostInfoOutputPort
     {
@@ -57,5 +58,7 @@ namespace MidiShapeShifter.Mss.Relays
         double GetBarPosAtSampleTime(long sampleTime);
         long CalculatedBarZeroSampleTime {get;}
         event CalculatedBarZeroChangedEventHandler CalculatedBarZeroChanged;
+
+        event DoIdleProcessingEventHandler DoIdleProcessing;
     }
 }

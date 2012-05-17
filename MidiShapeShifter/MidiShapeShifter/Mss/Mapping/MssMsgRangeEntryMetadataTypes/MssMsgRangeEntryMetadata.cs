@@ -17,6 +17,8 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
     /// </summary>
     public abstract class MssMsgRangeEntryMetadata
     {
+        public readonly static List<MssMsgType> VALID_INPUT_TYPES;
+
         public abstract MssMsgType MsgType { get; }
 
         /// <summary>
@@ -41,6 +43,16 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         //The "Same as Input" checkbox will be enabled iff this class's msg type is selected as input/output and a type
         //in this list is selected as output/input.
         protected List<MssMsgType> sameAsInputCompatibleTypes = new List<MssMsgType>();
+
+        static MssMsgRangeEntryMetadata()
+        {
+            VALID_INPUT_TYPES = new List<MssMsgType>() 
+            { 
+                MssMsgType.Note, MssMsgType.NoteOn, MssMsgType.NoteOff, MssMsgType.CC, 
+                MssMsgType.PitchBend, MssMsgType.PolyAftertouch, MssMsgType.ChanAftertouch, 
+                MssMsgType.Generator, MssMsgType.Parameter
+            };
+        }
 
         /// <summary>
         ///     The label associated with the first entry field.
@@ -113,7 +125,6 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         public void AttachToDlg(MappingDlg mappingDlg, IoType io)
         {
             this.msgRange = new MssMsgRange();
-            this.msgRange.Init(mappingDlg.MsgInfoFactory);
             this.msgRange.MsgType = this.MsgType;
 
             this.ioCatagory = io;
@@ -257,6 +268,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.PolyAftertouch]);
             this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.ChanAftertouch]);
             this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.GeneratorToggle]);
+            this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.Parameter]);
         }
 
         /// <summary>

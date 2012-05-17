@@ -69,6 +69,11 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
                         msgInfo = new StaticRelTimePeriodPosMsgInfo();
                         break;
                     }
+                case MssMsgType.Parameter:
+                    {
+                        msgInfo = new StaticParameterMsgInfo();
+                        break;
+                    }
                 default:
                     {
                         //Unknown type

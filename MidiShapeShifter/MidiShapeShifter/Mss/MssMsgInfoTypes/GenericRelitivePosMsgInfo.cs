@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    [DataContract]
     public abstract class GenericRelitivePosMsgInfo : MssMsgInfo
     {
         public override string ConvertData1ToString(double Data1)
