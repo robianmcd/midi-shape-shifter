@@ -244,6 +244,7 @@
             this.curveGroup.Controls.Add(this.presetParam1Knob);
             this.curveGroup.Controls.Add(this.pointXEquationTextBox);
             this.curveGroup.Controls.Add(this.curveEquationTextBox);
+            this.curveGroup.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.curveGroup.Location = new System.Drawing.Point(362, 35);
             this.curveGroup.Name = "curveGroup";
             this.curveGroup.Size = new System.Drawing.Size(271, 369);
@@ -678,6 +679,7 @@
             this.groupBox1.Controls.Add(this.variableAValue);
             this.groupBox1.Controls.Add(this.variableATitle);
             this.groupBox1.Controls.Add(this.variableAKnob);
+            this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.groupBox1.Location = new System.Drawing.Point(639, 35);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.groupBox1.Name = "groupBox1";
@@ -983,6 +985,7 @@
             this.mappingGroupBox.Controls.Add(this.addMappingBtn);
             this.mappingGroupBox.Controls.Add(this.editMappingBtn);
             this.mappingGroupBox.Controls.Add(this.deleteMappingBtn);
+            this.mappingGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.mappingGroupBox.Location = new System.Drawing.Point(5, 35);
             this.mappingGroupBox.Name = "mappingGroupBox";
             this.mappingGroupBox.Size = new System.Drawing.Size(351, 192);
@@ -1061,6 +1064,7 @@
             this.generatorGroupBox.Controls.Add(this.addGeneratorBtn);
             this.generatorGroupBox.Controls.Add(this.editGeneratorBtn);
             this.generatorGroupBox.Controls.Add(this.deleteGeneratorBtn);
+            this.generatorGroupBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.generatorGroupBox.Location = new System.Drawing.Point(5, 230);
             this.generatorGroupBox.Name = "generatorGroupBox";
             this.generatorGroupBox.Size = new System.Drawing.Size(351, 174);

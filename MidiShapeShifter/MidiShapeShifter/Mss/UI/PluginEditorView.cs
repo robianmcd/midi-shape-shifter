@@ -397,6 +397,9 @@ namespace MidiShapeShifter.Mss.UI
         {
             bool activeEntryExists = (this.ActiveGraphableEntry != null);
 
+            //Disable redraw while updating the transformation group box.
+            DrawingControl.SuspendDrawing(this.curveGroup);
+
             //Enable/disable controls in the transformation group box.
             foreach (Control curveControl in this.curveGroup.Controls)
             {
@@ -506,6 +509,9 @@ namespace MidiShapeShifter.Mss.UI
             }
 
             UpdateEquationCurve();
+
+            //Resume drawing once updating the transformation group box is funished.
+            DrawingControl.ResumeDrawing(this.curveGroup);
         }
 
         protected void MakeAppropriateEquationControlsVisable(EquationType equationType)
@@ -538,11 +544,16 @@ namespace MidiShapeShifter.Mss.UI
 
         protected void SetGraphOutputLabelText(string outputText)
         {
-            this.graphOutputLabelText = outputText;
+            //The following code will cause the output type label to flicker so it should be 
+            //avoided whenever possible.
+            if (this.graphOutputLabelText != outputText)
+            {
+                this.graphOutputLabelText = outputText;
 
-            Graphics outputTypeGraphics = this.graphOutputTypeImg.CreateGraphics();
-            DrawGraphOutputLabel(outputTypeGraphics, outputText);
-            outputTypeGraphics.Dispose();
+                Graphics outputTypeGraphics = this.graphOutputTypeImg.CreateGraphics();
+                DrawGraphOutputLabel(outputTypeGraphics, outputText);
+                outputTypeGraphics.Dispose();
+            }
         }
 
         protected void UpdateGraphInputCombo()
@@ -1501,7 +1512,7 @@ namespace MidiShapeShifter.Mss.UI
                 Debug.Assert(false);
                 return false;
             }
-            
+
             if (pointBeingEditedIndex > 0 && 
                     newPointPosition.X <= curveBeingEdited[pointBeingEditedIndex - 1].X)
             {
@@ -1536,10 +1547,16 @@ namespace MidiShapeShifter.Mss.UI
             activeCurveInfo.PointEquations[pointBeingEditedIndex].Y = 
                 Math.Round(newPointPosition.Y, NUM_DECIMALS_IN_CONTROL_POINT).ToString();
 
+            IPointListEdit pointsList = (IPointListEdit)curveBeingEdited.Points;
+            pointsList[pointBeingEditedIndex] = newPointPosition;
+
             this.commandQueue.EnqueueCommandOverwriteDups(
                 EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
 
-            return true;
+            //Returning false tells zedgraphs that we have already handled the drag event. We 
+            //handel it in this method instead of letting zedgraphs handel it because zedgraphs 
+            //would immeadateally force a redraw which we don't want to do until the host is idle.
+            return false;
         }
 
         private void ZedGraphContextMenuBuilder(ZedGraphControl control,
