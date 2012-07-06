@@ -10,7 +10,7 @@ using MidiShapeShifter.Mss.MssMsgInfoTypes;
 namespace MidiShapeShifter.Mss
 {
     /// <summary>
-    ///     Specfies a range of MssMsgs. An MssMsg is conidered to be in an MssMsgRange if its type matches this 
+    ///     Specfies a range of MssMsgs. An MssMsg is considered to be in an MssMsgRange if its type matches this 
     ///     classes MsgType and its Data1 and Data2 fall into the ranges specified in this class. This class is
     ///     used to describe the set of messages affected by a mapping.
     /// </summary>
@@ -29,33 +29,33 @@ namespace MidiShapeShifter.Mss
         /// </summary>
 
         [DataMember(Name = "Data1RangeBottom")]
-        protected int _data1RangeBottom;
-        public int Data1RangeBottom { get { return this._data1RangeBottom; }
+        protected double _data1RangeBottom;
+        public double Data1RangeBottom { get { return this._data1RangeBottom; }
                                       set { this._data1RangeBottom = value; } }
         [DataMember(Name = "Data1RangeTop")]
-        protected int _data1RangeTop;
-        public int Data1RangeTop { get { return this._data1RangeTop; }
+        protected double _data1RangeTop;
+        public double Data1RangeTop { get { return this._data1RangeTop; }
                                       set { this._data1RangeTop = value; } }
 
         /// <summary>
         ///     Specifies the range of accepted Data2 values
         /// </summary>
         [DataMember(Name = "Data2RangeBottom")]
-        protected int _data2RangeBottom;
-        public int Data2RangeBottom { get { return this._data2RangeBottom; } 
+        protected double _data2RangeBottom;
+        public double Data2RangeBottom { get { return this._data2RangeBottom; } 
                                       set { this._data2RangeBottom = value; } }
         [DataMember(Name = "Data2RangeTop")]
-        protected int _data2RangeTop;
-        public int Data2RangeTop { get { return this._data2RangeTop; } 
+        protected double _data2RangeTop;
+        public double Data2RangeTop { get { return this._data2RangeTop; } 
                                       set { this._data2RangeTop = value; } }
 
         /// <summary>
         ///     Initializes the public member varialbes of this class. This method does not need to 
         ///     be called as the public members can be initialized individually.
         /// </summary>
-        public void InitPublicMembers(MssMsgType msgType, 
-                         int data1RangeBottom, int data1RangeTop, 
-                         int data2RangeBottom, int data2RangeTop)
+        public void InitPublicMembers(MssMsgType msgType,
+                         double data1RangeBottom, double data1RangeTop,
+                         double data2RangeBottom, double data2RangeTop)
         {
             this.MsgType = msgType;
 
@@ -70,7 +70,7 @@ namespace MidiShapeShifter.Mss
         ///     initialize the class, a MssMsg will have to match data1 and data2 exactally to fall
         ///     into this range.
         /// </summary>
-        public void InitPublicMembers(MssMsgType msgType, int data1, int data2)
+        public void InitPublicMembers(MssMsgType msgType, double data1, double data2)
         {
             InitPublicMembers(msgType, data1, data1, data2, data2);
         }
@@ -160,10 +160,10 @@ namespace MidiShapeShifter.Mss
         {
             int hash = 13;
             hash = (hash * 7) + (int)this.MsgType;
-            hash = (hash * 7) + this.Data1RangeBottom;
-            hash = (hash * 7) + this.Data1RangeTop;
-            hash = (hash * 7) + this.Data2RangeBottom;
-            hash = (hash * 7) + this.Data2RangeTop;
+            hash = (hash * 7) + this.Data1RangeBottom.GetHashCode();
+            hash = (hash * 7) + this.Data1RangeTop.GetHashCode();
+            hash = (hash * 7) + this.Data2RangeBottom.GetHashCode();
+            hash = (hash * 7) + this.Data2RangeTop.GetHashCode();
             return hash;
         }
     }

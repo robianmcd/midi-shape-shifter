@@ -19,7 +19,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         protected int chanRangeBottom;
         protected int chanRangeTop;
 
-        protected override Control EntryField1
+        public override Control EntryField1
         {
             get
             {
@@ -39,7 +39,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             }
         }
 
-        protected override Control EntryField2
+        public override Control EntryField2
         {
             get
             {

@@ -25,7 +25,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             this.parameterViewer = parameterViewer;
         }
 
-        protected override Control EntryField1
+        public override Control EntryField1
         {
             get
             {
@@ -75,7 +75,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             ((ComboBox)EntryField1).SelectedIndex = paramIndex;
         }
 
-        protected override Control EntryField2
+        public override Control EntryField2
         {
             get
             {

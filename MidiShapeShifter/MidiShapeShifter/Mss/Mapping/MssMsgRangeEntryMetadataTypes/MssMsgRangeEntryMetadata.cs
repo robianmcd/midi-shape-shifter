@@ -57,7 +57,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         /// <summary>
         ///     The label associated with the first entry field.
         /// </summary>
-        protected Label EntryField1Lbl
+        public Label EntryField1Lbl
         {
             get
             { 
@@ -80,7 +80,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         /// <summary>
         ///     The label associated with the second entry field.
         /// </summary>
-        protected Label EntryField2Lbl
+        public Label EntryField2Lbl
         {
             get
             {
@@ -103,7 +103,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         /// <summary>
         ///     The control that is the first entry field.
         /// </summary>
-        protected abstract Control EntryField1
+        public abstract Control EntryField1
         {
             get;
         }
@@ -111,7 +111,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         /// <summary>
         ///     The control that is the second entry field.
         /// </summary>
-        protected abstract Control EntryField2
+        public abstract Control EntryField2
         {
             get;
         }

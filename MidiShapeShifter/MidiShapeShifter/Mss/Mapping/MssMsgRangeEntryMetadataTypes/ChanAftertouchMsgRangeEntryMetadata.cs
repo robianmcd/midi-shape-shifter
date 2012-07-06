@@ -13,7 +13,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             get { return MssMsgType.ChanAftertouch; }
         }
 
-        protected override Control EntryField2
+        public override Control EntryField2
         {
             get
             {

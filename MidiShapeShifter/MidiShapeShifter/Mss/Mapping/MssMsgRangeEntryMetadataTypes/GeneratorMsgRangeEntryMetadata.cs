@@ -16,8 +16,8 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         {
             get { return MssMsgType.Generator; }
         }
-        
-        protected override Control EntryField2
+
+        public override Control EntryField2
         {
             get
             {

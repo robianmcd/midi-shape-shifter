@@ -236,6 +236,7 @@
             this.outLearnBtn.TabIndex = 9;
             this.outLearnBtn.Text = "Learn";
             this.outLearnBtn.UseVisualStyleBackColor = true;
+            this.outLearnBtn.Click += new System.EventHandler(this.outLearnBtn_Click);
             // 
             // outEntryField2TextBox
             // 
@@ -334,6 +335,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Mapping Editor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MappingDlg_FormClosing);
             this.Load += new System.EventHandler(this.MappingDlg_Load);
             this.inGroup.ResumeLayout(false);
             this.inGroup.PerformLayout();

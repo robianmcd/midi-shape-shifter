@@ -19,12 +19,18 @@ namespace MidiShapeShifter.Mss.Mapping
     /// </summary>
     public partial class MappingDlg : Form
     {
+        protected enum LearnMode {In, Out, Off}
+        protected LearnMode learnMode;
 
         public Factory_MssMsgRangeEntryMetadata MsgMetadataFactory;
         public IFactory_MssMsgInfo MsgInfoFactory;
 
         protected MssMsgRangeEntryMetadata inMsgMetadata;
         protected MssMsgRangeEntryMetadata outMsgMetadata;
+
+        protected IDryMssEventOutputPort dryEventOut;
+
+        protected MssMsg lastMsgReceived;
 
         /// <summary>
         ///     mappingEntry is passed into this dialog through the Init() method. It can be used to determine the 
@@ -42,6 +48,9 @@ namespace MidiShapeShifter.Mss.Mapping
             {
                 this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)msgType]);
             }
+
+            this.learnMode = LearnMode.Off;
+            this.lastMsgReceived = null;
         }
 
         /// <summary>
@@ -60,8 +69,9 @@ namespace MidiShapeShifter.Mss.Mapping
             this.mappingEntry = mappingEntry;
             this.MsgMetadataFactory = msgMetadataFactory;
             this.MsgInfoFactory = msgInfoFactory;
+            this.dryEventOut = dryEventOut;
 
-            dryEventOut.DryMssEventRecieved += 
+            this.dryEventOut.DryMssEventRecieved += 
                 new DryMssEventRecievedEventHandler(dryMssEventOutputPort_DryMssEventRecieved);
 
             if (useMappingEntryForDefaultValues == true)
@@ -86,7 +96,6 @@ namespace MidiShapeShifter.Mss.Mapping
 
                 this.outSameAsInCheckBox.Checked = true;
             }
-
         }
 
         /// <summary>
@@ -95,7 +104,91 @@ namespace MidiShapeShifter.Mss.Mapping
         /// <param name="dryMssEvent"></param>
         protected void dryMssEventOutputPort_DryMssEventRecieved(MssEvent dryMssEvent)
         {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action<MssEvent>(dryMssEventOutputPort_DryMssEventRecieved), dryMssEvent);
+                return;
+            }
 
+            MssMsg curMsg = dryMssEvent.mssMsg;
+
+            if (this.learnMode != LearnMode.Off && 
+                curMsg.Type != MssMsgType.NoteOff && 
+                curMsg.Type != MssMsgType.Generator)
+            {
+                if (curMsg.Type == MssMsgType.NoteOn)
+                {
+                    curMsg.Type = MssMsgType.Note;
+                }
+
+                ComboBox curTypeCombo = null;
+
+                if (this.learnMode == LearnMode.In)
+                {
+                    curTypeCombo = this.inTypeCombo;
+                }
+                else if (this.learnMode == LearnMode.Out)
+                {
+                    curTypeCombo = this.outTypeCombo;
+                }
+                else
+                {
+                    //Unknown learn mode
+                    Debug.Assert(false);
+                    return;
+                }
+
+                string newTypeName = MssMsg.MssMsgTypeNames[(int)curMsg.Type];
+                //Ensure that the type of the message recieved can be assigned to the current type combo box.
+                if (curTypeCombo.FindStringExact(newTypeName) != -1)
+                {
+                    //This will trigger the corresponding MsgMetadata to be regenerated.
+                    curTypeCombo.Text = newTypeName;
+                }
+                else
+                {
+                    return;
+                }
+                
+
+                MssMsgRangeEntryMetadata curEntryMetadata;
+                if(this.learnMode == LearnMode.In)
+                {
+                    curEntryMetadata = this.inMsgMetadata;
+                }
+                else //(this.learnMode == LearnMode.Out)
+                {
+                    curEntryMetadata = this.outMsgMetadata;
+                }
+
+                IMssMsgRange learnedRange = new MssMsgRange();
+                learnedRange.MsgType = curMsg.Type;
+
+                //If the type is the same as the last message and either data1 or data2 has changed 
+                //then treat this as a range of notes.
+                if (this.lastMsgReceived != null &&
+                    this.lastMsgReceived.Type == curMsg.Type &&
+                    (this.lastMsgReceived.Data1 != curMsg.Data1 ||
+                    this.lastMsgReceived.Data2 != curMsg.Data2))
+                {
+                    learnedRange.Data1RangeBottom = Math.Min(this.lastMsgReceived.Data1, curMsg.Data1);
+                    learnedRange.Data1RangeTop = Math.Max(this.lastMsgReceived.Data1, curMsg.Data1);
+                    learnedRange.Data2RangeBottom = Math.Min(this.lastMsgReceived.Data2, curMsg.Data2);
+                    learnedRange.Data2RangeTop = Math.Max(this.lastMsgReceived.Data2, curMsg.Data2);
+                }
+                else
+                {
+                    learnedRange.Data1RangeBottom = curMsg.Data1;
+                    learnedRange.Data1RangeTop = curMsg.Data1;
+                    learnedRange.Data2RangeBottom = curMsg.Data2;
+                    learnedRange.Data2RangeTop = curMsg.Data2;
+                }
+
+                curEntryMetadata.UseExistingMsgRange(learnedRange);
+
+                this.lastMsgReceived = curMsg;
+            }
+            
         }
 
         /// <summary>
@@ -112,8 +205,8 @@ namespace MidiShapeShifter.Mss.Mapping
             bool enabledStatus = !((CheckBox)sender).Checked;
 
             outTypeCombo.Enabled = enabledStatus;
-            outEntryField2TextBox.Enabled = enabledStatus;
-            outEntryField1TextBox.Enabled = enabledStatus;
+            this.outMsgMetadata.EntryField1.Enabled = enabledStatus;
+            this.outMsgMetadata.EntryField2.Enabled = enabledStatus;
             outLearnBtn.Enabled = enabledStatus;
 
             if (((CheckBox)sender).Checked == true)
@@ -263,7 +356,44 @@ namespace MidiShapeShifter.Mss.Mapping
 
         private void inLearnBtn_Click(object sender, EventArgs e)
         {
+            if (this.learnMode == LearnMode.In)
+            {
+                this.learnMode = LearnMode.Off;
+                this.lastMsgReceived = null;
+                this.inLearnBtn.Text = "Learn";
+            }
+            else 
+            {
+                this.learnMode = LearnMode.In;
+                this.inLearnBtn.Text = "Stop Learn";
+            }
 
-        }   
+            this.outLearnBtn.Text = "Learn";
+        }
+
+        private void outLearnBtn_Click(object sender, EventArgs e)
+        {
+            if (this.learnMode == LearnMode.Out)
+            {
+                this.learnMode = LearnMode.Off;
+                this.lastMsgReceived = null;
+                this.outLearnBtn.Text = "Learn";
+            }
+            else
+            {
+                this.learnMode = LearnMode.Out;
+                this.outLearnBtn.Text = "Stop Learn";
+            }
+
+            this.inLearnBtn.Text = "Learn";
+        }
+
+        private void MappingDlg_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.dryEventOut.DryMssEventRecieved -=
+                new DryMssEventRecievedEventHandler(dryMssEventOutputPort_DryMssEventRecieved);
+        }
+   
+
     }
 }
