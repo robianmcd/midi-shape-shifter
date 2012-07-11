@@ -267,7 +267,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.PitchBend]);
             this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.PolyAftertouch]);
             this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.ChanAftertouch]);
-            this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.GeneratorToggle]);
+            this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.GeneratorModify]);
             this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.Parameter]);
         }
 

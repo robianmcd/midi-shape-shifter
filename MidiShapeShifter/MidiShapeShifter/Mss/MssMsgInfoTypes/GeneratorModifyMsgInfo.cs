@@ -7,7 +7,7 @@ using MidiShapeShifter.Mss.Generator;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    public class GeneratorToggleMsgInfo : MssMsgInfo
+    public class GeneratorModifyMsgInfo : MssMsgInfo
     {
         protected IGeneratorMappingManager genMappingMgr;
 
@@ -18,22 +18,30 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 
         public override MssMsgType MsgType
         {
-            get { throw new NotImplementedException(); }
+            get { return MssMsgType.GeneratorModify; }
         }
 
         public override string ConvertData1ToString(double Data1)
         {
-            throw new NotImplementedException();
+            IGeneratorMappingEntry genEntry = this.genMappingMgr.GetGenMappingEntryById((int)Data1);
+            if (genEntry != null)
+            {
+                return genEntry.GenConfigInfo.Name;
+            }
+            else
+            {
+                return "";
+            }
         }
 
         public override string ConvertData2ToString(double Data2)
         {
-            throw new NotImplementedException();
+            return StaticGeneratorModifyMsgInfo.GenOperationNames[(int)Data2];
         }
 
         public override string ConvertData3ToString(double Data3)
         {
-            throw new NotImplementedException();
+            return Math.Round(Data3, 2).ToString();
         }
     }
 }

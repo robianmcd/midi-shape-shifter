@@ -75,9 +75,9 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
                         msgInfo = genMsgInfo;
                         break;
                     }
-                case MssMsgType.GeneratorToggle:
+                case MssMsgType.GeneratorModify:
                     {
-                        GeneratorToggleMsgInfo genToggleMsgInfo = new GeneratorToggleMsgInfo();
+                        GeneratorModifyMsgInfo genToggleMsgInfo = new GeneratorModifyMsgInfo();
                         genToggleMsgInfo.Init(this.genMappingMgr);
                         msgInfo = genToggleMsgInfo;
                         break;

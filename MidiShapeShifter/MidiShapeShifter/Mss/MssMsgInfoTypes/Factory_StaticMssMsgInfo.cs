@@ -54,9 +54,9 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
                         msgInfo = new StaticGeneratorMsgInfo();
                         break;
                     }
-                case MssMsgType.GeneratorToggle:
+                case MssMsgType.GeneratorModify:
                     {
-                        msgInfo = new StaticGeneratorToggleMsgInfo();
+                        msgInfo = new StaticGeneratorModifyMsgInfo();
                         break;
                     }
                 case MssMsgType.RelBarPeriodPos:

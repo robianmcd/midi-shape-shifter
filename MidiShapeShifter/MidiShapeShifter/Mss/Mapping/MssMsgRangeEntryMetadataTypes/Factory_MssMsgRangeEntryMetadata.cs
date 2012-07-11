@@ -71,9 +71,9 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
                         msgMetadata = genMsgMetadata;
                         break;
                     }
-                case MssMsgType.GeneratorToggle:
+                case MssMsgType.GeneratorModify:
                     {
-                        var genToggleMsgMetadata = new GeneratorToggleMsgRangeEntryMetadata();
+                        var genToggleMsgMetadata = new GeneratorModifyMsgRangeEntryMetadata();
                         genToggleMsgMetadata.Init(this.genMappingMgr);
                         msgMetadata = genToggleMsgMetadata;
                         break;

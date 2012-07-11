@@ -19,7 +19,7 @@ namespace MidiShapeShifter.Mss
         PolyAftertouch, //  Channel             Note number             Pressure
         ChanAftertouch, //  Channel             N/A                     Pressure
         Generator,      //  Generator ID        N/A                     % through period
-        GeneratorToggle,//  Generator ID        N/A                     Less then 1 toggles off
+        GeneratorModify,//  Generator ID        Gen Operation           Less then 1 toggles off
         RelBarPeriodPos,//  N/A                 N/A                     % through beat synced period 
         RelTimePeriodPos,// N/A                 N/A                     % through timed period 
         Parameter,      //  MssParameterID      N/A                     Relative Parameter Value
@@ -60,7 +60,7 @@ namespace MidiShapeShifter.Mss
             MssMsgTypeNames.Insert((int)MssMsgType.PolyAftertouch, "Poly Afto");
             MssMsgTypeNames.Insert((int)MssMsgType.ChanAftertouch, "Chan Afto");
             MssMsgTypeNames.Insert((int)MssMsgType.Generator, "Generator");
-            MssMsgTypeNames.Insert((int)MssMsgType.GeneratorToggle, "Gen. Toggle");
+            MssMsgTypeNames.Insert((int)MssMsgType.GeneratorModify, "Gen. Modify");
             //The rest of these MssMsgTypeNames are not currently displayed anywhere.
             MssMsgTypeNames.Insert((int)MssMsgType.RelBarPeriodPos, "Beat Synced Period");
             MssMsgTypeNames.Insert((int)MssMsgType.RelTimePeriodPos, "Time based Period");

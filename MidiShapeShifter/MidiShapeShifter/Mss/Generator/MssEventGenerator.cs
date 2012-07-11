@@ -87,9 +87,20 @@ namespace MidiShapeShifter.Mss.Generator
         {
             foreach(MssEvent mssEvent in mssEventList)
             {
-                if (mssEvent.mssMsg.Type == MssMsgType.GeneratorToggle) 
+                if (mssEvent.mssMsg.Type == MssMsgType.GeneratorModify) 
                 {
-                    //TODO: deal with GeneratorToggle message
+                    IGeneratorMappingEntry curMappingEntry = 
+                        this.generatorMappingMgr.GetGenMappingEntryById(mssEvent.mssMsg.Data1AsInt);
+
+                    if (mssEvent.mssMsg.Data3 == 1)
+                    {
+                        curMappingEntry.GenConfigInfo.Enabled = true;
+                    }
+                    else
+                    {
+                        curMappingEntry.GenConfigInfo.Enabled = false;
+                        curMappingEntry.GenHistoryInfo.Initialized = false;
+                    }
                 }
             }
         }

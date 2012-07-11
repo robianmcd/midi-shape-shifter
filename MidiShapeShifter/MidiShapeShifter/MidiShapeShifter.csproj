@@ -124,7 +124,7 @@
     <Compile Include="Mss\MssMsgInfoTypes\StaticCCMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\StaticChanAftertouchMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\StaticGeneratorMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticGeneratorToggleMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\StaticGeneratorModifyMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\StaticGenericRelitivePosMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\StaticMidiMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\StaticMssMsgInfo.cs" />
@@ -180,7 +180,7 @@
     <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\CCMsgRangeEntryMetadata.cs" />
     <Compile Include="Framework\DummyAudioHandler.cs" />
     <Compile Include="Mss\Mapping\EntryFieldInterpretingUtils.cs" />
-    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\GeneratorToggleMsgRangeEntryMetadata.cs" />
+    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\GeneratorModifyMsgRangeEntryMetadata.cs" />
     <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\GeneratorMsgRangeEntryMetadata.cs" />
     <Compile Include="Mss\Mapping\MappingEntry.cs" />
     <Compile Include="Mss\Mapping\MappingManager.cs" />
@@ -201,7 +201,7 @@
     <Compile Include="Mss\MssMsgInfoTypes\ChanAftertouchMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\Factory_MssMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\GeneratorMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\GeneratorToggleMsgInfo.cs" />
+    <Compile Include="Mss\MssMsgInfoTypes\GeneratorModifyMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\GenericRelitivePosMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\IFactory_MssMsgInfo.cs" />
     <Compile Include="Mss\MssMsgInfoTypes\MidiMsgInfo.cs" />
