@@ -58,7 +58,7 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// <summary>
         /// During configureation if it is clear that the input equation will always return the same 
         /// value then OutputVal can be set to that value and this can be set to true so that we 
-        /// don't have to create an execute an Expression everytime Evecute() is called. This is
+        /// don't have to create an execute an Expression everytime Execute() is called. This is
         /// useful when an equation is just a number and setting this flag will improve 
         /// preformance.
         /// </summary>
@@ -80,7 +80,7 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// <returns>
         /// True if the output is valid and false if the equation could not be evaluated.
         /// </returns>
-        public bool Execute()
+        public virtual bool Execute()
         {
             if (inputIsValid)
             {

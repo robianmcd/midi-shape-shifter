@@ -949,28 +949,32 @@ namespace MidiShapeShifter.Mss.UI
             {
                 CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
 
+                GraphPane graphPane = this.mainGraphControl.GraphPane;
+
+                LineItem pointsCurve = (LineItem)graphPane.CurveList.Find(
+                        curveItem => curveItem.Label.Text == GRAPH_CONTROL_POINTS_LABEL);
+                if (pointsCurve == null)
+                {
+                    pointsCurve = EqGraphConfig.CreadControlPointsCurve(GRAPH_CONTROL_POINTS_LABEL);
+                    graphPane.CurveList.Add(pointsCurve);
+                }
+                IPointListEdit pointsCurveEdit = (IPointListEdit)pointsCurve.Points;
+
                 List<XyPoint<double>> pointList;
                 double[] curveYValues;
+                HashSet<int> erroneousControlPointIndexSet;
+                HashSet<int> erroneousCurveIndexSet;
 
                 bool expressionIsValid = this.evaluator.SampleExpressionWithDefaultInputValues(
                         NUM_GRAPH_POINTS,
                         this.mssParameters,
                         this.ActiveGraphableEntry,
                         out pointList,
-                        out curveYValues);
+                        out curveYValues,
+                        out erroneousControlPointIndexSet,
+                        out erroneousCurveIndexSet);
                 if (expressionIsValid)
                 {
-                    GraphPane graphPane = this.mainGraphControl.GraphPane;
-
-                    LineItem pointsCurve = (LineItem)graphPane.CurveList.Find(
-                            curveItem => curveItem.Label.Text == GRAPH_CONTROL_POINTS_LABEL);
-                    if (pointsCurve == null)
-                    {
-                        pointsCurve = EqGraphConfig.CreadControlPointsCurve(GRAPH_CONTROL_POINTS_LABEL);
-                        graphPane.CurveList.Add(pointsCurve);
-                    }
-                    IPointListEdit pointsCurveEdit = (IPointListEdit)pointsCurve.Points;
-
                     //Update modified points and add new points
                     for(int i = 0; i < pointList.Count; i++)
                     {
@@ -998,16 +1002,9 @@ namespace MidiShapeShifter.Mss.UI
                     {
                         pointsCurve.Points[curveInfo.SelectedEquationIndex].ColorValue = 1;
                     }
-
-                    bool highlightCurve = false;
-
-                    if (curveInfo.SelectedEquationType == EquationType.Curve &&
-                                curveInfo.SelectedEquationIndex == 0)
-                    {
-                        highlightCurve = true;
-                    }
+                    
                     LineItem curCurve =
-                        EqGraphConfig.CreateEqCurve(EQUATION_CURVE_LABEL_PREFIX + "-0", highlightCurve);
+                        EqGraphConfig.CreateEqCurve(EQUATION_CURVE_LABEL_PREFIX + "-0");
                     IPointListEdit curCurveEdit = (IPointListEdit)curCurve.Points;
 
 
@@ -1049,18 +1046,7 @@ namespace MidiShapeShifter.Mss.UI
                                 }
                             }
 
-                            if (curveInfo.SelectedEquationType == EquationType.Curve &&
-                                curveInfo.SelectedEquationIndex == nextPointIndex)
-                            {
-                                highlightCurve = true;
-                            }
-                            else
-                            {
-                                highlightCurve = false;
-                            }
-                            curCurve = EqGraphConfig.CreateEqCurve(
-                                EQUATION_CURVE_LABEL_PREFIX + "-" + curXVal.ToString(),
-                                highlightCurve);
+                            curCurve = EqGraphConfig.CreateEqCurve(EQUATION_CURVE_LABEL_PREFIX + "-" + curXVal.ToString());
                             curCurveEdit = (IPointListEdit)curCurve.Points;
 
                             if (nextStartingPoint != null)
@@ -1081,19 +1067,65 @@ namespace MidiShapeShifter.Mss.UI
                     {
                         graphPane.CurveList.Add(curCurve);
                     }
+                }
 
-                    this.mainGraphControl.Invalidate();
-                }
-                else
+                for (int i = 0; i < pointsCurve.Points.Count; i++)
                 {
-                    //TODO: show that the line is not using the current formula.
+                    GraphSegmentColorStausFlags curPointColorStatus = GraphSegmentColorStausFlags.None;
+
+                    if (curveInfo.SelectedEquationType == EquationType.Point &&
+                        i == curveInfo.SelectedEquationIndex)
+                    {
+                        curPointColorStatus |= GraphSegmentColorStausFlags.Selected;
+                    }
+
+                    if (expressionIsValid) 
+                    {
+                        curPointColorStatus |= GraphSegmentColorStausFlags.Enabled;
+                    }
+
+                    if (erroneousControlPointIndexSet.Contains(i)) 
+                    {
+                        curPointColorStatus |= GraphSegmentColorStausFlags.Erroneous;
+                    }
+
+                    EqGraphConfig.SetControlPointColorStatus(pointsCurve.Points[i], curPointColorStatus);
+
                 }
+
+
+                List<CurveItem> eqCurveList = graphPane.CurveList.FindAll(curveItem => curveItem.Label.Text.StartsWith(EQUATION_CURVE_LABEL_PREFIX));
+                for (int i = 0; i < eqCurveList.Count; i++)
+                {
+                    GraphSegmentColorStausFlags curEqCurveColorStatus = GraphSegmentColorStausFlags.None;
+
+                    LineItem curEqCurve = (LineItem)eqCurveList[i];
+                    if (curveInfo.SelectedEquationType == EquationType.Curve &&
+                        i == curveInfo.SelectedEquationIndex)
+                    {
+                        curEqCurveColorStatus |= GraphSegmentColorStausFlags.Selected;
+                    }
+
+                    if (expressionIsValid)
+                    {
+                        curEqCurveColorStatus |= GraphSegmentColorStausFlags.Enabled;
+                    }
+
+                    if (erroneousCurveIndexSet.Contains(i))
+                    {
+                        curEqCurveColorStatus |= GraphSegmentColorStausFlags.Erroneous;
+                    }
+
+                    EqGraphConfig.SetEqCurveColorStatus(curEqCurve, curEqCurveColorStatus);
+                }
+
             }
             else //this.ActiveGraphableEntry is null
             {
                 this.mainGraphControl.GraphPane.CurveList.Clear();
-                this.mainGraphControl.Invalidate();
             }
+
+            this.mainGraphControl.Invalidate();
         }
 
         protected void RemoveEquationCurvesFromGraph()

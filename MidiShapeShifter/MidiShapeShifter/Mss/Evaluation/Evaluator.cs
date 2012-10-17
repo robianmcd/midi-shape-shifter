@@ -69,6 +69,13 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// The evaluated curve equation values are returned in this list. The X value for the ith 
         /// point is i / (numSamplePoints - 1).
         /// </param>
+        /// <param name="erroneousControlPointIndexSet">
+        /// empty if all points had valid equations. Otherwise the index of at least one point with an invalid equation.
+        /// </param>
+        /// <param name="erroneousCurveIndexSet">
+        /// -1 if there is an invalid control point or if all curve equations are valid. Otherwise 
+        /// the index of the first curve with an invalid equation.
+        /// </param>
         /// <returns>
         /// true if all equations could be evaluated and false otherwise. The out parameters are only 
         /// garunteed to be valid if the return value is true.
@@ -78,8 +85,14 @@ namespace MidiShapeShifter.Mss.Evaluation
                 IMssParameterViewer mssParameterViewer,
                 IMappingEntry mappingEntry,
                 out List<XyPoint<double>> pointList,
-                out double[] curveYValues)
+                out double[] curveYValues,
+                out HashSet<int> erroneousControlPointIndexSet,
+                out HashSet<int> erroneousCurveIndexSet
+            )
         {
+            erroneousControlPointIndexSet = new HashSet<int>();
+            erroneousCurveIndexSet = new HashSet<int>();
+
             curveYValues = new double[numSamplePoints];
             bool outputIsValid = true;
 
@@ -143,6 +156,9 @@ namespace MidiShapeShifter.Mss.Evaluation
                 }
                 else
                 {
+                    erroneousControlPointIndexSet = evalJob.ErroneousControlPointIndexSet;
+                    erroneousCurveIndexSet = evalJob.ErroneousCurveIndexSet;
+
                     outputIsValid = false;
                     break;
                 }

@@ -15,6 +15,8 @@ namespace MidiShapeShifter.Mss.Evaluation
                 IMssParameterViewer mssParameters,
                 IMappingEntry mappingEntry,
                 out List<XyPoint<double>> points,
-                out double[] curveYValues);
+                out double[] curveYValues,
+                out HashSet<int> erroneousControlPointIndex,
+                out HashSet<int> erroneousCurveIndex);
     }
 }

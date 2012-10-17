@@ -26,6 +26,9 @@ namespace MidiShapeShifter.Mss.Evaluation
         public const string FUNC_NAME_LFO = "lfo";
         public const string FUNC_NAME_WAVEFORM = "waveform";
 
+        public HashSet<int> ErroneousControlPointIndexSet = new HashSet<int>();
+        public HashSet<int> ErroneousCurveIndexSet = new HashSet<int>();
+
 
         /// <summary>
         /// Stores the x and y coordinates of each control point. This information is 
@@ -44,6 +47,23 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// </summary>
         protected EvaluationCurveInput previousEvalInput;
 
+        public override bool Execute() {
+            base.Execute();
+
+            //If the output is invalid and it was not the result of an invalid control point then 
+            //blame it on the current curve.
+            if (this.OutputIsValid == false && this.ErroneousControlPointIndexSet.Count == 0)
+            {
+                this.ErroneousCurveIndexSet.Add(GetCurveIndex());
+            }
+            else
+            {
+                this.ErroneousCurveIndexSet.Clear();
+            }
+
+            return this.OutputIsValid;
+        }
+
         public EvaluationCurveJob()
         {
             this.controlPointValues = new List<XyPoint<double>>();
@@ -61,7 +81,7 @@ namespace MidiShapeShifter.Mss.Evaluation
             this.evalInput = (EvaluationCurveInput) evalInput.Clone();
 
             //Calculate the values for this.controlPointValues
-            if (CalculateControlPointValues() == false)
+            if (CalculateControlPointValues(out ErroneousControlPointIndexSet) == false)
             {
                 return;
             }
@@ -85,12 +105,18 @@ namespace MidiShapeShifter.Mss.Evaluation
             }
         }
 
+
         /// <summary>
         /// Calculates the X and Y coordinates of each control point and stores them in this.controlPointValues
         /// </summary>
+        /// <param name="erroneousControlPointIndexSet">
+        /// empty if all points had valid equations. Otherwise contains the index of at least one point with an invalid equation.
+        /// </param>
         /// <returns>True on success, False if the control point equations could not be evaluated.</returns>
-        protected bool CalculateControlPointValues()
+        protected bool CalculateControlPointValues(out HashSet<int> erroneousControlPointIndexSet)
         {
+            erroneousControlPointIndexSet = new HashSet<int>();
+
             //If the point equations and variables have not changed then the previously calculated 
             //control point values can be used.
             if (PointEquationChanged() == false &&
@@ -115,8 +141,10 @@ namespace MidiShapeShifter.Mss.Evaluation
 
             double previousPointXVal = 0;
             //Itterate through each control point equation and evaluate it's X and Y coordinates.
-            foreach (XyPoint<string> pointEquation in this.evalInput.PointEquations)
+            for (int i = 0; i < this.evalInput.PointEquations.Count; i++)
             {
+                XyPoint<string> pointEquation = this.evalInput.PointEquations[i];
+
                 //Evaluate the equation for the current control point's X value
                 pointEvalInput.EquationStr = pointEquation.X;
                 pointXEvalJob.Configure(pointEvalInput);
@@ -127,13 +155,19 @@ namespace MidiShapeShifter.Mss.Evaluation
                 pointYEvalJob.Configure(pointEvalInput);
                 pointYEvalJob.Execute();
 
-                //If one of the equations could not be evaluated or if the X values for the 
-                //control points are not in order from smallest to largest then return false.
-                if (pointXEvalJob.OutputIsValid == false || 
-                    pointXEvalJob.OutputVal < previousPointXVal ||
-                    pointYEvalJob.OutputIsValid == false)
+                //If one of the equations could not be evaluated return false
+                if (pointXEvalJob.OutputIsValid == false || pointYEvalJob.OutputIsValid == false)
                 {
                     this.inputIsValid = false;
+                    erroneousControlPointIndexSet.Add(i);
+                    return false;
+                }
+                //If the control points are not in order from smallest to largest then return false.
+                else if (pointXEvalJob.OutputVal < previousPointXVal) 
+                {
+                    this.inputIsValid = false;
+                    erroneousControlPointIndexSet.Add(i);
+                    erroneousControlPointIndexSet.Add(i - 1);
                     return false;
                 }
 
