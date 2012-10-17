@@ -59,9 +59,22 @@ namespace MidiShapeShifter.Mss
         [DataMember]
         public List<MssParamInfo> ParamInfoList;
 
+        public bool AllEquationsAreValid;
+
         public CurveShapeInfo()
         {
+            ConstructNonSerializableMembers();
+        }
 
+        [OnDeserializing]
+        protected void OnDeserializing(StreamingContext context)
+        {
+            ConstructNonSerializableMembers();
+        }
+
+        protected void ConstructNonSerializableMembers() 
+        {
+            this.AllEquationsAreValid = false;
         }
 
         public void InitWithDefaultValues()

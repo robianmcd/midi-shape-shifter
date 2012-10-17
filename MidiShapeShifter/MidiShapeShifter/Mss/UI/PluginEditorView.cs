@@ -965,7 +965,7 @@ namespace MidiShapeShifter.Mss.UI
                 HashSet<int> erroneousControlPointIndexSet;
                 HashSet<int> erroneousCurveIndexSet;
 
-                bool expressionIsValid = this.evaluator.SampleExpressionWithDefaultInputValues(
+                curveInfo.AllEquationsAreValid = this.evaluator.SampleExpressionWithDefaultInputValues(
                         NUM_GRAPH_POINTS,
                         this.mssParameters,
                         this.ActiveGraphableEntry,
@@ -973,7 +973,7 @@ namespace MidiShapeShifter.Mss.UI
                         out curveYValues,
                         out erroneousControlPointIndexSet,
                         out erroneousCurveIndexSet);
-                if (expressionIsValid)
+                if (curveInfo.AllEquationsAreValid)
                 {
                     //Update modified points and add new points
                     for(int i = 0; i < pointList.Count; i++)
@@ -1079,7 +1079,7 @@ namespace MidiShapeShifter.Mss.UI
                         curPointColorStatus |= GraphSegmentColorStausFlags.Selected;
                     }
 
-                    if (expressionIsValid) 
+                    if (curveInfo.AllEquationsAreValid) 
                     {
                         curPointColorStatus |= GraphSegmentColorStausFlags.Enabled;
                     }
@@ -1106,7 +1106,7 @@ namespace MidiShapeShifter.Mss.UI
                         curEqCurveColorStatus |= GraphSegmentColorStausFlags.Selected;
                     }
 
-                    if (expressionIsValid)
+                    if (curveInfo.AllEquationsAreValid)
                     {
                         curEqCurveColorStatus |= GraphSegmentColorStausFlags.Enabled;
                     }
@@ -1429,12 +1429,14 @@ namespace MidiShapeShifter.Mss.UI
                 return false;
             }
 
-            if (this.ActiveGraphableEntry != null)
+            if (this.ActiveGraphableEntry != null && this.ActiveGraphableEntry.CurveShapeInfo.AllEquationsAreValid != false)
             {
+                CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
+
                 Point mousePt = new Point(e.X, e.Y);
 
                 GraphPane pane = this.mainGraphControl.GraphPane;
-                CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
+                
 
                 RectangleF chartRect = pane.Chart.Rect;
 
@@ -1597,30 +1599,32 @@ namespace MidiShapeShifter.Mss.UI
         {
             menuStrip.Items.Clear();
 
-            LineItem controlPointCurve;
-            int nearestPointIndex;
+            if (this.ActiveGraphableEntry != null) {
+                LineItem controlPointCurve;
+                int nearestPointIndex;
 
-            //If the click was close enough to an exsisting control point then start dragging 
-            //it. The distances that is deemed "close enough" is defined in 
-            //EqGraphConfig.ConfigureEqGraph.
-            bool controlPointClicked = 
-                GetClickedControlPoint(mousePt, out controlPointCurve, out nearestPointIndex);
+                //If the click was close enough to an exsisting control point then start dragging 
+                //it. The distances that is deemed "close enough" is defined in 
+                //EqGraphConfig.ConfigureEqGraph.
+                bool controlPointClicked = 
+                    GetClickedControlPoint(mousePt, out controlPointCurve, out nearestPointIndex);
 
 
-            // create a new menu item
-            ToolStripMenuItem item = new ToolStripMenuItem();
-            item.Name = "ZedMenuDeletePoint";
-            // This is the text that will show up in the menu
-            item.Text = "Delete Point";
-            item.Enabled = controlPointClicked;
+                // create a new menu item
+                ToolStripMenuItem item = new ToolStripMenuItem();
+                item.Name = "ZedMenuDeletePoint";
+                // This is the text that will show up in the menu
+                item.Text = "Delete Point";
+                item.Enabled = controlPointClicked && this.ActiveGraphableEntry.CurveShapeInfo.AllEquationsAreValid;
 
-            DeletePointParams deletePointParams = new DeletePointParams();
-            deletePointParams.pointIndex = nearestPointIndex;
-            item.Tag = deletePointParams;
+                DeletePointParams deletePointParams = new DeletePointParams();
+                deletePointParams.pointIndex = nearestPointIndex;
+                item.Tag = deletePointParams;
 
-            // Add a handler that will respond when that menu item is selected
-            item.Click += new System.EventHandler(ZedGraph_DeletePoint);
-            menuStrip.Items.Add(item);
+                // Add a handler that will respond when that menu item is selected
+                item.Click += new System.EventHandler(ZedGraph_DeletePoint);
+                menuStrip.Items.Add(item);
+            }
         }
 
         private bool GetClickedControlPoint(Point mousePt, 
