@@ -229,7 +229,6 @@
             // outLearnBtn
             // 
             this.outLearnBtn.CausesValidation = false;
-            this.outLearnBtn.Enabled = false;
             this.outLearnBtn.Location = new System.Drawing.Point(29, 185);
             this.outLearnBtn.Name = "outLearnBtn";
             this.outLearnBtn.Size = new System.Drawing.Size(75, 23);
