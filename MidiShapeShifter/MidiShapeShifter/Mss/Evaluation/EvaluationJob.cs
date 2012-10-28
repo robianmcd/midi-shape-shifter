@@ -48,7 +48,7 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// This should be set to false if there is an error during 
         /// configuration due to invalid input.
         /// </summary>
-        protected bool inputIsValid { get; set; }
+        public bool InputIsValid { get; protected set; }
 
         /// <summary>
         /// Specifies whether OutputVal is valid.
@@ -82,7 +82,7 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// </returns>
         public virtual bool Execute()
         {
-            if (inputIsValid)
+            if (InputIsValid)
             {
                 if (useConstantOutput)
                 {
@@ -163,7 +163,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                     ReturnStatus<Expression> expressionRetStatus = CreateExpression(expressionStr);
                     if (expressionRetStatus.IsValid == false)
                     {
-                        this.inputIsValid = false;
+                        this.InputIsValid = false;
                     }
                     else
                     {
@@ -175,7 +175,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                 }
             }
 
-            return inputIsValid;
+            return InputIsValid;
         }
 
         /// <summary>

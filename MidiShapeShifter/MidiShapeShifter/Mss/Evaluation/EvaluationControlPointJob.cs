@@ -20,7 +20,7 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// </summary>
         public void Configure(EvaluationControlPointInput evalInput)
         {
-            this.inputIsValid = true;
+            this.InputIsValid = true;
             this.OutputIsValid = false;
 
             this.evalInput = evalInput;
