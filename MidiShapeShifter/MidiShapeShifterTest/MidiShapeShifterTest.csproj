@@ -54,6 +54,9 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'test|AnyCPU'">
+    <OutputPath>bin\test\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Jacobi.Vst.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=91c2e9ab1e633fc3, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
