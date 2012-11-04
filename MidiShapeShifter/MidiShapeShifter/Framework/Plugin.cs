@@ -132,7 +132,8 @@ namespace MidiShapeShifter.Framework
                 var pluginPersistence = new VstPluginPersistence<MssComponentHub>();
                 pluginPersistence.Init(() => this.MssHub, 
                                        this.PluginPrograms, 
-                                       () => this.MssHub.MssProgramMgr);
+                                       () => this.MssHub.MssProgramMgr,
+                                       () => this.MssHub.PluginEditorView);
                 pluginPersistence.PluginDeserialized += 
                     new VstPluginPersistence<MssComponentHub>.PluginDeserializedEventHandler(
                         VstPluginPersistence_PluginDeserialized);

@@ -75,14 +75,7 @@ namespace MidiShapeShifter.Mss
         protected Factory_MssMsgRangeEntryMetadata msgEntryMetadataFactory;
         protected IFactory_MssMsgInfo msgInfoFactory;
 
-        protected PluginEditorView _pluginEditorView;
-        public PluginEditorView PluginEditorView { 
-            get 
-            {
-                EnsurePluginEditorExists();
-                return this._pluginEditorView; 
-            } 
-        }
+        public PluginEditorView PluginEditorView;
 
         [DataMember(Name = "PluginEditorInfo")]
         protected SerializablePluginEditorInfo pluginEditorInfo;
@@ -175,9 +168,9 @@ namespace MidiShapeShifter.Mss
         {
             EnsurePluginEditorExists();
 
-            SetParent(this._pluginEditorView.Handle, hWnd);
+            SetParent(this.PluginEditorView.Handle, hWnd);
 
-            this._pluginEditorView.Show();
+            this.PluginEditorView.Show();
         }
 
         /// <summary>
@@ -185,24 +178,24 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         public void ClosePluginEditor()
         {
-            if (this._pluginEditorView != null)
+            if (this.PluginEditorView != null)
             {
-                this._pluginEditorView.Dispose();
-                this._pluginEditorView = null;
+                this.PluginEditorView.Dispose();
+                this.PluginEditorView = null;
             }
         }
 
         /// <summary>
         ///     Creates and initializes the PluginEditorView if it does not already exist.
         /// </summary>
-        protected void EnsurePluginEditorExists()
+        public void EnsurePluginEditorExists()
         {
-            if (this._pluginEditorView == null)
+            if (this.PluginEditorView == null)
             {
-                this._pluginEditorView = new PluginEditorView();
+                this.PluginEditorView = new PluginEditorView();
 
-                this._pluginEditorView.CreateControl();
-                this._pluginEditorView.Init(this.MssParameters, 
+                this.PluginEditorView.CreateControl();
+                this.PluginEditorView.Init(this.MssParameters, 
                                             this.mappingMgr, 
                                             this.genMappingMgr,
                                             this.MssProgramMgr,

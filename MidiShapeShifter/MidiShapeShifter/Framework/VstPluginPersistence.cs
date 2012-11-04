@@ -7,6 +7,7 @@ using Jacobi.Vst.Framework;
 using MidiShapeShifter.CSharpUtil;
 
 using MidiShapeShifter.Mss;
+using System.Windows.Forms;
 
 namespace MidiShapeShifter.Framework
 {
@@ -40,7 +41,7 @@ namespace MidiShapeShifter.Framework
         protected Func<SerializableRootType> getSerializableRootFromPlugin;
 
         protected Func<MssProgramMgr> getMssProgramMgr;
-
+        protected Func<Control> getMainThreadHandel;
         protected PluginPrograms pluginPrograms;
 
         public VstPluginPersistence()
@@ -54,14 +55,19 @@ namespace MidiShapeShifter.Framework
         /// <param name="getSerializableRootFromPlugin">
         /// Gets the object that will be serialized and deserialized
         /// </param>
+        /// <param name="getMainThreadHandel">
+        /// Gets a control that was created on the main thread or null if one doesn't exist yet.
+        /// </param>
         public void Init(Func<SerializableRootType> getSerializableRootFromPlugin,
                          PluginPrograms pluginPrograms,
-                         Func<MssProgramMgr> getMssProgramMgr)
+                         Func<MssProgramMgr> getMssProgramMgr,
+                         Func<Control> getMainThreadHandel)
         {
             this.getSerializableRootFromPlugin = getSerializableRootFromPlugin;
             this.pluginPrograms = pluginPrograms;
 
             this.getMssProgramMgr = getMssProgramMgr;
+            this.getMainThreadHandel = getMainThreadHandel;
             AttachHandlersToMssProgramMgrEvents();
         }
 
@@ -108,6 +114,13 @@ namespace MidiShapeShifter.Framework
         /// is null.</param>
         public void ReadPrograms(Stream stream, VstProgramCollection programs)
         {
+            Control mainThreadHandel = getMainThreadHandel();
+            if (mainThreadHandel != null && mainThreadHandel.InvokeRequired)
+            {
+                mainThreadHandel.Invoke(new Action<Stream, VstProgramCollection>(ReadPrograms), stream, programs);
+                return;
+            }
+
             if (BeforePluginDeserialized != null)
             {
                 BeforePluginDeserialized();

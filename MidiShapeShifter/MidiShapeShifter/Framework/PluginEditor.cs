@@ -39,7 +39,10 @@ namespace MidiShapeShifter.Framework
 
         public Rectangle Bounds
         {
-            get { return this.MssHub.PluginEditorView.Bounds; }
+            get {
+                this.MssHub.EnsurePluginEditorExists();
+                return this.MssHub.PluginEditorView.Bounds; 
+            }
         }
 
         public void Close()
