@@ -50,12 +50,6 @@ namespace MidiShapeShifter.Mss
         [DataMember]
         public EquationType SelectedEquationType;
 
-        /// <summary>
-        ///     Index if the selected preset
-        /// </summary>
-        [DataMember]
-        public SettingsFileInfo ActiveTransformPreset;
-
         [DataMember]
         public List<MssParamInfo> ParamInfoList;
 
@@ -86,8 +80,6 @@ namespace MidiShapeShifter.Mss
             this.SelectedEquationType = EquationType.Curve;
 
             this.ParamInfoList = MssParameters.CreateDefaultPresetParamInfoList();
-
-            this.ActiveTransformPreset = TransformPresetMgr.CreateDefaultTransformPresetFileInfo();
 
             this.CurveEquations.Add(DEFAULT_EQUATION);
         }

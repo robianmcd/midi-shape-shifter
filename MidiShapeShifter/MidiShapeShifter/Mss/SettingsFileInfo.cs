@@ -10,15 +10,11 @@ namespace MidiShapeShifter.Mss
 {
     public enum SettingsFileLocationType { Factory, User, External }
 
-    [DataContract]
     public class SettingsFileInfo
     {
-        [DataMember]
         public string Name { get; set; }
 
-        [DataMember]
         public SettingsFileLocationType FileLocationType { get; private set; }
-        [DataMember]
         public string FilePath { get; private set; }
 
         public SettingsFileInfo()
@@ -43,6 +39,13 @@ namespace MidiShapeShifter.Mss
             {
                 this.FileLocationType = SettingsFileLocationType.External;
             }
+        }
+
+        public void InitAsExternal(string name)
+        {
+            this.Name = name;
+            this.FilePath = "";
+            this.FileLocationType = SettingsFileLocationType.External;
         }
 
         public override bool Equals(object o)

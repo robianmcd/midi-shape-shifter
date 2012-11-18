@@ -57,6 +57,9 @@ namespace MidiShapeShifter.Mss.Mapping
         public CurveShapeInfo CurveShapeInfo { get { return this._curveShapeInfo; }
                                                set { this._curveShapeInfo = value; } }
 
+        [DataMember]
+        public string ActiveTransformPresetName {get; set;}
+
         /// <summary>
         /// Specifies the primary input field. E.G. if this class was for a velocity curve then this 
         /// field would be Data3.
@@ -72,6 +75,8 @@ namespace MidiShapeShifter.Mss.Mapping
         public MappingEntry() 
         {
             this.PrimaryInputSource = DEFAULT_INPUT_TYPE;
+
+            this.ActiveTransformPresetName = TransformPresetMgr.DEFAULT_TRANSFORM_PRESET_NAME;
         }
 
         public void InitAllMembers(IMssMsgRange inMsgRange, IMssMsgRange outMsgRange,

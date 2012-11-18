@@ -47,14 +47,13 @@ namespace MidiShapeShifter.Mss
         /// and two settings files have the same file name then (copy) will be appended to 
         /// one of them.
         /// </summary>
-        protected abstract bool EnforceUniqueSettingsFileNames { get; } 
+        protected abstract bool EnforceUniqueSettingsFileNames { get; }
 
-        /// <summary>
-        /// Info about the active settings file. This will not necessarily reference an item in 
-        /// SettingsFileTree.
-        /// </summary>
-        [DataMember]
-        abstract public SettingsFileInfo ActiveSettingsFile { get; protected set; }
+        public abstract string ActiveSettingsFileName { get; protected set; }
+
+        public SettingsFileInfo GetActiveSettingsFile() {
+            return GetSettingsFromName(this.ActiveSettingsFileName);
+        }
 
         private FileTreeFolderNode<SettingsFileInfo> _settingsFileTree;
         /// <summary>
@@ -111,17 +110,11 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         protected void ReinitializeSettingsFileCollections()
         {
+
             //Clear the previously stored settings files
             this.SettingsFileTree = new FileTreeFolderNode<SettingsFileInfo>();
             this.FlatSettingsFileList.Clear();
 
-            if (this.ActiveSettingsFile != null)
-            {
-                //This first item in the flat list will always be the active SettingsFileInfo. This
-                //will ensure that the active SettingsFileInfo's name will not be changed due to a 
-                //namming conflict.
-                this.FlatSettingsFileList.Add(this.ActiveSettingsFile);
-            }
             this.SettingsFileTree.Init("root", null);
 
             //Adds settings files found in the the factory settings folder to the collections.
@@ -167,7 +160,7 @@ namespace MidiShapeShifter.Mss
                 if (this.EnforceUniqueSettingsFileNames == true)
                 {
                     //If the new settings file is not active then give it a unique name.
-                    if (newSettingsFile.Equals(this.ActiveSettingsFile) == false)
+                    if (newSettingsFile.Name.Equals(this.ActiveSettingsFileName) == false)
                     {
                         while (this.FlatSettingsFileList.Find(
                             (SettingsFileInfo existingSettings) => existingSettings.Name == newSettingsFile.Name)
@@ -217,15 +210,17 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         public void SaveActiveSettingsFile()
         {
-            if (this.ActiveSettingsFile.FileLocationType == SettingsFileLocationType.Factory ||
-                File.Exists(this.ActiveSettingsFile.FilePath) == false)
+            SettingsFileInfo activeSettingsFile = GetActiveSettingsFile();
+
+            if (activeSettingsFile.FileLocationType == SettingsFileLocationType.Factory ||
+                File.Exists(activeSettingsFile.FilePath) == false)
             {
                 SaveAsActiveSettingsFile();
             }
             else
             {
                 FileStream newProgramStream = new
-                    FileStream(this.ActiveSettingsFile.FilePath, FileMode.Truncate);
+                    FileStream(activeSettingsFile.FilePath, FileMode.Truncate);
                 SaveActiveSettingsToFileStream(newProgramStream);
                 newProgramStream.Close();
 
@@ -238,20 +233,22 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         public void SaveAsActiveSettingsFile()
         {
+            SettingsFileInfo activeSettingsFile = GetActiveSettingsFile();
+
             SaveFileDialog dlg = new SaveFileDialog();
             dlg.Filter = this.GetSettingsFileFilter();
 
-            if (this.ActiveSettingsFile.FileLocationType == SettingsFileLocationType.User)
+            if (activeSettingsFile.FileLocationType == SettingsFileLocationType.User)
             {
-                dlg.InitialDirectory = Path.GetDirectoryName(this.ActiveSettingsFile.FilePath);
-                dlg.FileName = Path.GetFileName(this.ActiveSettingsFile.FilePath);
+                dlg.InitialDirectory = Path.GetDirectoryName(activeSettingsFile.FilePath);
+                dlg.FileName = Path.GetFileName(activeSettingsFile.FilePath);
             }
             else
             {
                 //Factory settings should not be overwritten by the user so the default directory
                 //will be the root folder for uesr settings.
                 dlg.InitialDirectory = this.RootFolderForUserSettings;
-                dlg.FileName = ActiveSettingsFile.Name + " (copy)." + SettingsFileExtension;
+                dlg.FileName = activeSettingsFile.Name + " (copy)." + SettingsFileExtension;
             }
 
             if (dlg.ShowDialog() == DialogResult.OK)
@@ -259,7 +256,7 @@ namespace MidiShapeShifter.Mss
                 //Create a SettingsFileInfo instance for the newly created file.
                 SettingsFileInfo newActiveSettingsFile = new SettingsFileInfo();
                 newActiveSettingsFile.Init(dlg.FileName);
-                this.ActiveSettingsFile = newActiveSettingsFile;
+                this.ActiveSettingsFileName = newActiveSettingsFile.Name;
 
                 OnActiveSettingsFileChanged();
 
@@ -272,30 +269,36 @@ namespace MidiShapeShifter.Mss
             }
         }
 
+        public SettingsFileInfo GetSettingsFromName(string settingsName) {
+            //Search for the SettingsFileInfo instance associated with settingsName
+            SettingsFileInfo settingsInfo = this.FlatSettingsFileList.Find(
+                (SettingsFileInfo curProgram) => curProgram.Name == settingsName);
+
+            //settingsInfo could be null if the active settings are external (not user settings or 
+            //factory settings) as this would mean they are not in the FlatSettingsFileList
+            if (settingsInfo == null)
+            {
+                settingsInfo = new SettingsFileInfo();
+                settingsInfo.InitAsExternal(this.ActiveSettingsFileName);
+            }
+
+            return settingsInfo;
+        }
+
         /// <summary>
         /// Loads and active the settings stored in a file whose name is specified by 
         /// newActiveSettingsFileName.
         /// </summary>
         public void LoadAndActivateSettingsFromName(string newActiveSettingsFileName)
         {
-            if (newActiveSettingsFileName == this.ActiveSettingsFile.Name)
+            if (newActiveSettingsFileName == this.ActiveSettingsFileName)
             {
                 return;
             }
 
-            //Search for the SettingsFileInfo instance associated with newActiveSettingsFileName
-            SettingsFileInfo newActiveProgram = this.FlatSettingsFileList.Find(
-                (SettingsFileInfo curProgram) => curProgram.Name == newActiveSettingsFileName);
+            SettingsFileInfo newActiveProgram = GetSettingsFromName(newActiveSettingsFileName);
 
-            if (newActiveProgram != null)
-            {
-                LoadAndActivateSettingsFromSettingsFileInfo(newActiveProgram);
-            }
-            else
-            {
-                //There is no file associated with newActiveSettingsFileName
-                Debug.Assert(false);
-            }
+            LoadAndActivateSettingsFromSettingsFileInfo(newActiveProgram);
         }
 
         /// <summary>
@@ -303,7 +306,7 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         public void LoadAndActivateSettingsFromPath(string programFilePath)
         {
-            if (programFilePath == this.ActiveSettingsFile.FilePath)
+            if (programFilePath == GetActiveSettingsFile().FilePath)
             {
                 return;
             }
@@ -317,7 +320,7 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         public void LoadAndActivateSettingsFromSettingsFileInfo(SettingsFileInfo newActiveProgram)
         {
-            if (newActiveProgram != this.ActiveSettingsFile)
+            if (newActiveProgram != GetActiveSettingsFile())
             {
                 try
                 {
@@ -325,7 +328,7 @@ namespace MidiShapeShifter.Mss
                     LoadSettingsFromFileStream(loadProgramStream);
                     loadProgramStream.Close();
 
-                    this.ActiveSettingsFile = newActiveProgram;
+                    this.ActiveSettingsFileName = newActiveProgram.Name;
                 }
                 catch (FileNotFoundException)
                 {

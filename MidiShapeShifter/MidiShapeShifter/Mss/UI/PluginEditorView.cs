@@ -495,7 +495,7 @@ namespace MidiShapeShifter.Mss.UI
             else //Active mapping does not exsist
             {
             //Update preset controls
-                //Nothing to do.
+                repopulateTransformPresetList();
 
             //Update Graph controls (the equation curve is not updated until the end)
                 SetGraphOutputLabelText(GRAPH_DEFAULT_OUTPUT_LABEL);
@@ -1144,10 +1144,10 @@ namespace MidiShapeShifter.Mss.UI
                 BaseSettingsFileMgr settingsFileMgr,
                 EventHandler itemClickedHandler)
         {
-            if (settingsFileMgr.ActiveSettingsFile != null)
+            if (settingsFileMgr.ActiveSettingsFileName != null)
             {
                 settingsList.Text = CustomStringUtil.CreateStringWithMaxWidth(
-                        settingsFileMgr.ActiveSettingsFile.Name,
+                        settingsFileMgr.ActiveSettingsFileName,
                         settingsList.Width - 10,
                         settingsList.Font);
             }

@@ -25,6 +25,8 @@ namespace MidiShapeShifter.Mss
     [DataContract]
     public class MssProgramMgr : BaseSettingsFileMgr
     {
+        public const string DEFAULT_PROGRAM_NAME = "Blank";
+
         /// <summary>
         /// SaveProgramRequest is sent out when the active program should be saved to the specified
         /// stream.
@@ -44,19 +46,13 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         public event ActiveProgramChangedEventHandler ActiveProgramChanged;
 
-        protected SettingsFileInfo _activeSettingsFile;
-        [DataMember]
-        public override SettingsFileInfo ActiveSettingsFile
-        {
-            get
-            {
-                return this._activeSettingsFile;
-            }
-            protected set
-            {
-                this._activeSettingsFile = value;
-            }
+
+        [DataMember(Name = "ActiveSettingsFileName")]
+        protected string _activeSettingsFileName;
+        public override string ActiveSettingsFileName { get { return this._activeSettingsFileName;}
+            protected set { this._activeSettingsFileName = value; }
         }
+
 
         public MssProgramMgr()
         {
@@ -66,7 +62,7 @@ namespace MidiShapeShifter.Mss
         public void Init()
         {
             //Sets the default program
-            this.ActiveSettingsFile = CreateDefaultActiveSettingsFileInfo();
+            this.ActiveSettingsFileName = DEFAULT_PROGRAM_NAME;
 
             InitBase();
         }
@@ -129,7 +125,7 @@ namespace MidiShapeShifter.Mss
         {
             if (this.ActiveProgramChanged != null)
             {
-                this.ActiveProgramChanged(this.ActiveSettingsFile.Name);
+                this.ActiveProgramChanged(this.ActiveSettingsFileName);
             }
         }
 

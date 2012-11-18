@@ -58,7 +58,7 @@ namespace MidiShapeShifter.Framework
             AttachHandlersToMssProgramMgrEvents();
 
             //Check to see if there is a new program
-            OnProgramChangeFromPlugin(this.mssProgramMgr.ActiveSettingsFile.Name);
+            OnProgramChangeFromPlugin(this.mssProgramMgr.ActiveSettingsFileName);
         }
 
         public void InitVstHost(IVstHost vstHost)
@@ -116,14 +116,23 @@ namespace MidiShapeShifter.Framework
         {
             VstProgramCollection newPrograms = new VstProgramCollection();
 
+            //Add active program to the top of the list
+            newPrograms.Add(CreateProgramFromSettingsFileInfo(this.mssProgramMgr.GetActiveSettingsFile()));
+            
             foreach (SettingsFileInfo progInfo in this.mssProgramMgr.FlatSettingsFileList)
             {
-                VstProgram program = CreateProgram(ParameterInfos);
-                this.ProgramFullNames.Add(progInfo.Name);
-                program.Name = GetValidProgramName(progInfo.Name);
+                VstProgram program = CreateProgramFromSettingsFileInfo(progInfo);
                 newPrograms.Add(program);
             }
             return newPrograms;
+        }
+
+        public VstProgram CreateProgramFromSettingsFileInfo(SettingsFileInfo settingsFileInfo) {
+            VstProgram program = CreateProgram(ParameterInfos);
+            this.ProgramFullNames.Add(settingsFileInfo.Name);
+            program.Name = GetValidProgramName(settingsFileInfo.Name);
+
+            return program;
         }
 
         protected string GetValidProgramName(string inputProgramName)

@@ -18,7 +18,7 @@ namespace MidiShapeShifter.Mss
     public class TransformPresetMgr : BaseSettingsFileMgr
     {
         public const string TRANSFORM_PRESET_FILE_EXTENSION = "xml";
-
+        public const string DEFAULT_TRANSFORM_PRESET_NAME = "Line";
         SerializablePluginEditorInfo pluginEditorInfo;
         MappingManager mappingMgr;
         GeneratorMappingManager genMappingMgr;
@@ -28,16 +28,13 @@ namespace MidiShapeShifter.Mss
             ConstructNonSerializableMembers();
         }
 
-        /// <summary>
-        /// Get the active transformation preset from the active mapping.
-        /// </summary>
-        public override SettingsFileInfo ActiveSettingsFile
+        public override string ActiveSettingsFileName
         {
             get
             {
                 if (getActiveMapping() != null)
                 {
-                    return getActiveMapping().CurveShapeInfo.ActiveTransformPreset;
+                    return getActiveMapping().ActiveTransformPresetName;
                 }
                 else
                 {
@@ -48,7 +45,7 @@ namespace MidiShapeShifter.Mss
             {
                 if (getActiveMapping() != null)
                 {
-                    getActiveMapping().CurveShapeInfo.ActiveTransformPreset = value;
+                    getActiveMapping().ActiveTransformPresetName = value;
                 }
                 else
                 {
@@ -139,8 +136,8 @@ namespace MidiShapeShifter.Mss
         {
             SettingsFileInfo defaultActiveProgram = new SettingsFileInfo();
             //Sets the default program
-            defaultActiveProgram.Init(MssFileSystemLocations.FactoryProgramsFolder + "Line." +
-                                      TRANSFORM_PRESET_FILE_EXTENSION);
+            defaultActiveProgram.Init(MssFileSystemLocations.FactoryProgramsFolder + DEFAULT_TRANSFORM_PRESET_NAME + 
+                                      "." + TRANSFORM_PRESET_FILE_EXTENSION);
 
             return defaultActiveProgram;
         }
