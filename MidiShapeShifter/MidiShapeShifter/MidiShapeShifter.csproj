@@ -114,6 +114,8 @@
     <Compile Include="Ioc\IocMgr.cs" />
     <Compile Include="Midi\MidiUtil.cs" />
     <Compile Include="Mss\BaseSettingsFileMgr.cs" />
+    <Compile Include="Mss\Mapping\GraphableMappingManager.cs" />
+    <Compile Include="Mss\Mapping\IBaseGraphableMappingManager.cs" />
     <Compile Include="Mss\ParameterMsgHandler.cs" />
     <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\ParameterMsgRangeEntryMetadata.cs" />
     <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\NoteMsgRangeEntryMetadata.cs" />

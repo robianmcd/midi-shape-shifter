@@ -24,16 +24,19 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 
         public override string ConvertData1ToString(double Data1)
         {
+            string data1String = "";
 
-            IGeneratorMappingEntry genEntry = this.genMappingMgr.GetGenMappingEntryById((int)Data1);
-            if (genEntry != null)
+            bool idExists = this.genMappingMgr.RunFuncOnMappingEntry((int)Data1,
+                (genEntry) => data1String = genEntry.GenConfigInfo.Name);
+
+            if (idExists)
             {
-                return genEntry.GenConfigInfo.Name;
+                return data1String;
             }
             else
             {
                 return "";
-            }
+            }        
         }
 
         public override string ConvertData2ToString(double Data2)

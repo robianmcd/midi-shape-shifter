@@ -42,19 +42,17 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 
         public override bool SetData1RangeFromField(out string errorMsg)
         {
-            int SelectedIndex = ((ComboBox)EntryField1).SelectedIndex;
-            if (SelectedIndex < 0)
+            IGeneratorMappingEntry selectedGenEntry = (IGeneratorMappingEntry)((ComboBox)EntryField1).SelectedItem;
+            if (selectedGenEntry == null)
             {
                 errorMsg = "You must create a generator before mapping it to something";
                 return false;
             }
-            else 
-            { 
-                IGeneratorMappingEntry SelectedGenEntry = 
-                        this.genMappingMgr.GetGenMappingEntryByIndex(SelectedIndex);
-                int SelectedGenId = SelectedGenEntry.GenConfigInfo.Id;
-                this.msgRange.Data1RangeBottom = SelectedGenId;
-                this.msgRange.Data1RangeTop = SelectedGenId;
+            else
+            {
+                int selectedGenId = selectedGenEntry.Id;
+                this.msgRange.Data1RangeBottom = selectedGenId;
+                this.msgRange.Data1RangeTop = selectedGenId;
 
                 errorMsg = "";
                 return true;
@@ -72,13 +70,13 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             this.EntryField1Lbl.Text = "Generator Name:";
             this.EntryField1.Visible = true;
 
-            for (int i = 0; i < this.genMappingMgr.GetNumEntries(); i++ )
-            {
-                IGeneratorMappingEntry curEntry = this.genMappingMgr.GetGenMappingEntryByIndex(i);
-                ((ComboBox)EntryField1).Items.Add(curEntry.GenConfigInfo.Name);
+            List<IGeneratorMappingEntry>  genEntrieList = this.genMappingMgr.GetCopyOfMappingEntryList();
+
+            foreach (IGeneratorMappingEntry genEntry in genEntrieList) {
+                ((ComboBox)this.EntryField1).Items.Add(genEntry);
             }
 
-            if (this.genMappingMgr.GetNumEntries() > 0)
+            if (genEntrieList.Count > 0)
             {
                 ((ComboBox)EntryField1).SelectedIndex = 0;
             }

@@ -35,7 +35,7 @@ namespace MidiShapeShifter.Mss
         protected ParameterMsgHandler paramMsgHandler;
         protected DryMssEventHandler dryMssEventHandler;
         [DataMember(Name = "MappingMgr")]
-        protected MappingManager mappingMgr;
+        protected IMappingManager mappingMgr;
 
         protected MssEventGenerator mssEventGenrator;
         [DataMember(Name = "GenMappingMgr")]

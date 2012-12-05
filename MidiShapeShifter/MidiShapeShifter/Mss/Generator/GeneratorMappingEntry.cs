@@ -90,5 +90,17 @@ namespace MidiShapeShifter.Mss.Generator
         {
             return GetReadableBool(this.GenConfigInfo.Enabled);
         }
+
+        public override string ToString()
+        {
+            if (GenConfigInfo != null)
+            {
+                return this.GenConfigInfo.Name;
+            }
+            else {
+                return "";
+            }
+        }
+
     }
 }

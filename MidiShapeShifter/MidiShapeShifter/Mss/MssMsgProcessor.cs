@@ -22,7 +22,7 @@ namespace MidiShapeShifter.Mss
     /// </summary>
     public class MssMsgProcessor : IMssMsgProcessor
     {
-        protected IGraphableMappingManager mappingMgr;
+        protected IBaseGraphableMappingManager mappingMgr;
 
         protected IMssParameterViewer mssParameterViewer;
         protected IEvaluator evaluator;
@@ -32,7 +32,7 @@ namespace MidiShapeShifter.Mss
             this.evaluator = IocMgr.Kernel.Get<IEvaluator>();
         }
 
-        public void Init(IGraphableMappingManager mappingMgr, IMssParameterViewer mssParameterViewer)
+        public void Init(IBaseGraphableMappingManager mappingMgr, IMssParameterViewer mssParameterViewer)
         {
             Debug.Assert(mappingMgr != null);
 
@@ -58,7 +58,7 @@ namespace MidiShapeShifter.Mss
             } while(curMsgType != mssMsg.Type);
 
             //Retrieves mappings from the MappingManager that will affect mssMsg
-            IEnumerable<IMappingEntry> mappingEntries = this.mappingMgr.GetAssociatedEntries(mssMsg);
+            IEnumerable<IMappingEntry> mappingEntries = this.mappingMgr.GetCopiesOfIMappingEntriesForMsg(mssMsg);
 
             List<MssMsg> outMessages = new List<MssMsg>();
             if (mappingEntries.Any() == false)

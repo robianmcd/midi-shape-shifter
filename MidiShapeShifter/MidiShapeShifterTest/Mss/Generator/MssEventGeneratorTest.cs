@@ -119,8 +119,8 @@ namespace MidiShapeShifterTest.Mss.Generator
 
             //Link up genMappingMgrMock with genMappingEntryList;
             this.genMappingMgrMock.Setup(mgr => mgr.GetNumEntries()).Returns(() => this.genMappingEntryList.Count);
-            this.genMappingMgrMock.Setup(mgr => mgr.GetGenMappingEntryByIndex(It.IsAny<int>()))
-                             .Returns((int index) => this.genMappingEntryList[index]);
+            //TODO: this should really return a deep copy of genMappingEntryList instead of a shallow copy
+            this.genMappingMgrMock.Setup(mgr => mgr.GetCopyOfMappingEntryList()).Returns(() => new List<IGeneratorMappingEntry>(this.genMappingEntryList));
 
             eventGenerator = new MssEventGenerator();
             eventGenerator.Init(this.hostInfoRelayMock.Object,

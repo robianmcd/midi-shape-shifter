@@ -6,6 +6,7 @@ namespace MidiShapeShifter.Mss.Mapping
 {
     public interface IMappingEntry : ICurveShapeInfoContainer
     {
+        int Id { get; set; }
         IMssMsgRange InMssMsgRange { get; set; }
         IMssMsgRange OutMssMsgRange { get; set; }
         bool OverrideDuplicates { get; set; }

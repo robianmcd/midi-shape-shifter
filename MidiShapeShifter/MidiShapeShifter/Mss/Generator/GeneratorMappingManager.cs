@@ -8,77 +8,73 @@ using System.Windows.Forms;
 using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
 using System.Runtime.Serialization;
+using MidiShapeShifter.CSharpUtil;
 
 namespace MidiShapeShifter.Mss.Generator
 {
+
     /// <summary>
     ///     The GeneratorMappingManager is responsible for storing, retrieving and interpreting 
     ///     GeneratorMappingEntry objects.
     /// </summary>
     [DataContract]
-    public class GeneratorMappingManager : IGeneratorMappingManager
+    public class GeneratorMappingManager : GraphableMappingManager<IGeneratorMappingEntry>, IGeneratorMappingManager
     {
-
-        /// <summary>
-        /// Each GeneratorMappingEntry has a unique ID. nextGenId keeps track of the next 
-        /// available unique ID.
-        /// </summary>
-        [DataMember(Name = "NextGenId")]
-        protected int nextGenId = 0;
-
-        /// <summary>
-        ///     List that stores all of the GeneratorMappingEntry objects. Each instance of 
-        ///     GeneratorMappingEntry in this list corresponds to a row in the generator list view
-        ///     on the PluginEditorView dialog.
-        /// </summary>
-        [DataMember(Name = "GenMappingEntryList")]
-        protected List<IGeneratorMappingEntry> genMappingEntryList = new List<IGeneratorMappingEntry>();
-
-        /// <summary>
-        /// Adds newEntry to this manager's list. Calling this function will also initialize 
-        /// the unique ID corresponding to newEntry
-        /// </summary>
-        public void AddGenMappingEntry(IGeneratorMappingEntry newEntry)
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
         {
-            newEntry.GenConfigInfo.Id = this.nextGenId;
-            this.nextGenId++;
-            genMappingEntryList.Add(newEntry);
+            this.memberLock = new Object();
         }
 
         /// <summary>
         /// Creates a new GeneratorMappingEntry based on the info in genInfo. The newly created 
         /// GeneratorMappingEntry will be stored in this GeneratorMappingManager.
+        /// <returns>Returns the id of the newly created entry.</returns>
         /// </summary>
-        public void CreateAndAddEntryFromGenInfo(GenEntryConfigInfo genInfo)
+        public int CreateAndAddEntryFromGenInfo(GenEntryConfigInfo genInfo)
         {
-            genInfo.Id = this.nextGenId;
-            this.nextGenId++;
+            lock(this.memberLock) {
+                IGeneratorMappingEntry mappingEntry = new GeneratorMappingEntry();
+                int curId = this.nextId;
+                this.nextId++;
 
-            IGeneratorMappingEntry mappingEntry = new GeneratorMappingEntry();
+                InitializeEntryFromGenInfo(genInfo, curId, mappingEntry);
 
-            InitializeEntryFromGenInfo(genInfo, mappingEntry);
+                //Add new mapping entry to list
+                this.mappingEntryList.Add(mappingEntry);
 
-            //Add new mapping entry to list
-            genMappingEntryList.Add(mappingEntry);
+                return mappingEntry.Id;
+            }
         }
 
         /// <summary>
         /// Regererates an existing GeneratorMappingEntry based on genInfo. genInfo's ID must be
         /// the same as an ID in this GeneratorMappingManager.
         /// </summary>
-        public void UpdateEntryWithNewGenInfo(GenEntryConfigInfo genInfo)
+        public bool UpdateEntryWithNewGenInfo(GenEntryConfigInfo genInfo, int id)
         {
-            IGeneratorMappingEntry mappingEntry = GetGenMappingEntryById(genInfo.Id);
-
-            InitializeEntryFromGenInfo(genInfo, mappingEntry);
+            lock(this.memberLock)
+            {
+                IGeneratorMappingEntry mappingEntry = GetMappingEntryById(id);
+                if (mappingEntry == null){
+                    return false;
+                }
+                else {
+                    InitializeEntryFromGenInfo(genInfo, id, mappingEntry);
+                    return true;
+                }
+            }
         }
 
         /// <summary>
         /// populate mappingEntry's members based on the information in genInfo
         /// </summary>
-        protected void InitializeEntryFromGenInfo(GenEntryConfigInfo genInfo, 
+        protected void InitializeEntryFromGenInfo(GenEntryConfigInfo genInfo, int id,
                                                   IGeneratorMappingEntry mappingEntry)
         {
+            //Sets mappingEntry.Id
+            mappingEntry.Id = id;
+
             //Sets mappingEntry.GeneratorInfo
             mappingEntry.GenConfigInfo = genInfo;
 
@@ -88,13 +84,13 @@ namespace MidiShapeShifter.Mss.Generator
             if (genInfo.PeriodType == GenPeriodType.BeatSynced)
             {
                 inMsgRange.InitPublicMembers(MssMsgType.RelBarPeriodPos,
-                                          genInfo.Id,
+                                          id,
                                           MssMsgUtil.UNUSED_MSS_MSG_DATA);
             }
             else if (genInfo.PeriodType == GenPeriodType.Time)
             {
                 inMsgRange.InitPublicMembers(MssMsgType.RelTimePeriodPos,
-                                          genInfo.Id,
+                                          id,
                                           MssMsgUtil.UNUSED_MSS_MSG_DATA);
             }
             else
@@ -109,7 +105,7 @@ namespace MidiShapeShifter.Mss.Generator
             //Sets mappingEntry.outMsgRange
             IMssMsgRange outMsgRange = new MssMsgRange();
             outMsgRange.InitPublicMembers(MssMsgType.Generator,
-                                       genInfo.Id,
+                                       id,
                                        MssMsgUtil.UNUSED_MSS_MSG_DATA);
 
             mappingEntry.OutMssMsgRange = outMsgRange;
@@ -127,92 +123,6 @@ namespace MidiShapeShifter.Mss.Generator
             
         }
 
-        /// <remarks>
-        ///     Precondition: <paramref name="index"/> must be a valid index in the 
-        ///     GeneratorMappingManager's list of GeneratorMappingEntry objects.
-        /// </remarks>
-        public void RemoveGenMappingEntry(int index)
-        {
-            if (index >= 0 && index < genMappingEntryList.Count)
-            {
-                genMappingEntryList.RemoveAt(index);
-            }
-            else
-            {
-                //invalid index
-                Debug.Assert(false);
-            }
-        }
-
-        /// <summary>
-        ///     Creates a ListViewItem based on the GeneratorMappingEntry specified by 
-        ///     <paramref name="index"/>. This ListViewItem is intended to be used in the 
-        ///     PluginEditorView's generator list box.
-        /// </summary>
-        /// <returns>The ListViewItem representation of a GeneratorMappingEntry</returns>
-        public ListViewItem GetListViewRow(int index)
-        {
-            if (index >= 0 && index < genMappingEntryList.Count)
-            {
-                IGeneratorMappingEntry entry = genMappingEntryList[index];
-                ListViewItem genMappingItem = new ListViewItem(entry.GenConfigInfo.Name);
-                genMappingItem.SubItems.Add(entry.GetReadablePeriod());
-                genMappingItem.SubItems.Add(entry.GetReadableLoopStatus());
-                genMappingItem.SubItems.Add(entry.GetReadableEnabledStatus());
-
-                return genMappingItem;
-            }
-            else
-            {
-                //invalid index
-                Debug.Assert(false);
-                return null;
-            }
-        }
-
-
-        /// <remarks>
-        ///     Precondition: <paramref name="index"/> must be a valid index in the 
-        ///     GeneratorMappingManager's list of GeneratorMappingEntry objects.
-        /// </remarks>
-        public IGeneratorMappingEntry GetGenMappingEntryByIndex(int index)
-        {
-            if (index >= 0 && index < genMappingEntryList.Count)
-            {
-                return genMappingEntryList[index];
-            }
-            else
-            {
-                //invalid index
-                Debug.Assert(false);
-                return null;
-            }
-        }
-
-        /// <summary>
-        ///     Get the GeneratorMappingEntry in this GeneratorMappingManager with a the same ID
-        ///     as <paramref name="id"/>. Returns null if the GeneratorMappingEntry cannot be
-        ///     found
-        /// </summary>
-        public IGeneratorMappingEntry GetGenMappingEntryById(int id)
-        { 
-            return genMappingEntryList.Find(entry => entry.GenConfigInfo.Id == id);
-        }
-
-        public int GetNumEntries()
-        {
-            return genMappingEntryList.Count;
-        }
-
-        /// <summary>
-        /// Returns the index of the GeneratorMappingEntry specified by id or -1 if the id was not
-        /// found.
-        /// </summary>
-        public int GetIndexById(int id)
-        {
-            return genMappingEntryList.FindIndex(entry => entry.GenConfigInfo.Id == id);
-        }
-
         /// <summary>
         /// Returns a list of MappingEntries from the GeneratorMappingEntries stored in this 
         /// GeneratorMappingManager. A GeneratorMappingEntry will be in this list if 
@@ -221,25 +131,23 @@ namespace MidiShapeShifter.Mss.Generator
         /// only ever contain a maximum of one element. This is because a GeneratorMappingEntry's
         /// input range will only accept one message that has a unique id.
         /// </summary>
-        public IEnumerable<IMappingEntry> GetAssociatedEntries(MssMsg inputMsg)
+        public override IEnumerable<IGeneratorMappingEntry> GetCopiesOfMappingEntriesForMsg(MssMsg inputMsg)
         {
-            List<IMappingEntry> associatedEntryList = new List<IMappingEntry>();
-            if (inputMsg.Type == MssMsgType.RelBarPeriodPos || inputMsg.Type == MssMsgType.RelTimePeriodPos)
-            {
-                IGeneratorMappingEntry associatedEntry = 
-                        GetGenMappingEntryById((int)inputMsg.Data1);
-                if (associatedEntry != null)
+            lock(this.memberLock) {
+                List<IGeneratorMappingEntry> associatedEntryList = new List<IGeneratorMappingEntry>();
+                if (inputMsg.Type == MssMsgType.RelBarPeriodPos || inputMsg.Type == MssMsgType.RelTimePeriodPos)
                 {
-                    associatedEntryList.Add(associatedEntry);
+                    IReturnStatus<IGeneratorMappingEntry> associatedEntryCopy = 
+                            GetCopyOfMappingEntryById((int)inputMsg.Data1);
+                    if (associatedEntryCopy.IsValid)
+                    {
+                        associatedEntryList.Add(associatedEntryCopy.Value);
+                    }
                 }
+
+                return associatedEntryList;
             }
-
-            return associatedEntryList;
         }
 
-        public IMappingEntry GetMappingEntry(int index)
-        {
-            return GetGenMappingEntryByIndex(index);
-        }
     }
 }

@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Runtime.Serialization;
 using System.Collections.ObjectModel;
+using MidiShapeShifter.CSharpUtil;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -14,129 +15,60 @@ namespace MidiShapeShifter.Mss.Mapping
     ///     The MappingManager is responsible for storing, retrieving and interpreting MappingEntry objects.
     /// </summary>
     [DataContract]
-    public class MappingManager : IMappingManager
+    public class MappingManager : GraphableMappingManager<IMappingEntry>, IMappingManager
     {
         /// <summary>
-        ///     List that stores all of the MappingEntry objects. The mapping list box on the main GUI is basically a 
-        ///     visualization of this list.
-        /// </summary>
-        [DataMember(Name = "MappingEntryList")]
-        protected List<IMappingEntry> mappingEntryList;
-
-        public ReadOnlyCollection<IMappingEntry> readOnlyMappingEntryList
-        {
-            get
-            {
-                return this.mappingEntryList.AsReadOnly(); 
-            }
-        }
-
-
-        public MappingManager()
-        {
-            mappingEntryList = new List<IMappingEntry>();
-        }
-
-        public void AddMappingEntry(IMappingEntry newEntry) 
-        {
-            mappingEntryList.Add(newEntry);
-        }
-
-
-        /// <remarks>
-        ///     Precondition: <paramref name="index"/> must be a valid index in the MappingManager's list of 
-        ///     MappingEntry objects.
-        /// </remarks>
-        public void RemoveMappingEntry(int index) 
-        {
-            if (index >= 0 && index < mappingEntryList.Count)
-            {
-                mappingEntryList.RemoveAt(index);
-            }
-            else
-            {
-                //invalid index
-                Debug.Assert(false);
-            }
-        }
-
-
-        /// <remarks>
-        ///     Precondition: <paramref name="index"/> must be a valid index in the MappingManager's list of 
-        ///     MappingEntry objects.
-        /// </remarks>
-        public IMappingEntry GetMappingEntry(int index)
-        {
-            if (index >= 0 && index < mappingEntryList.Count)
-            {
-                return mappingEntryList[index];
-            }
-            else
-            {
-                //invalid index
-                Debug.Assert(false);
-                return null;
-            }
-        }
-
-        public int GetNumEntries()
-        {
-            return mappingEntryList.Count;
-        }
-
-        /// <summary>
-        ///     Moves the MappingEntry specified by <paramref name="index"/> up one element in the list.
+        ///     Moves the MappingEntry specified by <paramref name="id"/> up one element in the list.
         /// </summary>
         /// <remarks>
         ///     The order of MappingEntry objects in the list can affect which MappingEntry objects are returned by 
         ///     GetAssociatedEntries().
-        ///     
-        ///     Precondition: <paramref name="index"/> must be a valid index in the MappingManager's list of 
-        ///     MappingEntry objects. 
-        ///     
-        ///     Precondition: <paramref name="index"/> cannot refer to the first element of the list as this element 
-        ///     cannot move any further up.
         /// </remarks>
-        public void MoveEntryUp(int index) 
+        /// <returns> True if an entry is successfully moved up in the list</returns>
+        public bool MoveEntryUp(int id) 
         {
-            if (index >= 1 && index < mappingEntryList.Count)
-            {
-                IMappingEntry tempEntry = mappingEntryList[index];
-                mappingEntryList[index] = mappingEntryList[index - 1];
-                mappingEntryList[index - 1] = tempEntry;
-            }
-            else
-            {
-                //invalid index
-                Debug.Assert(false);
+            lock (this.memberLock) {
+                int entryIndex = GetIndexById(id);
+                if (entryIndex == -1 || entryIndex == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    IMappingEntry tempEntry = mappingEntryList[id];
+                    mappingEntryList[id] = mappingEntryList[id - 1];
+                    mappingEntryList[id - 1] = tempEntry;
+
+                    return true;
+                }
             }
         }
 
         /// <summary>
-        ///     Moves the MappingEntry specified by <paramref name="index"/> down one element in the list.
+        ///     Moves the MappingEntry specified by <paramref name="id"/> down one element in the list.
         /// </summary>
         /// <remarks>
         ///     The order of <see cref="MappingEntry"/> objects in the list can affect which MappingEntry objects are 
         ///     returned by GetAssociatedEntries().
-        ///     
-        ///     Precondition: <paramref name="index"/> must be a valid index in the MappingManager's list of 
-        ///     MappingEntry objects.  
-        ///     
-        ///     Precondition: <paramref name="index"/> cannot refer to the last element of the list as this element 
-        ///     cannot move any further down.
         /// </remarks>
-        public void MoveEntryDown(int index)
+        /// <returns> True if an entry is successfully moved up in the list</returns>
+        public bool MoveEntryDown(int id)
         {
-            if (index >= 0 && index < mappingEntryList.Count - 1)
+            lock (this.memberLock)
             {
-                IMappingEntry tempEntry = mappingEntryList[index];
-                mappingEntryList[index] = mappingEntryList[index + 1];
-                mappingEntryList[index + 1] = tempEntry;
-            }
-            else
-            {
-                //invalid index
-                Debug.Assert(false);
+                int entryIndex = GetIndexById(id);
+                if (entryIndex == -1 || entryIndex == this.mappingEntryList.Count - 1)
+                {
+                    return false;
+                }
+                else
+                {
+                    IMappingEntry tempEntry = mappingEntryList[id];
+                    mappingEntryList[id] = mappingEntryList[id + 1];
+                    mappingEntryList[id + 1] = tempEntry;
+
+                    return true;
+                }
             }
         }
 
@@ -151,29 +83,34 @@ namespace MidiShapeShifter.Mss.Mapping
         /// </summary>
         /// <param name="inputMsg">MssMsg to query the MappingManager with.</param>
         /// <returns>An enumeration of MappingEntry objects that match <paramref name="inputMsg"/>.</returns>
-        public IEnumerable<IMappingEntry> GetAssociatedEntries(MssMsg inputMsg) 
+        public override IEnumerable<IMappingEntry> GetCopiesOfMappingEntriesForMsg(MssMsg inputMsg) 
         {
-            var associatedEntiresQuery =
-                from entry in mappingEntryList
-                where entry.InMssMsgRange.MsgIsInRange(inputMsg)
-                select entry;
-
-            //deal with input overrides
-            var inputOverrideEntriesQuery =
-                from entry in associatedEntiresQuery
-                where entry.OverrideDuplicates == true
-                select entry;
-
-            var inputOverrideEntriesList = inputOverrideEntriesQuery.ToList();
-            if (inputOverrideEntriesList.Count > 0)
+            //TODO: The entries returned from this need to be clones.
+            lock (this.memberLock)
             {
-                associatedEntiresQuery =
-                from entry in associatedEntiresQuery
-                where entry == inputOverrideEntriesList[0]
-                select entry;
-            }
+                var associatedEntiresQuery =
+                    from entry in mappingEntryList
+                    where entry.InMssMsgRange.MsgIsInRange(inputMsg)
+                    select entry;
 
-            return associatedEntiresQuery;
+                //deal with input overrides
+                var inputOverrideEntriesQuery =
+                    from entry in associatedEntiresQuery
+                    where entry.OverrideDuplicates == true
+                    select entry;
+
+                var inputOverrideEntriesList = inputOverrideEntriesQuery.ToList();
+                if (inputOverrideEntriesList.Count > 0)
+                {
+                    associatedEntiresQuery =
+                    from entry in associatedEntiresQuery
+                    where entry == inputOverrideEntriesList[0]
+                    select entry;
+                }
+
+                return associatedEntiresQuery;
+            }
         }
+        
     }
 }

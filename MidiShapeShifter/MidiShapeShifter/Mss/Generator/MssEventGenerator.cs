@@ -87,20 +87,20 @@ namespace MidiShapeShifter.Mss.Generator
         {
             foreach(MssEvent mssEvent in mssEventList)
             {
-                if (mssEvent.mssMsg.Type == MssMsgType.GeneratorModify) 
+                if (mssEvent.mssMsg.Type == MssMsgType.GeneratorModify)
                 {
-                    IGeneratorMappingEntry curMappingEntry = 
-                        this.generatorMappingMgr.GetGenMappingEntryById(mssEvent.mssMsg.Data1AsInt);
-
-                    if (mssEvent.mssMsg.Data3 == 1)
+                    this.generatorMappingMgr.RunFuncOnMappingEntry(mssEvent.mssMsg.Data1AsInt, genEntry => 
                     {
-                        curMappingEntry.GenConfigInfo.Enabled = true;
-                    }
-                    else
-                    {
-                        curMappingEntry.GenConfigInfo.Enabled = false;
-                        curMappingEntry.GenHistoryInfo.Initialized = false;
-                    }
+                        if (mssEvent.mssMsg.Data3 == 1)
+                        {
+                            genEntry.GenConfigInfo.Enabled = true;
+                        }
+                        else
+                        {
+                            genEntry.GenConfigInfo.Enabled = false;
+                            genEntry.GenHistoryInfo.Initialized = false;
+                        }
+                    });
                 }
             }
         }
@@ -115,16 +115,14 @@ namespace MidiShapeShifter.Mss.Generator
         /// </param>
         protected void HostInfoOutputPort_BeforeProcessingCycleEnd(long sampleTimeAtEndOfCycle)
         {
-            int numGens = this.generatorMappingMgr.GetNumEntries();
-            for (int i = 0; i < numGens; i++)
-            {
-                IGeneratorMappingEntry curEntry = 
-                        this.generatorMappingMgr.GetGenMappingEntryByIndex(i);
+            List <IGeneratorMappingEntry> genEntryList = this.generatorMappingMgr.GetCopyOfMappingEntryList();
 
+            foreach (IGeneratorMappingEntry genEntry in genEntryList)
+            {
                 //In order to generate events we need to some information about the 
                 //host. If any of this information hasn't been initialized yet then just don't 
                 //generate anything for this generator.
-                if (curEntry.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
+                if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
                 {
                     if (this.hostInfoOutputPort.TempoIsInitialized == false ||
                         this.hostInfoOutputPort.TimeSignatureIsInitialized == false ||
@@ -138,11 +136,11 @@ namespace MidiShapeShifter.Mss.Generator
                     //and it will need to be reinitialized when the host starts playing again.
                     if (this.hostInfoOutputPort.TransportPlaying == false)
                     {
-                        curEntry.GenHistoryInfo.Initialized = false;
+                        genEntry.GenHistoryInfo.Initialized = false;
                         continue;
                     }
                 }
-                else if (curEntry.GenConfigInfo.PeriodType == GenPeriodType.Time)
+                else if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.Time)
                 {
                     if (this.hostInfoOutputPort.TimeSignatureIsInitialized == false)
                     {
@@ -151,15 +149,15 @@ namespace MidiShapeShifter.Mss.Generator
                 }
 
                 //Only enabled generators should generate anything
-                if (curEntry.GenConfigInfo.Enabled == true)
+                if (genEntry.GenConfigInfo.Enabled == true)
                 {
                     //Initializes the history info for this generator if it has not already been
                     //initialized.
-                    if (curEntry.GenHistoryInfo.Initialized == false)
+                    if (genEntry.GenHistoryInfo.Initialized == false)
                     {
                         //The GenHistoryInfo will be initialized such that it appears to have been
                         //updated on the last processing cycle.
-                        curEntry.GenHistoryInfo.InitAllMembers(
+                        genEntry.GenHistoryInfo.InitAllMembers(
                                 this.sampleTimeAtEndOfLastCycle,
                                 0,
                                 double.NaN);
@@ -169,20 +167,20 @@ namespace MidiShapeShifter.Mss.Generator
                     //generator would fall into the next audio processing cycle. The enabled status
                     //of a generator can change in a call to GenerateEvent() so we need to ensure 
                     //that this generator is still enabled.
-                    while (curEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate +
-                           SAMPLES_PER_GENERATOR_UPDATE <= sampleTimeAtEndOfCycle &&
-                           curEntry.GenConfigInfo.Enabled == true)
+                    while (genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate +
+                            SAMPLES_PER_GENERATOR_UPDATE <= sampleTimeAtEndOfCycle &&
+                            genEntry.GenConfigInfo.Enabled == true)
                     {
-                        MssEvent generatedEvent = GenerateEvent(curEntry);
+                        MssEvent generatedEvent = GenerateEvent(genEntry);
                         if (generatedEvent != null)
                         {
-                            this.dryMssEventInputPort.ReceiveDryMssEvent(generatedEvent);
+                            this.dryMssEventInputPort.ReceiveDryMssEvent(generatedEvent);                
                         }
                     }
                 }
                 else
                 {
-                    curEntry.GenHistoryInfo.Initialized = false;
+                    genEntry.GenHistoryInfo.Initialized = false;
                 }
             }
         }

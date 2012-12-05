@@ -20,7 +20,7 @@ namespace MidiShapeShifter.Mss
         public const string TRANSFORM_PRESET_FILE_EXTENSION = "xml";
         public const string DEFAULT_TRANSFORM_PRESET_NAME = "Line";
         SerializablePluginEditorInfo pluginEditorInfo;
-        MappingManager mappingMgr;
+        IMappingManager mappingMgr;
         GeneratorMappingManager genMappingMgr;
 
         public TransformPresetMgr()
@@ -56,7 +56,7 @@ namespace MidiShapeShifter.Mss
         }
 
         public void Init(SerializablePluginEditorInfo pluginEditorInfo, 
-                         MappingManager mappingMgr, 
+                         IMappingManager mappingMgr, 
                          GeneratorMappingManager generatorMappingMgr)
         {
             this.pluginEditorInfo = pluginEditorInfo;
@@ -73,23 +73,21 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         protected IMappingEntry getActiveMapping()
         {
-            if (this.pluginEditorInfo.ActiveGraphableEntryIndex < 0)
+            if (this.pluginEditorInfo.ActiveGraphableEntryId < 0)
             {
                 return null;
             }
             else
             {
                 IMappingEntry activeEntry;
-
+                IBaseGraphableMappingManager activeEntryManager;
                 if (this.pluginEditorInfo.ActiveGraphableEntryType == GraphableEntryType.Mapping)
                 {
-                    activeEntry = this.mappingMgr.GetMappingEntry(
-                            this.pluginEditorInfo.ActiveGraphableEntryIndex);
+                    activeEntryManager = this.mappingMgr;
                 }
                 else if (this.pluginEditorInfo.ActiveGraphableEntryType == GraphableEntryType.Generator)
                 {
-                    activeEntry = this.genMappingMgr.GetGenMappingEntryByIndex(
-                            this.pluginEditorInfo.ActiveGraphableEntryIndex);
+                    activeEntryManager = this.genMappingMgr;
                 }
                 else
                 {
@@ -97,6 +95,12 @@ namespace MidiShapeShifter.Mss
                     Debug.Assert(false);
                     return null;
                 }
+
+                IReturnStatus<IMappingEntry> getCopyRetStatus =
+                        activeEntryManager.GetCopyOfIMappingEntryById(this.pluginEditorInfo.ActiveGraphableEntryId);
+                Debug.Assert(getCopyRetStatus.IsValid);
+
+                activeEntry = getCopyRetStatus.Value;
 
                 return activeEntry;
             }

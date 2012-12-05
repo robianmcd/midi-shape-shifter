@@ -1,16 +1,14 @@
 ﻿using System;
 using MidiShapeShifter.Mss.Mapping;
+using System.Windows.Forms;
+using System.Collections.Generic;
+using MidiShapeShifter.CSharpUtil;
 
 namespace MidiShapeShifter.Mss.Generator
 {
-    public interface IGeneratorMappingManager : IGraphableMappingManager
+    public interface IGeneratorMappingManager : IGraphableMappingManager<IGeneratorMappingEntry>
     {
-        void AddGenMappingEntry(IGeneratorMappingEntry newEntry);
-        void CreateAndAddEntryFromGenInfo(GenEntryConfigInfo genInfo);
-        IGeneratorMappingEntry GetGenMappingEntryById(int id);
-        IGeneratorMappingEntry GetGenMappingEntryByIndex(int index);
-        int GetIndexById(int id);
-        void RemoveGenMappingEntry(int index);
-        void UpdateEntryWithNewGenInfo(GenEntryConfigInfo genInfo);
+        int CreateAndAddEntryFromGenInfo(GenEntryConfigInfo genInfo);
+        bool UpdateEntryWithNewGenInfo(GenEntryConfigInfo genInfo, int id);
     }
 }

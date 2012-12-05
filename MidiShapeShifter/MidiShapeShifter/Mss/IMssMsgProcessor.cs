@@ -8,7 +8,7 @@ namespace MidiShapeShifter.Mss
 {
     public interface IMssMsgProcessor
     {
-        void Init(IGraphableMappingManager mappingMgr, IMssParameterViewer mssParameters);
+        void Init(IBaseGraphableMappingManager mappingMgr, IMssParameterViewer mssParameters);
         System.Collections.Generic.List<MssMsg> ProcessMssMsg(MssMsg mssMsg);
     }
 }

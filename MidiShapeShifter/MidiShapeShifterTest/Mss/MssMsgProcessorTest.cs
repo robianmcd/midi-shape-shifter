@@ -203,7 +203,7 @@ namespace MidiShapeShifterTest.Mss
             MssMsgProcessor msgProcessor = new MssMsgProcessor();
 
             var mapMgrMock = new Mock<IMappingManager>();
-            mapMgrMock.Setup(mapMgr => mapMgr.GetAssociatedEntries(inputMsg)).Returns(matchingEntries);
+            mapMgrMock.Setup(mapMgr => mapMgr.GetCopiesOfIMappingEntriesForMsg(inputMsg)).Returns(matchingEntries);
 
             var mssParameterViewerMock = new Mock<IMssParameterViewer>();
 

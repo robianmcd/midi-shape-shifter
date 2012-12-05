@@ -42,7 +42,7 @@ namespace MidiShapeShifter.Mss
         /// <param name="mappingMgr">The MappingManager that will be used by mssMsgProcessor</param>
         public void Init(IDryMssEventOutputPort dryMssEventOutputPort, 
                          IWetMssEventInputPort wetMssEventInputPort, 
-                         MappingManager mappingMgr,
+                         IMappingManager mappingMgr,
                          IMssParameterViewer mssParameters)
         {
             this.mssMsgProcessor.Init(mappingMgr, mssParameters);

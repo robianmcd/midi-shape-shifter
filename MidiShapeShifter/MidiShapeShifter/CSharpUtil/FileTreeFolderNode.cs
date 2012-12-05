@@ -8,7 +8,7 @@ namespace MidiShapeShifter.CSharpUtil
 {
     //TODO: This tree should just store the file path as a string instead of a file info object. 
     //The other info in programinfo can be pulled out of the file path from the program manager.
-    //That wont work because tge program manager needs to flat list and tree to reference the same
+    //That wont work because the program manager needs to flat list and tree to reference the same
     //program info.
     public class FileTreeFolderNode<FileTreeFileInfo>
     {

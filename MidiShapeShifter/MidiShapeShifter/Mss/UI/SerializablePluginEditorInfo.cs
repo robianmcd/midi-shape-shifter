@@ -12,7 +12,7 @@ namespace MidiShapeShifter.Mss.UI
     public class SerializablePluginEditorInfo
     {
         [DataMember]
-        public int ActiveGraphableEntryIndex = -1;
+        public int ActiveGraphableEntryId = -1;
         [DataMember]
         public GraphableEntryType ActiveGraphableEntryType;
     }

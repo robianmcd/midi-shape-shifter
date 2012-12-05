@@ -45,7 +45,6 @@ namespace MidiShapeShifter.Mss.Generator
         //Initialized the entry fields on the dialog. This method must be called.
         public void Init(GenEntryConfigInfo genInfo)
         {
-            this.GenInfoResult.Id = genInfo.Id;
             this.genNameTextBox.Text = genInfo.Name;
             this.periodTypeCombo.Text = GenEntryConfigInfo.GenPeriodTypeNames[(int)genInfo.PeriodType];
             this.periodTextBox.Text = genInfo.TimePeriodInMs.ToString();

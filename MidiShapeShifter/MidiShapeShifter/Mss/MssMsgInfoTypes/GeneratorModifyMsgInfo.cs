@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using MidiShapeShifter.Mss.Generator;
+using MidiShapeShifter.CSharpUtil;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
@@ -23,10 +24,14 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 
         public override string ConvertData1ToString(double Data1)
         {
-            IGeneratorMappingEntry genEntry = this.genMappingMgr.GetGenMappingEntryById((int)Data1);
-            if (genEntry != null)
+            string data1String = "";
+
+            bool idExists = this.genMappingMgr.RunFuncOnMappingEntry((int)Data1, 
+                (genEntry) => data1String = genEntry.GenConfigInfo.Name);
+
+            if (idExists)
             {
-                return genEntry.GenConfigInfo.Name;
+                return data1String;
             }
             else
             {
