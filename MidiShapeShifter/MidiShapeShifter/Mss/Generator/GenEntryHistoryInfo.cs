@@ -10,7 +10,7 @@ namespace MidiShapeShifter.Mss.Generator
     /// need to be initialized until there is some recent activity to store. MssEventGenerator 
     /// is responsible for intializing all instances of this class. 
     /// </summary>
-    public class GenEntryHistoryInfo
+    public class GenEntryHistoryInfo : ICloneable
     {
         /// <summary>
         /// Specifies wheather this the other members of this class store valid information. If
@@ -52,6 +52,16 @@ namespace MidiShapeShifter.Mss.Generator
             this.LastValueSent = lastValueSent;
 
             this.Initialized = true;
+        }
+
+        object ICloneable.Clone()
+        {
+            return Clone();
+        }
+
+        public GenEntryHistoryInfo Clone()
+        {
+            return (GenEntryHistoryInfo)this.MemberwiseClone();
         }
     }
 }

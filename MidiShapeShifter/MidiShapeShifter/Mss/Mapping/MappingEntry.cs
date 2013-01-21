@@ -18,7 +18,7 @@ namespace MidiShapeShifter.Mss.Mapping
     ///         message's type, data1, and data2. The equation is used to map the incoming MSS message's data3.
     /// </summary>
     [DataContract]
-    public class MappingEntry : IMappingEntry, ICloneable
+    public class MappingEntry : IMappingEntry
     {
         public const int UNINITIALIZED_ID = -1;
         protected const MssMsgDataField DEFAULT_INPUT_TYPE = MssMsgDataField.Data3;
@@ -90,6 +90,10 @@ namespace MidiShapeShifter.Mss.Mapping
             this.ActiveTransformPresetName = TransformPresetMgr.DEFAULT_TRANSFORM_PRESET_NAME;
         }
 
+        public MappingEntry(MappingEntry newInstance) { 
+            
+        }
+
         public void InitAllMembers(IMssMsgRange inMsgRange, IMssMsgRange outMsgRange,
                             bool overrideDuplicates, CurveShapeInfo curveShapeInfo)
         {
@@ -143,7 +147,24 @@ namespace MidiShapeShifter.Mss.Mapping
 
         object ICloneable.Clone()
         {
-            throw new NotImplementedException();
+            return Clone();
+        }
+
+        public MappingEntry Clone()
+        {
+            MappingEntry mappingEntryClone = new MappingEntry();
+            DeepCloneIntoExistingInstance(mappingEntryClone);
+            return mappingEntryClone;
+        }
+
+        protected void DeepCloneIntoExistingInstance(MappingEntry entry) {
+            entry.Id = this.Id;
+            entry.InMssMsgRange = this.InMssMsgRange.Clone();
+            entry.OutMssMsgRange = this.OutMssMsgRange.Clone();
+            entry.OverrideDuplicates = this.OverrideDuplicates;
+            entry.CurveShapeInfo = this.CurveShapeInfo.Clone();
+            entry.PrimaryInputSource = this.PrimaryInputSource;
+            entry.ActiveTransformPresetName = this.ActiveTransformPresetName;
         }
 
     }

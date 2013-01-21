@@ -73,48 +73,13 @@ namespace MidiShapeShifter.Mss.UI
 
         protected MssProgramMgr programMgr;
 
-        protected SerializablePluginEditorInfo persistantInfo;
+        protected ActiveMappingInfo activeMappingInfo;
 
         protected List<MssMsgDataField> DataFieldsInGraphInputCombo;
 
         protected bool ignoreEquationTextBoxChangeHandlers;
         protected bool ignoreInputTypeComboSelectionChangeHandlers;
         protected bool IgnoreGraphableEntrySelectionChangedHandler;
-
-        public IMappingEntry ActiveGraphableEntry 
-        {
-            get
-            {
-                if (this.persistantInfo.ActiveGraphableEntryId < 0)
-                {
-                    return null;
-                }
-                else
-                {
-                    IBaseGraphableMappingManager activeEntryManager;
-
-                    if (this.persistantInfo.ActiveGraphableEntryType == GraphableEntryType.Mapping) 
-                    {
-                        activeEntryManager = this.mappingMgr;
-                    }
-                    else if (this.persistantInfo.ActiveGraphableEntryType == GraphableEntryType.Generator)
-                    {
-                        activeEntryManager = this.genMappingMgr;
-                    }
-                    else
-                    {
-                        //Unknown MappingType
-                        Debug.Assert(false);
-                        return null;
-                    }
-                    IReturnStatus<IMappingEntry> getCopyRetStatus =
-                        activeEntryManager.GetCopyOfIMappingEntryById(this.persistantInfo.ActiveGraphableEntryId);
-                    Debug.Assert(getCopyRetStatus.IsValid);
-
-                    return getCopyRetStatus.Value;
-                }
-            }
-        }
 
         public PluginEditorView()
         {
@@ -140,7 +105,7 @@ namespace MidiShapeShifter.Mss.UI
                          TransformPresetMgr transformPresetMgr,
                          IDryMssEventOutputPort dryMssEventOutputPort,
                          IHostInfoOutputPort hostInfoOutputPort,
-                         SerializablePluginEditorInfo serializablePluginEditorInfo)
+                         ActiveMappingInfo activeMappingInfo)
         {
             InitiaizeGraph();
 
@@ -153,7 +118,7 @@ namespace MidiShapeShifter.Mss.UI
             this.dryMssEventOutputPort = dryMssEventOutputPort;
             this.hostInfoOutputPort = hostInfoOutputPort;
 
-            this.persistantInfo = serializablePluginEditorInfo;
+            this.activeMappingInfo = activeMappingInfo;
 
             this.commandQueue.Init(EditorCommandId.Generic);
 
@@ -260,17 +225,17 @@ namespace MidiShapeShifter.Mss.UI
             bool EnableMappingButtons;
             bool EnableGeneratorButtons;
 
-            if (this.persistantInfo.ActiveGraphableEntryId < 0) 
+            if (this.activeMappingInfo.ActiveGraphableEntryId < 0) 
             {
                 EnableMappingButtons = false;
                 EnableGeneratorButtons = false;
             }
-            else if (this.persistantInfo.ActiveGraphableEntryType == GraphableEntryType.Mapping)
+            else if (this.activeMappingInfo.ActiveGraphableEntryType == GraphableEntryType.Mapping)
             {
                 EnableMappingButtons = true;
                 EnableGeneratorButtons = false;
             }
-            else if (this.persistantInfo.ActiveGraphableEntryType == GraphableEntryType.Generator)
+            else if (this.activeMappingInfo.ActiveGraphableEntryType == GraphableEntryType.Generator)
             {
                 EnableMappingButtons = false;
                 EnableGeneratorButtons = true;
@@ -284,10 +249,16 @@ namespace MidiShapeShifter.Mss.UI
 
             this.deleteMappingBtn.Enabled = EnableMappingButtons;
             this.editMappingBtn.Enabled = EnableMappingButtons;
-            this.moveMappingUpBtn.Enabled = EnableMappingButtons && 
-                    this.persistantInfo.ActiveGraphableEntryId > 0;
-            this.moveMappingDownBtn.Enabled = EnableMappingButtons && 
-                    this.persistantInfo.ActiveGraphableEntryId < this.mappingListView.Items.Count - 1;
+
+            int activeMappingIndex = -1;
+            if (EnableMappingButtons) {
+                activeMappingIndex = this.mappingMgr.GetMappingEntryIndexById(this.activeMappingInfo.ActiveGraphableEntryId);
+            }
+
+            this.moveMappingUpBtn.Enabled = EnableMappingButtons &&
+                    activeMappingIndex > 0;
+            this.moveMappingDownBtn.Enabled = EnableMappingButtons &&
+                    activeMappingIndex < this.mappingListView.Items.Count - 1;
 
             this.deleteGeneratorBtn.Enabled = EnableGeneratorButtons;
             this.editGeneratorBtn.Enabled = EnableGeneratorButtons;
@@ -304,10 +275,10 @@ namespace MidiShapeShifter.Mss.UI
                 this.mappingListView.Items.Add(GetMappingListViewRow(entry));
             }
 
-            if (this.persistantInfo.ActiveGraphableEntryType == GraphableEntryType.Mapping &&
-                this.persistantInfo.ActiveGraphableEntryId > -1)
+            if (this.activeMappingInfo.ActiveGraphableEntryType == GraphableEntryType.Mapping &&
+                this.activeMappingInfo.ActiveGraphableEntryId > -1)
             {
-                int selectedIndex = mappingEntryList.FindIndex(entry => entry.Id == this.persistantInfo.ActiveGraphableEntryId);
+                int selectedIndex = mappingEntryList.FindIndex(entry => entry.Id == this.activeMappingInfo.ActiveGraphableEntryId);
 
                 this.IgnoreGraphableEntrySelectionChangedHandler = true;
                 this.mappingListView.Items[selectedIndex].Selected = true;
@@ -347,9 +318,10 @@ namespace MidiShapeShifter.Mss.UI
                 this.generatorListView.Items.Add(GetGeneratorListViewRow(genEntry));
             }
 
-            if (this.persistantInfo.ActiveGraphableEntryType == GraphableEntryType.Generator)
+            if (this.activeMappingInfo.ActiveGraphableEntryType == GraphableEntryType.Generator &&
+                this.activeMappingInfo.ActiveGraphableEntryId > -1)
             {
-                int selectedIndex = genEntryList.FindIndex(entry => entry.Id == this.persistantInfo.ActiveGraphableEntryId);
+                int selectedIndex = genEntryList.FindIndex(entry => entry.Id == this.activeMappingInfo.ActiveGraphableEntryId);
 
                 this.IgnoreGraphableEntrySelectionChangedHandler = true;
                 this.generatorListView.Items[selectedIndex].Selected = true;
@@ -392,7 +364,7 @@ namespace MidiShapeShifter.Mss.UI
             LBKnob knob = (LBKnob)sender;
             MssParameterID paramId;
             ParameterValueKnobControlDict.TryGetLeftByRight(out paramId, knob);
-            MssParamInfo paramInfo = mssParameters.GetParameterInfo(paramId);
+            MssParamInfo paramInfo = mssParameters.GetParameterInfoCopy(paramId);
 
             if (paramInfo.RawValue != knob.Value)
             {
@@ -411,28 +383,19 @@ namespace MidiShapeShifter.Mss.UI
 
         protected void OnActiveCurveShapeChanged()
         {
-            //Attach the preset parameter info from the active graphable entry to MssParameters
-            if (this.ActiveGraphableEntry != null)
-            {
-                this.mssParameters.SetPresetParamInfoList(
-                    this.ActiveGraphableEntry.CurveShapeInfo.ParamInfoList);
-            }
-
             this.commandQueue.EnqueueCommandOverwriteDups(
                 EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
         }
 
         protected void UpdateCurveShapeControls()
         {
-            bool activeEntryExists = (this.ActiveGraphableEntry != null);
-
             //Disable redraw while updating the transformation group box.
             DrawingControl.SuspendDrawing(this.curveGroup);
 
             //Enable/disable controls in the transformation group box.
             foreach (Control curveControl in this.curveGroup.Controls)
             {
-                curveControl.Enabled = activeEntryExists;
+                curveControl.Enabled = this.activeMappingInfo.GetActiveMappingExists();
             }
 
             UpdateGraphInputCombo();
@@ -456,12 +419,9 @@ namespace MidiShapeShifter.Mss.UI
                     break;
                 }
 
-                if (activeEntryExists)
+                if (this.activeMappingInfo.GetActiveMappingExists())
                 {
-                    MssParamInfo paramInfo = this.mssParameters.GetParameterInfo(curId);
-
-                    curKnob.Value = (float)paramInfo.RawValue;
-                    curValueLabel.Text = paramInfo.GetValueAsString();
+                    UpdateInfoForParameter(curId);
                     curKnob.KnobColor = KNOB_COLOR_TRANSFORM;
                 }
                 else
@@ -470,11 +430,13 @@ namespace MidiShapeShifter.Mss.UI
                 }
             }
 
-            if (activeEntryExists)
+            if (this.activeMappingInfo.GetActiveMappingExists())
             {
-                CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
-                IMssMsgInfo outMsgInfo = 
-                    this.msgInfoFactory.Create(this.ActiveGraphableEntry.OutMssMsgRange.MsgType);
+                IMappingEntry activeMapping = this.activeMappingInfo.GetActiveMappingCopy();
+                CurveShapeInfo curveInfo = activeMapping.CurveShapeInfo;
+
+                IMssMsgInfo outMsgInfo =
+                    this.msgInfoFactory.Create(activeMapping.OutMssMsgRange.MsgType);
 
             //Update preset controls
                 repopulateTransformPresetList();
@@ -590,12 +552,21 @@ namespace MidiShapeShifter.Mss.UI
             this.DataFieldsInGraphInputCombo.Clear();
             this.graphInputTypeCombo.Items.Clear();
 
-            if (this.ActiveGraphableEntry != null)
+            if (this.activeMappingInfo.GetActiveMappingExists())
             {
                 this.graphInputTypeCombo.Enabled = true;
 
-                IMssMsgInfo inputInfo = 
-                    this.msgInfoFactory.Create(this.ActiveGraphableEntry.InMssMsgRange.MsgType);
+                MssMsgType inMsgType = (MssMsgType) (-1);
+                MssMsgDataField primaryInputSource = (MssMsgDataField) (-1);
+                this.activeMappingInfo.GetActiveGraphableEntryManager().RunFuncOnMappingEntry(this.activeMappingInfo.ActiveGraphableEntryId,
+                    mappingEntry =>
+                    {
+                        inMsgType = mappingEntry.InMssMsgRange.MsgType;
+                        primaryInputSource = mappingEntry.PrimaryInputSource;
+                    });
+
+                IMssMsgInfo inputInfo =
+                    this.msgInfoFactory.Create(inMsgType);
                 MssMsgDataField[] dataFieldArray = 
                     (MssMsgDataField[])Enum.GetValues(typeof(MssMsgDataField));
 
@@ -607,7 +578,7 @@ namespace MidiShapeShifter.Mss.UI
                         this.DataFieldsInGraphInputCombo.Add(dataField);
                         this.graphInputTypeCombo.Items.Add(dataFieldName);
 
-                        if (this.ActiveGraphableEntry.PrimaryInputSource == dataField)
+                        if (primaryInputSource == dataField)
                         {
                             ignoreInputTypeComboSelectionChangeHandlers = true;
                             //Select the item that was just added.
@@ -689,14 +660,19 @@ namespace MidiShapeShifter.Mss.UI
                 IgnoreGraphableEntrySelectionChangedHandler = false;
             }
 
-            this.persistantInfo.ActiveGraphableEntryType = mappingType;
-            this.persistantInfo.ActiveGraphableEntryId = modifiedListView.SelectedItems[0].Index;
+            this.activeMappingInfo.ActiveGraphableEntryType = mappingType;
+
+            this.activeMappingInfo.ActiveGraphableEntryId = this.activeMappingInfo.GetActiveGraphableEntryManager().GetMappingEntryIdByIndex(modifiedListView.SelectedItems[0].Index);
             OnActiveGraphableEntryChanged();
         }
 
         protected void UpdateInfoForParameter(MssParameterID paramID)
         {
-            MssParamInfo paramInfo = this.mssParameters.GetParameterInfo(paramID);
+            if (MssParameters.PRESET_PARAM_ID_LIST.Contains(paramID) && this.mssParameters.GetActiveMappingExists() == false) {
+                return;
+            }
+
+            MssParamInfo paramInfo = this.mssParameters.GetParameterInfoCopy(paramID);
             MssParameters_NameChanged(paramID, paramInfo.Name);
             MssParameters_ValueChanged(paramID, paramInfo.GetValue());
             MssParameters_MaxValueChanged(paramID, paramInfo.MaxValue);
@@ -727,8 +703,8 @@ namespace MidiShapeShifter.Mss.UI
             {
                 int newId = this.mappingMgr.AddMappingEntry(mapDlg.mappingEntry);
 
-                this.persistantInfo.ActiveGraphableEntryType = GraphableEntryType.Mapping;
-                this.persistantInfo.ActiveGraphableEntryId = newId;
+                this.activeMappingInfo.ActiveGraphableEntryType = GraphableEntryType.Mapping;
+                this.activeMappingInfo.ActiveGraphableEntryId = newId;
 
                 OnActiveGraphableEntryChanged();
             }
@@ -739,17 +715,10 @@ namespace MidiShapeShifter.Mss.UI
             //Wait for the host to be idle before proceeding.
             this.idleProcessingSignal.WaitOne();
 
-            if (ActiveGraphableEntry == null || 
-                this.persistantInfo.ActiveGraphableEntryType != GraphableEntryType.Mapping)
-            {
-                //The edit button should be disabled if there is no ActiveGraphableEntry or if the active 
-                //mapping is not in the mapping list view.
-                Debug.Assert(false);
-                return;
-            }
+            IMappingEntry activeMappingEntryCopy = this.activeMappingInfo.GetActiveMappingCopy();
 
             MappingDlg mapDlg = new MappingDlg();
-            mapDlg.Init(ActiveGraphableEntry, 
+            mapDlg.Init(activeMappingEntryCopy, 
                         true, 
                         this.msgMetadataFactory, 
                         this.msgInfoFactory,
@@ -757,6 +726,8 @@ namespace MidiShapeShifter.Mss.UI
             
             if (mapDlg.ShowDialog(this) == DialogResult.OK)
             {
+                this.activeMappingInfo.GetActiveMappingManager().ReplaceMappingEntry(activeMappingEntryCopy);
+
                 RefreshMappingListView();
                 //The equation curve needs to be updated incase the equation uses data1 or data2 
                 //and the input range for these has changed.
@@ -767,8 +738,8 @@ namespace MidiShapeShifter.Mss.UI
 
         private void deleteMappingBtn_Click(object sender, EventArgs e)
         {
-            if (ActiveGraphableEntry == null ||
-                this.persistantInfo.ActiveGraphableEntryType != GraphableEntryType.Mapping)
+            if (this.activeMappingInfo.GetActiveMappingExists() == false ||
+                this.activeMappingInfo.ActiveGraphableEntryType != GraphableEntryType.Mapping)
             {
                 //The delete button should be disabled if there is no ActiveGraphableEntry or if the 
                 //active mapping is not in the mapping list view.
@@ -776,25 +747,47 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
-            this.mappingMgr.RemoveMappingEntry(this.persistantInfo.ActiveGraphableEntryId);
-            this.mappingListView.Items[this.persistantInfo.ActiveGraphableEntryId].Remove();
+            deleteGraphableMappingEntry(this.mappingMgr, this.mappingListView);
+        }
 
-            if (this.mappingListView.Items.Count > this.persistantInfo.ActiveGraphableEntryId)
+        private void deleteGeneratorBtn_Click(object sender, EventArgs e)
+        {
+            if (this.activeMappingInfo.GetActiveMappingExists() == false ||
+                this.activeMappingInfo.ActiveGraphableEntryType != GraphableEntryType.Generator)
             {
-                //don't need to call ActiveGraphableEntryChanged() because selecting an item 
-                //will trigger it.
-                this.mappingListView.Items[this.persistantInfo.ActiveGraphableEntryId].Selected = true;
+                //The delete button should be disabled if there is no ActiveGraphableEntry or if the 
+                //active mapping is not in the mapping list view.
+                Debug.Assert(false);
+                return;
             }
-            else if (this.mappingListView.Items.Count > 0)
+
+            deleteGraphableMappingEntry(this.genMappingMgr, this.generatorListView);
+            
+        }
+
+        private void deleteGraphableMappingEntry(IBaseGraphableMappingManager graphableMappingManager, ListView graphableEntryListView)
+        {
+            int activeEntryId = this.activeMappingInfo.ActiveGraphableEntryId;
+
+            int activeEntryIndex = graphableMappingManager.GetMappingEntryIndexById(activeEntryId);
+
+            graphableMappingManager.RemoveMappingEntry(activeEntryId);
+            graphableEntryListView.Items[activeEntryIndex].Remove();
+
+            if (graphableEntryListView.Items.Count > activeEntryIndex)
             {
-                this.persistantInfo.ActiveGraphableEntryId = this.mappingListView.Items.Count - 1;
-                OnActiveGraphableEntryChanged();
+                this.activeMappingInfo.ActiveGraphableEntryId = graphableMappingManager.GetMappingEntryIdByIndex(activeEntryIndex);
+            }
+            else if (graphableEntryListView.Items.Count > 0)
+            {
+                this.activeMappingInfo.ActiveGraphableEntryId = graphableEntryListView.Items.Count - 1;
             }
             else
             {
-                this.persistantInfo.ActiveGraphableEntryId = -1;
-                OnActiveGraphableEntryChanged();
+                this.activeMappingInfo.ActiveGraphableEntryId = -1;
             }
+
+            OnActiveGraphableEntryChanged();
         }
 
         private void mappingListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -817,8 +810,8 @@ namespace MidiShapeShifter.Mss.UI
                 //Creates a new mapping entry, adds it the the generator mapping manager and sets
                 //it as the active mapping
                 int entryId = this.genMappingMgr.CreateAndAddEntryFromGenInfo(genDlg.GenInfoResult);
-                this.persistantInfo.ActiveGraphableEntryType = GraphableEntryType.Generator;
-                this.persistantInfo.ActiveGraphableEntryId = entryId;
+                this.activeMappingInfo.ActiveGraphableEntryType = GraphableEntryType.Generator;
+                this.activeMappingInfo.ActiveGraphableEntryId = entryId;
 
                 OnActiveGraphableEntryChanged();
             }
@@ -829,16 +822,12 @@ namespace MidiShapeShifter.Mss.UI
             //Wait for the host to be idle before proceeding.
             this.idleProcessingSignal.WaitOne();
 
-            if (ActiveGraphableEntry == null || 
-                this.persistantInfo.ActiveGraphableEntryType != GraphableEntryType.Generator)
-            {
-                //The edit button should be disabled if there is no ActiveGraphableEntry or if the active 
-                //mapping is not in the generator list view.
-                Debug.Assert(false);
-                return;
-            }
-            IReturnStatus<IGeneratorMappingEntry> activeMappingStatus = 
-                this.genMappingMgr.GetCopyOfMappingEntryById(this.persistantInfo.ActiveGraphableEntryId);
+            int activeId = this.activeMappingInfo.ActiveGraphableEntryId;
+
+            Debug.Assert(activeId >= 0 && this.activeMappingInfo.ActiveGraphableEntryType == GraphableEntryType.Generator);
+
+            IReturnStatus<IGeneratorMappingEntry> activeMappingStatus =
+                this.genMappingMgr.GetCopyOfMappingEntryById(activeId);
 
             if (activeMappingStatus.IsValid == false)
             {
@@ -885,7 +874,7 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
-            MssParamInfo paramInfo = mssParameters.GetParameterInfo(paramId);
+            MssParamInfo paramInfo = mssParameters.GetParameterInfoCopy(paramId);
 
             //Update the knob
             LBKnob knob;
@@ -946,14 +935,27 @@ namespace MidiShapeShifter.Mss.UI
 
         private void curveEquationTextBox_TextChanged(object sender, System.EventArgs e)
         {
-            if (ignoreEquationTextBoxChangeHandlers == false && this.ActiveGraphableEntry != null)
+            if (ignoreEquationTextBoxChangeHandlers == false && this.activeMappingInfo.GetActiveMappingExists())
             {
-                CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
+                int activeId = this.activeMappingInfo.ActiveGraphableEntryId;
+                IBaseGraphableMappingManager activeManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
+                IReturnStatus<CurveShapeInfo> getCurveInfoStatus = activeManager.GetCopyOfCurveShapeInfoById(activeId);
+
+                if (!getCurveInfoStatus.IsValid)
+                {
+                    Debug.Assert(false);
+                    return;
+                }
+
+                CurveShapeInfo curveInfo = getCurveInfoStatus.Value;
+
                 Debug.Assert(curveInfo.SelectedEquationType == EquationType.Curve);
 
                 string expressionString = this.curveEquationTextBox.Text;
                 int curCurve = curveInfo.SelectedEquationIndex;
                 curveInfo.CurveEquations[curCurve] = expressionString;
+
+                activeManager.SetCurveShapeInfoForId(activeId, curveInfo);
 
                 UpdateEquationCurve();
             }
@@ -961,16 +963,22 @@ namespace MidiShapeShifter.Mss.UI
 
         private void pointEquationTextBox_TextChanged(object sender, System.EventArgs e)
         {
-            if (ignoreEquationTextBoxChangeHandlers == false && this.ActiveGraphableEntry != null)
+            if (ignoreEquationTextBoxChangeHandlers == false && this.activeMappingInfo.GetActiveMappingExists())
             {
-                CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
-                Debug.Assert(curveInfo.SelectedEquationType == EquationType.Point);
+                int activeId = this.activeMappingInfo.ActiveGraphableEntryId;
+                IBaseGraphableMappingManager activeManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
+
+                IReturnStatus<CurveShapeInfo> curveInfoRetStatus = activeManager.GetCopyOfCurveShapeInfoById(activeId);
+                Debug.Assert(curveInfoRetStatus.IsValid && curveInfoRetStatus.Value.SelectedEquationType == EquationType.Point);
+                CurveShapeInfo curveInfo = curveInfoRetStatus.Value;
 
                 string xExpressionString = this.pointXEquationTextBox.Text;
                 string yExpressionString = this.pointYEquationTextBox.Text;
                 int curCurve = curveInfo.SelectedEquationIndex;
                 curveInfo.PointEquations[curCurve].X = xExpressionString;
                 curveInfo.PointEquations[curCurve].Y = yExpressionString;
+
+                activeManager.SetCurveShapeInfoForId(activeId, curveInfo);
 
                 this.commandQueue.EnqueueCommandOverwriteDups(
                     EditorCommandId.UpdateEquationCurve, () => UpdateEquationCurve());
@@ -979,9 +987,10 @@ namespace MidiShapeShifter.Mss.UI
 
         protected void UpdateEquationCurve()
         {
-            if (this.ActiveGraphableEntry != null)
+            if (this.activeMappingInfo.GetActiveMappingExists())
             {
-                CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
+                IMappingEntry activeMappingEntryCopy = this.activeMappingInfo.GetActiveMappingCopy();
+                CurveShapeInfo curveInfoCopy = activeMappingEntryCopy.CurveShapeInfo;
 
                 GraphPane graphPane = this.mainGraphControl.GraphPane;
 
@@ -999,15 +1008,17 @@ namespace MidiShapeShifter.Mss.UI
                 HashSet<int> erroneousControlPointIndexSet;
                 HashSet<int> erroneousCurveIndexSet;
 
-                curveInfo.AllEquationsAreValid = this.evaluator.SampleExpressionWithDefaultInputValues(
+                curveInfoCopy.AllEquationsAreValid = this.evaluator.SampleExpressionWithDefaultInputValues(
                         1.0 / ((double)NUM_GRAPH_POINTS - 1.0),
                         this.mssParameters,
-                        this.ActiveGraphableEntry,
+                        activeMappingEntryCopy,
                         out pointList,
                         out curvePointsByCurveList,
                         out erroneousControlPointIndexSet,
                         out erroneousCurveIndexSet);
-                if (curveInfo.AllEquationsAreValid)
+                this.activeMappingInfo.GetActiveGraphableEntryManager().SetCurveShapeInfoForId(this.activeMappingInfo.ActiveGraphableEntryId, curveInfoCopy);
+
+                if (curveInfoCopy.AllEquationsAreValid)
                 {
                     //Update modified points and add new points
                     for(int i = 0; i < pointList.Count; i++)
@@ -1032,9 +1043,9 @@ namespace MidiShapeShifter.Mss.UI
                         pointsCurveEdit.RemoveAt(i);
                     }
 
-                    if(curveInfo.SelectedEquationType == EquationType.Point)
+                    if(curveInfoCopy.SelectedEquationType == EquationType.Point)
                     {
-                        pointsCurve.Points[curveInfo.SelectedEquationIndex].ColorValue = 1;
+                        pointsCurve.Points[curveInfoCopy.SelectedEquationIndex].ColorValue = 1;
                     }
 
 
@@ -1080,13 +1091,13 @@ namespace MidiShapeShifter.Mss.UI
                 {
                     GraphSegmentColorStausFlags curPointColorStatus = GraphSegmentColorStausFlags.None;
 
-                    if (curveInfo.SelectedEquationType == EquationType.Point &&
-                        i == curveInfo.SelectedEquationIndex)
+                    if (curveInfoCopy.SelectedEquationType == EquationType.Point &&
+                        i == curveInfoCopy.SelectedEquationIndex)
                     {
                         curPointColorStatus |= GraphSegmentColorStausFlags.Selected;
                     }
 
-                    if (curveInfo.AllEquationsAreValid) 
+                    if (curveInfoCopy.AllEquationsAreValid) 
                     {
                         curPointColorStatus |= GraphSegmentColorStausFlags.Enabled;
                     }
@@ -1108,13 +1119,13 @@ namespace MidiShapeShifter.Mss.UI
 
                     GraphSegmentColorStausFlags curEqCurveColorStatus = GraphSegmentColorStausFlags.None;
 
-                    if (curveInfo.SelectedEquationType == EquationType.Curve &&
-                        curIndex == curveInfo.SelectedEquationIndex)
+                    if (curveInfoCopy.SelectedEquationType == EquationType.Curve &&
+                        curIndex == curveInfoCopy.SelectedEquationIndex)
                     {
                         curEqCurveColorStatus |= GraphSegmentColorStausFlags.Selected;
                     }
 
-                    if (curveInfo.AllEquationsAreValid)
+                    if (curveInfoCopy.AllEquationsAreValid)
                     {
                         curEqCurveColorStatus |= GraphSegmentColorStausFlags.Enabled;
                     }
@@ -1301,43 +1312,11 @@ namespace MidiShapeShifter.Mss.UI
             }
         }
 
-        private void deleteGeneratorBtn_Click(object sender, EventArgs e)
-        {
-            if (ActiveGraphableEntry == null ||
-                this.persistantInfo.ActiveGraphableEntryType != GraphableEntryType.Generator)
-            {
-                //The delete button should be disabled if there is no ActiveGraphableEntry or if the 
-                //active mapping is not in the mapping list view.
-                Debug.Assert(false);
-                return;
-            }
-
-            this.genMappingMgr.RemoveMappingEntry(this.persistantInfo.ActiveGraphableEntryId);
-            this.generatorListView.Items[this.persistantInfo.ActiveGraphableEntryId].Remove();
-
-            if (this.generatorListView.Items.Count > this.persistantInfo.ActiveGraphableEntryId)
-            {
-                //don't need to call ActiveGraphableEntryChanged() because selecting an item 
-                //will trigger it.
-                this.generatorListView.Items[this.persistantInfo.ActiveGraphableEntryId].Selected = true;
-            }
-            else if (this.generatorListView.Items.Count > 0)
-            {
-                this.persistantInfo.ActiveGraphableEntryId = this.generatorListView.Items.Count - 1;
-                OnActiveGraphableEntryChanged();
-            }
-            else
-            {
-                this.persistantInfo.ActiveGraphableEntryId = -1;
-                OnActiveGraphableEntryChanged();
-            }
-        }
-
         private void moveMappingUpBtn_Click(object sender, EventArgs e)
         {
-            if (ActiveGraphableEntry == null ||
-                this.persistantInfo.ActiveGraphableEntryType != GraphableEntryType.Mapping ||
-                this.persistantInfo.ActiveGraphableEntryId <= 0)
+            if (this.activeMappingInfo.GetActiveMappingExists() == false ||
+                this.activeMappingInfo.ActiveGraphableEntryType != GraphableEntryType.Mapping ||
+                this.activeMappingInfo.GetActiveMappingManager().GetMappingEntryIndexById(this.activeMappingInfo.ActiveGraphableEntryId) <= 0)
             {
                 //The move up button should be disabled if there is no ActiveGraphableEntry, 
                 //if the ActiveGraphableEntry is not in the mapping list view or if the 
@@ -1346,15 +1325,15 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
-            this.mappingMgr.MoveEntryUp(this.persistantInfo.ActiveGraphableEntryId);
-            this.persistantInfo.ActiveGraphableEntryId--;
+            this.mappingMgr.MoveEntryUp(this.activeMappingInfo.ActiveGraphableEntryId);
             RefreshMappingListView();
+            UpdateGraphableEntryButtonsEnabledStatus();
         }
 
         private void moveMappingDownBtn_Click(object sender, EventArgs e)
         {
-            if (ActiveGraphableEntry == null ||
-                this.persistantInfo.ActiveGraphableEntryType != GraphableEntryType.Mapping)
+            if (this.activeMappingInfo.GetActiveMappingExists() == false ||
+                this.activeMappingInfo.ActiveGraphableEntryType != GraphableEntryType.Mapping)
             {
                 //The move up button should be disabled if there is no ActiveGraphableEntry, 
                 //or if the ActiveGraphableEntry is not in the mapping list view.
@@ -1362,8 +1341,9 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
-            this.mappingMgr.MoveEntryDown(this.persistantInfo.ActiveGraphableEntryId);
+            this.mappingMgr.MoveEntryDown(this.activeMappingInfo.ActiveGraphableEntryId);
             RefreshMappingListView();
+            UpdateGraphableEntryButtonsEnabledStatus();
         }
 
         private void saveProgram_Click(object sender, EventArgs e)
@@ -1434,10 +1414,13 @@ namespace MidiShapeShifter.Mss.UI
                 return false;
             }
 
-            if (this.ActiveGraphableEntry != null && this.ActiveGraphableEntry.CurveShapeInfo.AllEquationsAreValid != false)
-            {
-                CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
+            IMappingEntry activeMappingCopy = this.activeMappingInfo.GetActiveMappingCopy();
+            CurveShapeInfo curveInfoCopy = activeMappingCopy.CurveShapeInfo;
+            IBaseGraphableMappingManager activeMappingManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
+            int activeId = this.activeMappingInfo.ActiveGraphableEntryId;
 
+            if (this.activeMappingInfo.GetActiveMappingExists() && curveInfoCopy.AllEquationsAreValid)
+            {
                 Point mousePt = new Point(e.X, e.Y);
 
                 GraphPane pane = this.mainGraphControl.GraphPane;
@@ -1467,7 +1450,7 @@ namespace MidiShapeShifter.Mss.UI
                     int pointBeforeNewPointIndex = -1;
                     int pointAfterNewPointIndex = -1;
 
-                    Debug.Assert(controlPointsCurve.Points.Count == this.ActiveGraphableEntry.CurveShapeInfo.PointEquations.Count);
+                    Debug.Assert(controlPointsCurve.Points.Count == curveInfoCopy.PointEquations.Count);
                     for (int i = 0; i < controlPointsCurve.Points.Count; i++)
                     {
                         if (controlPointsCurve.Points[i].X > newPoint.X)
@@ -1488,7 +1471,7 @@ namespace MidiShapeShifter.Mss.UI
                     EvaluationCurveInput evalInput = new EvaluationCurveInput();
                     evalInput.Init(newPoint.X, newPoint.X, newPoint.X,
                         this.mssParameters.GetVariableParamInfoList(),
-                        this.ActiveGraphableEntry);
+                        activeMappingCopy);
                     ReturnStatus<double> evalReturnStatus = this.evaluator.Evaluate(evalInput);
                     if (evalReturnStatus.IsValid == false)
                     {
@@ -1498,14 +1481,14 @@ namespace MidiShapeShifter.Mss.UI
 
                     //Copy curve equation from before the new point and assign it to the new line
                     //segment after the new point
-                    string equationToDuplicate = curveInfo.CurveEquations[pointBeforeNewPointIndex + 1];
-                    curveInfo.CurveEquations.Insert(pointBeforeNewPointIndex + 1, equationToDuplicate);
+                    string equationToDuplicate = curveInfoCopy.CurveEquations[pointBeforeNewPointIndex + 1];
+                    curveInfoCopy.CurveEquations.Insert(pointBeforeNewPointIndex + 1, equationToDuplicate);
                     //If the new equation is being inserted before the one that is currently 
                     //selected then the index of the currenly selected equation must be incremented.
-                    if (curveInfo.SelectedEquationType == EquationType.Curve &&
-                        curveInfo.SelectedEquationIndex > pointBeforeNewPointIndex + 1)
+                    if (curveInfoCopy.SelectedEquationType == EquationType.Curve &&
+                        curveInfoCopy.SelectedEquationIndex > pointBeforeNewPointIndex + 1)
                     {
-                        curveInfo.SelectedEquationIndex++;
+                        curveInfoCopy.SelectedEquationIndex++;
                     }
 
                     XyPoint<string> newPointEquation = new XyPoint<string>();
@@ -1515,24 +1498,27 @@ namespace MidiShapeShifter.Mss.UI
                     //Add the new point to curveInfo
                     if (pointAfterNewPointIndex != -1)
                     {
-                        curveInfo.PointEquations.Insert(pointAfterNewPointIndex, newPointEquation);
+                        curveInfoCopy.PointEquations.Insert(pointAfterNewPointIndex, newPointEquation);
                         //If the new point equation is being inserted before the point that is 
                         //currently selected then the index of the currenly selected point 
                         //equation must be incremented.
-                        if (curveInfo.SelectedEquationType == EquationType.Point &&
-                        curveInfo.SelectedEquationIndex >= pointAfterNewPointIndex)
+                        if (curveInfoCopy.SelectedEquationType == EquationType.Point &&
+                        curveInfoCopy.SelectedEquationIndex >= pointAfterNewPointIndex)
                         {
-                            curveInfo.SelectedEquationIndex++;
+                            curveInfoCopy.SelectedEquationIndex++;
                         }
                     }
                     else
                     {
-                        curveInfo.PointEquations.Add(newPointEquation);
+                        curveInfoCopy.PointEquations.Add(newPointEquation);
                     }
+                    //This needs to be called before UpdateCurveShapeControls() so that it can use the uptodate curve info.
+                    activeMappingManager.SetCurveShapeInfoForId(activeId, curveInfoCopy);
 
                     UpdateCurveShapeControls();
 
                     this.mainGraphControl.StartEditing(pane, mousePt, controlPointsCurve, pointBeforeNewPointIndex + 1);
+
                 }
 
             }
@@ -1545,7 +1531,7 @@ namespace MidiShapeShifter.Mss.UI
                                                     int pointBeingEditedIndex, 
                                                     CurveItem curveBeingEdited)
         {
-            if (this.ActiveGraphableEntry == null)
+            if (this.activeMappingInfo.GetActiveMappingExists() == false)
             {
                 //This event shouldn't fire when there is no active entry
                 Debug.Assert(false);
@@ -1580,11 +1566,15 @@ namespace MidiShapeShifter.Mss.UI
                 newPointPosition.Y = 1;
             }
 
-            CurveShapeInfo activeCurveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
-            activeCurveInfo.PointEquations[pointBeingEditedIndex].X = 
-                Math.Round(newPointPosition.X, NUM_DECIMALS_IN_CONTROL_POINT).ToString();
-            activeCurveInfo.PointEquations[pointBeingEditedIndex].Y = 
-                Math.Round(newPointPosition.Y, NUM_DECIMALS_IN_CONTROL_POINT).ToString();
+            this.activeMappingInfo.GetActiveGraphableEntryManager().RunFuncOnMappingEntry(this.activeMappingInfo.ActiveGraphableEntryId,
+                (mappingEntry) =>
+                {
+                    CurveShapeInfo curveInfo = mappingEntry.CurveShapeInfo;
+                    curveInfo.PointEquations[pointBeingEditedIndex].X =
+                        Math.Round(newPointPosition.X, NUM_DECIMALS_IN_CONTROL_POINT).ToString();
+                    curveInfo.PointEquations[pointBeingEditedIndex].Y =
+                        Math.Round(newPointPosition.Y, NUM_DECIMALS_IN_CONTROL_POINT).ToString();
+                });
 
             IPointListEdit pointsList = (IPointListEdit)curveBeingEdited.Points;
             pointsList[pointBeingEditedIndex] = newPointPosition;
@@ -1604,7 +1594,8 @@ namespace MidiShapeShifter.Mss.UI
         {
             menuStrip.Items.Clear();
 
-            if (this.ActiveGraphableEntry != null) {
+            if (this.activeMappingInfo.GetActiveMappingExists())
+            {
                 LineItem controlPointCurve;
                 int nearestPointIndex;
 
@@ -1620,7 +1611,9 @@ namespace MidiShapeShifter.Mss.UI
                 item.Name = "ZedMenuDeletePoint";
                 // This is the text that will show up in the menu
                 item.Text = "Delete Point";
-                item.Enabled = controlPointClicked && this.ActiveGraphableEntry.CurveShapeInfo.AllEquationsAreValid;
+
+                this.activeMappingInfo.GetActiveGraphableEntryManager().RunFuncOnMappingEntry(this.activeMappingInfo.ActiveGraphableEntryId,
+                    (mappingEntry) => item.Enabled = controlPointClicked && mappingEntry.CurveShapeInfo.AllEquationsAreValid);
 
                 DeletePointParams deletePointParams = new DeletePointParams();
                 deletePointParams.pointIndex = nearestPointIndex;
@@ -1646,7 +1639,7 @@ namespace MidiShapeShifter.Mss.UI
 
         private void ZedGraph_DeletePoint(object sender, EventArgs e)
         {
-            if (this.ActiveGraphableEntry == null)
+            if (this.activeMappingInfo.GetActiveMappingExists() == false)
             {
                 //This menu should be be possible to click when there is not active graphable 
                 //entry.
@@ -1657,42 +1650,53 @@ namespace MidiShapeShifter.Mss.UI
             ToolStripDropDownItem item = (ToolStripDropDownItem)sender;
             DeletePointParams deletePointParams = (DeletePointParams)item.Tag;
 
-            CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
-            curveInfo.PointEquations.RemoveAt(deletePointParams.pointIndex);
-            curveInfo.CurveEquations.RemoveAt(deletePointParams.pointIndex + 1);
+            IBaseGraphableMappingManager activeMappingManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
+            int activeMappingId = this.activeMappingInfo.ActiveGraphableEntryId;
+            CurveShapeInfo curveInfoCopy = activeMappingManager.GetCopyOfCurveShapeInfoById(activeMappingId).Value;
 
-            if (curveInfo.SelectedEquationIndex > deletePointParams.pointIndex)
+            curveInfoCopy.PointEquations.RemoveAt(deletePointParams.pointIndex);
+            curveInfoCopy.CurveEquations.RemoveAt(deletePointParams.pointIndex + 1);
+
+            if (curveInfoCopy.SelectedEquationIndex > deletePointParams.pointIndex)
             {
-                curveInfo.SelectedEquationIndex--;
+                curveInfoCopy.SelectedEquationIndex--;
             }
-            else if (curveInfo.SelectedEquationIndex == deletePointParams.pointIndex &&
-                    curveInfo.SelectedEquationType == EquationType.Point)
+            else if (curveInfoCopy.SelectedEquationIndex == deletePointParams.pointIndex &&
+                    curveInfoCopy.SelectedEquationType == EquationType.Point)
             {
-                curveInfo.SelectedEquationType = EquationType.Curve;                
+                curveInfoCopy.SelectedEquationType = EquationType.Curve;                
             }
+
+            activeMappingManager.SetCurveShapeInfoForId(activeMappingId, curveInfoCopy);
+
             this.commandQueue.EnqueueCommandOverwriteDups(
                 EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
         }
 
         private void nextEquationBtn_Click(object sender, EventArgs e)
         {
-            if (this.ActiveGraphableEntry != null)
+            if (this.activeMappingInfo.GetActiveMappingExists())
             {
-                CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
-                if (curveInfo.SelectedEquationType == EquationType.Curve)
+                IBaseGraphableMappingManager activeMappingManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
+                int activeMappingId = this.activeMappingInfo.ActiveGraphableEntryId;
+                CurveShapeInfo curveInfoCopy = activeMappingManager.GetCopyOfCurveShapeInfoById(activeMappingId).Value;
+
+                if (curveInfoCopy.SelectedEquationType == EquationType.Curve)
                 {
-                    curveInfo.SelectedEquationType = EquationType.Point;
+                    curveInfoCopy.SelectedEquationType = EquationType.Point;
                 }
-                else if (curveInfo.SelectedEquationType == EquationType.Point)
+                else if (curveInfoCopy.SelectedEquationType == EquationType.Point)
                 {
-                    curveInfo.SelectedEquationType = EquationType.Curve;
-                    curveInfo.SelectedEquationIndex++;
+                    curveInfoCopy.SelectedEquationType = EquationType.Curve;
+                    curveInfoCopy.SelectedEquationIndex++;
                 }
                 else
                 {
                     //Unknown equation type
                     Debug.Assert(false);
                 }
+
+                activeMappingManager.SetCurveShapeInfoForId(activeMappingId, curveInfoCopy);
 
                 this.commandQueue.EnqueueCommandOverwriteDups(
                     EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
@@ -1706,23 +1710,28 @@ namespace MidiShapeShifter.Mss.UI
 
         private void prevEquationBtn_Click(object sender, EventArgs e)
         {
-            if (this.ActiveGraphableEntry != null)
+            if (this.activeMappingInfo.GetActiveMappingExists())
             {
-                CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
-                if (curveInfo.SelectedEquationType == EquationType.Curve)
+                IBaseGraphableMappingManager activeMappingManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
+                int activeMappingId = this.activeMappingInfo.ActiveGraphableEntryId;
+                CurveShapeInfo curveInfoCopy = activeMappingManager.GetCopyOfCurveShapeInfoById(activeMappingId).Value;
+
+                if (curveInfoCopy.SelectedEquationType == EquationType.Curve)
                 {
-                    curveInfo.SelectedEquationType = EquationType.Point;
-                    curveInfo.SelectedEquationIndex--;
+                    curveInfoCopy.SelectedEquationType = EquationType.Point;
+                    curveInfoCopy.SelectedEquationIndex--;
                 }
-                else if (curveInfo.SelectedEquationType == EquationType.Point)
+                else if (curveInfoCopy.SelectedEquationType == EquationType.Point)
                 {
-                    curveInfo.SelectedEquationType = EquationType.Curve;
+                    curveInfoCopy.SelectedEquationType = EquationType.Curve;
                 }
                 else
                 {
                     //Unknown equation type
                     Debug.Assert(false);
                 }
+
+                activeMappingManager.SetCurveShapeInfoForId(activeMappingId, curveInfoCopy);
 
                 this.commandQueue.EnqueueCommandOverwriteDups(
                     EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
@@ -1789,7 +1798,7 @@ namespace MidiShapeShifter.Mss.UI
 
         private void resetGraphBtn_Click(object sender, EventArgs e)
         {
-            if (this.ActiveGraphableEntry == null)
+            if (this.activeMappingInfo.GetActiveMappingExists() == false)
             {
                 //This button should not be clickable when there is no active graphable entry
                 Debug.Assert(false);
@@ -1802,14 +1811,19 @@ namespace MidiShapeShifter.Mss.UI
                 MessageBoxButtons.YesNoCancel);
             if (result == DialogResult.Yes)
             {
-                CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
-                curveInfo.CurveEquations.Clear();
+                IBaseGraphableMappingManager activeMappingManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
+                int activeMappingId = this.activeMappingInfo.ActiveGraphableEntryId;
+                CurveShapeInfo curveInfoCopy = activeMappingManager.GetCopyOfCurveShapeInfoById(activeMappingId).Value;
 
-                curveInfo.CurveEquations.Add(CurveShapeInfo.DEFAULT_EQUATION);
-                curveInfo.PointEquations.Clear();
+                curveInfoCopy.CurveEquations.Clear();
 
-                curveInfo.SelectedEquationIndex = 0;
-                curveInfo.SelectedEquationType = EquationType.Curve;
+                curveInfoCopy.CurveEquations.Add(CurveShapeInfo.DEFAULT_EQUATION);
+                curveInfoCopy.PointEquations.Clear();
+
+                curveInfoCopy.SelectedEquationIndex = 0;
+                curveInfoCopy.SelectedEquationType = EquationType.Curve;
+
+                activeMappingManager.SetCurveShapeInfoForId(activeMappingId, curveInfoCopy);
 
                 this.commandQueue.EnqueueCommandOverwriteDups(
                     EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
@@ -1819,11 +1833,12 @@ namespace MidiShapeShifter.Mss.UI
         private void graphInputTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ignoreInputTypeComboSelectionChangeHandlers == false &&
-                this.ActiveGraphableEntry != null)
+                this.activeMappingInfo.GetActiveMappingExists())
             {
                 ComboBox inputTypeCombo = (ComboBox)sender;
-                this.ActiveGraphableEntry.PrimaryInputSource =
-                    this.DataFieldsInGraphInputCombo[inputTypeCombo.SelectedIndex];
+
+                this.activeMappingInfo.GetActiveGeneratorMappingManager().RunFuncOnMappingEntry(this.activeMappingInfo.ActiveGraphableEntryId, 
+                    (mappingEntry) => mappingEntry.PrimaryInputSource = this.DataFieldsInGraphInputCombo[inputTypeCombo.SelectedIndex]);
 
                 this.commandQueue.EnqueueCommandOverwriteDups(
                     EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
@@ -1837,7 +1852,7 @@ namespace MidiShapeShifter.Mss.UI
             Control paramControl = contextMenu.SourceControl;
 
             MssParameterID paramId = this.ParameterAllControlsDict[paramControl];
-            MssParamInfo paramInfo = this.mssParameters.GetParameterInfo(paramId);
+            MssParamInfo paramInfo = this.mssParameters.GetParameterInfoCopy(paramId);
 
             ParameterEditor paramEditorDlg = new ParameterEditor();
             paramEditorDlg.Init(paramInfo);
@@ -1845,20 +1860,7 @@ namespace MidiShapeShifter.Mss.UI
 
             if (paramEditorDlg.ShowDialog(this) == DialogResult.OK)
             {
-
-                int paramIndex = MssParameters.PRESET_PARAM_ID_LIST.FindIndex(
-                        curParamId => curParamId == paramId);
-
-                if (paramIndex != -1)
-                {
-                    CurveShapeInfo curveInfo = this.ActiveGraphableEntry.CurveShapeInfo;
-                    curveInfo.ParamInfoList[paramIndex] = paramEditorDlg.resultParamInfo;
-                    this.mssParameters.SetPresetParamInfoList(curveInfo.ParamInfoList);
-                }
-                else
-                {
-                    this.mssParameters.SetVariableParamInfo(paramId, paramEditorDlg.resultParamInfo);
-                }
+                this.mssParameters.SetParamInfo(paramId, paramEditorDlg.resultParamInfo);
 
                 //The mapping ListView needs to be updated as it may display parameter names.
                 RefreshMappingListView();

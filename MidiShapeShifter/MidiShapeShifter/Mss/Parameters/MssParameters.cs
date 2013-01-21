@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using MidiShapeShifter.Mss.Mapping;
 
 namespace MidiShapeShifter.Mss.Parameters
 {
@@ -22,6 +23,8 @@ namespace MidiShapeShifter.Mss.Parameters
     public delegate void ParameterValueChangedEventHandler(MssParameterID paramId, double value);
     public delegate void ParameterMinValueChangedEventHandler(MssParameterID paramId, double minValue);
     public delegate void ParameterMaxValueChangedEventHandler(MssParameterID paramId, double maxValue);
+
+    public delegate void ParamInfoAccessor(MssParamInfo paramInfo);
 
     /// <summary>
     ///     MssParameters stores information about all of the parameters in Midi Shape Shifter. An instance of 
@@ -43,11 +46,8 @@ namespace MidiShapeShifter.Mss.Parameters
         public static readonly List<MssParameterID> PRESET_PARAM_ID_LIST;
         public static readonly List<MssParameterID> ALL_PARAMS_ID_LIST;
 
-        /// <summary>
-        ///     Stores all of the information about each parameter.
-        /// </summary>
-        [DataMember]
-        protected Dictionary<MssParameterID, MssParamInfo> paramDict;
+        protected ActiveMappingInfo activeMappingInfo;
+        protected VariableParamMgr variableParamMgr;
 
         static MssParameters()
         {
@@ -72,78 +72,35 @@ namespace MidiShapeShifter.Mss.Parameters
 
         public MssParameters()
         {
-            paramDict = new Dictionary<MssParameterID, MssParamInfo>();
+
         }
 
         /// <summary>
         ///     Populates paramDict with default info about each parameter
         /// </summary>
-        public void Init()
+        public void Init(ActiveMappingInfo activeMappingInfo, VariableParamMgr variableParamMgr)
         {
-            MssParamInfo defaultParameterInfo = new MssNumberParamInfo();
-            defaultParameterInfo.Init("");
-
-            MssParamInfo tempParameterInfo;
-
-            //Populate paramDict with default values for each parameter
-            tempParameterInfo = defaultParameterInfo.Clone();
-            tempParameterInfo.Name = "A";
-            this.paramDict.Add(MssParameterID.VariableA, tempParameterInfo);
-
-            tempParameterInfo = defaultParameterInfo.Clone();
-            tempParameterInfo.Name = "B";
-            this.paramDict.Add(MssParameterID.VariableB, tempParameterInfo);
-
-            tempParameterInfo = defaultParameterInfo.Clone();
-            tempParameterInfo.Name = "C";
-            this.paramDict.Add(MssParameterID.VariableC, tempParameterInfo);
-
-            tempParameterInfo = defaultParameterInfo.Clone();
-            tempParameterInfo.Name = "D";
-            this.paramDict.Add(MssParameterID.VariableD, tempParameterInfo);
-
-            tempParameterInfo = defaultParameterInfo.Clone();
-            tempParameterInfo.Name = "E";
-            this.paramDict.Add(MssParameterID.VariableE, tempParameterInfo);
-
-
-            List<MssParamInfo> defaultPresetParamList = CreateDefaultPresetParamInfoList();
-            for (int i = 0; i < defaultPresetParamList.Count; i++ )
-            {
-                this.paramDict.Add(PRESET_PARAM_ID_LIST[i], defaultPresetParamList[i]);
-            }
+            this.activeMappingInfo = activeMappingInfo;
+            this.variableParamMgr = variableParamMgr;
         }
 
-        public static List<MssParamInfo> CreateDefaultPresetParamInfoList()
+        public static string GetDefaultPresetName(MssParameterID presetId)
         {
-            List<MssParamInfo> presetParamInfoList = new List<MssParamInfo>();
-
-            MssParamInfo defaultParameterInfo = new MssNumberParamInfo();
-            defaultParameterInfo.Init("");
-
-            MssParamInfo tempParameterInfo;
-
-            tempParameterInfo = defaultParameterInfo.Clone();
-            tempParameterInfo.Name = "P1";
-            presetParamInfoList.Add(tempParameterInfo);
-
-            tempParameterInfo = defaultParameterInfo.Clone();
-            tempParameterInfo.Name = "P2";
-            presetParamInfoList.Add(tempParameterInfo);
-
-            tempParameterInfo = defaultParameterInfo.Clone();
-            tempParameterInfo.Name = "P3";
-            presetParamInfoList.Add(tempParameterInfo);
-
-            tempParameterInfo = defaultParameterInfo.Clone();
-            tempParameterInfo.Name = "P4";
-            presetParamInfoList.Add(tempParameterInfo);
-
-            tempParameterInfo = defaultParameterInfo.Clone();
-            tempParameterInfo.Name = "P5";
-            presetParamInfoList.Add(tempParameterInfo);
-
-            return presetParamInfoList;
+            switch (presetId) { 
+                case MssParameterID.Preset1:
+                    return "P1";
+                case MssParameterID.Preset2:
+                    return "P2";
+                case MssParameterID.Preset3:
+                    return "P3";
+                case MssParameterID.Preset4:
+                    return "P4";
+                case MssParameterID.Preset5:
+                    return "P5";
+                default:
+                    Debug.Assert(false);
+                    return "";
+            }
         }
 
         public List<MssParamInfo> GetVariableParamInfoList()
@@ -151,7 +108,7 @@ namespace MidiShapeShifter.Mss.Parameters
             List<MssParamInfo> varParamInfoList = new List<MssParamInfo>();
             foreach (MssParameterID paramId in VARIABLE_PARAM_ID_LIST)
             {
-                varParamInfoList.Add(paramDict[paramId]);
+                varParamInfoList.Add(GetParameterInfoCopy(paramId));
             }
 
             return varParamInfoList;
@@ -162,55 +119,45 @@ namespace MidiShapeShifter.Mss.Parameters
             List<MssParamInfo> presetParamInfoList = new List<MssParamInfo>();
             foreach (MssParameterID paramId in PRESET_PARAM_ID_LIST)
             {
-                presetParamInfoList.Add(paramDict[paramId]);
+                presetParamInfoList.Add(GetParameterInfoCopy(paramId));
             }
 
             return presetParamInfoList;
         }
 
-        public MssParamInfo GetParameterInfo(MssParameterID parameterId)
+        public MssParamInfo GetParameterInfoCopy(MssParameterID parameterId)
         {
-            if (this.paramDict.ContainsKey(parameterId) == false)
-            {
-                //paramDict should always contain every possible MssParameterID
-                Debug.Assert(false);
-                return null;
-            }
+            MssParamInfo paramInfoClone = null;
+            RunFuncOnParamInfo(parameterId, paramInfo => paramInfoClone = paramInfo.Clone());
 
-            return this.paramDict[parameterId];
+            return paramInfoClone;
         }
 
-        public double GetRelativeParamValue(MssParameterID parameterId)
+        public double GetRelativeParamValue(MssParameterID paramId)
         {
-            MssParamInfo paramInfo = GetParameterInfo(parameterId);
+            MssParamInfo paramInfo = GetParameterInfoCopy(paramId);
             return (paramInfo.RawValue - paramInfo.MinValue) / (paramInfo.MaxValue - paramInfo.MinValue);
         }
 
-        public void SetPresetParamInfoList(List<MssParamInfo> parameterInfoList)
+        public void SetParamInfo(MssParameterID paramId, MssParamInfo paramInfo)
         {
-            Debug.Assert(parameterInfoList.Count == NUM_VARIABLE_PARAMS);
-            for (int i = 0; i < parameterInfoList.Count; i++)
+            MssParamInfo prevParamInfo = GetParameterInfoCopy(paramId);
+
+            if (VARIABLE_PARAM_ID_LIST.Contains(paramId))
             {
-                MssParameterID curId = PRESET_PARAM_ID_LIST[i];
-                MssParamInfo curParamInfo = parameterInfoList[i];
-
-                SetParamInfo(curId, curParamInfo);
+                this.variableParamMgr.SetVariableParamInfo(paramInfo, paramId);
             }
-        }
-
-        public void SetVariableParamInfo(MssParameterID paramId, MssParamInfo paramInfo)
-        {
-            int varIndex = VARIABLE_PARAM_ID_LIST.FindIndex(curId => curId == paramId);
-            //ensure that paramId referes to a varialbe and not a transform preset.
-            Debug.Assert(varIndex != -1);
-
-            SetParamInfo(paramId, paramInfo);
-        }
-
-        protected void SetParamInfo(MssParameterID paramId, MssParamInfo paramInfo)
-        {
-            MssParamInfo prevParamInfo = this.paramDict[paramId];
-            this.paramDict[paramId] = paramInfo;
+            else if (PRESET_PARAM_ID_LIST.Contains(paramId))
+            {
+                this.activeMappingInfo.GetActiveGraphableEntryManager().RunFuncOnMappingEntry(this.activeMappingInfo.ActiveGraphableEntryId,
+                    (mappingEntry) => mappingEntry.CurveShapeInfo.ParamInfoList[PRESET_PARAM_ID_LIST.IndexOf(paramId)] = paramInfo.Clone());
+            }
+            else
+            {
+                //every possible MssParameterID should either be contained in VARIABLE_PARAM_ID_LIST or PRESET_PARAM_ID_LIST.
+                Debug.Assert(false);
+                return;
+            }
 
             bool paramTypeChanged = (prevParamInfo.paramType != paramInfo.paramType);
 
@@ -238,50 +185,95 @@ namespace MidiShapeShifter.Mss.Parameters
             }
         }
 
-        public void SetParameterName(MssParameterID parameterId, string name)
+        protected bool RunFuncOnParamInfo(MssParameterID paramId, ParamInfoAccessor paramAccessor)
         {
-            if (this.paramDict.ContainsKey(parameterId) == false) 
+            if (VARIABLE_PARAM_ID_LIST.Contains(paramId))
+            {
+                return this.variableParamMgr.RunFuncOnParamInfo(paramId, paramInfo => paramAccessor(paramInfo));
+            }
+            else if (PRESET_PARAM_ID_LIST.Contains(paramId))
+            {
+                return this.activeMappingInfo.GetActiveGraphableEntryManager().RunFuncOnMappingEntry(this.activeMappingInfo.ActiveGraphableEntryId,
+                    (mappingEntry) => {
+                        int paramIndex = PRESET_PARAM_ID_LIST.IndexOf(paramId);
+                        MssParamInfo paramInfo = mappingEntry.CurveShapeInfo.ParamInfoList[paramIndex];
+                        paramAccessor(paramInfo);
+                    });
+            }
+            else
+            {
+                //every possible MssParameterID should either be contained in VARIABLE_PARAM_ID_LIST or PRESET_PARAM_ID_LIST.
+                Debug.Assert(false);
+                return false;
+            }
+        }
+
+        public bool GetActiveMappingExists() {
+            return this.activeMappingInfo.GetActiveMappingExists();
+        }
+
+        public void SetParameterName(MssParameterID paramId, string name)
+        {
+            if (ALL_PARAMS_ID_LIST.Contains(paramId) == false) 
             {
                 //paramDict should always contain every possible MssParameterID
                 Debug.Assert(false);
                 return;
             }
 
-            if (paramDict[parameterId].Name != name)
-            {
-                paramDict[parameterId].Name = name;
-                if (ParameterNameChanged != null)
+            bool triggerNameChangedEvent = false;
+
+            RunFuncOnParamInfo(paramId, 
+                paramInfo => 
                 {
-                    ParameterNameChanged(parameterId, name);
-                }
+                    if (paramInfo.Name != name)
+                    {
+                        paramInfo.Name = name;
+                        triggerNameChangedEvent = true;
+                    }
+                });
+
+            if (triggerNameChangedEvent && ParameterNameChanged != null) {
+                ParameterNameChanged(paramId, name);
             }
         }
 
-        public void SetParameterRawValue(MssParameterID parameterId, double rawValue)
+        public void SetParameterRawValue(MssParameterID paramId, double rawValue)
         {
-            if (this.paramDict.ContainsKey(parameterId) == false)
+            if (ALL_PARAMS_ID_LIST.Contains(paramId) == false)
             {
                 //paramDict should always contain every possible MssParameterID
                 Debug.Assert(false);
                 return;
             }
 
-            double previousValue = paramDict[parameterId].GetValue();
-            paramDict[parameterId].RawValue = rawValue;
-            double newValue = paramDict[parameterId].GetValue();
+            bool triggerValueChangedEvent = false;
+            double newValue = -1;
 
-            if (previousValue != newValue)
-            {
-                if (ParameterValueChanged != null)
+            RunFuncOnParamInfo(paramId, 
+                paramInfo => 
                 {
-                    ParameterValueChanged(parameterId, newValue);
-                }
+                    double previousValue = paramInfo.GetValue();
+                    paramInfo.RawValue = rawValue;
+                    newValue = paramInfo.GetValue();
+
+                    if (previousValue != newValue)
+                    {
+                        triggerValueChangedEvent = true;
+                    }
+                });
+
+            if (triggerValueChangedEvent && ParameterValueChanged != null)
+            {
+                ParameterValueChanged(paramId, newValue);
             }
+
+
         }
 
-        public void SetParameterRelativeValue(MssParameterID parameterId, double relValue)
+        public void SetParameterRelativeValue(MssParameterID paramId, double relValue)
         {
-            if (this.paramDict.ContainsKey(parameterId) == false)
+            if (ALL_PARAMS_ID_LIST.Contains(paramId) == false)
             {
                 //paramDict should always contain every possible MssParameterID
                 Debug.Assert(false);
@@ -295,48 +287,65 @@ namespace MidiShapeShifter.Mss.Parameters
                 return;
             }
 
-            MssParamInfo paramInfo = GetParameterInfo(parameterId);
+            MssParamInfo paramInfo = GetParameterInfoCopy(paramId);
             double rawValue = paramInfo.MinValue + (relValue * (paramInfo.MaxValue - paramInfo.MinValue));
-            SetParameterRawValue(parameterId, rawValue);
+            SetParameterRawValue(paramId, rawValue);
         }
 
-        public void SetParameterMinValue(MssParameterID parameterId, int minValue)
+        public void SetParameterMinValue(MssParameterID paramId, int minValue)
         {
-            
-            if (this.paramDict.ContainsKey(parameterId) == false)
+            if (ALL_PARAMS_ID_LIST.Contains(paramId) == false)
             {
                 //paramDict should always contain every possible MssParameterID
                 Debug.Assert(false);
                 return;
             }
 
-            if (paramDict[parameterId].MinValue != minValue)
-            {
-                paramDict[parameterId].MinValue = minValue;
-                if (ParameterMinValueChanged != null)
+            bool triggerMinValueChangedEvent = false;
+
+             RunFuncOnParamInfo(paramId, 
+                paramInfo => 
                 {
-                    ParameterMinValueChanged(parameterId, minValue);
-                }
-            }
+                    if (paramInfo.MinValue != minValue)
+                    {
+                        paramInfo.MinValue = minValue;
+                        triggerMinValueChangedEvent = true;
+                    }
+            });
+
+             if (triggerMinValueChangedEvent && ParameterMinValueChanged != null)
+             {
+                 ParameterMinValueChanged(paramId, minValue);
+             }
+
+
         }
 
-        public void SetParameterMaxValue(MssParameterID parameterId, int maxValue)
+        public void SetParameterMaxValue(MssParameterID paramId, int maxValue)
         {
-            
-            if (this.paramDict.ContainsKey(parameterId) == false)
+
+            if (ALL_PARAMS_ID_LIST.Contains(paramId) == false)
             {
                 //paramDict should always contain every possible MssParameterID
                 Debug.Assert(false);
                 return;
             }
 
-            if (paramDict[parameterId].MaxValue != maxValue)
+            bool triggerMaxValueChangedEvent = false;
+
+            RunFuncOnParamInfo(paramId,
+               paramInfo =>
+               {
+                   if (paramInfo.MaxValue != maxValue)
+                   {
+                       paramInfo.MaxValue = maxValue;
+                       triggerMaxValueChangedEvent = true;
+                   }
+               });
+
+            if (triggerMaxValueChangedEvent && ParameterMaxValueChanged != null)
             {
-                paramDict[parameterId].MaxValue = maxValue;
-                if (ParameterMaxValueChanged != null)
-                {
-                    ParameterMaxValueChanged(parameterId, maxValue);
-                }
+                ParameterMaxValueChanged(paramId, maxValue);
             }
         }
     

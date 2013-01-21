@@ -28,16 +28,16 @@ namespace MidiShapeShifter.Mss.Mapping
         public bool MoveEntryUp(int id) 
         {
             lock (this.memberLock) {
-                int entryIndex = GetIndexById(id);
+                int entryIndex = GetMappingEntryIndexById(id);
                 if (entryIndex == -1 || entryIndex == 0)
                 {
                     return false;
                 }
                 else
                 {
-                    IMappingEntry tempEntry = mappingEntryList[id];
-                    mappingEntryList[id] = mappingEntryList[id - 1];
-                    mappingEntryList[id - 1] = tempEntry;
+                    IMappingEntry tempEntry = mappingEntryList[entryIndex];
+                    mappingEntryList[entryIndex] = mappingEntryList[entryIndex - 1];
+                    mappingEntryList[entryIndex - 1] = tempEntry;
 
                     return true;
                 }
@@ -56,16 +56,16 @@ namespace MidiShapeShifter.Mss.Mapping
         {
             lock (this.memberLock)
             {
-                int entryIndex = GetIndexById(id);
+                int entryIndex = GetMappingEntryIndexById(id);
                 if (entryIndex == -1 || entryIndex == this.mappingEntryList.Count - 1)
                 {
                     return false;
                 }
                 else
                 {
-                    IMappingEntry tempEntry = mappingEntryList[id];
-                    mappingEntryList[id] = mappingEntryList[id + 1];
-                    mappingEntryList[id + 1] = tempEntry;
+                    IMappingEntry tempEntry = mappingEntryList[entryIndex];
+                    mappingEntryList[entryIndex] = mappingEntryList[entryIndex + 1];
+                    mappingEntryList[entryIndex + 1] = tempEntry;
 
                     return true;
                 }
@@ -111,6 +111,6 @@ namespace MidiShapeShifter.Mss.Mapping
                 return associatedEntiresQuery;
             }
         }
-        
+
     }
 }

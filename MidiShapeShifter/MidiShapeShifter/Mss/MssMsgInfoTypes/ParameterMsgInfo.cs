@@ -26,7 +26,7 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         {
             if (Enum.IsDefined(typeof(MssParameterID), (int)Data1))
             {
-                MssParamInfo paramInfo = this.paramViewer.GetParameterInfo((MssParameterID)Data1);
+                MssParamInfo paramInfo = this.paramViewer.GetParameterInfoCopy((MssParameterID)Data1);
                 return paramInfo.Name;
             }
             else

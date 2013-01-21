@@ -116,8 +116,22 @@ namespace MidiShapeShifter.Framework
             VstParameterInfo paramInfo = new VstParameterInfo();
             paramInfo.Category = paramCategory;
             paramInfo.CanBeAutomated = true;
-            MssParamInfo mssParamInfo = this.mssParameters.GetParameterInfo(paramId);
-            paramInfo.Name = GetParamNameFromString(mssParamInfo.Name); 
+
+            if (MssParameters.PRESET_PARAM_ID_LIST.Contains(paramId))
+            {
+                paramInfo.Name = MssParameters.GetDefaultPresetName(paramId);
+                paramInfo.DefaultValue = 0;
+            }
+            else if (MssParameters.VARIABLE_PARAM_ID_LIST.Contains(paramId))
+            {
+                MssParamInfo mssParamInfo = this.mssParameters.GetParameterInfoCopy(paramId);
+                paramInfo.Name = GetParamNameFromString(mssParamInfo.Name); 
+                paramInfo.DefaultValue = (float)this.mssParameters.GetRelativeParamValue(paramId);
+            }
+            else {
+                Debug.Assert(false);
+            }
+            
             paramInfo.Label = "";
             paramInfo.ShortLabel = "";
             paramInfo.MinInteger = VST_PARAM_MIN_VALUE;
@@ -125,7 +139,6 @@ namespace MidiShapeShifter.Framework
             paramInfo.LargeStepFloat = ((float)(VST_PARAM_MAX_VALUE - VST_PARAM_MIN_VALUE)) / 8;
             paramInfo.SmallStepFloat = ((float)(VST_PARAM_MAX_VALUE - VST_PARAM_MIN_VALUE)) / 128;
             paramInfo.StepFloat = 0.03125f;
-            paramInfo.DefaultValue = (float)this.mssParameters.GetRelativeParamValue(paramId);
             VstParameterNormalizationInfo.AttachTo(paramInfo);
 
             return paramInfo;
@@ -230,9 +243,17 @@ namespace MidiShapeShifter.Framework
             //Send the info for each parameter from MssParameters to the host.
             foreach (MssParameterID paramId in MssParameterID.GetValues(typeof(MssParameterID)))
             {
-                MssParamInfo mssParamInfo = this.mssParameters.GetParameterInfo(paramId);
-                MssParameters_ValueChanged(paramId, mssParamInfo.GetValue());
-                MssParameters_NameChanged(paramId, mssParamInfo.Name);
+                if (MssParameters.PRESET_PARAM_ID_LIST.Contains(paramId) && mssParameters.GetActiveMappingExists() == false)
+                {
+                    MssParameters_ValueChanged(paramId, 0);
+                    MssParameters_NameChanged(paramId, MssParameters.GetDefaultPresetName(paramId));
+                }
+                else 
+                {
+                    MssParamInfo mssParamInfo = this.mssParameters.GetParameterInfoCopy(paramId);
+                    MssParameters_ValueChanged(paramId, mssParamInfo.GetValue());
+                    MssParameters_NameChanged(paramId, mssParamInfo.Name);
+                }
             }
         }
 

@@ -4,7 +4,7 @@ using MidiShapeShifter.Mss.Generator;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
-    public interface IMappingEntry : ICurveShapeInfoContainer
+    public interface IMappingEntry : ICurveShapeInfoContainer, ICloneable
     {
         int Id { get; set; }
         IMssMsgRange InMssMsgRange { get; set; }

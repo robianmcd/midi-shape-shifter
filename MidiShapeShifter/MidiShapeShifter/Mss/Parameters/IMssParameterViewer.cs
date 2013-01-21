@@ -8,7 +8,7 @@ namespace MidiShapeShifter.Mss.Parameters
         List<MssParamInfo> GetVariableParamInfoList();
         List<MssParamInfo> GetPresetParamInfoList();
 
-        MssParamInfo GetParameterInfo(MssParameterID parameterId);
+        MssParamInfo GetParameterInfoCopy(MssParameterID parameterId);
         event ParameterMaxValueChangedEventHandler ParameterMaxValueChanged;
         event ParameterMinValueChangedEventHandler ParameterMinValueChanged;
         event ParameterNameChangedEventHandler ParameterNameChanged;

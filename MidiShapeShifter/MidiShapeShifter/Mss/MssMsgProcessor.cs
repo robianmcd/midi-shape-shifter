@@ -58,7 +58,7 @@ namespace MidiShapeShifter.Mss
             } while(curMsgType != mssMsg.Type);
 
             //Retrieves mappings from the MappingManager that will affect mssMsg
-            IEnumerable<IMappingEntry> mappingEntries = this.mappingMgr.GetCopiesOfIMappingEntriesForMsg(mssMsg);
+            IEnumerable<IMappingEntry> mappingEntries = this.mappingMgr.GetCopiesOfMappingEntriesForMsg(mssMsg);
 
             List<MssMsg> outMessages = new List<MssMsg>();
             if (mappingEntries.Any() == false)

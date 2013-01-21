@@ -18,7 +18,7 @@ namespace MidiShapeShifter.Mss
     ///     Contains information about a curve's shape and how it is being entered.
     /// </summary>
     [DataContract]
-    public class CurveShapeInfo
+    public class CurveShapeInfo : ICloneable
     {
         public const string DEFAULT_EQUATION = "input";
 
@@ -79,10 +79,61 @@ namespace MidiShapeShifter.Mss
             this.SelectedEquationIndex = 0;
             this.SelectedEquationType = EquationType.Curve;
 
-            this.ParamInfoList = MssParameters.CreateDefaultPresetParamInfoList();
+            this.ParamInfoList = CreateDefaultPresetParamInfoList();
 
             this.CurveEquations.Add(DEFAULT_EQUATION);
         }
 
+        protected static List<MssParamInfo> CreateDefaultPresetParamInfoList()
+        {
+            List<MssParamInfo> presetParamInfoList = new List<MssParamInfo>();
+
+            MssParamInfo defaultParameterInfo = new MssNumberParamInfo();
+            defaultParameterInfo.Init("");
+
+            MssParamInfo tempParameterInfo;
+
+            tempParameterInfo = defaultParameterInfo.Clone();
+            tempParameterInfo.Name = MssParameters.GetDefaultPresetName(MssParameterID.Preset1);
+            presetParamInfoList.Add(tempParameterInfo);
+
+            tempParameterInfo = defaultParameterInfo.Clone();
+            tempParameterInfo.Name = MssParameters.GetDefaultPresetName(MssParameterID.Preset2);
+            presetParamInfoList.Add(tempParameterInfo);
+
+            tempParameterInfo = defaultParameterInfo.Clone();
+            tempParameterInfo.Name = MssParameters.GetDefaultPresetName(MssParameterID.Preset3);
+            presetParamInfoList.Add(tempParameterInfo);
+
+            tempParameterInfo = defaultParameterInfo.Clone();
+            tempParameterInfo.Name = MssParameters.GetDefaultPresetName(MssParameterID.Preset4);
+            presetParamInfoList.Add(tempParameterInfo);
+
+            tempParameterInfo = defaultParameterInfo.Clone();
+            tempParameterInfo.Name = MssParameters.GetDefaultPresetName(MssParameterID.Preset5);
+            presetParamInfoList.Add(tempParameterInfo);
+
+            return presetParamInfoList;
+        }
+
+
+        object ICloneable.Clone()
+        {
+            return Clone();
+        }
+
+        public CurveShapeInfo Clone()
+        {
+            CurveShapeInfo curveInfoClone = new CurveShapeInfo();
+
+            curveInfoClone.CurveEquations = new List<string>(this.CurveEquations.Clone());
+            curveInfoClone.PointEquations = this.PointEquations.Clone();
+            curveInfoClone.SelectedEquationIndex = this.SelectedEquationIndex;
+            curveInfoClone.SelectedEquationType = this.SelectedEquationType;
+            curveInfoClone.ParamInfoList = this.ParamInfoList.Clone();
+            curveInfoClone.AllEquationsAreValid = this.AllEquationsAreValid;
+
+            return curveInfoClone;
+        }
     }
 }

@@ -19,9 +19,7 @@ namespace MidiShapeShifter.Mss
     {
         public const string TRANSFORM_PRESET_FILE_EXTENSION = "xml";
         public const string DEFAULT_TRANSFORM_PRESET_NAME = "Line";
-        SerializablePluginEditorInfo pluginEditorInfo;
-        IMappingManager mappingMgr;
-        GeneratorMappingManager genMappingMgr;
+        protected ActiveMappingInfo activeMappingInfo;
 
         public TransformPresetMgr()
         {
@@ -32,78 +30,32 @@ namespace MidiShapeShifter.Mss
         {
             get
             {
-                if (getActiveMapping() != null)
-                {
-                    return getActiveMapping().ActiveTransformPresetName;
-                }
-                else
-                {
+                if (this.activeMappingInfo.GetActiveMappingExists() == false) {
                     return null;
                 }
+
+                IBaseGraphableMappingManager activeMappingManager = activeMappingInfo.GetActiveGraphableEntryManager();
+                
+                string activeSettingsFileName = null;
+                activeMappingManager.RunFuncOnMappingEntry(activeMappingInfo.ActiveGraphableEntryId,
+                        (mappingEntry) => activeSettingsFileName = mappingEntry.ActiveTransformPresetName);
+
+                return activeSettingsFileName;
             }
             protected set
             {
-                if (getActiveMapping() != null)
-                {
-                    getActiveMapping().ActiveTransformPresetName = value;
-                }
-                else
-                {
-                    //It doesn't make sense to set this when the active mapping is null.
-                    Debug.Assert(false);
-                }
+                IBaseGraphableMappingManager activeMappingManager = activeMappingInfo.GetActiveGraphableEntryManager();
+
+                activeMappingManager.RunFuncOnMappingEntry(activeMappingInfo.ActiveGraphableEntryId,
+                        (mappingEntry) => mappingEntry.ActiveTransformPresetName = value);
             }
         }
 
-        public void Init(SerializablePluginEditorInfo pluginEditorInfo, 
-                         IMappingManager mappingMgr, 
-                         GeneratorMappingManager generatorMappingMgr)
+        public void Init(ActiveMappingInfo activeMappingInfo)
         {
-            this.pluginEditorInfo = pluginEditorInfo;
-            this.mappingMgr = mappingMgr;
-            this.genMappingMgr = generatorMappingMgr;
+            this.activeMappingInfo = activeMappingInfo;
 
             InitBase();
-        }
-
-        /// <summary>
-        /// Gets the active mapping entry. The active mapping entry is the one the user has most 
-        /// recently selected in the PluginEditorView. This method is similar to the 
-        /// ActiveGraphableEntry property in PluginEditorView.
-        /// </summary>
-        protected IMappingEntry getActiveMapping()
-        {
-            if (this.pluginEditorInfo.ActiveGraphableEntryId < 0)
-            {
-                return null;
-            }
-            else
-            {
-                IMappingEntry activeEntry;
-                IBaseGraphableMappingManager activeEntryManager;
-                if (this.pluginEditorInfo.ActiveGraphableEntryType == GraphableEntryType.Mapping)
-                {
-                    activeEntryManager = this.mappingMgr;
-                }
-                else if (this.pluginEditorInfo.ActiveGraphableEntryType == GraphableEntryType.Generator)
-                {
-                    activeEntryManager = this.genMappingMgr;
-                }
-                else
-                {
-                    //Unknown MappingType
-                    Debug.Assert(false);
-                    return null;
-                }
-
-                IReturnStatus<IMappingEntry> getCopyRetStatus =
-                        activeEntryManager.GetCopyOfIMappingEntryById(this.pluginEditorInfo.ActiveGraphableEntryId);
-                Debug.Assert(getCopyRetStatus.IsValid);
-
-                activeEntry = getCopyRetStatus.Value;
-
-                return activeEntry;
-            }
         }
 
         public override string SettingsFileExtension
@@ -148,28 +100,18 @@ namespace MidiShapeShifter.Mss
 
         protected override void SaveActiveSettingsToFileStream(System.IO.FileStream fs)
         {
-            if (getActiveMapping() == null)
-            {
-                //If the active mapping is null then the buttons that would trigger this call 
-                //should be disabled.
-                Debug.Assert(false);
-                return;
-            }
+            IBaseGraphableMappingManager activeMappingManager = activeMappingInfo.GetActiveGraphableEntryManager();
 
-            ContractSerializer.Serialize<CurveShapeInfo>(fs, getActiveMapping().CurveShapeInfo);
+            activeMappingManager.RunFuncOnMappingEntry(activeMappingInfo.ActiveGraphableEntryId, (mappingEntry) => 
+                    ContractSerializer.Serialize<CurveShapeInfo>(fs, mappingEntry.CurveShapeInfo));
         }
 
         protected override void LoadSettingsFromFileStream(System.IO.FileStream fs)
         {
-            if (getActiveMapping() == null)
-            {
-                //If the active mapping is null then the buttons that would trigger this call 
-                //should be disabled.
-                Debug.Assert(false);
-                return;
-            }
+            IBaseGraphableMappingManager activeMappingManager = activeMappingInfo.GetActiveGraphableEntryManager();
 
-            getActiveMapping().CurveShapeInfo = ContractSerializer.Deserialize<CurveShapeInfo>(fs);
+            activeMappingManager.RunFuncOnMappingEntry(activeMappingInfo.ActiveGraphableEntryId, (mappingEntry) =>
+                    mappingEntry.CurveShapeInfo = ContractSerializer.Deserialize<CurveShapeInfo>(fs));
         }
 
     }

@@ -178,9 +178,14 @@ namespace MidiShapeShifter.Mss.Generator
             }
         }
 
-        public object Clone()
+        object ICloneable.Clone()
         {
-            return this.MemberwiseClone();
+            return Clone();
+        }
+
+        public GenEntryConfigInfo Clone()
+        {
+            return (GenEntryConfigInfo)this.MemberwiseClone();
         }
     }
 }

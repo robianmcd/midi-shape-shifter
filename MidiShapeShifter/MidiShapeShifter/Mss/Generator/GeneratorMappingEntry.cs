@@ -102,5 +102,25 @@ namespace MidiShapeShifter.Mss.Generator
             }
         }
 
+        object ICloneable.Clone()
+        {
+            return Clone();
+        }
+
+        new public GeneratorMappingEntry Clone() {
+            GeneratorMappingEntry mappingEntryClone = new GeneratorMappingEntry();
+            DeepCloneIntoExistingInstance(mappingEntryClone);
+            return mappingEntryClone;
+        }
+
+        protected void DeepCloneIntoExistingInstance(GeneratorMappingEntry entry)
+        {
+            base.DeepCloneIntoExistingInstance(entry);
+
+            entry.GenConfigInfo = this.GenConfigInfo.Clone();
+            entry.GenHistoryInfo = this.GenHistoryInfo.Clone();
+
+        }
+
     }
 }

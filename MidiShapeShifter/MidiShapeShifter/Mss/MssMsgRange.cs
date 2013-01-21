@@ -166,5 +166,21 @@ namespace MidiShapeShifter.Mss
             hash = (hash * 7) + this.Data2RangeTop.GetHashCode();
             return hash;
         }
+
+        object ICloneable.Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IMssMsgRange Clone()
+        {
+            MssMsgRange msgRangeClone = new MssMsgRange();
+            msgRangeClone.InitPublicMembers(this.MsgType, 
+                                            this.Data1RangeBottom, this.Data1RangeTop, 
+                                            this.Data2RangeBottom, this.Data2RangeTop);
+
+            return msgRangeClone;
+        }
+
     }
 }

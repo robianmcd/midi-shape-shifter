@@ -62,7 +62,6 @@ namespace MidiShapeShifter.Mss
         public IHostInfoInputPort HostInfoInputPort { get { return this._hostInfoRelay; } }
         public IHostInfoOutputPort HostInfoOutputPort { get { return this._hostInfoRelay; } }
 
-        [DataMember(Name = "MssParameters")]
         protected MssParameters _mssParameters;
         public MssParameters MssParameters { get { return this._mssParameters; } }
 
@@ -77,8 +76,11 @@ namespace MidiShapeShifter.Mss
 
         public PluginEditorView PluginEditorView;
 
-        [DataMember(Name = "PluginEditorInfo")]
-        protected SerializablePluginEditorInfo pluginEditorInfo;
+        [DataMember(Name = "ActiveMappingInfo")]
+        protected ActiveMappingInfo activeMappingInfo;
+
+        [DataMember(Name = "VariableParamMgr")]
+        protected VariableParamMgr variableParamMgr;
 
         public MssComponentHub()
         {
@@ -86,13 +88,11 @@ namespace MidiShapeShifter.Mss
 
             //Construct Serializable members
             this._mssProgramMgr = new MssProgramMgr();
-
             this.mappingMgr = new MappingManager();
             this.genMappingMgr = new GeneratorMappingManager();
-
             this._mssParameters = new MssParameters();
-            
-            this.pluginEditorInfo = new SerializablePluginEditorInfo();
+            this.activeMappingInfo = new ActiveMappingInfo();
+            this.variableParamMgr = new VariableParamMgr();
         }
 
         protected void ConstructNonSerializableMembers()
@@ -120,8 +120,8 @@ namespace MidiShapeShifter.Mss
         {
             InitializeNonSerializableMembers();
             //Initialize serializable members
-            this._mssParameters.Init();
             this.MssProgramMgr.Init();
+            this.variableParamMgr.Init();
         }
 
         protected void InitializeNonSerializableMembers()
@@ -145,7 +145,10 @@ namespace MidiShapeShifter.Mss
                                        this.genMappingMgr,
                                        this.MssParameters);
 
-            transformPresetMgr.Init(this.pluginEditorInfo, this.mappingMgr, this.genMappingMgr);
+
+            this.activeMappingInfo.InitNonserializableMembers(this.mappingMgr, this.genMappingMgr);
+            transformPresetMgr.Init(this.activeMappingInfo);
+            this._mssParameters.Init(this.activeMappingInfo, this.variableParamMgr);
         }
 
 
@@ -201,8 +204,8 @@ namespace MidiShapeShifter.Mss
                                             this.MssProgramMgr,
                                             this.transformPresetMgr,
                                             this.DryMssEventOutputPort,
-                                            this.HostInfoOutputPort,
-                                            this.pluginEditorInfo);
+                                            this.HostInfoOutputPort, 
+                                            this.activeMappingInfo);
             }
         }
 

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace MidiShapeShifter.CSharpUtil
 {
-    class CustomStringUtil
+    public static class CustomStringUtil
     {
         public static string CreateStringWithMaxWidth(string inStr, int maxPixelWidth, Font font)
         {

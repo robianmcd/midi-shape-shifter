@@ -3,7 +3,7 @@ using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mss
 {
-    public interface IMssMsgRange
+    public interface IMssMsgRange : ICloneable
     {
         string GetData1RangeStr(IFactory_MssMsgInfo msgInfoFactory);
         string GetData2RangeStr(IFactory_MssMsgInfo msgInfoFactory);
@@ -16,5 +16,7 @@ namespace MidiShapeShifter.Mss
         double Data1RangeTop { get; set; }
         double Data2RangeBottom { get; set; }
         double Data2RangeTop { get; set; }
+
+        new IMssMsgRange Clone();
     }
 }

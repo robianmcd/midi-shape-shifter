@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSharpUtil\ContractSerializer.cs" />
+    <Compile Include="CSharpUtil\CustomListUtils.cs" />
     <Compile Include="CSharpUtil\CustomMathUtils.cs" />
     <Compile Include="CSharpUtil\DrawingControl.cs" />
     <Compile Include="CSharpUtil\FileTreeFolderNode.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Ioc\IocMgr.cs" />
     <Compile Include="Midi\MidiUtil.cs" />
     <Compile Include="Mss\BaseSettingsFileMgr.cs" />
+    <Compile Include="Mss\Mapping\ActiveMappingInfo.cs" />
     <Compile Include="Mss\Mapping\GraphableMappingManager.cs" />
     <Compile Include="Mss\Mapping\IBaseGraphableMappingManager.cs" />
     <Compile Include="Mss\ParameterMsgHandler.cs" />
@@ -150,6 +152,7 @@
     <Compile Include="Mss\Parameters\ParameterEditor.Designer.cs">
       <DependentUpon>ParameterEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mss\Parameters\VariableParamMgr.cs" />
     <Compile Include="Mss\SettingsFileInfo.cs" />
     <Compile Include="Mss\TransformPresetMgr.cs" />
     <Compile Include="Mss\Evaluation\EvaluationControlPointInput.cs" />
@@ -250,7 +253,6 @@
     <Compile Include="Mss\DryMssEventHandler.cs" />
     <Compile Include="Mss\CommandQueue.cs" />
     <Compile Include="Mss\UI\EqGraphConfig.cs" />
-    <Compile Include="Mss\UI\SerializablePluginEditorInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

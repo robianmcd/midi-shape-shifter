@@ -9,11 +9,12 @@ namespace MidiShapeShifter.Mss.Mapping
     public interface IGraphableMappingManager<MappingEntryType> : IBaseGraphableMappingManager
         where MappingEntryType : IMappingEntry
     {
-        IEnumerable<MappingEntryType> GetCopiesOfMappingEntriesForMsg(MidiShapeShifter.Mss.MssMsg inputMsg);
-        IReturnStatus<MappingEntryType> GetCopyOfMappingEntryById(int id);
-        List<MappingEntryType> GetCopyOfMappingEntryList();
+        new IEnumerable<MappingEntryType> GetCopiesOfMappingEntriesForMsg(MidiShapeShifter.Mss.MssMsg inputMsg);
+        new IReturnStatus<MappingEntryType> GetCopyOfMappingEntryById(int id);
+        new List<MappingEntryType> GetCopyOfMappingEntryList();
+        bool RunFuncOnMappingEntry(int id, MappingEntryAccessor<MappingEntryType> mappingEntryAccessor);
 
         int AddMappingEntry(MappingEntryType newEntry);
-        bool RunFuncOnMappingEntry(int id, GraphableMappingManager<MappingEntryType>.MappingEntryAccessor mappingEntryAccessor);
+        void ReplaceMappingEntry(MappingEntryType mappingEntry);
     }
 }

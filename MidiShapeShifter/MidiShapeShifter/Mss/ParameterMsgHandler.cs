@@ -83,7 +83,7 @@ namespace MidiShapeShifter.Mss
 
                 long watchOffestAtParamChanged = this.stopwatch.Elapsed.Ticks;
 
-                MssParamInfo paramInfo = this.mssParameters.GetParameterInfo(paramId);
+                MssParamInfo paramInfo = this.mssParameters.GetParameterInfoCopy(paramId);
                 double relValue = CustomMathUtils.AbsToRelVal(paramInfo.MinValue, paramInfo.MaxValue, newValue);
 
                 MssMsg paramMsg = new MssMsg(MssMsgType.Parameter,

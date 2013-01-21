@@ -4,14 +4,18 @@ using System.Linq;
 using System.Text;
 using MidiShapeShifter.CSharpUtil;
 using System.Runtime.Serialization;
+using MidiShapeShifter.Mss.Generator;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
+    public delegate void MappingEntryAccessor<in ParamEntryType>(ParamEntryType genEntry);
+
+    //For an explination of why we must specify that MappingEntryType is a class see this post:
+    //http://stackoverflow.com/questions/13813347
     [DataContract]
     public abstract class GraphableMappingManager<MappingEntryType> : IGraphableMappingManager<MappingEntryType>
-        where MappingEntryType : IMappingEntry
+        where MappingEntryType : class, IMappingEntry
     {
-        public delegate void MappingEntryAccessor(MappingEntryType genEntry);
 
         abstract public IEnumerable<MappingEntryType> GetCopiesOfMappingEntriesForMsg(MidiShapeShifter.Mss.MssMsg inputMsg);
 
@@ -37,17 +41,24 @@ namespace MidiShapeShifter.Mss.Mapping
             this.memberLock = new Object();
         }
 
-        public IEnumerable<IMappingEntry> GetCopiesOfIMappingEntriesForMsg(MidiShapeShifter.Mss.MssMsg inputMsg) {
+
+        IEnumerable<IMappingEntry> IBaseGraphableMappingManager.GetCopiesOfMappingEntriesForMsg(MidiShapeShifter.Mss.MssMsg inputMsg) {
             return (IEnumerable<IMappingEntry>)GetCopiesOfMappingEntriesForMsg(inputMsg);
         }
 
-        public IReturnStatus<IMappingEntry> GetCopyOfIMappingEntryById(int id) {
+        IReturnStatus<IMappingEntry> IBaseGraphableMappingManager.GetCopyOfMappingEntryById(int id)
+        {
             return (IReturnStatus<IMappingEntry>)GetCopyOfMappingEntryById(id);
         }
 
-        public IEnumerable<IMappingEntry> GetCopyOfIMappingEntryList()
+        IEnumerable<IMappingEntry> IBaseGraphableMappingManager.GetCopyOfMappingEntryList()
         {
             return (IEnumerable<IMappingEntry>)GetCopyOfMappingEntryList();
+        }
+
+        bool IBaseGraphableMappingManager.RunFuncOnMappingEntry(int id, MappingEntryAccessor<IMappingEntry> mappingEntryAccessor)
+        {
+            return RunFuncOnMappingEntry(id, mappingEntryAccessor as MappingEntryAccessor<MappingEntryType>);
         }
 
         /// <summary>
@@ -61,8 +72,7 @@ namespace MidiShapeShifter.Mss.Mapping
             {
                 newEntry.Id = this.nextId;
                 this.nextId++;
-                //TODO: we should be adding a copy not the real thing.
-                mappingEntryList.Add(newEntry);
+                mappingEntryList.Add((MappingEntryType)newEntry.Clone());
 
                 return newEntry.Id;
             }
@@ -102,6 +112,26 @@ namespace MidiShapeShifter.Mss.Mapping
             }
         }
 
+        /// <summary>
+        /// Returns the index of the Mapping Entry specified by id or -1 if the id was not
+        /// found.
+        /// </summary>
+        public int GetMappingEntryIndexById(int id)
+        {
+            lock (this.memberLock)
+            {
+                return mappingEntryList.FindIndex(entry => entry.Id == id);
+            }
+        }
+
+        public int GetMappingEntryIdByIndex(int index) {
+            lock (this.memberLock)
+            {
+                return mappingEntryList[index].Id;
+            }
+        }
+
+
         /// <remarks>
         ///     Gets a copy the mapping entry associated with the specified id.
         /// </remarks>
@@ -116,8 +146,7 @@ namespace MidiShapeShifter.Mss.Mapping
                 }
                 else
                 {
-                    //TODO: clone mappingEntry
-                    MappingEntryType copyOfEntry = mappingEntry;
+                    MappingEntryType copyOfEntry = (MappingEntryType)mappingEntry.Clone();
                     return new ReturnStatus<MappingEntryType>(copyOfEntry, true);
                 }
             }
@@ -128,14 +157,13 @@ namespace MidiShapeShifter.Mss.Mapping
 
             lock (this.memberLock)
             {
-                //TODO: copy the contents of genMappingEntryList into entryListCopy
-                List<MappingEntryType> entryListCopy = this.mappingEntryList;
+                List<MappingEntryType> entryListCopy = this.mappingEntryList.Clone();
                 return entryListCopy;
             }
 
         }
 
-        public bool RunFuncOnMappingEntry(int id, MappingEntryAccessor mappingEntryAccessor)
+        public bool RunFuncOnMappingEntry(int id, MappingEntryAccessor<MappingEntryType> mappingEntryAccessor)
         {
             lock (this.memberLock)
             {
@@ -153,18 +181,6 @@ namespace MidiShapeShifter.Mss.Mapping
             }
         }
 
-        /// <summary>
-        /// Returns the index of the Mapping Entry specified by id or -1 if the id was not
-        /// found.
-        /// </summary>
-        public int GetIndexById(int id)
-        {
-            lock (this.memberLock)
-            {
-                return mappingEntryList.FindIndex(entry => entry.Id == id);
-            }
-        }
-
         public int GetNumEntries() {
             lock (this.memberLock)
             {
@@ -172,6 +188,45 @@ namespace MidiShapeShifter.Mss.Mapping
             }
         }
 
+
+
+
+        public IReturnStatus<CurveShapeInfo> GetCopyOfCurveShapeInfoById(int id)
+        {
+            MappingEntryType matchingEntry = GetMappingEntryById(id);
+            if (matchingEntry == null)
+            {
+                return new ReturnStatus<CurveShapeInfo>();
+            }
+            else 
+            {
+                CurveShapeInfo curveInfoClone = matchingEntry.CurveShapeInfo.Clone();
+                return new ReturnStatus<CurveShapeInfo>(curveInfoClone);
+            }
+        }
+
+        public bool SetCurveShapeInfoForId(int id, CurveShapeInfo curveInfo)
+        {
+            MappingEntryType matchingEntry = GetMappingEntryById(id);
+            if (matchingEntry == null)
+            {
+                return false;
+            }
+            else
+            {
+                matchingEntry.CurveShapeInfo = curveInfo.Clone();
+                return true;
+            }
+        }
+
+        public void ReplaceMappingEntry(MappingEntryType mappingEntry)
+        {
+            lock (this.memberLock)
+            {
+                int index = GetMappingEntryIndexById(mappingEntry.Id);
+                this.mappingEntryList[index] = (MappingEntryType)mappingEntry.Clone();
+            }
+        }
 
     }
 }

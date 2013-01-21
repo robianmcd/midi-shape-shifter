@@ -24,9 +24,16 @@
             this.IsValid = returnValIsValid;
         }
 
-        public ReturnStatus()
+        public ReturnStatus(ReturnType validReturnVal)
+            : this(validReturnVal, true)
         {
-            this.IsValid = false;
+            //Create a valid return status.
+        }
+
+        public ReturnStatus()
+            : this(default(ReturnType), false)
+        {
+            //Create an invalid return status.
         }
     }
 

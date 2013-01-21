@@ -14,14 +14,14 @@ namespace MidiShapeShifter.Mss.Parameters
     ///     A representation of a parameter in Midi Shape Shifter.
     /// </summary>
     [DataContract]
-    public abstract class MssParamInfo
+    public abstract class MssParamInfo : ICloneable
     {
         public static readonly IList<string> MssParamTypeNameList;
 
         public abstract MssParamType paramType { get; }
         public abstract bool allowUserToEditMaxMin { get; }
         public abstract ValueInputType methodOfValueInput { get; }
-        //It is only nessesary to impliment this if methodOfValueInput is set to methodOfValueInput.
+        //It is only nessesary to impliment this if methodOfValueInput is set to Selection.
         public virtual IList<string> ValueNameList { get { return null; } }
 
         [DataMember]
@@ -57,9 +57,17 @@ namespace MidiShapeShifter.Mss.Parameters
         public abstract double GetValue();
         public abstract string GetValueAsString();
 
+        object ICloneable.Clone()
+        {
+            return Clone();
+        }
+
         public MssParamInfo Clone()
         {
+            //This will return a deep copy as long as the deriving types do not create any reference type fields.
             return (MssParamInfo)this.MemberwiseClone();
         }
+
+
     }
 }
