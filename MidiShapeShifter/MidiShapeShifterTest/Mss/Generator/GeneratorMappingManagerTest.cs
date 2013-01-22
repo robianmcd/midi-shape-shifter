@@ -234,6 +234,7 @@ namespace MidiShapeShifterTest.Mss.Generator
 
             GenEntryConfigInfo configInfo = Factory_GenEntryConfigInfo_Default();
             genEntryMock.Setup(genEntry => genEntry.GenConfigInfo).Returns(configInfo);
+            genEntryMock.Setup(genEntry => genEntry.Clone()).Returns(genEntryMock.Object);
             return genEntryMock;
         }
 

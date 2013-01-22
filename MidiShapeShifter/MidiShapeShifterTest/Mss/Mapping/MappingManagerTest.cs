@@ -261,6 +261,11 @@ namespace MidiShapeShifterTest.Mss.Mapping
             mapEntry.InMssMsgRange = inMsgRange;
             mapEntry.OutMssMsgRange = outMsgRange;
             mapEntry.OverrideDuplicates = DEFAULT_OVERRIDE_DUPLICATES;
+
+            CurveShapeInfo curveInfo = new CurveShapeInfo();
+            curveInfo.InitWithDefaultValues();
+            mapEntry.CurveShapeInfo = curveInfo;
+
             return mapEntry;
         }
 
