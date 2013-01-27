@@ -15,6 +15,6 @@ namespace MidiShapeShifter.Mss.Mapping
         bool RunFuncOnMappingEntry(int id, MappingEntryAccessor<MappingEntryType> mappingEntryAccessor);
 
         int AddMappingEntry(MappingEntryType newEntry);
-        void ReplaceMappingEntry(MappingEntryType mappingEntry);
+        bool ReplaceMappingEntry(MappingEntryType mappingEntry);
     }
 }

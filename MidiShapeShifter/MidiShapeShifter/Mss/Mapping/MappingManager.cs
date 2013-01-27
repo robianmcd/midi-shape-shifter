@@ -85,7 +85,6 @@ namespace MidiShapeShifter.Mss.Mapping
         /// <returns>An enumeration of MappingEntry objects that match <paramref name="inputMsg"/>.</returns>
         public override IEnumerable<IMappingEntry> GetCopiesOfMappingEntriesForMsg(MssMsg inputMsg) 
         {
-            //TODO: The entries returned from this need to be clones.
             lock (this.memberLock)
             {
                 var associatedEntiresQuery =
@@ -108,7 +107,9 @@ namespace MidiShapeShifter.Mss.Mapping
                     select entry;
                 }
 
-                return associatedEntiresQuery;
+
+                return from entry in associatedEntiresQuery
+                       select (IMappingEntry)entry.Clone();
             }
         }
 

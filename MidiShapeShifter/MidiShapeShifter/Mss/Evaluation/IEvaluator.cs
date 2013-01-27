@@ -12,7 +12,7 @@ namespace MidiShapeShifter.Mss.Evaluation
         ReturnStatus<double> Evaluate(EvaluationCurveInput input);
         bool SampleExpressionWithDefaultInputValues(
                 double xDistanceBetweenPoints,  
-                IMssParameterViewer mssParameters,
+                List<MssParamInfo> variableParamInfoList,
                 IMappingEntry mappingEntry,
                 out List<XyPoint<double>> points,
                 out List<List<XyPoint<double>>> curvePointsByCurveList,

@@ -5,6 +5,7 @@ using System.Text;
 using MidiShapeShifter.CSharpUtil;
 using System.Runtime.Serialization;
 using MidiShapeShifter.Mss.Generator;
+using System.Threading;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -33,10 +34,23 @@ namespace MidiShapeShifter.Mss.Mapping
         [DataMember(Name = "MappingEntryList")]
         protected List<MappingEntryType> mappingEntryList = new List<MappingEntryType>();
 
+
         protected Object memberLock = new Object();
 
+        [OnSerializing]
+        protected void OnSerializing(StreamingContext context)
+        {
+            Monitor.Enter(this.memberLock);
+        }
+
+        [OnSerialized]
+        protected void OnSerialized(StreamingContext context)
+        {
+            Monitor.Exit(this.memberLock);
+        }
+
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context)
+        protected void OnDeserialized(StreamingContext context)
         {
             this.memberLock = new Object();
         }
@@ -219,14 +233,35 @@ namespace MidiShapeShifter.Mss.Mapping
             }
         }
 
-        public void ReplaceMappingEntry(MappingEntryType mappingEntry)
+        public bool ReplaceMappingEntry(MappingEntryType mappingEntry)
         {
             lock (this.memberLock)
             {
                 int index = GetMappingEntryIndexById(mappingEntry.Id);
-                this.mappingEntryList[index] = (MappingEntryType)mappingEntry.Clone();
+                if (index != -1)
+                {
+                    this.mappingEntryList[index] = (MappingEntryType)mappingEntry.Clone();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
+
+        public List<int> GetEntryIdList() {
+            List<int> entryIdList = new List<int>();
+
+            lock (this.memberLock) {
+                foreach (MappingEntryType entry in this.mappingEntryList) {
+                    entryIdList.Add(entry.Id);
+                }
+            }
+
+            return entryIdList;
+        }
+
 
     }
 }

@@ -1010,7 +1010,7 @@ namespace MidiShapeShifter.Mss.UI
 
                 curveInfoCopy.AllEquationsAreValid = this.evaluator.SampleExpressionWithDefaultInputValues(
                         1.0 / ((double)NUM_GRAPH_POINTS - 1.0),
-                        this.mssParameters,
+                        this.mssParameters.GetVariableParamInfoList(),
                         activeMappingEntryCopy,
                         out pointList,
                         out curvePointsByCurveList,

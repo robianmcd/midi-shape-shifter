@@ -90,7 +90,6 @@ namespace MidiShapeShifter.Mss
             this._mssProgramMgr = new MssProgramMgr();
             this.mappingMgr = new MappingManager();
             this.genMappingMgr = new GeneratorMappingManager();
-            this._mssParameters = new MssParameters();
             this.activeMappingInfo = new ActiveMappingInfo();
             this.variableParamMgr = new VariableParamMgr();
         }
@@ -106,11 +105,10 @@ namespace MidiShapeShifter.Mss
             this._hostInfoRelay = new HostInfoRelay();
 
             this.mssEventGenrator = new MssEventGenerator();
-
+            this._mssParameters = new MssParameters();
             this.msgEntryMetadataFactory = new Factory_MssMsgRangeEntryMetadata();
             this.msgInfoFactory = new Factory_MssMsgInfo();
-
-            transformPresetMgr = new TransformPresetMgr();
+            this.transformPresetMgr = new TransformPresetMgr();
         }
 
         /// <summary>

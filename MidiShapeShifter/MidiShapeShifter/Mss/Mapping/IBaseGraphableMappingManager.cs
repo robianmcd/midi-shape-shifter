@@ -11,6 +11,7 @@ namespace MidiShapeShifter.Mss.Mapping
         IEnumerable<IMappingEntry> GetCopiesOfMappingEntriesForMsg(MidiShapeShifter.Mss.MssMsg inputMsg);
         IReturnStatus<IMappingEntry> GetCopyOfMappingEntryById(int id);
         IEnumerable<IMappingEntry> GetCopyOfMappingEntryList();
+        List<int> GetEntryIdList();
         bool RemoveMappingEntry(int id);
         int GetNumEntries();
         int GetMappingEntryIndexById(int id);

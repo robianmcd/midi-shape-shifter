@@ -20,12 +20,6 @@ namespace MidiShapeShifter.Mss.Generator
     [DataContract]
     public class GeneratorMappingManager : GraphableMappingManager<IGeneratorMappingEntry>, IGeneratorMappingManager
     {
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context)
-        {
-            this.memberLock = new Object();
-        }
-
         /// <summary>
         /// Creates a new GeneratorMappingEntry based on the info in genInfo. The newly created 
         /// GeneratorMappingEntry will be stored in this GeneratorMappingManager.

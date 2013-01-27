@@ -56,8 +56,8 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// <param name="xDistanceBetweenPoints">
         /// The maximum horizontal distance between any two points.
         /// </param>
-        /// <param name="mssParameterViewer">
-        /// Contains info about the MSS parameters which are needed to evaluate equations.
+        /// <param name="variableParamInfoList">
+        /// A list of cloned variable parameter info for each variable parameter.
         /// </param>
         /// <param name="mappingEntry">
         /// The mapping entry to evaluate equations for.
@@ -80,8 +80,8 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// garunteed to be valid if the return value is true.
         /// </returns>
         public bool SampleExpressionWithDefaultInputValues(
-                double xDistanceBetweenPoints, 
-                IMssParameterViewer mssParameterViewer,
+                double xDistanceBetweenPoints,
+                List<MssParamInfo> variableParamInfoList,
                 IMappingEntry mappingEntry,
                 out List<XyPoint<double>> controlPointList,
                 out List<List<XyPoint<double>>> curvePointsByCurveList,
@@ -105,7 +105,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                     -1,
                     -1,
                     -1,
-                    mssParameterViewer.GetVariableParamInfoList(),
+                    variableParamInfoList,
                     mappingEntry);
             evalJob.Configure(evalInput);
             controlPointList = evalJob.controlPointValues;
@@ -141,7 +141,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                 }
                 else
                 {
-                    if (!evaluateCurveAtXVal(curveStartXVal, mappingEntry, evalInput, evalJob, mssParameterViewer, out erroneousCurveIndexSet, curCurvePoints))
+                    if (!evaluateCurveAtXVal(curveStartXVal, mappingEntry, evalInput, evalJob, variableParamInfoList, out erroneousCurveIndexSet, curCurvePoints))
                     {
                         return false;
                     }
@@ -153,7 +153,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                 //Add points in the middle of the curve
                 while (curXVal < curveEndXVal)
                 {
-                    if (!evaluateCurveAtXVal(curXVal, mappingEntry, evalInput, evalJob, mssParameterViewer, out erroneousCurveIndexSet, curCurvePoints))
+                    if (!evaluateCurveAtXVal(curXVal, mappingEntry, evalInput, evalJob, variableParamInfoList, out erroneousCurveIndexSet, curCurvePoints))
                     {
                         return false;
                     }
@@ -168,7 +168,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                 }
                 else
                 {
-                    if (!evaluateCurveAtXVal(curveEndXVal, mappingEntry, evalInput, evalJob, mssParameterViewer, out erroneousCurveIndexSet, curCurvePoints))
+                    if (!evaluateCurveAtXVal(curveEndXVal, mappingEntry, evalInput, evalJob, variableParamInfoList, out erroneousCurveIndexSet, curCurvePoints))
                     {
                         return false;
                     }
@@ -180,7 +180,7 @@ namespace MidiShapeShifter.Mss.Evaluation
             return true;
         }
 
-        protected bool evaluateCurveAtXVal(double inputXVal, IMappingEntry mappingEntry, EvaluationCurveInput evalInput, EvaluationCurveJob evalJob, IMssParameterViewer mssParameterViewer, out HashSet<int> erroneousCurveIndexSet, List<XyPoint<double>> curvePoints)
+        protected bool evaluateCurveAtXVal(double inputXVal, IMappingEntry mappingEntry, EvaluationCurveInput evalInput, EvaluationCurveJob evalJob, List<MssParamInfo> variableParamInfoList, out HashSet<int> erroneousCurveIndexSet, List<XyPoint<double>> curvePoints)
         {
             erroneousCurveIndexSet = new HashSet<int>();
 
@@ -221,7 +221,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                 relData1,
                 relData2,
                 relData3,
-                mssParameterViewer.GetVariableParamInfoList(),
+                variableParamInfoList,
                 mappingEntry);
 
             evalJob.Configure(evalInput);

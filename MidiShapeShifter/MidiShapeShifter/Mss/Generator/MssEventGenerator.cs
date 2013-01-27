@@ -21,7 +21,7 @@ namespace MidiShapeShifter.Mss.Generator
     /// </summary>
     public class MssEventGenerator
     {
-        public const int SAMPLES_PER_GENERATOR_UPDATE = 500;
+        public const int SAMPLES_PER_GENERATOR_UPDATE = 1000;
 
         /// <summary>
         /// This class sends generated events to this input port
@@ -115,10 +115,21 @@ namespace MidiShapeShifter.Mss.Generator
         /// </param>
         protected void HostInfoOutputPort_BeforeProcessingCycleEnd(long sampleTimeAtEndOfCycle)
         {
-            List <IGeneratorMappingEntry> genEntryList = this.generatorMappingMgr.GetCopyOfMappingEntryList();
+            List <int> genEntryIdList = this.generatorMappingMgr.GetEntryIdList();
 
-            foreach (IGeneratorMappingEntry genEntry in genEntryList)
+            foreach (int genEntryId in genEntryIdList)
             {
+                var retStatus = this.generatorMappingMgr.GetCopyOfMappingEntryById(genEntryId);
+                IGeneratorMappingEntry genEntry;
+                if (retStatus.IsValid)
+                {
+                    genEntry = retStatus.Value;
+                }
+                else
+                {
+                    continue;
+                }
+
                 //In order to generate events we need to some information about the 
                 //host. If any of this information hasn't been initialized yet then just don't 
                 //generate anything for this generator.
@@ -182,7 +193,11 @@ namespace MidiShapeShifter.Mss.Generator
                 {
                     genEntry.GenHistoryInfo.Initialized = false;
                 }
+
+                this.generatorMappingMgr.ReplaceMappingEntry(genEntry);
             }
+
+            
         }
 
         /// <summary>

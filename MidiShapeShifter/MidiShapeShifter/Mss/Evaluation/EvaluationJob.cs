@@ -229,11 +229,15 @@ namespace MidiShapeShifter.Mss.Evaluation
                 char charVarName = 'a';
                 foreach(MssParamInfo varInfo in input.VariableParamInfoList)
                 {
+                    double relVal = CustomMathUtils.AbsToRelVal(varInfo.MinValue, varInfo.MaxValue, varInfo.GetValue());
+
                     this.expression.Parameters[varInfo.Name.ToLower()] = varInfo.GetValue();
+                    this.expression.Parameters[varInfo.Name.ToLower() + "_rel"] = relVal;
 
                     if (charVarName <= 'z')
                     {
                         this.expression.Parameters[charVarName.ToString()] = varInfo.GetValue();
+                        this.expression.Parameters[charVarName.ToString() + "_rel"] = relVal;
                         charVarName++;
                     }
                 }
@@ -241,9 +245,13 @@ namespace MidiShapeShifter.Mss.Evaluation
                 int paramNum = 1;
                 foreach (MssParamInfo varInfo in input.TransformParamInfoList)
                 {
+                    double relVal = CustomMathUtils.AbsToRelVal(varInfo.MinValue, varInfo.MaxValue, varInfo.GetValue());
+
                     this.expression.Parameters[varInfo.Name.ToLower()] = varInfo.GetValue();
+                    this.expression.Parameters[varInfo.Name.ToLower() + "_rel"] = relVal;
 
                     this.expression.Parameters["p" + paramNum.ToString()] = varInfo.GetValue();
+                    this.expression.Parameters["p" + paramNum.ToString() + "_rel"] = relVal;
                     paramNum++;
                 }
             }
