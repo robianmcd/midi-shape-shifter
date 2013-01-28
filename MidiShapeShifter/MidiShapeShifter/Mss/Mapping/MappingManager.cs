@@ -107,9 +107,10 @@ namespace MidiShapeShifter.Mss.Mapping
                     select entry;
                 }
 
-
-                return from entry in associatedEntiresQuery
-                       select (IMappingEntry)entry.Clone();
+                //Select() will return a querry which references the original list, so if mappingEntryList 
+                //was changed then the querry would also be changed. This is why there is a call to 
+                //ToList() This creates a seperate list that is not linked to mappingEntryList.
+                return associatedEntiresQuery.Select(entry => (IMappingEntry)entry.Clone()).ToList();
             }
         }
 
