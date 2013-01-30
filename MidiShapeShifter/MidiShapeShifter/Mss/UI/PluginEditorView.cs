@@ -266,23 +266,64 @@ namespace MidiShapeShifter.Mss.UI
 
         protected void RefreshMappingListView()
         {
-            this.mappingListView.Items.Clear();
+            RefreshGraphableMappingListView(this.mappingListView, this.mappingMgr, GraphableEntryType.Mapping, GetMappingListViewRow);
+        }
 
-            List<IMappingEntry> mappingEntryList = this.mappingMgr.GetCopyOfMappingEntryList();
-            
-            foreach (IMappingEntry entry in mappingEntryList)
+        protected void RefreshGeneratorListView()
+        {
+            RefreshGraphableMappingListView(this.generatorListView, this.genMappingMgr, GraphableEntryType.Generator, GetGeneratorListViewRow);
+        }
+
+
+        protected void RefreshGraphableMappingListView<MappingEntryType>(ListView listView, IGraphableMappingManager<MappingEntryType> graphableEntryMgr, GraphableEntryType graphableType, Func<MappingEntryType, ListViewItem> getListViewRow)
+             where MappingEntryType : IMappingEntry
+        {
+            int topItemIndex = 0;
+            ListViewItem prevTopItem = listView.TopItem;
+            if (prevTopItem != null)
             {
-                this.mappingListView.Items.Add(GetMappingListViewRow(entry));
+                topItemIndex = prevTopItem.Index;
             }
 
-            if (this.activeMappingInfo.ActiveGraphableEntryType == GraphableEntryType.Mapping &&
+            listView.Items.Clear();
+
+            List<MappingEntryType> mappingEntryList = graphableEntryMgr.GetCopyOfMappingEntryList();
+
+            foreach (MappingEntryType entry in mappingEntryList)
+            {
+                listView.Items.Add(getListViewRow(entry));
+            }
+
+            int selectedIndex = -1;
+            if (this.activeMappingInfo.ActiveGraphableEntryType == graphableType &&
                 this.activeMappingInfo.ActiveGraphableEntryId > -1)
             {
-                int selectedIndex = mappingEntryList.FindIndex(entry => entry.Id == this.activeMappingInfo.ActiveGraphableEntryId);
+                selectedIndex = mappingEntryList.FindIndex(entry => entry.Id == this.activeMappingInfo.ActiveGraphableEntryId);
 
                 this.IgnoreGraphableEntrySelectionChangedHandler = true;
-                this.mappingListView.Items[selectedIndex].Selected = true;
+                listView.Items[selectedIndex].Selected = true;
+                //Need to set focused here because of some winforms weirdness. See these posts for more info
+                //http://stackoverflow.com/questions/7363777/arrow-keys-dont-work-after-programmatically-setting-listview-selecteditem
+                //http://stackoverflow.com/questions/165424/how-does-itemcontainergenerator-containerfromitem-work-with-a-grouped-list/169123#169123
+                listView.Items[selectedIndex].Focused = true;
                 this.IgnoreGraphableEntrySelectionChangedHandler = false;
+
+            }
+
+
+            if (listView.Items.Count - 1 >= topItemIndex)
+            {
+                listView.TopItem = listView.Items[topItemIndex];
+            }
+            //This could be the case when an entry is being deleted.
+            else if (listView.Items.Count - 1 == topItemIndex - 1 && listView.Items.Count > 0)
+            {
+                listView.TopItem = listView.Items[topItemIndex - 1];
+            }
+
+            if (selectedIndex != -1)
+            {
+                listView.EnsureVisible(selectedIndex);
             }
         }
 
@@ -304,29 +345,6 @@ namespace MidiShapeShifter.Mss.UI
             mappingItem.SubItems.Add(entry.GetReadableOverrideDuplicates());
 
             return mappingItem;
-        }
-
-        protected void RefreshGeneratorListView()
-        {
-            this.generatorListView.Items.Clear();
-
-            List<IGeneratorMappingEntry> genEntryList = this.genMappingMgr.GetCopyOfMappingEntryList();
-
-
-            foreach (IGeneratorMappingEntry genEntry in genEntryList)
-            {
-                this.generatorListView.Items.Add(GetGeneratorListViewRow(genEntry));
-            }
-
-            if (this.activeMappingInfo.ActiveGraphableEntryType == GraphableEntryType.Generator &&
-                this.activeMappingInfo.ActiveGraphableEntryId > -1)
-            {
-                int selectedIndex = genEntryList.FindIndex(entry => entry.Id == this.activeMappingInfo.ActiveGraphableEntryId);
-
-                this.IgnoreGraphableEntrySelectionChangedHandler = true;
-                this.generatorListView.Items[selectedIndex].Selected = true;
-                this.IgnoreGraphableEntrySelectionChangedHandler = false;
-            }
         }
 
         public int getIndexForGenIdInListView(int id) {
@@ -632,6 +650,7 @@ namespace MidiShapeShifter.Mss.UI
             {
                 IgnoreGraphableEntrySelectionChangedHandler = true;
                 eventArgs.Item.Selected = true;
+                eventArgs.Item.Focused = true;
                 IgnoreGraphableEntrySelectionChangedHandler = false;
 
                 return;
@@ -657,6 +676,7 @@ namespace MidiShapeShifter.Mss.UI
                 }
 
                 eventArgs.Item.Selected = true;
+                eventArgs.Item.Focused = true;
                 IgnoreGraphableEntrySelectionChangedHandler = false;
             }
 
@@ -780,7 +800,7 @@ namespace MidiShapeShifter.Mss.UI
             }
             else if (graphableEntryListView.Items.Count > 0)
             {
-                this.activeMappingInfo.ActiveGraphableEntryId = graphableEntryListView.Items.Count - 1;
+                this.activeMappingInfo.ActiveGraphableEntryId = graphableMappingManager.GetMappingEntryIdByIndex(graphableEntryListView.Items.Count - 1);
             }
             else
             {
