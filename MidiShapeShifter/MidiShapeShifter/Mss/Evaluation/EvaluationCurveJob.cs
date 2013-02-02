@@ -42,12 +42,6 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// </summary>
         protected EvaluationCurveInput evalInput;
 
-        /// <summary>
-        /// The previous input for this job. This is kept around to see what information actually 
-        /// needs to be reinitialized when a new EvaluationCurveInput is passed in.
-        /// </summary>
-        protected EvaluationCurveInput previousEvalInput;
-
         public override bool Execute() {
             base.Execute();
 
@@ -73,19 +67,14 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// <summary>
         /// Initializes this class.
         /// </summary>
-        public void Configure(EvaluationCurveInput evalInput)
+        public void Configure(EvaluationCurveInput evalInput, List<XyPoint<double>> controlPointValues)
         {
             this.InputIsValid = true;
             this.OutputIsValid = false;
 
-            this.previousEvalInput = this.evalInput;
-            this.evalInput = (EvaluationCurveInput) evalInput.Clone();
+            this.evalInput = evalInput;
 
-            //Calculate the values for this.controlPointValues
-            if (CalculateControlPointValues() == false)
-            {
-                return;
-            }
+            this.controlPointValues = controlPointValues;
 
             //Get the index of the curve equation for the given primary input value.
             int curveIndex = GetCurveIndex();
@@ -104,127 +93,6 @@ namespace MidiShapeShifter.Mss.Evaluation
                 SetExpressionBaseParameters((EvaluationInput)evalInput);
                 SetExpressionCurveParameters(this.evalInput, this.expression);
             }
-        }
-
-        /// <summary>
-        /// Calculates the X and Y coordinates of each control point and stores them in this.controlPointValues
-        /// </summary>
-        /// <param name="erroneousControlPointIndexSet">
-        /// empty if all points had valid equations. Otherwise contains the index of at least one point with an invalid equation.
-        /// </param>
-        /// <returns>True on success, False if the control point equations could not be evaluated.</returns>
-        protected bool CalculateControlPointValues()
-        {
-            this.ErroneousControlPointIndexSet.Clear();
-
-            //If the point equations and variables have not changed then the previously calculated 
-            //control point values can be used.
-            if (PointEquationChanged() == false &&
-                VariableChanged() == false)
-            {
-                return true;
-            }
-
-            this.controlPointValues.Clear();
-
-            //Create the input for the control point jobs. The expression string will be 
-            //individually set for each equation.
-            EvaluationControlPointInput pointEvalInput = new EvaluationControlPointInput();
-            pointEvalInput.Init(this.evalInput.VariableParamInfoList, 
-                                this.evalInput.TransformParamInfoList,
-                                "");
-
-            //Create jobs to evaluate the x and y coordinates for a control point
-            EvaluationControlPointJob pointXEvalJob = new EvaluationControlPointJob();
-            EvaluationControlPointJob pointYEvalJob = new EvaluationControlPointJob();
-
-
-            double previousPointXVal = 0;
-            //Itterate through each control point equation and evaluate it's X and Y coordinates.
-            for (int i = 0; i < this.evalInput.PointEquations.Count; i++)
-            {
-                XyPoint<string> pointEquation = this.evalInput.PointEquations[i];
-
-                //Evaluate the equation for the current control point's X value
-                pointEvalInput.EquationStr = pointEquation.X;
-                pointXEvalJob.Configure(pointEvalInput);
-                pointXEvalJob.Execute();
-
-                //Evaluate the equation for the current control point's Y value
-                pointEvalInput.EquationStr = pointEquation.Y;
-                pointYEvalJob.Configure(pointEvalInput);
-                pointYEvalJob.Execute();
-
-                //If one of the equations could not be evaluated return false
-                if (pointXEvalJob.OutputIsValid == false || pointYEvalJob.OutputIsValid == false)
-                {
-                    this.InputIsValid = false;
-                    this.ErroneousControlPointIndexSet.Add(i);
-                    return false;
-                }
-                //If the control points are not in order from smallest to largest then return false.
-                else if (pointXEvalJob.OutputVal < previousPointXVal) 
-                {
-                    this.InputIsValid = false;
-                    this.ErroneousControlPointIndexSet.Add(i);
-                    this.ErroneousControlPointIndexSet.Add(i - 1);
-                    return false;
-                }
-
-                //Store the current control point's X and Y coordinates in this.controlPointValues.
-                XyPoint<double> curPoint = new XyPoint<double>(pointXEvalJob.OutputVal, pointYEvalJob.OutputVal);
-                this.controlPointValues.Add(curPoint);
-
-                previousPointXVal = pointXEvalJob.OutputVal;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Determines whether a variable has changed since the last time this job was configured.
-        /// </summary>
-        /// <returns>True if a variable has changed. False otherwise.</returns>
-        protected bool VariableChanged()
-        {
-            if (this.previousEvalInput == null)
-            {
-                return true;
-            }
-
-            for (int i = 0; i < this.evalInput.VariableParamInfoList.Count; i++)
-            {
-                if (this.previousEvalInput.VariableParamInfoList[i] != 
-                    this.evalInput.VariableParamInfoList[i])
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Determines whether a point equation has changed since the last time this job was configured.
-        /// </summary>
-        /// <returns>True if a point equation has changed. False otherwise.</returns>
-        protected bool PointEquationChanged()
-        {
-            if (this.previousEvalInput == null ||
-                this.previousEvalInput.PointEquations.Count != this.evalInput.PointEquations.Count)
-            {
-                return true;
-            }
-
-            for (int i = 0; i <= this.evalInput.PointEquations.Count - 1; i++ )
-            {
-                if (this.previousEvalInput.PointEquations[i].X != this.evalInput.PointEquations[i].X ||
-                    this.previousEvalInput.PointEquations[i].Y != this.evalInput.PointEquations[i].Y)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         /// <summary>

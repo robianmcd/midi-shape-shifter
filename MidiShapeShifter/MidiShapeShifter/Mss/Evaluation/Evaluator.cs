@@ -33,18 +33,25 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// </returns>
         public ReturnStatus<double> Evaluate(EvaluationCurveInput evalInput)
         {
-            EvaluationCurveJob evalCurveJob = new EvaluationCurveJob();
-            evalCurveJob.Configure(evalInput);
-            evalCurveJob.Execute();
+            var erroneousPoints = new HashSet<int>();
+            var controlPointValuesStatus = CalculateControlPointValues(evalInput.VariableParamInfoList, evalInput.TransformParamInfoList, evalInput.PointEquations, ref erroneousPoints);
 
-            if (evalCurveJob.OutputIsValid)
-            {
-                return new ReturnStatus<double>(evalCurveJob.OutputVal, true);
+            if (controlPointValuesStatus.IsValid) {
+                EvaluationCurveJob evalCurveJob = new EvaluationCurveJob();
+                evalCurveJob.Configure(evalInput, controlPointValuesStatus.Value);
+
+                if (evalCurveJob.InputIsValid)
+                {
+                    evalCurveJob.Execute();
+
+                    if (evalCurveJob.OutputIsValid)
+                    {
+                        return new ReturnStatus<double>(evalCurveJob.OutputVal, true);
+                    }
+                }
             }
-            else
-            {
-                return new ReturnStatus<double>(double.NaN, false);
-            }
+
+            return new ReturnStatus<double>(double.NaN, false);
         }
 
         /// <summary>
@@ -92,26 +99,21 @@ namespace MidiShapeShifter.Mss.Evaluation
             erroneousControlPointIndexSet = new HashSet<int>();
             erroneousCurveIndexSet = new HashSet<int>();
 
-            curvePointsByCurveList = new List<List<XyPoint<double>>>();
+            //Initialize this list from an array so that elements can be set directly in parallel.
+            curvePointsByCurveList = new List<List<XyPoint<double>>>(new List<XyPoint<double>>[mappingEntry.CurveShapeInfo.CurveEquations.Count]);
 
-            //Create the eval input for the curve equations
-            EvaluationCurveInput evalInput = new EvaluationCurveInput();
             EvaluationCurveJob evalJob = new EvaluationCurveJob();
 
-            //evalJob just being used to calculate the control point locations. This happens when 
-            //evalJob.Configure() gets called so there is no need to call evalJob.Execute(). This 
-            //means that we can supply dummy values (-1) for the reldata parameters in evalInput.Init().
-            evalInput.Init(
-                    -1,
-                    -1,
-                    -1,
-                    variableParamInfoList,
-                    mappingEntry);
-            evalJob.Configure(evalInput);
-            controlPointList = evalJob.controlPointValues;
+            var controlPointValuesStatus = CalculateControlPointValues(
+                variableParamInfoList, 
+                mappingEntry.CurveShapeInfo.ParamInfoList, 
+                mappingEntry.CurveShapeInfo.PointEquations, 
+                ref erroneousControlPointIndexSet);
 
-            if (evalJob.InputIsValid == false) {
-                erroneousControlPointIndexSet = evalJob.ErroneousControlPointIndexSet;
+            controlPointList = controlPointValuesStatus.Value;
+
+            if (controlPointValuesStatus.IsValid == false)
+            {
                 return false;
             }
 
@@ -130,60 +132,46 @@ namespace MidiShapeShifter.Mss.Evaluation
                     curveEndXVal = controlPointList[curveIndex].X;
                 }
 
+                int numPointsInCurve = (int) ((curveEndXVal - curveStartXVal) / xDistanceBetweenPoints) + 1;
 
-                List<XyPoint<double>> curCurvePoints = new List<XyPoint<double>>();
-                curvePointsByCurveList.Add(curCurvePoints);
 
-                //Add point at start of curve
-                if (curveIndex > 0) 
+                List<XyPoint<double>> curCurvePoints = new List<XyPoint<double>>(new XyPoint<double>[numPointsInCurve]);
+                curvePointsByCurveList[curveIndex] = curCurvePoints;
+
+
+                for (int pointIndex = 0; pointIndex < numPointsInCurve; pointIndex++ )
                 {
-                    curCurvePoints.Add(controlPointList[curveIndex - 1]);
-                }
-                else
-                {
-                    if (!evaluateCurveAtXVal(curveStartXVal, mappingEntry, evalInput, evalJob, variableParamInfoList, out erroneousCurveIndexSet, curCurvePoints))
+                    double curXVal = curveStartXVal + (pointIndex * xDistanceBetweenPoints);
+
+                    //Use the control point for the start of a curve as it is already calcuated
+                    if (pointIndex == 0 && curveIndex > 0)
                     {
-                        return false;
+                        curCurvePoints[0] = controlPointList[curveIndex - 1];
                     }
-                }               
-                
-
-                double curXVal = curveStartXVal + xDistanceBetweenPoints;
-
-                //Add points in the middle of the curve
-                while (curXVal < curveEndXVal)
-                {
-                    if (!evaluateCurveAtXVal(curXVal, mappingEntry, evalInput, evalJob, variableParamInfoList, out erroneousCurveIndexSet, curCurvePoints))
+                    else 
                     {
-                        return false;
+                        var evalStatus = evaluateCurveAtXVal(curXVal, mappingEntry, variableParamInfoList, controlPointList);
+                        if (evalStatus.IsValid == false)
+                        {
+                            lock (erroneousCurveIndexSet)
+                            {
+                                erroneousCurveIndexSet.Add(curveIndex);
+                                return false;
+                            }
+                        }
+
+                        curCurvePoints[pointIndex] = evalStatus.Value;
                     }
 
-                    curXVal += xDistanceBetweenPoints;
                 }
-
-                //Add point at end of curve
-                if (curveIndex < numCurves - 1)
-                {
-                    curCurvePoints.Add(controlPointList[curveIndex]);
-                }
-                else
-                {
-                    if (!evaluateCurveAtXVal(curveEndXVal, mappingEntry, evalInput, evalJob, variableParamInfoList, out erroneousCurveIndexSet, curCurvePoints))
-                    {
-                        return false;
-                    }
-                }
-
 
             }
 
             return true;
         }
 
-        protected bool evaluateCurveAtXVal(double inputXVal, IMappingEntry mappingEntry, EvaluationCurveInput evalInput, EvaluationCurveJob evalJob, List<MssParamInfo> variableParamInfoList, out HashSet<int> erroneousCurveIndexSet, List<XyPoint<double>> curvePoints)
+        protected ReturnStatus<XyPoint<double>> evaluateCurveAtXVal(double inputXVal, IMappingEntry mappingEntry, List<MssParamInfo> variableParamInfoList, List<XyPoint<double>> controlPointList)
         {
-            erroneousCurveIndexSet = new HashSet<int>();
-
             //For each sample point data1 data2 and data3 will be set to the X value of the 
             //sample point.
             double relData1 = inputXVal;
@@ -217,6 +205,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                 relData2 = double.NaN;
             }
 
+            var evalInput = new EvaluationCurveInput();
             evalInput.Init(
                 relData1,
                 relData2,
@@ -224,21 +213,100 @@ namespace MidiShapeShifter.Mss.Evaluation
                 variableParamInfoList,
                 mappingEntry);
 
-            evalJob.Configure(evalInput);
+            var evalJob = new EvaluationCurveJob();
+            evalJob.Configure(evalInput, controlPointList);
+
+            if (evalJob.InputIsValid == false) {
+                return new ReturnStatus<XyPoint<double>>();
+            }
+
             evalJob.Execute();
 
             if (evalJob.OutputIsValid)
             {
-                curvePoints.Add(new XyPoint<double>(inputXVal, evalJob.OutputVal));
+                var curPoint = new XyPoint<double>(inputXVal, evalJob.OutputVal);
+                return new ReturnStatus<XyPoint<double>>(curPoint);
             }
             else
             {
-                erroneousCurveIndexSet = evalJob.ErroneousCurveIndexSet;
+                return new ReturnStatus<XyPoint<double>>();
             }
-
-            return evalJob.OutputIsValid;
         }
 
+
+        /// <summary>
+        /// Calculates the X and Y coordinates of each control point and stores them in this.controlPointValues
+        /// </summary>
+        /// <param name="erroneousControlPointIndexSet">
+        /// empty if all points had valid equations. Otherwise contains the index of at least one point with an invalid equation.
+        /// </param>
+        /// <returns>True on success, False if the control point equations could not be evaluated.</returns>
+        protected ReturnStatus<List<XyPoint<double>>> CalculateControlPointValues(
+            List<MssParamInfo> variableParamInfoList,
+            List<MssParamInfo> transformParamInfoList,
+            List<XyPoint<string>> pointEquations,
+            ref HashSet<int> erroneousControlPointIndexSet)
+        {
+            erroneousControlPointIndexSet.Clear();
+
+            var controlPointList = new List<XyPoint<double>>();
+
+            //Create the input for the control point jobs. The expression string will be 
+            //individually set for each equation.
+            EvaluationControlPointInput pointEvalInput = new EvaluationControlPointInput();
+            pointEvalInput.Init(variableParamInfoList,
+                                transformParamInfoList,
+                                "");
+
+            //Create jobs to evaluate the x and y coordinates for a control point
+            EvaluationControlPointJob pointXEvalJob = new EvaluationControlPointJob();
+            EvaluationControlPointJob pointYEvalJob = new EvaluationControlPointJob();
+
+
+            double previousPointXVal = 0;
+            //Itterate through each control point equation and evaluate it's X and Y coordinates.
+            for (int i = 0; i < pointEquations.Count; i++)
+            {
+                XyPoint<string> pointEquation = pointEquations[i];
+
+                //Evaluate the equation for the current control point's X value
+                pointEvalInput.EquationStr = pointEquation.X;
+                pointXEvalJob.Configure(pointEvalInput);
+                pointXEvalJob.Execute();
+
+                //Evaluate the equation for the current control point's Y value
+                pointEvalInput.EquationStr = pointEquation.Y;
+                pointYEvalJob.Configure(pointEvalInput);
+                pointYEvalJob.Execute();
+
+                //If one of the equations could not be evaluated return false
+                if (pointXEvalJob.OutputIsValid == false || pointYEvalJob.OutputIsValid == false)
+                {
+                    erroneousControlPointIndexSet.Add(i);
+                    return new ReturnStatus<List<XyPoint<double>>>();
+                }
+
+                //Store the current control point's X and Y coordinates in this.controlPointValues.
+                XyPoint<double> curPoint = new XyPoint<double>(pointXEvalJob.OutputVal, pointYEvalJob.OutputVal);
+                controlPointList.Add(curPoint);
+
+                previousPointXVal = pointXEvalJob.OutputVal;
+            }
+
+            for (int i = 1; i < controlPointList.Count; i++)
+            {
+                //If the control points are not in order from smallest to largest then return an 
+                //invalid return status.
+                if (controlPointList[i - 1].X > controlPointList[i].X)
+                {
+                    erroneousControlPointIndexSet.Add(i);
+                    erroneousControlPointIndexSet.Add(i - 1);
+                    return new ReturnStatus<List<XyPoint<double>>>();
+                }
+            }
+
+            return new ReturnStatus<List<XyPoint<double>>>(controlPointList);
+        }
 
     } //End class
 } //End namespace
