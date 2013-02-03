@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 using NCalc;
 
@@ -112,62 +114,71 @@ namespace MidiShapeShifter.Mss.Evaluation
 
             controlPointList = controlPointValuesStatus.Value;
 
+            //Need to make a second version of these variable as out parameters cannot be used in Parallel.For loops.
+            List<XyPoint<double>> controlPointList2 = controlPointList;
+            List<List<XyPoint<double>>> curvePointsByCurveList2 = curvePointsByCurveList;
+            HashSet<int> erroneousCurveIndexSet2 = erroneousCurveIndexSet;
+
             if (controlPointValuesStatus.IsValid == false)
             {
                 return false;
             }
 
             int numCurves = mappingEntry.CurveShapeInfo.CurveEquations.Count;
-            for(int curveIndex = 0; curveIndex < numCurves; curveIndex++) {
+
+            bool noErrorsEncountered = true;
+
+            Parallel.For(0, numCurves, (curveIndex, loopState) =>
+            {
                 double curveStartXVal = 0;
                 double curveEndXVal = 1;
 
                 if (curveIndex > 0)
                 {
-                    curveStartXVal = controlPointList[curveIndex - 1].X;
+                    curveStartXVal = controlPointList2[curveIndex - 1].X;
                 }
 
                 if (curveIndex < numCurves - 1)
                 {
-                    curveEndXVal = controlPointList[curveIndex].X;
+                    curveEndXVal = controlPointList2[curveIndex].X;
                 }
 
-                int numPointsInCurve = (int) ((curveEndXVal - curveStartXVal) / xDistanceBetweenPoints) + 1;
+                int numPointsInCurve = (int)((curveEndXVal - curveStartXVal) / xDistanceBetweenPoints) + 1;
 
 
                 List<XyPoint<double>> curCurvePoints = new List<XyPoint<double>>(new XyPoint<double>[numPointsInCurve]);
-                curvePointsByCurveList[curveIndex] = curCurvePoints;
+                curvePointsByCurveList2[curveIndex] = curCurvePoints;
 
-
-                for (int pointIndex = 0; pointIndex < numPointsInCurve; pointIndex++ )
+                Parallel.For(0, numPointsInCurve, pointIndex =>
                 {
                     double curXVal = curveStartXVal + (pointIndex * xDistanceBetweenPoints);
 
                     //Use the control point for the start of a curve as it is already calcuated
                     if (pointIndex == 0 && curveIndex > 0)
                     {
-                        curCurvePoints[0] = controlPointList[curveIndex - 1];
+                        curCurvePoints[0] = controlPointList2[curveIndex - 1];
                     }
-                    else 
+                    else
                     {
-                        var evalStatus = evaluateCurveAtXVal(curXVal, mappingEntry, variableParamInfoList, controlPointList);
+                        var evalStatus = evaluateCurveAtXVal(curXVal, mappingEntry, variableParamInfoList, controlPointList2);
                         if (evalStatus.IsValid == false)
                         {
-                            lock (erroneousCurveIndexSet)
+                            lock (erroneousCurveIndexSet2)
                             {
-                                erroneousCurveIndexSet.Add(curveIndex);
-                                return false;
+                                erroneousCurveIndexSet2.Add(curveIndex);
+                                noErrorsEncountered = false;
+                                loopState.Stop();
                             }
                         }
 
                         curCurvePoints[pointIndex] = evalStatus.Value;
                     }
+                });
 
-                }
+            });
 
-            }
 
-            return true;
+            return noErrorsEncountered;
         }
 
         protected ReturnStatus<XyPoint<double>> evaluateCurveAtXVal(double inputXVal, IMappingEntry mappingEntry, List<MssParamInfo> variableParamInfoList, List<XyPoint<double>> controlPointList)
