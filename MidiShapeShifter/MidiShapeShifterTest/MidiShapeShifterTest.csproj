@@ -104,6 +104,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSharpUtil\LruCacheTest.cs" />
     <Compile Include="Framework\MidiHandlerProtectedWrapper.cs" />
     <Compile Include="Framework\MidiHandlerTest.cs" />
     <Compile Include="Mss\Generator\GeneratorMappingManagerTest.cs" />

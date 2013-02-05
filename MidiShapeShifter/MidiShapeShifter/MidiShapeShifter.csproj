@@ -105,6 +105,7 @@
     <Compile Include="CSharpUtil\CustomMathUtils.cs" />
     <Compile Include="CSharpUtil\DrawingControl.cs" />
     <Compile Include="CSharpUtil\FileTreeFolderNode.cs" />
+    <Compile Include="CSharpUtil\LruCache.cs" />
     <Compile Include="CSharpUtil\ReturnStatus.cs" />
     <Compile Include="CSharpUtil\CustomStringUtil.cs" />
     <Compile Include="CSharpUtil\TwoWayDictionary.cs" />
