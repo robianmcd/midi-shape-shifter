@@ -13,6 +13,7 @@ using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Relays;
 using MidiShapeShifter.Mss.Parameters;
+using MidiShapeShifter.CSharpUtil;
 
 namespace MidiShapeShifterTest.Mss.Generator
 {
@@ -121,6 +122,20 @@ namespace MidiShapeShifterTest.Mss.Generator
             this.genMappingMgrMock.Setup(mgr => mgr.GetNumEntries()).Returns(() => this.genMappingEntryList.Count);
             //TODO: this should really return a deep copy of genMappingEntryList instead of a shallow copy
             this.genMappingMgrMock.Setup(mgr => mgr.GetCopyOfMappingEntryList()).Returns(() => new List<IGeneratorMappingEntry>(this.genMappingEntryList));
+
+            this.genMappingMgrMock.Setup(mgr => mgr.GetEntryIdList()).Returns(() => this.genMappingEntryList.Select(mappingEntry => mappingEntry.Id).ToList());
+
+            this.genMappingMgrMock.Setup(mgr => mgr.GetCopyOfMappingEntryById(It.IsAny<int>())).Returns((int id) => 
+            {
+                var matchingEntry = this.genMappingEntryList.Find(mappingEntry => mappingEntry.Id == id);
+                if (matchingEntry == null)
+                {
+                    return new ReturnStatus<IGeneratorMappingEntry>();
+                }
+                else {
+                    return new ReturnStatus<IGeneratorMappingEntry>(matchingEntry);
+                }
+            });
 
             eventGenerator = new MssEventGenerator();
             eventGenerator.Init(this.hostInfoRelayMock.Object,
@@ -331,9 +346,14 @@ namespace MidiShapeShifterTest.Mss.Generator
             this.host_BarPosIsInitialized = true;
         }
 
+        protected int nextId = 0;
+
         protected Mock<IGeneratorMappingEntry> MockFactory_IGeneratorMappingEntry()
         {
             var genEntryMock = new Mock<IGeneratorMappingEntry>();
+
+            genEntryMock.Setup(genEntry=> genEntry.Id).Returns(this.nextId);
+            nextId++;
 
             GenEntryConfigInfo configInfo = Factory_GenEntryConfigInfo_Default();
             genEntryMock.Setup(genEntry => genEntry.GenConfigInfo).Returns(configInfo);

@@ -18,45 +18,6 @@ namespace MidiShapeShifterTest.CSharpUtil
     class LruCacheTest
     {
         [Test]
-        public void test() {
-            bool oneHasErrors = false;
-
-            Stopwatch s1 = new Stopwatch();
-
-            s1.Start();
-            Expression exp = new Expression("Round(Pow(2, 2) + Pow(3, 2) + 4.2, 2)");
-            var t1 = s1.Elapsed;
-
-            try
-            {
-                oneHasErrors = exp.HasErrors();
-                //double output = System.Convert.ToDouble(exp.Evaluate());
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-            var t2 = s1.Elapsed;
-
-            s1.Reset();
-            s1.Start();
-            Expression exp2 = new Expression(exp.ParsedExpression);
-            var t3 = s1.Elapsed;
-
-            try
-            {
-                double output = System.Convert.ToDouble(exp2.Evaluate());
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-            var t4 = s1.Elapsed;
-
-            Assert.Pass();
-        }
-
-        [Test]
         public void GetKeyValuePairRemover_CacheSizeOf1_CreateValueGetsCalledForEveryNewElement()
         {
             var cache = new LruCache<int, int>(1);
