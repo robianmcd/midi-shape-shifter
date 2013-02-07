@@ -370,9 +370,14 @@ namespace MidiShapeShifter.Mss.Evaluation
 
                 default:
                     Debug.Assert(false);
-                    formattedExpressionStr = expressionStr;
+                    formattedExpressionStr = expressionStr.ToLower();
                     break;
             }
+
+            //Even though we use EvaluateOptions.IgnoreCase when we construct an expression 
+            //it still seems to be necessary to convery everything to lower case. Other 
+            //parameters will not be evaluated.
+            formattedExpressionStr = formattedExpressionStr.ToLower();
 
             Expression expression = null;
 
