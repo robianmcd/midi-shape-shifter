@@ -10,11 +10,14 @@ namespace MidiShapeShifter.CSharpUtil
         Dictionary<Key, ValueWithReference> cache;
 
         //The maximum number of elements that can fit in the cache.
-        int maxCacheSize;
+        protected int maxCacheSize;
 
-        IEnumerator<Value> valueRemover;
+        protected IEnumerator<Value> valueRemover;
+
+        protected object memberLock;
 
         public LruCache(int maxCacheSize) {
+            this.memberLock = new object();
             this.cache = new Dictionary<Key, ValueWithReference>();
             this.maxCacheSize = maxCacheSize;
             this.valueRemover = GetKeyValuePairRemover().GetEnumerator();
@@ -25,21 +28,26 @@ namespace MidiShapeShifter.CSharpUtil
         /// then it will be created with createValue() and added to the cache. 
         /// </summary>
         public Value GetAndAddValue(Key key, ValueCreator createValue) {
-            if (this.cache.ContainsKey(key) == false)
-            {
-                while (this.cache.Count >= this.maxCacheSize) {
-                    this.valueRemover.MoveNext();
+            lock(this.memberLock) {
+                if (this.cache.ContainsKey(key) == false)
+                {
+                    while (this.cache.Count >= this.maxCacheSize) {
+                        this.valueRemover.MoveNext();
+                    }
+
+                    this.cache[key] = new ValueWithReference(createValue());
                 }
 
-                this.cache[key] = new ValueWithReference(createValue());
+                this.cache[key].recentlyUsed = true;
+                return this.cache[key].value;
             }
-
-            this.cache[key].recentlyUsed = true;
-            return this.cache[key].value;
         }
 
         public bool ContainsKey(Key key) {
-            return this.cache.ContainsKey(key);
+            lock (this.memberLock)
+            {
+                return this.cache.ContainsKey(key);
+            }
         }
 
         protected IEnumerable<Value> GetKeyValuePairRemover() { 
