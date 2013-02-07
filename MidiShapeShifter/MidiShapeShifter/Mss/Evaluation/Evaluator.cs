@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using NCalc;
+using NCalc.Domain;
 
 using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Mapping;
@@ -15,14 +16,22 @@ using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {
+    public enum EvalType { Curve, ControlPoint }
+
     /// <summary>
     /// This class is responsible for evaluating expressions.
     /// </summary>
     public class Evaluator : IEvaluator
     {
 
-
         public string LastErrorMsg = "";
+
+        public const int NUM_EXPRESSIONS_IN_CACHE = 1000;
+        protected LruCache<string, LogicalExpression> expressionCache;
+
+        public Evaluator() {
+            this.expressionCache = new LruCache<string, LogicalExpression>(NUM_EXPRESSIONS_IN_CACHE);
+        }
 
         /// <summary>
         ///  Uses the primary input in evalInput to depermine which curve equation needs to be 
@@ -40,17 +49,22 @@ namespace MidiShapeShifter.Mss.Evaluation
 
             if (controlPointValuesStatus.IsValid) {
                 EvaluationCurveJob evalCurveJob = new EvaluationCurveJob();
-                evalCurveJob.Configure(evalInput, controlPointValuesStatus.Value);
 
-                if (evalCurveJob.InputIsValid)
-                {
+                string expressionStr = GetCurveExpressionString(evalInput.getPrimaryInputVal(), controlPointValuesStatus.Value, evalInput.CurveEquations);
+                var returnedExpression = CreateExpressionFromString(expressionStr, EvalType.Curve);
+
+                if (returnedExpression.IsValid) {
+                    evalCurveJob.Configure(evalInput, controlPointValuesStatus.Value, returnedExpression.Value);
+
                     evalCurveJob.Execute();
 
                     if (evalCurveJob.OutputIsValid)
                     {
                         return new ReturnStatus<double>(evalCurveJob.OutputVal, true);
                     }
+    
                 }
+
             }
 
             return new ReturnStatus<double>(double.NaN, false);
@@ -151,6 +165,13 @@ namespace MidiShapeShifter.Mss.Evaluation
 
                 Parallel.For(0, numPointsInCurve, pointIndex =>
                 {
+                    //Calling loopState.Stop() does not immedateally stop all threads so that they 
+                    //exit without doing any more processing.
+                    if (loopState.ShouldExitCurrentIteration)
+                    {
+                        return;
+                    }
+
                     double curXVal = curveStartXVal + (pointIndex * xDistanceBetweenPoints);
 
                     //Use the control point for the start of a curve as it is already calcuated
@@ -160,7 +181,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                     }
                     else
                     {
-                        var evalStatus = evaluateCurveAtXVal(curXVal, mappingEntry, variableParamInfoList, controlPointList2);
+                        var evalStatus = evaluateCurveAtXVal(curXVal, curveIndex, mappingEntry, variableParamInfoList, controlPointList2);
                         if (evalStatus.IsValid == false)
                         {
                             lock (erroneousCurveIndexSet2)
@@ -168,6 +189,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                                 erroneousCurveIndexSet2.Add(curveIndex);
                                 noErrorsEncountered = false;
                                 loopState.Stop();
+                                return;
                             }
                         }
 
@@ -181,7 +203,7 @@ namespace MidiShapeShifter.Mss.Evaluation
             return noErrorsEncountered;
         }
 
-        protected ReturnStatus<XyPoint<double>> evaluateCurveAtXVal(double inputXVal, IMappingEntry mappingEntry, List<MssParamInfo> variableParamInfoList, List<XyPoint<double>> controlPointList)
+        protected ReturnStatus<XyPoint<double>> evaluateCurveAtXVal(double inputXVal, int curveIndex, IMappingEntry mappingEntry, List<MssParamInfo> variableParamInfoList, List<XyPoint<double>> controlPointList)
         {
             //For each sample point data1 data2 and data3 will be set to the X value of the 
             //sample point.
@@ -225,11 +247,15 @@ namespace MidiShapeShifter.Mss.Evaluation
                 mappingEntry);
 
             var evalJob = new EvaluationCurveJob();
-            evalJob.Configure(evalInput, controlPointList);
 
-            if (evalJob.InputIsValid == false) {
+            var returnedExpression = CreateExpressionFromString(mappingEntry.CurveShapeInfo.CurveEquations[curveIndex], EvalType.Curve);
+
+            if (returnedExpression.IsValid == false)
+            {
                 return new ReturnStatus<XyPoint<double>>();
             }
+
+            evalJob.Configure(evalInput, controlPointList, returnedExpression.Value);
 
             evalJob.Execute();
 
@@ -280,14 +306,22 @@ namespace MidiShapeShifter.Mss.Evaluation
             {
                 XyPoint<string> pointEquation = pointEquations[i];
 
+                var xEquationStatus = CreateExpressionFromString(pointEquation.X, EvalType.ControlPoint);
+                var yEquationStatus = CreateExpressionFromString(pointEquation.Y, EvalType.ControlPoint);
+
+                if (!xEquationStatus.IsValid || !yEquationStatus.IsValid) {
+                    erroneousControlPointIndexSet.Add(i);
+                    return new ReturnStatus<List<XyPoint<double>>>();
+                }
+
                 //Evaluate the equation for the current control point's X value
                 pointEvalInput.EquationStr = pointEquation.X;
-                pointXEvalJob.Configure(pointEvalInput);
+                pointXEvalJob.Configure(pointEvalInput, xEquationStatus.Value);
                 pointXEvalJob.Execute();
 
                 //Evaluate the equation for the current control point's Y value
                 pointEvalInput.EquationStr = pointEquation.Y;
-                pointYEvalJob.Configure(pointEvalInput);
+                pointYEvalJob.Configure(pointEvalInput, yEquationStatus.Value);
                 pointYEvalJob.Execute();
 
                 //If one of the equations could not be evaluated return false
@@ -317,6 +351,101 @@ namespace MidiShapeShifter.Mss.Evaluation
             }
 
             return new ReturnStatus<List<XyPoint<double>>>(controlPointList);
+        }
+
+
+        protected ReturnStatus<Expression> CreateExpressionFromString(string expressionStr, EvalType evalType)
+        {
+            string formattedExpressionStr;
+            switch (evalType)
+            {
+                case EvalType.ControlPoint:
+                    formattedExpressionStr = EvaluationJob.FUNC_NAME_LIMIT + "(" + expressionStr + ")";
+                    break;
+
+                case EvalType.Curve:
+                    formattedExpressionStr = EvaluationJob.FUNC_NAME_LIMIT + "(" +
+                        EvaluationCurveJob.FUNC_NAME_SNAP + "(" + expressionStr + "))";
+                    break;
+
+                default:
+                    Debug.Assert(false);
+                    formattedExpressionStr = expressionStr;
+                    break;
+            }
+
+            Expression expression = null;
+
+            if (this.expressionCache.ContainsKey(formattedExpressionStr) == false)
+            {
+                expression = new Expression(formattedExpressionStr, EvaluateOptions.IgnoreCase);
+
+                //Calling HasErrors() will cause expression.ParsedExpression to be set.
+                if (expression.HasErrors())
+                {
+                    //Cache this expression that causes a syntax error as null so that it doesn't have to be parsed again.
+                    this.expressionCache.GetAndAddValue(formattedExpressionStr, () => null);
+                }
+                else
+                {
+                    this.expressionCache.GetAndAddValue(formattedExpressionStr, () => expression.ParsedExpression);
+                }
+
+            }
+            else 
+            {
+                //We have already ensured that the key is in the cache so the createValue function should not be called.
+                LogicalExpression parsedExpression = this.expressionCache.GetAndAddValue(formattedExpressionStr, () => { Debug.Assert(false); return null; });
+                if (parsedExpression != null) {
+                    expression = new Expression(parsedExpression, EvaluateOptions.IgnoreCase);
+                }
+            }
+
+            if (expression == null)
+            {
+                return new ReturnStatus<Expression>();
+            }
+            else {
+                SetExpressionConstants(expression);
+                return new ReturnStatus<Expression>(expression);
+            }
+        }
+
+        /// <summary>
+        /// Sets the constant values for an expression.
+        /// </summary>
+        private void SetExpressionConstants(Expression expression)
+        {
+            if (expression != null)
+            {
+                expression.Parameters["semitone"] = 1.0 / 127.0;
+                expression.Parameters["octave"] = 12.0 / 127.0;
+
+                expression.Parameters["ignore"] = double.NaN;
+
+                expression.Parameters["pi"] = Math.PI;
+
+            }
+            else
+            {
+                //This function should not be called when the expression is null.
+                Debug.Assert(false);
+            }
+        }
+
+        private string GetCurveExpressionString(double inputXVal, List<XyPoint<double>> controlPoints, List<string> curveEquations)
+        {
+            int curveIndex = 0;
+            foreach (XyPoint<double> point in controlPoints)
+            {
+                if (point.X > inputXVal)
+                {
+                    break;
+                }
+                curveIndex++;
+            }
+
+            return curveEquations[curveIndex];
         }
 
     } //End class

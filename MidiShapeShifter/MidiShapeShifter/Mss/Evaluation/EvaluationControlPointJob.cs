@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using NCalc;
+
+
 using MidiShapeShifter.CSharpUtil;
 
 namespace MidiShapeShifter.Mss.Evaluation
@@ -18,24 +21,16 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// <summary>
         /// Initializes this class. This must be called before calling Execute().
         /// </summary>
-        public void Configure(EvaluationControlPointInput evalInput)
+        public void Configure(EvaluationControlPointInput evalInput, Expression expression)
         {
-            this.InputIsValid = true;
             this.OutputIsValid = false;
 
             this.evalInput = evalInput;
+            this.expression = expression;
 
-            if (InitializeExpressionMembers(evalInput.EquationStr) == false)
-            {
-                return;
-            }
-
-            if (this.expression != null)
-            {
-                SetExpressionBaseParameters((EvaluationInput) evalInput);
-            }
+            this.expression.EvaluateFunction += FunctionHandler;
+            SetExpressionBaseParameters((EvaluationInput) evalInput);
         }
-
 
     }
 }

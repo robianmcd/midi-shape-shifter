@@ -67,32 +67,18 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// <summary>
         /// Initializes this class.
         /// </summary>
-        public void Configure(EvaluationCurveInput evalInput, List<XyPoint<double>> controlPointValues)
+        public void Configure(EvaluationCurveInput evalInput, List<XyPoint<double>> controlPointValues, Expression expression)
         {
-            this.InputIsValid = true;
             this.OutputIsValid = false;
 
             this.evalInput = evalInput;
 
             this.controlPointValues = controlPointValues;
+            this.expression = expression;
 
-            //Get the index of the curve equation for the given primary input value.
-            int curveIndex = GetCurveIndex();
-
-            //Add the snap function to the equation. This will snap the endpoints of a curve to the 
-            //control points on either side of it.
-            string tmpExpressionStr = FUNC_NAME_SNAP + "(" + 
-                                        this.evalInput.CurveEquations[curveIndex] + ")";
-            if (InitializeExpressionMembers(tmpExpressionStr) == false)
-            {
-                return;
-            }
-
-            if (this.expression != null)
-            {
-                SetExpressionBaseParameters((EvaluationInput)evalInput);
-                SetExpressionCurveParameters(this.evalInput, this.expression);
-            }
+            this.expression.EvaluateFunction += FunctionHandler;
+            SetExpressionBaseParameters((EvaluationInput)evalInput);
+            SetExpressionCurveParameters(this.evalInput, this.expression);
         }
 
         /// <summary>

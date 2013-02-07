@@ -45,24 +45,10 @@ namespace MidiShapeShifter.Mss.Evaluation
         private double _outputVal;
 
         /// <summary>
-        /// This should be set to false if there is an error during 
-        /// configuration due to invalid input.
-        /// </summary>
-        public bool InputIsValid { get; protected set; }
-
-        /// <summary>
         /// Specifies whether OutputVal is valid.
         /// </summary>
         public bool OutputIsValid { get; protected set; }
 
-        /// <summary>
-        /// During configureation if it is clear that the input equation will always return the same 
-        /// value then OutputVal can be set to that value and this can be set to true so that we 
-        /// don't have to create an execute an Expression everytime Execute() is called. This is
-        /// useful when an equation is just a number and setting this flag will improve 
-        /// preformance.
-        /// </summary>
-        protected bool useConstantOutput = false;
 
         /// <summary>
         /// The equation as a string.
@@ -82,24 +68,10 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// </returns>
         public virtual bool Execute()
         {
-            if (InputIsValid)
-            {
-                if (useConstantOutput)
-                {
-                    //The output value was set in configure()
-                    this.OutputIsValid = true;
-                }
-                else
-                {
-                    ReturnStatus<double> outputStatus = EvaluateExpression(this.expression);
-                    this.OutputIsValid = outputStatus.IsValid;
-                    this.OutputVal = outputStatus.Value;
-                }
-            }
-            else //Input is not valid
-            {
-                this.OutputIsValid = false;
-            }
+            ReturnStatus<double> outputStatus = EvaluateExpression(this.expression);
+            this.OutputIsValid = outputStatus.IsValid;
+            this.OutputVal = outputStatus.Value;
+
             return this.OutputIsValid;
         }
 
@@ -127,95 +99,6 @@ namespace MidiShapeShifter.Mss.Evaluation
             {
                 return new ReturnStatus<double>(double.NaN, false);
             }
-        }
-
-        /// <summary>
-        /// Initialize this.expressionStr and this.expression. This should be called during 
-        /// configuration.
-        /// </summary>
-        /// <returns>True on success, false if the input expressionStr was not valid</returns>
-        protected bool InitializeExpressionMembers(string rawExpressionStr)
-        {
-            //Add the limit function to the equation.
-            string limitedExpressionStr = FUNC_NAME_LIMIT + "(" + rawExpressionStr + ")";
-
-            //Only regenerate the expression if it has changed
-            if (this.expressionStr != limitedExpressionStr.ToLower())
-            {
-                this.expressionStr = limitedExpressionStr.ToLower();
-
-                double constantOutput;
-                //This is a simple heuristic for evaluating an expression that is just a number which 
-                //is usually the case for control point equations.
-                if (double.TryParse(rawExpressionStr, out constantOutput))
-                {
-                    //TODO: limit should be applied to the output value
-
-                    useConstantOutput = true;
-                    this.OutputVal = constantOutput;
-                    this.OutputIsValid = true;
-                    this.expression = null;
-                }
-                else
-                {
-                    useConstantOutput = false;
-
-                    ReturnStatus<Expression> expressionRetStatus = CreateExpression(expressionStr);
-                    if (expressionRetStatus.IsValid == false)
-                    {
-                        this.InputIsValid = false;
-                    }
-                    else
-                    {
-                        this.expression = expressionRetStatus.Value;
-
-                        this.expression.EvaluateFunction += FunctionHandler;
-                        SetExpressionConstants();
-                    }
-                }
-            }
-
-            return InputIsValid;
-        }
-
-        /// <summary>
-        /// Create an expression object from a string.
-        /// </summary>
-        protected ReturnStatus<Expression> CreateExpression(string expressionString)
-        {
-            try
-            {
-                Expression expression = new Expression(expressionString, EvaluateOptions.IgnoreCase);
-                return new ReturnStatus<Expression>(expression, true);
-            }
-            catch
-            {
-                //Return invalid return status
-                return new ReturnStatus<Expression>();
-            }
-        }
-
-        /// <summary>
-        /// Sets the constant values for an expression.
-        /// </summary>
-        private void SetExpressionConstants()
-        {
-            if (this.expression != null)
-            {
-                this.expression.Parameters["semitone"] = 1.0 / 127.0;
-                this.expression.Parameters["octave"] = 12.0 / 127.0;
-
-                this.expression.Parameters["ignore"] = double.NaN;
-
-                this.expression.Parameters["pi"] = Math.PI;
-
-            }
-            else
-            {
-                //This function should not be called when the expression is null.
-                Debug.Assert(false);
-            }
-            
         }
 
         /// <summary>
