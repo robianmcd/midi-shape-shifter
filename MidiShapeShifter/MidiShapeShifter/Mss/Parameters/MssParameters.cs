@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+
 using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.CSharpUtil;
 
 namespace MidiShapeShifter.Mss.Parameters
 {
@@ -40,6 +42,8 @@ namespace MidiShapeShifter.Mss.Parameters
         public event ParameterMinValueChangedEventHandler ParameterMinValueChanged;
         public event ParameterMaxValueChangedEventHandler ParameterMaxValueChanged;
 
+        protected SendRateLimittedEvent<Tuple<MssParameterID, double>> ParameterValueChangedLimitter;
+
         public const int NUM_VARIABLE_PARAMS = 5;
         public const int NUM_PRESET_PARAMS = 5;
         public static readonly List<MssParameterID> VARIABLE_PARAM_ID_LIST;
@@ -72,7 +76,12 @@ namespace MidiShapeShifter.Mss.Parameters
 
         public MssParameters()
         {
-
+            ParameterValueChangedLimitter = new SendRateLimittedEvent<Tuple<MssParameterID, double>>(50,
+                eventParams => {
+                    if (ParameterValueChanged != null) {
+                        ParameterValueChanged(eventParams.Item1, eventParams.Item2);
+                    }
+                });
         }
 
         /// <summary>
@@ -168,10 +177,9 @@ namespace MidiShapeShifter.Mss.Parameters
 
             //We need to check of the param type has changed here because the same raw value
             //can be displayed differently for different param types.
-            if ((paramTypeChanged || prevParamInfo.RawValue != paramInfo.RawValue) && 
-                ParameterValueChanged != null)
+            if (paramTypeChanged || prevParamInfo.RawValue != paramInfo.RawValue)
             {
-                ParameterValueChanged(paramId, paramInfo.RawValue);
+                this.ParameterValueChangedLimitter.SendEvent(Tuple.Create(paramId, paramInfo.RawValue));
             }
 
             if (prevParamInfo.MaxValue != paramInfo.MaxValue && ParameterMaxValueChanged != null)
@@ -263,9 +271,9 @@ namespace MidiShapeShifter.Mss.Parameters
                     }
                 });
 
-            if (triggerValueChangedEvent && ParameterValueChanged != null)
+            if (triggerValueChangedEvent)
             {
-                ParameterValueChanged(paramId, newValue);
+                this.ParameterValueChangedLimitter.SendEvent(Tuple.Create(paramId, newValue));
             }
 
 
@@ -288,8 +296,12 @@ namespace MidiShapeShifter.Mss.Parameters
             }
 
             MssParamInfo paramInfo = GetParameterInfoCopy(paramId);
-            double rawValue = paramInfo.MinValue + (relValue * (paramInfo.MaxValue - paramInfo.MinValue));
-            SetParameterRawValue(paramId, rawValue);
+            //ParamInfo could be null when there is no active mapping and a preset param is 
+            //modified from the host.
+            if (paramInfo != null) {
+                double rawValue = paramInfo.MinValue + (relValue * (paramInfo.MaxValue - paramInfo.MinValue));
+                SetParameterRawValue(paramId, rawValue);
+            }
         }
 
         public void SetParameterMinValue(MssParameterID paramId, int minValue)
