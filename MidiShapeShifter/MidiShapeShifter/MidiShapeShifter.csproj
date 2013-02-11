@@ -57,19 +57,39 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'test|AnyCPU'">
     <OutputPath>bin\test\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'test|x86'">
+    <OutputPath>bin\x86\test\</OutputPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Jacobi.Vst.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=fa678e13c1efc859, processorArchitecture=MSIL">
+    <Reference Include="Jacobi.Vst.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=91c2e9ab1e633fc3, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Jacobi.Vst.Core.dll</HintPath>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="Jacobi.Vst.Framework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=fa678e13c1efc859, processorArchitecture=MSIL">
+    <Reference Include="Jacobi.Vst.Framework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=91c2e9ab1e633fc3, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Jacobi.Vst.Framework.dll</HintPath>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="Jacobi.Vst.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=fa678e13c1efc859, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Jacobi.Vst.Interop">
       <HintPath>..\lib\Jacobi.Vst.Interop.dll</HintPath>
     </Reference>
     <Reference Include="LBIndustrialCtrls, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -85,6 +105,7 @@
       <HintPath>..\lib\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -108,6 +129,7 @@
     <Compile Include="CSharpUtil\LruCache.cs" />
     <Compile Include="CSharpUtil\ReturnStatus.cs" />
     <Compile Include="CSharpUtil\CustomStringUtil.cs" />
+    <Compile Include="CSharpUtil\SendRateLimittedEvent.cs" />
     <Compile Include="CSharpUtil\TwoWayDictionary.cs" />
     <Compile Include="CSharpUtil\XyPoint.cs" />
     <Compile Include="Framework\VstParameters.cs" />

@@ -2312,7 +2312,6 @@
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s255">ISMergeModule_</col>
 		<col key="yes" def="i2">Language_</col>
-		<row><td>AlwaysInstall</td><td>Microsoft_VC100_CRT_x86.AFA96EB4_FA9F_335C_A7CB_36079407553D</td><td>0</td></row>
 	</table>
 
 	<table name="ISFeatureSetupPrerequisites">
@@ -2435,7 +2434,6 @@
 		<col def="s255">Name</col>
 		<col def="S255">Destination</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>Microsoft_VC100_CRT_x86.AFA96EB4_FA9F_335C_A7CB_36079407553D</td><td>0</td><td>Visual C++ 10.0 CRT (x86)</td><td/><td/></row>
 	</table>
 
 	<table name="ISMergeModuleCfgValues">
@@ -3954,6 +3952,7 @@
 	<table name="ISSwidtagProperty">
 		<col key="yes" def="s72">Name</col>
 		<col def="s0">Value</col>
+		<row><td>UniqueId</td><td>6244d8a4-7793-4781-b7fd-f8e9e1cd403a</td></row>
 	</table>
 
 	<table name="ISTargetImage">
@@ -4173,6 +4172,7 @@
 QwBEAF8AUgBPAE0AAQBFAHgAcAByAGUAcwBzAA==
 			</td></row>
 		<row><td>DefaultProductConfiguration</td><td>Express</td></row>
+		<row><td>EnableSwidtag</td><td>0</td></row>
 		<row><td>ISCompilerOption_CompileBeforeBuild</td><td>1</td></row>
 		<row><td>ISCompilerOption_Debug</td><td>0</td></row>
 		<row><td>ISCompilerOption_IncludePath</td><td/></row>
@@ -4186,7 +4186,7 @@ QwBEAF8AUgBPAE0AAQBFAHgAcAByAGUAcwBzAA==
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{D7ED005B-244C-4D91-9804-FFC388F6D93A}</td></row>
 		<row><td>ISUSSignature</td><td>{084286CE-3185-4C75-A20B-71BAFF26FCA2}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewISToday,viewDependencies,viewAppFiles,viewProject,viewRealSetupDesign,viewUpgradePaths,viewUpdateService,viewObjects,viewSystemSearch,viewAppV,viewUI,viewRelease,viewCustomActions,viewFileExtensions,viewEnvironmentVariables,viewShortcuts,viewTextMessages,viewRegistry</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewISToday,viewDependencies,viewAppFiles,viewProject,viewRealSetupDesign,viewUpgradePaths,viewUpdateService,viewObjects,viewSystemSearch,viewAppV,viewUI,viewRelease,viewCustomActions,viewFileExtensions,viewEnvironmentVariables,viewShortcuts,viewTextMessages,viewRegistry,viewSetupDesign,viewSetupTypes</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
