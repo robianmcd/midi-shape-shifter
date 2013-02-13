@@ -10,6 +10,7 @@ using MidiShapeShifter.Ioc;
 using MidiShapeShifter.Mss.Relays;
 using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.Parameters;
+using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mss.Generator
 {
@@ -91,14 +92,36 @@ namespace MidiShapeShifter.Mss.Generator
                 {
                     this.generatorMappingMgr.RunFuncOnMappingEntry(mssEvent.mssMsg.Data1AsInt, genEntry => 
                     {
-                        if (mssEvent.mssMsg.Data3 == 1)
+                        switch ((GenOperation)mssEvent.mssMsg.Data2) 
                         {
-                            genEntry.GenConfigInfo.Enabled = true;
-                        }
-                        else
-                        {
-                            genEntry.GenConfigInfo.Enabled = false;
-                            genEntry.GenHistoryInfo.Initialized = false;
+                        case GenOperation.OnOff:
+                            if (mssEvent.mssMsg.Data3 == 1)
+                            {
+                                genEntry.GenConfigInfo.Enabled = true;
+                            }
+                            else
+                            {
+                                genEntry.GenConfigInfo.Enabled = false;
+                                genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = 0;
+                                genEntry.GenHistoryInfo.Initialized = false;
+                            }
+                            break;
+                            
+                        case GenOperation.PlayPause:
+                            if (mssEvent.mssMsg.Data3 == 1)
+                            {
+                                genEntry.GenConfigInfo.Enabled = true;
+                            }
+                            else
+                            {
+                                genEntry.GenConfigInfo.Enabled = false;
+                                genEntry.GenHistoryInfo.Initialized = false;
+                            }
+                            break;
+                            
+                        default:
+                            Debug.Assert(false,"Unknown generator modify operation.");
+                            break;
                         }
                     });
                 }
@@ -170,7 +193,7 @@ namespace MidiShapeShifter.Mss.Generator
                         //updated on the last processing cycle.
                         genEntry.GenHistoryInfo.InitAllMembers(
                                 this.sampleTimeAtEndOfLastCycle,
-                                0,
+                                genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate,
                                 double.NaN);
                     }
 

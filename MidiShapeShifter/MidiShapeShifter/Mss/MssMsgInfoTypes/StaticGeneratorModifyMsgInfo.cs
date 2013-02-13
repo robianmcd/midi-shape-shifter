@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    enum GenOperation {OnOff}
+    enum GenOperation {OnOff, PlayPause}
 
     public class StaticGeneratorModifyMsgInfo : StaticMssMsgInfo
     {
@@ -19,6 +19,7 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
             GenOperationNames = new List<string>(NUM_GEN_OPERATIONS);
 
             GenOperationNames.Insert((int)GenOperation.OnOff, "On/Off");
+			GenOperationNames.Insert((int)GenOperation.PlayPause, "Play/Pause");
         }
         
         public override MssMsgType MsgType

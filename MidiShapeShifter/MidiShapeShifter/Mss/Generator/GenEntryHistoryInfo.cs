@@ -41,6 +41,7 @@ namespace MidiShapeShifter.Mss.Generator
         public GenEntryHistoryInfo()
         {
             this.Initialized = false;
+			this.PercentThroughPeriodOnLastUpdate = 0;
         }
 
         public void InitAllMembers(long sampleTimeAtLastGeneratorUpdate,
