@@ -159,11 +159,32 @@ namespace MidiShapeShifter.Mss.Evaluation
 
                 int numPointsInCurve = (int)((curveEndXVal - curveStartXVal) / xDistanceBetweenPoints) + 1;
 
+                if (numPointsInCurve == 0) {
+                    return;
+                }
 
                 List<XyPoint<double>> curCurvePoints = new List<XyPoint<double>>(new XyPoint<double>[numPointsInCurve]);
                 curvePointsByCurveList2[curveIndex] = curCurvePoints;
 
-                Parallel.For(0, numPointsInCurve, pointIndex =>
+
+                //Evaluates the first point in the curve before createing threads to evaluate the 
+                //rest of the points. If evaluating each point is going to throw an exception then 
+                //this will improve performance by letting the code exit early.
+                var firstEvalStatus = evaluateCurveAtXVal(curveStartXVal, curveIndex, mappingEntry, variableParamInfoList, controlPointList2);
+                if (firstEvalStatus.IsValid == false)
+                {
+                    lock (erroneousCurveIndexSet2)
+                    {
+                        erroneousCurveIndexSet2.Add(curveIndex);
+                        noErrorsEncountered = false;
+                        loopState.Stop();
+                        return;
+                    }
+                }
+                curCurvePoints[0] = firstEvalStatus.Value;
+                
+
+                Parallel.For(1, numPointsInCurve, pointIndex =>
                 {
                     //Calling loopState.Stop() does not immedateally stop all threads so that they 
                     //exit without doing any more processing.
@@ -174,27 +195,19 @@ namespace MidiShapeShifter.Mss.Evaluation
 
                     double curXVal = curveStartXVal + (pointIndex * xDistanceBetweenPoints);
 
-                    //Use the control point for the start of a curve as it is already calcuated
-                    if (pointIndex == 0 && curveIndex > 0)
+                    var evalStatus = evaluateCurveAtXVal(curXVal, curveIndex, mappingEntry, variableParamInfoList, controlPointList2);
+                    if (evalStatus.IsValid == false)
                     {
-                        curCurvePoints[0] = controlPointList2[curveIndex - 1];
-                    }
-                    else
-                    {
-                        var evalStatus = evaluateCurveAtXVal(curXVal, curveIndex, mappingEntry, variableParamInfoList, controlPointList2);
-                        if (evalStatus.IsValid == false)
+                        lock (erroneousCurveIndexSet2)
                         {
-                            lock (erroneousCurveIndexSet2)
-                            {
-                                erroneousCurveIndexSet2.Add(curveIndex);
-                                noErrorsEncountered = false;
-                                loopState.Stop();
-                                return;
-                            }
+                            erroneousCurveIndexSet2.Add(curveIndex);
+                            noErrorsEncountered = false;
+                            loopState.Stop();
+                            return;
                         }
-
-                        curCurvePoints[pointIndex] = evalStatus.Value;
                     }
+
+                    curCurvePoints[pointIndex] = evalStatus.Value;
                 });
 
             });
@@ -390,6 +403,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                 {
                     //Cache this expression that causes a syntax error as null so that it doesn't have to be parsed again.
                     this.expressionCache.GetAndAddValue(formattedExpressionStr, () => null);
+                    expression = null;
                 }
                 else
                 {
