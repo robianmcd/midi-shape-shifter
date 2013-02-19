@@ -1917,10 +1917,10 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
+		<row><td>LFO-1.xml</td><td>ISX_DEFAULTCOMPONENT4</td><td>LFO-1.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\LFO-1.xml</td><td>1</td><td/></row>
 		<row><td>all_notes.xml</td><td>ISX_DEFAULTCOMPONENT4</td><td>ALLNOT~1.XML|All Notes.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\All Notes.xml</td><td>1</td><td/></row>
 		<row><td>blank.xml</td><td>ISX_DEFAULTCOMPONENT4</td><td>Blank.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\Blank.xml</td><td>1</td><td/></row>
 		<row><td>clock.xml</td><td>ISX_DEFAULTCOMPONENT4</td><td>Clock.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\Clock.xml</td><td>1</td><td/></row>
-		<row><td>LFO-1.xml</td><td>ISX_DEFAULTCOMPONENT4</td><td>LFO-1.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\LFO-1.xml</td><td>1</td><td/></row>
 		<row><td>compressor.xml</td><td>ISX_DEFAULTCOMPONENT5</td><td>COMPRE~1.XML|Compressor.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Compressor.xml</td><td>1</td><td/></row>
 		<row><td>curve___cubic.xml</td><td>ISX_DEFAULTCOMPONENT5</td><td>CURVE-~1.XML|Curve - Cubic.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Curve - Cubic.xml</td><td>1</td><td/></row>
 		<row><td>curve___cubic__reversed_.xml</td><td>ISX_DEFAULTCOMPONENT5</td><td>CURVE-~1.XML|Curve - Cubic (Reversed).xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Curve - Cubic (Reversed).xml</td><td>1</td><td/></row>
@@ -4576,7 +4576,7 @@ QwBEAF8AUgBPAE0AAQBFAHgAcAByAGUAcwBzAA==
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{11BE5F71-5333-4744-A44F-D290DF97F102}</td><td/></row>
 		<row><td>ProductName</td><td>Midi Shape Shifter</td><td/></row>
-		<row><td>ProductVersion</td><td>1.0.4</td><td/></row>
+		<row><td>ProductVersion</td><td>1.0.6</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
