@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MssComponentHub xmlns:i="http://www.w3.org/2001/XMLSchema-instance" z:Id="1" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/" xmlns="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss">
+  <ActiveMappingInfo xmlns:d2p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Mapping" z:Id="2">
+    <d2p1:ActiveGraphableEntryId>0</d2p1:ActiveGraphableEntryId>
+    <d2p1:ActiveGraphableEntryType>Generator</d2p1:ActiveGraphableEntryType>
+  </ActiveMappingInfo>
+  <GenMappingMgr xmlns:d2p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Generator" z:Id="3">
+    <MappingEntryList xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" z:Id="4" z:Size="1" xmlns="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Mapping">
+      <d3p1:anyType z:Id="5" i:type="d2p1:GeneratorMappingEntry">
+        <ActiveTransformPresetName z:Id="6">LFO</ActiveTransformPresetName>
+        <CurveShapeInfo xmlns:d5p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss" z:Id="7">
+          <d5p1:CurveEquations z:Id="8" z:Size="1">
+            <d3p1:string z:Id="9">if(bypass, ignore, LFO(input,Attack,Shape,Phase,Cycles,Amount))</d3p1:string>
+          </d5p1:CurveEquations>
+          <d5p1:ParamInfoList xmlns:d6p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Parameters" z:Id="10" z:Size="5">
+            <d6p1:MssParamInfo z:Id="11" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>1</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="12">Attack</d6p1:Name>
+              <d6p1:RawValue>0.25</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="13" i:type="d6p1:MssWaveformParamInfo">
+              <d6p1:MaxValue>4</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="14">Shape</d6p1:Name>
+              <d6p1:RawValue>0</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="15" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>360</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="16">Phase</d6p1:Name>
+              <d6p1:RawValue>0</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="17" i:type="d6p1:MssIntegerParamInfo">
+              <d6p1:MaxValue>64</d6p1:MaxValue>
+              <d6p1:MinValue>1</d6p1:MinValue>
+              <d6p1:Name z:Id="18">Cycles</d6p1:Name>
+              <d6p1:RawValue>8</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="19" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>1</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="20">Amount</d6p1:Name>
+              <d6p1:RawValue>0.699999988079071</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+          </d5p1:ParamInfoList>
+          <d5p1:PointEquations xmlns:d6p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.CSharpUtil" z:Id="21" z:Size="0" />
+          <d5p1:SelectedEquationIndex>0</d5p1:SelectedEquationIndex>
+          <d5p1:SelectedEquationType>Curve</d5p1:SelectedEquationType>
+        </CurveShapeInfo>
+        <Id>0</Id>
+        <InMssMsgRange z:Id="22" xmlns:d5p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss" i:type="d5p1:MssMsgRange">
+          <d5p1:Data1RangeBottom>0</d5p1:Data1RangeBottom>
+          <d5p1:Data1RangeTop>0</d5p1:Data1RangeTop>
+          <d5p1:Data2RangeBottom>-1</d5p1:Data2RangeBottom>
+          <d5p1:Data2RangeTop>-1</d5p1:Data2RangeTop>
+          <d5p1:MsgType>RelBarPeriodPos</d5p1:MsgType>
+        </InMssMsgRange>
+        <OutMssMsgRange z:Id="23" xmlns:d5p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss" i:type="d5p1:MssMsgRange">
+          <d5p1:Data1RangeBottom>0</d5p1:Data1RangeBottom>
+          <d5p1:Data1RangeTop>0</d5p1:Data1RangeTop>
+          <d5p1:Data2RangeBottom>-1</d5p1:Data2RangeBottom>
+          <d5p1:Data2RangeTop>-1</d5p1:Data2RangeTop>
+          <d5p1:MsgType>Generator</d5p1:MsgType>
+        </OutMssMsgRange>
+        <OverrideDuplicates>false</OverrideDuplicates>
+        <PrimaryInputSource>Data3</PrimaryInputSource>
+        <d2p1:GenConfigInfo z:Id="24">
+          <d2p1:BarsPeriod>Bars1</d2p1:BarsPeriod>
+          <d2p1:Enabled>true</d2p1:Enabled>
+          <d2p1:Loop>true</d2p1:Loop>
+          <d2p1:Name z:Id="25">MyLfo</d2p1:Name>
+          <d2p1:PeriodType>BeatSynced</d2p1:PeriodType>
+          <d2p1:TimePeriodInMs>100</d2p1:TimePeriodInMs>
+        </d2p1:GenConfigInfo>
+      </d3p1:anyType>
+    </MappingEntryList>
+    <NextId xmlns="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Mapping">1</NextId>
+  </GenMappingMgr>
+  <MappingMgr z:Id="26" xmlns:d2p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Mapping" i:type="d2p1:MappingManager">
+    <d2p1:MappingEntryList xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" z:Id="27" z:Size="1">
+      <d3p1:anyType z:Id="28" i:type="d2p1:MappingEntry">
+        <d2p1:ActiveTransformPresetName z:Id="29">Line</d2p1:ActiveTransformPresetName>
+        <d2p1:CurveShapeInfo z:Id="30">
+          <CurveEquations z:Id="31" z:Size="1">
+            <d3p1:string z:Id="32">input</d3p1:string>
+          </CurveEquations>
+          <ParamInfoList xmlns:d6p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Parameters" z:Id="33" z:Size="5">
+            <d6p1:MssParamInfo z:Id="34" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>1</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="35">P1</d6p1:Name>
+              <d6p1:RawValue>0</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="36" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>1</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="37">P2</d6p1:Name>
+              <d6p1:RawValue>0</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="38" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>1</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="39">P3</d6p1:Name>
+              <d6p1:RawValue>0</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="40" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>1</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="41">P4</d6p1:Name>
+              <d6p1:RawValue>0</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+            <d6p1:MssParamInfo z:Id="42" i:type="d6p1:MssNumberParamInfo">
+              <d6p1:MaxValue>1</d6p1:MaxValue>
+              <d6p1:MinValue>0</d6p1:MinValue>
+              <d6p1:Name z:Id="43">P5</d6p1:Name>
+              <d6p1:RawValue>0</d6p1:RawValue>
+            </d6p1:MssParamInfo>
+          </ParamInfoList>
+          <PointEquations xmlns:d6p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.CSharpUtil" z:Id="44" z:Size="0" />
+          <SelectedEquationIndex>0</SelectedEquationIndex>
+          <SelectedEquationType>Curve</SelectedEquationType>
+        </d2p1:CurveShapeInfo>
+        <d2p1:Id>0</d2p1:Id>
+        <d2p1:InMssMsgRange z:Id="45" i:type="MssMsgRange">
+          <Data1RangeBottom>0</Data1RangeBottom>
+          <Data1RangeTop>0</Data1RangeTop>
+          <Data2RangeBottom>-1</Data2RangeBottom>
+          <Data2RangeTop>-1</Data2RangeTop>
+          <MsgType>Generator</MsgType>
+        </d2p1:InMssMsgRange>
+        <d2p1:OutMssMsgRange z:Id="46" i:type="MssMsgRange">
+          <Data1RangeBottom>1</Data1RangeBottom>
+          <Data1RangeTop>1</Data1RangeTop>
+          <Data2RangeBottom>7</Data2RangeBottom>
+          <Data2RangeTop>7</Data2RangeTop>
+          <MsgType>CC</MsgType>
+        </d2p1:OutMssMsgRange>
+        <d2p1:OverrideDuplicates>false</d2p1:OverrideDuplicates>
+        <d2p1:PrimaryInputSource>Data3</d2p1:PrimaryInputSource>
+      </d3p1:anyType>
+    </d2p1:MappingEntryList>
+    <d2p1:NextId>1</d2p1:NextId>
+  </MappingMgr>
+  <MssProgramMgr z:Id="47">
+    <ActiveSettingsFileName z:Id="48">LFO-1</ActiveSettingsFileName>
+  </MssProgramMgr>
+  <VariableParamMgr xmlns:d2p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Parameters" z:Id="49">
+    <d2p1:variableParamDict xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" z:Id="50" z:Size="5">
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>VariableA</d3p1:Key>
+        <d3p1:Value z:Id="51" i:type="d2p1:MssIntegerParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="52">Bypass</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>VariableB</d3p1:Key>
+        <d3p1:Value z:Id="53" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="54">B</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>VariableC</d3p1:Key>
+        <d3p1:Value z:Id="55" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="56">C</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>VariableD</d3p1:Key>
+        <d3p1:Value z:Id="57" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="58">D</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+      <d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+        <d3p1:Key>VariableE</d3p1:Key>
+        <d3p1:Value z:Id="59" i:type="d2p1:MssNumberParamInfo">
+          <d2p1:MaxValue>1</d2p1:MaxValue>
+          <d2p1:MinValue>0</d2p1:MinValue>
+          <d2p1:Name z:Id="60">E</d2p1:Name>
+          <d2p1:RawValue>0</d2p1:RawValue>
+        </d3p1:Value>
+      </d3p1:KeyValueOfMssParameterIDMssParamInfo29D_STY8_P>
+    </d2p1:variableParamDict>
+  </VariableParamMgr>
+</MssComponentHub>
