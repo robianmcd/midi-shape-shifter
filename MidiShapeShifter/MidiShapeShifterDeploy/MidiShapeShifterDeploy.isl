@@ -1917,18 +1917,30 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
+		<row><td>all_notes.xml</td><td>ISX_DEFAULTCOMPONENT4</td><td>ALLNOT~1.XML|All Notes.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\All Notes.xml</td><td>1</td><td/></row>
 		<row><td>blank.xml</td><td>ISX_DEFAULTCOMPONENT4</td><td>Blank.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\Blank.xml</td><td>1</td><td/></row>
+		<row><td>clock.xml</td><td>ISX_DEFAULTCOMPONENT4</td><td>Clock.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\Clock.xml</td><td>1</td><td/></row>
 		<row><td>compressor.xml</td><td>ISX_DEFAULTCOMPONENT5</td><td>COMPRE~1.XML|Compressor.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Compressor.xml</td><td>1</td><td/></row>
+		<row><td>curve___cubic.xml</td><td>ISX_DEFAULTCOMPONENT5</td><td>CURVE-~1.XML|Curve - Cubic.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Curve - Cubic.xml</td><td>1</td><td/></row>
+		<row><td>curve___cubic__reversed_.xml</td><td>ISX_DEFAULTCOMPONENT5</td><td>CURVE-~1.XML|Curve - Cubic (Reversed).xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Curve - Cubic (Reversed).xml</td><td>1</td><td/></row>
+		<row><td>flat.xml</td><td>ISX_DEFAULTCOMPONENT5</td><td>Flat.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Flat.xml</td><td>1</td><td/></row>
+		<row><td>gate.xml</td><td>ISX_DEFAULTCOMPONENT5</td><td>Gate.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Gate.xml</td><td>1</td><td/></row>
+		<row><td>inverted.xml</td><td>ISX_DEFAULTCOMPONENT5</td><td>Inverted.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Inverted.xml</td><td>1</td><td/></row>
 		<row><td>jacobi.vst.core.dll</td><td>Jacobi.Vst.Core.dll</td><td>JACOBI~1.DLL|Jacobi.Vst.Core.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\Jacobi.Vst.Core.dll</td><td>1</td><td/></row>
 		<row><td>jacobi.vst.framework.dll</td><td>Jacobi.Vst.Framework.dll</td><td>JACOBI~1.DLL|Jacobi.Vst.Framework.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\Jacobi.Vst.Framework.dll</td><td>1</td><td/></row>
 		<row><td>lbindustrialctrls.dll</td><td>LBIndustrialCtrls.dll</td><td>LBINDU~1.DLL|LBIndustrialCtrls.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\LBIndustrialCtrls.dll</td><td>1</td><td/></row>
 		<row><td>lfo.xml</td><td>ISX_DEFAULTCOMPONENT5</td><td>LFO.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\LFO.xml</td><td>1</td><td/></row>
-		<row><td>lfo_1.xml</td><td>ISX_DEFAULTCOMPONENT4</td><td>LFO-1.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\LFO-1.xml</td><td>1</td><td/></row>
 		<row><td>line.xml</td><td>ISX_DEFAULTCOMPONENT5</td><td>Line.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Line.xml</td><td>1</td><td/></row>
 		<row><td>midishapeshifter.dll</td><td>MidiShapeShifter.dll</td><td>MIDISH~1.DLL|MidiShapeShifter.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\MidiShapeShifter\bin\vst-dist\MidiShapeShifter.dll</td><td>1</td><td/></row>
 		<row><td>midishapeshifter.net.vstdll</td><td>ISX_DEFAULTCOMPONENT2</td><td>MIDISH~1.VST|MidiShapeShifter.net.vstdll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\MidiShapeShifter\bin\vst-dist\MidiShapeShifter.net.vstdll</td><td>1</td><td/></row>
 		<row><td>ncalc.dll</td><td>NCalc.dll</td><td>NCalc.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\NCalc.dll</td><td>1</td><td/></row>
 		<row><td>ninject.dll</td><td>Ninject.dll</td><td>Ninject.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\Ninject.dll</td><td>1</td><td/></row>
+		<row><td>power_curve.xml</td><td>ISX_DEFAULTCOMPONENT5</td><td>POWERC~1.XML|Power Curve.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Power Curve.xml</td><td>1</td><td/></row>
+		<row><td>side_chain_compressor.xml</td><td>ISX_DEFAULTCOMPONENT4</td><td>SIDECH~1.XML|Side Chain Compressor.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\Side Chain Compressor.xml</td><td>1</td><td/></row>
+		<row><td>steps.xml</td><td>ISX_DEFAULTCOMPONENT5</td><td>Steps.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Steps.xml</td><td>1</td><td/></row>
+		<row><td>switch.xml</td><td>ISX_DEFAULTCOMPONENT5</td><td>Switch.xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Switch.xml</td><td>1</td><td/></row>
+		<row><td>transpose___1_octave_.xml</td><td>ISX_DEFAULTCOMPONENT4</td><td>TRANSP~1.XML|Transpose (+1 Octave).xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\Transpose (+1 Octave).xml</td><td>1</td><td/></row>
+		<row><td>transpose___1_octave_.xml1</td><td>ISX_DEFAULTCOMPONENT4</td><td>TRANSP~1.XML|Transpose (-1 Octave).xml</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Programs\Transpose (-1 Octave).xml</td><td>1</td><td/></row>
 		<row><td>zedgraph.dll</td><td>ZedGraph.dll</td><td>ZedGraph.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\ZedGraph.dll</td><td>1</td><td/></row>
 	</table>
 
