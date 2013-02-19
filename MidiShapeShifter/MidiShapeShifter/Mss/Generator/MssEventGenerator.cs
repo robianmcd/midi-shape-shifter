@@ -98,6 +98,7 @@ namespace MidiShapeShifter.Mss.Generator
                             if (mssEvent.mssMsg.Data3 == 1)
                             {
                                 genEntry.GenConfigInfo.Enabled = true;
+                                genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = 0;
                             }
                             else
                             {
@@ -118,7 +119,14 @@ namespace MidiShapeShifter.Mss.Generator
                                 genEntry.GenHistoryInfo.Initialized = false;
                             }
                             break;
-                            
+                        
+                        case GenOperation.SetPosition:
+                            if (double.IsNaN(mssEvent.mssMsg.Data3) == false)
+                            {
+                                genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = mssEvent.mssMsg.Data3;
+                            }
+                            break;
+
                         default:
                             Debug.Assert(false,"Unknown generator modify operation.");
                             break;
