@@ -17,7 +17,7 @@ namespace MidiShapeShifter.Mss
     [DataContract]
     public class TransformPresetMgr : BaseSettingsFileMgr
     {
-        public const string TRANSFORM_PRESET_FILE_EXTENSION = "xml";
+        public const string TRANSFORM_PRESET_FILE_EXTENSION = "msst";
         public const string DEFAULT_TRANSFORM_PRESET_NAME = "Line";
         protected ActiveMappingInfo activeMappingInfo;
 

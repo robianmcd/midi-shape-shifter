@@ -69,7 +69,7 @@ namespace MidiShapeShifter.Mss
 
         public override string SettingsFileExtension
         {
-            get { return "xml"; }
+            get { return "mssp"; }
         }
 
         public override string TypeOfSettingsName
