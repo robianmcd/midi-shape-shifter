@@ -1857,7 +1857,7 @@ namespace MidiShapeShifter.Mss.UI
             {
                 ComboBox inputTypeCombo = (ComboBox)sender;
 
-                this.activeMappingInfo.GetActiveGeneratorMappingManager().RunFuncOnMappingEntry(this.activeMappingInfo.ActiveGraphableEntryId, 
+                this.activeMappingInfo.GetActiveMappingManager().RunFuncOnMappingEntry(this.activeMappingInfo.ActiveGraphableEntryId, 
                     (mappingEntry) => mappingEntry.PrimaryInputSource = this.DataFieldsInGraphInputCombo[inputTypeCombo.SelectedIndex]);
 
                 this.commandQueue.EnqueueCommandOverwriteDups(
