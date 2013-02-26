@@ -205,8 +205,14 @@ namespace MidiShapeShifter.Mss.Mapping
             bool enabledStatus = !((CheckBox)sender).Checked;
 
             outTypeCombo.Enabled = enabledStatus;
-            this.outMsgMetadata.EntryField1.Enabled = enabledStatus;
-            this.outMsgMetadata.EntryField2.Enabled = enabledStatus;
+            if (this.outMsgMetadata.EntryField1 != null)
+            {
+                this.outMsgMetadata.EntryField1.Enabled = enabledStatus;
+            }
+            if (this.outMsgMetadata.EntryField2 != null)
+            {
+                this.outMsgMetadata.EntryField2.Enabled = enabledStatus;
+            }
             outLearnBtn.Enabled = enabledStatus;
 
             if (((CheckBox)sender).Checked == true)
