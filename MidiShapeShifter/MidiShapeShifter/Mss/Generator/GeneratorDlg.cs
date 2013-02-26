@@ -99,22 +99,29 @@ namespace MidiShapeShifter.Mss.Generator
         private void periodTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             GenPeriodType SelectedPeriodType = GetSelectedPeriodType();
-            if (SelectedPeriodType == GenPeriodType.BeatSynced) 
+            switch (SelectedPeriodType)
             {
+
+            case GenPeriodType.Bars:
+            case GenPeriodType.BeatSynced:
+                //Beat Synced generators are not currently supported
+                Debug.Assert(SelectedPeriodType != GenPeriodType.BeatSynced);
+
                 this.periodCombo.Visible = true;
                 this.periodTextBox.Visible = false;
                 this.periodLbl.Text = "Period";
-            }
-            else if (SelectedPeriodType == GenPeriodType.Time)
-            {
+                break;
+
+            case GenPeriodType.Time:
                 this.periodCombo.Visible = false;
                 this.periodTextBox.Visible = true;
                 this.periodLbl.Text = "Period(ms)";
-            }
-            else
-            {
+                break;
+
+            default:
                 //Unknown period type
                 Debug.Assert(false);
+                break;
             }
         }
 

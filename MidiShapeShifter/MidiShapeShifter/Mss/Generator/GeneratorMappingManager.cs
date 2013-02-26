@@ -75,24 +75,26 @@ namespace MidiShapeShifter.Mss.Generator
             //Sets mappingEntry.inMsgRange
             IMssMsgRange inMsgRange = new MssMsgRange();
 
-            if (genInfo.PeriodType == GenPeriodType.BeatSynced)
+            switch (genInfo.PeriodType)
             {
-                inMsgRange.InitPublicMembers(MssMsgType.RelBarPeriodPos,
+                case GenPeriodType.Bars:
+                case GenPeriodType.BeatSynced:
+                    inMsgRange.InitPublicMembers(MssMsgType.RelBarPeriodPos,
                                           id,
                                           MssMsgUtil.UNUSED_MSS_MSG_DATA);
-            }
-            else if (genInfo.PeriodType == GenPeriodType.Time)
-            {
-                inMsgRange.InitPublicMembers(MssMsgType.RelTimePeriodPos,
-                                          id,
-                                          MssMsgUtil.UNUSED_MSS_MSG_DATA);
-            }
-            else
-            {
-                //Unknown period type
-                Debug.Assert(false);
-            }
+                    break;
 
+                case GenPeriodType.Time:
+                    inMsgRange.InitPublicMembers(MssMsgType.RelTimePeriodPos,
+                                          id,
+                                          MssMsgUtil.UNUSED_MSS_MSG_DATA);
+                    break;
+
+                default:
+                    //Unknown period type
+                    Debug.Assert(false);
+                    break;
+            }
 
             mappingEntry.InMssMsgRange = inMsgRange;
 

@@ -26,7 +26,7 @@ namespace MidiShapeShifter.Mss.Evaluation
 
         public string LastErrorMsg = "";
 
-        public const int NUM_EXPRESSIONS_IN_CACHE = 1000;
+        public const int NUM_EXPRESSIONS_IN_CACHE = 500;
         protected LruCache<string, LogicalExpression> expressionCache;
 
         public Evaluator() {

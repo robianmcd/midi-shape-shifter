@@ -14,7 +14,6 @@ using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mss.Generator
 {
-    // TODO: write test casses for this calss
     /// <summary>
     /// Before the end of each audio processing cycle this class will iterate through the 
     /// entries in generatorMappingManager, create all nessary Mss Events and send them to 
@@ -22,7 +21,7 @@ namespace MidiShapeShifter.Mss.Generator
     /// </summary>
     public class MssEventGenerator
     {
-        public const int SAMPLES_PER_GENERATOR_UPDATE = 1000;
+        public const int SAMPLES_PER_GENERATOR_UPDATE = 500;
 
         /// <summary>
         /// This class sends generated events to this input port
@@ -99,6 +98,9 @@ namespace MidiShapeShifter.Mss.Generator
                             {
                                 genEntry.GenConfigInfo.Enabled = true;
                                 genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = 0;
+                                genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate = mssEvent.sampleTime - SAMPLES_PER_GENERATOR_UPDATE;
+                                genEntry.GenHistoryInfo.LastValueSent = double.NaN;
+                                genEntry.GenHistoryInfo.Initialized = true;
                             }
                             else
                             {
@@ -112,6 +114,9 @@ namespace MidiShapeShifter.Mss.Generator
                             if (mssEvent.mssMsg.Data3 == 1)
                             {
                                 genEntry.GenConfigInfo.Enabled = true;
+                                genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate = mssEvent.sampleTime - SAMPLES_PER_GENERATOR_UPDATE;
+                                genEntry.GenHistoryInfo.LastValueSent = double.NaN;
+                                genEntry.GenHistoryInfo.Initialized = true;
                             }
                             else
                             {
@@ -164,30 +169,45 @@ namespace MidiShapeShifter.Mss.Generator
                 //In order to generate events we need to some information about the 
                 //host. If any of this information hasn't been initialized yet then just don't 
                 //generate anything for this generator.
-                if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
+                switch (genEntry.GenConfigInfo.PeriodType)
                 {
-                    if (this.hostInfoOutputPort.TempoIsInitialized == false ||
-                        this.hostInfoOutputPort.TimeSignatureIsInitialized == false ||
-                        this.hostInfoOutputPort.CalculatedBarZeroIsInitialized == false ||
-                        this.hostInfoOutputPort.TransportPlayingIsInitialized == false)
-                    {
-                        continue;
-                    }
+                    case GenPeriodType.BeatSynced:
+                        if (this.hostInfoOutputPort.TempoIsInitialized == false ||
+                            this.hostInfoOutputPort.TimeSignatureIsInitialized == false ||
+                            this.hostInfoOutputPort.CalculatedBarZeroIsInitialized == false ||
+                            this.hostInfoOutputPort.TransportPlayingIsInitialized == false)
+                        {
+                            continue;
+                        }
 
-                    //If the host stopped playing then nothing will be generated for this generator
-                    //and it will need to be reinitialized when the host starts playing again.
-                    if (this.hostInfoOutputPort.TransportPlaying == false)
-                    {
-                        genEntry.GenHistoryInfo.Initialized = false;
-                        continue;
-                    }
-                }
-                else if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.Time)
-                {
-                    if (this.hostInfoOutputPort.TimeSignatureIsInitialized == false)
-                    {
-                        continue;
-                    }
+                        //If the host stopped playing then nothing will be generated for this generator
+                        //and it will need to be reinitialized when the host starts playing again.
+                        if (this.hostInfoOutputPort.TransportPlaying == false)
+                        {
+                            genEntry.GenHistoryInfo.Initialized = false;
+                            continue;
+                        }
+                        break;
+
+                    case GenPeriodType.Time:
+
+                        if (this.hostInfoOutputPort.TimeSignatureIsInitialized == false)
+                        {
+                            continue;
+                        }
+                        break;
+
+                    case GenPeriodType.Bars:
+                        if (this.hostInfoOutputPort.TempoIsInitialized == false ||
+                            this.hostInfoOutputPort.TimeSignatureIsInitialized == false)
+                        {
+                            continue;
+                        }
+                        break;
+
+                    default:
+                        Debug.Assert(false);
+                        break;
                 }
 
                 //Only enabled generators should generate anything
@@ -216,6 +236,23 @@ namespace MidiShapeShifter.Mss.Generator
                         MssEvent generatedEvent = GenerateEvent(genEntry);
                         if (generatedEvent != null)
                         {
+                            //This can be true in the following scenario.
+                            //  1. At the end of a cycle a generator generates a genmodify message
+                            //  2. The gen modify event gets caught by this class when all the wet events are sent out 
+                            //     which enables a generator and sets it's SampleTimeAtLastGeneratorUpdate to one cycle 
+                            //     before the time of the gen modify event.
+                            //  3. The newly enabled generator doesn't get generated this cycle because HostInfoOutputPort_BeforeProcessingCycleEnd
+                            //     has already finished.
+                            //  4. On the next cycle the newly enabled generator starts getting generated but it has 
+                            //     events that should have gone out last cycle.
+                            //
+                            // Just ignoreing the events is not a great solution as they really should have been sent 
+                            // out last cycle. But this does give us an easy way to prevent infinate feedback loops.
+                            if (this.sampleTimeAtEndOfLastCycle >= generatedEvent.sampleTime)
+                            {
+                                continue;
+                            }
+
                             this.dryMssEventInputPort.ReceiveDryMssEvent(generatedEvent);                
                         }
                     }
@@ -250,11 +287,14 @@ namespace MidiShapeShifter.Mss.Generator
             double relPosInPeriod;
             if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
             {
+                //TODO: this code does not work. relPosInPeriod can be negative which screws everything up.
+
                 relPosInPeriod = GetRelPosInBeatSyncedPeriod(genEntry.GenConfigInfo,
                         genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate + 
                         SAMPLES_PER_GENERATOR_UPDATE);
             }
-            else if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.Time)
+            else if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.Time ||
+                     genEntry.GenConfigInfo.PeriodType == GenPeriodType.Bars)
             {
                 int periodSizeInSamples = GetPeriodSizeInSamples(genEntry.GenConfigInfo);
                 double RelativeperiodIncrement = 
@@ -271,6 +311,8 @@ namespace MidiShapeShifter.Mss.Generator
                 return null;
             }
 
+            Debug.Assert(relPosInPeriod >= 0);
+
             //If this generator is not set to loop and it has finished one full period then disable it
             //it and return null so that no more events are sent.
             if (genEntry.GenConfigInfo.Loop == false && 
@@ -278,6 +320,7 @@ namespace MidiShapeShifter.Mss.Generator
                 GetPeriodSizeInSamples(genEntry.GenConfigInfo) < SAMPLES_PER_GENERATOR_UPDATE))
             {
                 genEntry.GenConfigInfo.Enabled = false;
+                genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = 0;
                 genEntry.GenHistoryInfo.Initialized = false;
                 return null;
             }
@@ -326,7 +369,8 @@ namespace MidiShapeShifter.Mss.Generator
         /// </remarks>
         protected int GetPeriodSizeInSamples(GenEntryConfigInfo genConfigInfo)
         {
-            if (genConfigInfo.PeriodType == GenPeriodType.BeatSynced)
+            if (genConfigInfo.PeriodType == GenPeriodType.BeatSynced ||
+                genConfigInfo.PeriodType == GenPeriodType.Bars)
             {
                 Debug.Assert(hostInfoOutputPort.TimeSignatureIsInitialized == true);
                 Debug.Assert(hostInfoOutputPort.SampleRateIsInitialized == true);
@@ -367,7 +411,8 @@ namespace MidiShapeShifter.Mss.Generator
         {
             MssMsg relPosMsg = new MssMsg();
 
-            if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
+            if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced ||
+                genEntry.GenConfigInfo.PeriodType == GenPeriodType.Bars)
             {
                 relPosMsg.Type = MssMsgType.RelBarPeriodPos;
             }
@@ -404,6 +449,12 @@ namespace MidiShapeShifter.Mss.Generator
             Debug.Assert(hostInfoOutputPort.CalculatedBarZeroIsInitialized == true);
             Debug.Assert(hostInfoOutputPort.TimeSignatureIsInitialized == true);
 
+
+            //TODO: Need to rethink notion of beat synced gen. Maybe it should just by like a time based gen 
+            //that can adjust to a changing tempo instead of jumping to a particular part of the bar.
+            //Need to cover two use cases
+            //LFO that runs on off time quarter note
+            //LFO that is looped and enabled so it should start at bar 0 and always keep in time.
 
             double barPos = hostInfoOutputPort.GetBarPosAtSampleTime(sampleTime);
             double periodSizeInBars = 

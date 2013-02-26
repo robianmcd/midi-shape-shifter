@@ -9,13 +9,18 @@ namespace MidiShapeShifter.Mss.Generator
 {
     
     /// <summary>
+    /// If a generator uses a time based period then it will generate even when the transport is 
+    /// stopped and it's period will be a fixed amount of time.
+    /// 
+    /// A bar based generator is the same as a time based generator except the that amount of time 
+    /// in a period will be calculated from a number of bars or beats.
+    /// 
+    /// Beat Synced generators are not currently supported so a user will not be able to select them.
     /// If a generator uses a beat synced period then it will only generate while the transport is 
     /// playing. Also the size of the period will change with the tempo and the start of the period
     /// will be synced with a bar position.
-    /// If a generator uses a time based period then it will generate even when the transport is 
-    /// stopped and it's period will be a fixed amount of time.
     /// </summary>
-    public enum GenPeriodType { BeatSynced, Time };
+    public enum GenPeriodType { Time, Bars, BeatSynced };
 
     /// <summary>
     /// Specifies the size of a beat synced period.
@@ -52,7 +57,7 @@ namespace MidiShapeShifter.Mss.Generator
         public static readonly List<double> GenBarsPeriodValues = new List<double>(NUM_GEN_BARS_PERIOD);
 
         public const string DEFAULT_NAME = "Untitled";
-        public const GenPeriodType DEFAULT_PERIOD_TYPE = GenPeriodType.BeatSynced;
+        public const GenPeriodType DEFAULT_PERIOD_TYPE = GenPeriodType.Bars;
         public const int DEFAULT_TIME_PERIOD = 100;
         public const GenBarsPeriod DEFAULT_BARS_PERIOD = GenBarsPeriod.Bars1;
         public const bool DEFAULT_LOOP = true;
@@ -77,7 +82,7 @@ namespace MidiShapeShifter.Mss.Generator
         public int TimePeriodInMs;
 
         /// <summary>
-        /// Type of a beat synced period. This is only used if PeriodType is set to BeatSynced.
+        /// Type of a bar based period. This is only used if PeriodType is set to Bars or BeatSynced.
         /// </summary>
         [DataMember]
         public GenBarsPeriod BarsPeriod;
@@ -100,8 +105,11 @@ namespace MidiShapeShifter.Mss.Generator
         //Static Constructor
         static GenEntryConfigInfo()
         {
-            GenPeriodTypeNames.Insert((int)GenPeriodType.BeatSynced, "Beat Synced");
             GenPeriodTypeNames.Insert((int)GenPeriodType.Time, "Time");
+            GenPeriodTypeNames.Insert((int)GenPeriodType.Bars, "Bars");
+
+            //Beat synced generators are currently not supported
+            //GenPeriodTypeNames.Insert((int)GenPeriodType.BeatSynced, "Beat Synced");
 
 
             GenBarsPeriodNames.Insert((int)GenBarsPeriod.Bars32, "32 Bars");
@@ -160,10 +168,10 @@ namespace MidiShapeShifter.Mss.Generator
         }
 
         //TODO: Comment
-        //Preconditions: The period type is BeatSynced.
+        //Preconditions: The period type is Bars or BeatSynced.
         public double GetSizeOfBarsPeriod(int timeSignatureNumerator, int timeSignatureDenominator)
         {
-            Debug.Assert(this.PeriodType == GenPeriodType.BeatSynced);
+            Debug.Assert(this.PeriodType == GenPeriodType.Bars || this.PeriodType == GenPeriodType.BeatSynced);
 
             double barsPeriodVal = GenBarsPeriodValues[(int)this.BarsPeriod];
 

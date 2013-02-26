@@ -57,20 +57,20 @@ namespace MidiShapeShifter.Mss.Generator
         /// </summary>
         /// <returns></returns>
         public string GetReadablePeriod()
-        { 
-            if (this.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
+        {
+            switch (this.GenConfigInfo.PeriodType)
             {
-                return GenEntryConfigInfo.GenBarsPeriodNames[(int)this.GenConfigInfo.BarsPeriod];
-            }
-            else if (this.GenConfigInfo.PeriodType == GenPeriodType.Time)
-            {
-                return this.GenConfigInfo.TimePeriodInMs.ToString() + " ms";
-            }
-            else
-            {
-                //Unexpected GenPeriodType
-                Debug.Assert(false);
-                return "";
+                case GenPeriodType.Bars:
+                case GenPeriodType.BeatSynced:
+                    return GenEntryConfigInfo.GenBarsPeriodNames[(int)this.GenConfigInfo.BarsPeriod];
+
+                case GenPeriodType.Time:
+                    return this.GenConfigInfo.TimePeriodInMs.ToString() + " ms";
+
+                default:
+                    //Unexpected GenPeriodType
+                    Debug.Assert(false);
+                    return "";
             }
         }
 

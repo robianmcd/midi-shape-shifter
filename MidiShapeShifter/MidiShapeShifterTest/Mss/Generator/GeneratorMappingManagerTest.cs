@@ -48,11 +48,11 @@ namespace MidiShapeShifterTest.Mss.Generator
         }
 
         [Test]
-        public void CreateAndAddEntryFromGenInfo_BeatSyncedGenInfo_CorrectlyInitializedInRangeType()
+        public void CreateAndAddEntryFromGenInfo_BarsGenInfo_CorrectlyInitializedInRangeType()
         {
             GeneratorMappingManager genMgr = Factory_GeneratorMappingManager_Default();
             GenEntryConfigInfo genConfigInfo = Factory_GenEntryConfigInfo_Default();
-            genConfigInfo.PeriodType = GenPeriodType.BeatSynced;
+            genConfigInfo.PeriodType = GenPeriodType.Bars;
 
             int newId = genMgr.CreateAndAddEntryFromGenInfo(genConfigInfo);
 

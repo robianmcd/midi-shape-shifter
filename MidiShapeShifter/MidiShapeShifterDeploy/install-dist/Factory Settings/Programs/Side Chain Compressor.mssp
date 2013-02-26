@@ -70,7 +70,7 @@
           <d2p1:Enabled>true</d2p1:Enabled>
           <d2p1:Loop>false</d2p1:Loop>
           <d2p1:Name z:Id="25">Compress</d2p1:Name>
-          <d2p1:PeriodType>BeatSynced</d2p1:PeriodType>
+          <d2p1:PeriodType>Bars</d2p1:PeriodType>
           <d2p1:TimePeriodInMs>200</d2p1:TimePeriodInMs>
         </d2p1:GenConfigInfo>
       </d3p1:anyType>
