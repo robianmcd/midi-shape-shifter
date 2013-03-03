@@ -121,6 +121,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSharpUtil\ConsumerBlockingQueue.cs" />
     <Compile Include="CSharpUtil\ContractSerializer.cs" />
     <Compile Include="CSharpUtil\CustomListUtils.cs" />
     <Compile Include="CSharpUtil\CustomMathUtils.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Ioc\IocMgr.cs" />
     <Compile Include="Midi\MidiUtil.cs" />
     <Compile Include="Mss\BaseSettingsFileMgr.cs" />
+    <Compile Include="Mss\EventLogger.cs" />
     <Compile Include="Mss\Mapping\ActiveMappingInfo.cs" />
     <Compile Include="Mss\Mapping\GraphableMappingManager.cs" />
     <Compile Include="Mss\Mapping\IBaseGraphableMappingManager.cs" />

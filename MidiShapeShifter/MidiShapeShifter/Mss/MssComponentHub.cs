@@ -82,6 +82,12 @@ namespace MidiShapeShifter.Mss
         [DataMember(Name = "VariableParamMgr")]
         protected VariableParamMgr variableParamMgr;
 
+        protected EventLogger eventLogger;
+
+        static MssComponentHub() {
+
+        }
+
         public MssComponentHub()
         {
             ConstructNonSerializableMembers();
@@ -109,6 +115,7 @@ namespace MidiShapeShifter.Mss
             this.msgEntryMetadataFactory = new Factory_MssMsgRangeEntryMetadata();
             this.msgInfoFactory = new Factory_MssMsgInfo();
             this.transformPresetMgr = new TransformPresetMgr();
+            this.eventLogger = new EventLogger();
         }
 
         /// <summary>
@@ -124,6 +131,10 @@ namespace MidiShapeShifter.Mss
 
         protected void InitializeNonSerializableMembers()
         {
+            //This should be initialized first so that it get's triggered first when wet or dry 
+            //events are recieved. A better solution would be to have a beforeEventRecieved event.
+            this.eventLogger.Init(this.DryMssEventOutputPort, this.WetMssEventOutputPort);
+
             this.msgEntryMetadataFactory.Init(this.genMappingMgr, 
                                               (IMssParameterViewer)this.MssParameters);
             this.msgInfoFactory.Init(this.genMappingMgr, (IMssParameterViewer)this.MssParameters);
