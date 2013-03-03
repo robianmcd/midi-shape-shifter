@@ -338,11 +338,15 @@ namespace MidiShapeShifter.Mss.Generator
             genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate = updatedSampleTime;
             genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = relPosInPeriod;
 
-            //Count could equal 0 if data 3 has been mapped above 1.
+            //Count could equal 0 if data 3 has been mapped above 1 or mapped to NaN.
             Debug.Assert(processedMsgList.Count <= 1);
+
+            if (processedMsgList.Count == 0) {
+                genEntry.GenHistoryInfo.LastValueSent = double.NaN;
+                return null;
+            }
             //Don't bother sending the event if it is the same as the last one sent.
-            if (processedMsgList.Count == 0 || 
-                processedMsgList[0].Data3 == genEntry.GenHistoryInfo.LastValueSent)
+            else if (processedMsgList[0].Data3 == genEntry.GenHistoryInfo.LastValueSent)
             {
                 return null;
             }
