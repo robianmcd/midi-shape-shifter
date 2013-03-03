@@ -120,6 +120,7 @@
             this.saveSplitButton = new System.Windows.Forms.ToolStripSplitButton();
             this.saveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutPage = new System.Windows.Forms.ToolStripButton();
             this.paramContextMenu.SuspendLayout();
             this.curveGroup.SuspendLayout();
             this.presetToolStrip.SuspendLayout();
@@ -1158,7 +1159,8 @@
             this.toolStripLabel2,
             this.programList,
             this.openProgram,
-            this.saveSplitButton});
+            this.saveSplitButton,
+            this.aboutPage});
             this.programToolStrip.Location = new System.Drawing.Point(0, 0);
             this.programToolStrip.Name = "programToolStrip";
             this.programToolStrip.Size = new System.Drawing.Size(712, 32);
@@ -1221,6 +1223,17 @@
             this.saveAsMenuItem.Size = new System.Drawing.Size(172, 22);
             this.saveAsMenuItem.Text = "Save Program As...";
             this.saveAsMenuItem.Click += new System.EventHandler(this.saveProgramAs_Click);
+            // 
+            // aboutPage
+            // 
+            this.aboutPage.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.aboutPage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.aboutPage.Image = global::MidiShapeShifter.Properties.Resources.imgAboutBlue;
+            this.aboutPage.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.aboutPage.Name = "aboutPage";
+            this.aboutPage.Size = new System.Drawing.Size(23, 29);
+            this.aboutPage.Text = "About";
+            this.aboutPage.Click += new System.EventHandler(this.aboutPage_Click);
             // 
             // PluginEditorView
             // 
@@ -1338,6 +1351,7 @@
         private LBSoft.IndustrialCtrls.Knobs.LBKnob presetParam5Knob;
         private System.Windows.Forms.ContextMenuStrip paramContextMenu;
         private System.Windows.Forms.ToolStripMenuItem editParamMenuItem;
+        private System.Windows.Forms.ToolStripButton aboutPage;
 
     }
 }
