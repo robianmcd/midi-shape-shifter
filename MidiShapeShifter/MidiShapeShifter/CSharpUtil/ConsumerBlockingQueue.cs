@@ -12,7 +12,7 @@ namespace MidiShapeShifter.CSharpUtil
     {
         private readonly Queue<T> queue;
         private readonly int maxSize;
-        public bool Closing { public get; protected set; }
+        public bool Closing { get; protected set; }
   
         public ConsumerBlockingQueue(int maxSize = -1) 
         { 
