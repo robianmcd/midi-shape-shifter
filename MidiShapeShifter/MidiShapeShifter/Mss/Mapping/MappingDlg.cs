@@ -25,6 +25,8 @@ namespace MidiShapeShifter.Mss.Mapping
         public Factory_MssMsgRangeEntryMetadata MsgMetadataFactory;
         public IFactory_MssMsgInfo MsgInfoFactory;
 
+        public bool UseMappingEntryForDefaultValues {get; protected set;}
+
         protected MssMsgRangeEntryMetadata inMsgMetadata;
         protected MssMsgRangeEntryMetadata outMsgMetadata;
 
@@ -67,6 +69,7 @@ namespace MidiShapeShifter.Mss.Mapping
                          IDryMssEventOutputPort dryEventOut)
         {
             this.mappingEntry = mappingEntry;
+            this.UseMappingEntryForDefaultValues = useMappingEntryForDefaultValues;
             this.MsgMetadataFactory = msgMetadataFactory;
             this.MsgInfoFactory = msgInfoFactory;
             this.dryEventOut = dryEventOut;
@@ -83,8 +86,13 @@ namespace MidiShapeShifter.Mss.Mapping
                 this.inMsgMetadata.UseExistingMsgRange(mappingEntry.InMssMsgRange);
                 this.outMsgMetadata.UseExistingMsgRange(mappingEntry.OutMssMsgRange);
 
-                this.outSameAsInCheckBox.Checked = 
-                    (this.mappingEntry.InMssMsgRange.Equals(this.mappingEntry.OutMssMsgRange));
+                //This could be disabled if we are editing a mapping with an input type like Parameter. If 
+                //this is disabled then we don't want to check it off because that will make it impossible
+                //to edit the output fields.
+                if (this.outSameAsInCheckBox.Enabled) {
+                    this.outSameAsInCheckBox.Checked =
+                        (this.mappingEntry.InMssMsgRange.Equals(this.mappingEntry.OutMssMsgRange));
+                }
             }
             else
             {

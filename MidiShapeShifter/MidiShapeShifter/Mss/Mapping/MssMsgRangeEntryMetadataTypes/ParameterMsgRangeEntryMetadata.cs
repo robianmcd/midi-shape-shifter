@@ -97,8 +97,17 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             for (int i = 0; i < MssParameters.ALL_PARAMS_ID_LIST.Count; i++)
             {
                 MssParameterID curId = MssParameters.ALL_PARAMS_ID_LIST[i];
-                MssParamInfo curParamInfo = this.parameterViewer.GetParameterInfoCopy(curId);
-                ((ComboBox)EntryField1).Items.Add(curParamInfo.Name);
+
+                if (MssParameters.PRESET_PARAM_ID_LIST.Contains(curId) &&
+                    this.mappingDlg.UseMappingEntryForDefaultValues == false)
+                {
+                    ((ComboBox)EntryField1).Items.Add(MssParameters.GetDefaultPresetName(curId));
+                }
+                else
+                {
+                    MssParamInfo curParamInfo = this.parameterViewer.GetParameterInfoCopy(curId);
+                    ((ComboBox)EntryField1).Items.Add(curParamInfo.Name);
+                }
             }
 
             ((ComboBox)EntryField1).SelectedIndex = 0;
