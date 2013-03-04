@@ -30,9 +30,9 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             throw new NotImplementedException();
         }
 
-        protected override void InitSameAsInputCompatibleTypes()
+        protected override bool canSelectSameAsInput
         {
-            
+            get { return false; }
         }
     }
 }

@@ -83,11 +83,6 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             }
         }
 
-        protected override void InitSameAsInputCompatibleTypes()
-        {
-            
-        }
-
         protected override void SetMappingDlgEntryFieldCustomProperties()
         {
             this.EntryField1Lbl.Visible = true;
@@ -116,6 +111,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         protected override void SetEntryField2FromRange(IMssMsgRange msgRange)
         {
             throw new NotImplementedException();
+        }
+
+        protected override bool canSelectSameAsInput
+        {
+            get { return false; }
         }
     }
 }

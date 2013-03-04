@@ -53,11 +53,6 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             ((ComboBox)EntryField2).SelectedIndex = (int)this.msgRange.Data2RangeBottom;
         }
 
-        protected override void InitSameAsInputCompatibleTypes()
-        {
-
-        }
-
         protected override void SetMappingDlgEntryFieldCustomProperties()
         {
             //Sets the properties for the first entry field
@@ -73,6 +68,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             }
 
             ((ComboBox)EntryField2).SelectedIndex = 0;
+        }
+
+        protected override bool canSelectSameAsInput
+        {
+            get { return false; }
         }
     }
 }

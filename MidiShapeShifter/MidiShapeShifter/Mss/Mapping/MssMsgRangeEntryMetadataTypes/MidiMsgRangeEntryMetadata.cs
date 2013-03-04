@@ -178,15 +178,9 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             return validRange;
         }
 
-        protected override void InitSameAsInputCompatibleTypes()
+        protected override bool canSelectSameAsInput
         {
-            this.sameAsInputCompatibleTypes.Add(MssMsgType.Note);
-            this.sameAsInputCompatibleTypes.Add(MssMsgType.NoteOn);
-            this.sameAsInputCompatibleTypes.Add(MssMsgType.NoteOff);
-            this.sameAsInputCompatibleTypes.Add(MssMsgType.CC);
-            this.sameAsInputCompatibleTypes.Add(MssMsgType.PitchBend);
-            this.sameAsInputCompatibleTypes.Add(MssMsgType.PolyAftertouch);
-            this.sameAsInputCompatibleTypes.Add(MssMsgType.ChanAftertouch);
+            get { return true; }
         }
     }
 }

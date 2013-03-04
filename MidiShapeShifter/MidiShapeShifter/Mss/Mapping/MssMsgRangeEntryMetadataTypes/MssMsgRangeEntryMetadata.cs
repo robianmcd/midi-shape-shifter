@@ -39,10 +39,9 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 
         //Contains a list of valid output message types when this class is the input type
         protected List<string> outMssMsgTypeNames = new List<string>();
-
-        //The "Same as Input" checkbox will be enabled iff this class's msg type is selected as input/output and a type
-        //in this list is selected as output/input.
-        protected List<MssMsgType> sameAsInputCompatibleTypes = new List<MssMsgType>();
+        
+        //Specifies whether the same as input check box can be selected when this type is selected as the input type.
+        protected abstract bool canSelectSameAsInput { get; }
 
         static MssMsgRangeEntryMetadata()
         {
@@ -130,7 +129,6 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             this.ioCatagory = io;
             this.mappingDlg = mappingDlg;
 
-            InitSameAsInputCompatibleTypes();
             InitOutMssMsgTypeNames();
 
             //Contains the type combo box that did not trigger the creation of this class
@@ -159,16 +157,20 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             }
 
             MssMsgType otherMsgType = mappingDlg.GetMessageTypeFromCombo(otherTypeCombo);
-            //Checks if it makes sence to use the values from the input entry fields in the output entry fields
-            if (sameAsInputCompatibleTypes.Contains(otherMsgType))
-            {
-                mappingDlg.outSameAsInCheckBox.Enabled = true;
-            }
-            else
-            {
-                mappingDlg.outSameAsInCheckBox.Checked = false;
-                mappingDlg.outSameAsInCheckBox.Enabled = false;
 
+
+            if (io == IoType.Input)
+            {
+                if (this.canSelectSameAsInput)
+                {
+                    mappingDlg.outSameAsInCheckBox.Enabled = true;
+                }
+                else
+                {
+                    mappingDlg.outSameAsInCheckBox.Checked = false;
+                    mappingDlg.outSameAsInCheckBox.Enabled = false;
+
+                }
             }
 
             SetMappingDlgEntryFieldsDefaultProperties();
@@ -270,12 +272,6 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.GeneratorModify]);
             this.outMssMsgTypeNames.Add(MssMsg.MssMsgTypeNames[(int)MssMsgType.Parameter]);
         }
-
-        /// <summary>
-        ///     Initializes sameAsInputCompatibleTypes so that it contains all MSS message types that use the same 
-        ///     entry fields as the MSS message type associated with the class that impliments this.
-        /// </summary>
-        protected abstract void InitSameAsInputCompatibleTypes();
 
         /// <summary>
         ///     Sets the properties of all the the controls in the mapping dialog whose properties should differ

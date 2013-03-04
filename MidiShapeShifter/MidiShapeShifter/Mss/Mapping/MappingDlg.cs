@@ -212,6 +212,29 @@ namespace MidiShapeShifter.Mss.Mapping
         {
             bool enabledStatus = !((CheckBox)sender).Checked;
 
+            if (((CheckBox)sender).Checked == true)
+            {
+                //we cannot just set the outTypeCombo's selected index to the same as in inTypeCombo's selected index
+                //because they may not contain all of the same items.
+                MssMsgType inType = GetMessageTypeFromCombo(this.inTypeCombo);
+                string inTypeName = MssMsg.MssMsgTypeNames[(int)inType];
+                this.outTypeCombo.SelectedIndex = this.outTypeCombo.FindStringExact(inTypeName);
+
+                this.outEntryField1TextBox.Text = this.inEntryField1TextBox.Text;
+                this.errorProvider.SetError(this.outEntryField1TextBox, "");
+                this.outEntryField1Combo.SelectedIndex = this.inEntryField1Combo.SelectedIndex;
+                this.outEntryField2TextBox.Text = this.inEntryField2TextBox.Text;
+                this.errorProvider.SetError(this.outEntryField2TextBox, "");
+                this.outEntryField2Combo.SelectedIndex = this.inEntryField2Combo.SelectedIndex;
+                
+            }
+
+            UpdateOutEntryFieldsEnabledStatus();
+        }
+
+        protected void UpdateOutEntryFieldsEnabledStatus() {
+            bool enabledStatus = !this.outSameAsInCheckBox.Checked;
+
             outTypeCombo.Enabled = enabledStatus;
             if (this.outMsgMetadata.EntryField1 != null)
             {
@@ -222,21 +245,6 @@ namespace MidiShapeShifter.Mss.Mapping
                 this.outMsgMetadata.EntryField2.Enabled = enabledStatus;
             }
             outLearnBtn.Enabled = enabledStatus;
-
-            if (((CheckBox)sender).Checked == true)
-            {
-                //we cannot just set the outTypeCombo's selected index to the same as in inTypeCombo's selected index
-                //because they may not contain all of the same items.
-                MssMsgType inType = GetMessageTypeFromCombo(this.inTypeCombo);
-                string inTypeName = MssMsg.MssMsgTypeNames[(int)inType];
-                this.outTypeCombo.SelectedIndex = this.outTypeCombo.FindStringExact(inTypeName);
-
-                this.outEntryField1TextBox.Text = this.inEntryField1TextBox.Text;
-                this.outEntryField1Combo.SelectedIndex = this.inEntryField1Combo.SelectedIndex;
-                this.outEntryField2TextBox.Text = this.inEntryField2TextBox.Text;
-                this.outEntryField2Combo.SelectedIndex = this.inEntryField2Combo.SelectedIndex;
-                
-            }
         }
 
         private void inEntryField1TextBox_Validating(object sender, CancelEventArgs e)
@@ -291,11 +299,15 @@ namespace MidiShapeShifter.Mss.Mapping
                 string inTypeName = MssMsg.MssMsgTypeNames[(int)inType];
                 this.outTypeCombo.SelectedIndex = this.outTypeCombo.FindStringExact(inTypeName);
             }
+
+            UpdateOutEntryFieldsEnabledStatus();
         }
 
         private void outTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             MsgTypeComboChanged((ComboBox)sender, IoType.Output, ref this.outMsgMetadata);
+
+            UpdateOutEntryFieldsEnabledStatus();
         }
 
         protected void MsgTypeComboChanged(ComboBox msgTypeCombo, 
