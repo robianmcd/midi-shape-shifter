@@ -194,6 +194,17 @@ namespace MidiShapeShifter.Mss.Mapping
 
                 curEntryMetadata.UseExistingMsgRange(learnedRange);
 
+                if (this.learnMode == LearnMode.In)
+                {
+                    inMsgMetadata.ValidateEntryField1();
+                    inMsgMetadata.ValidateEntryField2();
+                }
+                else //(this.learnMode == LearnMode.Out)
+                {
+                    outMsgMetadata.ValidateEntryField1();
+                    outMsgMetadata.ValidateEntryField2();
+                }
+
                 this.lastMsgReceived = curMsg;
             }
             
