@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -94,7 +95,7 @@ namespace MidiShapeShifter.Mss.Generator
                         switch ((GenOperation)mssEvent.mssMsg.Data2) 
                         {
                         case GenOperation.OnOff:
-                            if (mssEvent.mssMsg.Data3 == 1)
+                            if (mssEvent.mssMsg.Data3 > 0)
                             {
                                 genEntry.GenConfigInfo.Enabled = true;
                                 genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = 0;
@@ -111,7 +112,7 @@ namespace MidiShapeShifter.Mss.Generator
                             break;
                             
                         case GenOperation.PlayPause:
-                            if (mssEvent.mssMsg.Data3 == 1)
+                            if (mssEvent.mssMsg.Data3 > 0)
                             {
                                 genEntry.GenConfigInfo.Enabled = true;
                                 genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate = mssEvent.sampleTime - SAMPLES_PER_GENERATOR_UPDATE;
