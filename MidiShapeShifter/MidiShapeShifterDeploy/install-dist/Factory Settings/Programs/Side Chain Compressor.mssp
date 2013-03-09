@@ -67,7 +67,7 @@
         <PrimaryInputSource>Data3</PrimaryInputSource>
         <d2p1:GenConfigInfo z:Id="24">
           <d2p1:BarsPeriod>Eighth</d2p1:BarsPeriod>
-          <d2p1:Enabled>true</d2p1:Enabled>
+          <d2p1:Enabled>false</d2p1:Enabled>
           <d2p1:Loop>false</d2p1:Loop>
           <d2p1:Name z:Id="25">Compress</d2p1:Name>
           <d2p1:PeriodType>Bars</d2p1:PeriodType>
@@ -83,7 +83,7 @@
         <d2p1:ActiveTransformPresetName z:Ref="6" i:nil="true" />
         <d2p1:CurveShapeInfo z:Id="29">
           <CurveEquations z:Id="30" z:Size="1">
-            <d3p1:string z:Id="31">1</d3p1:string>
+            <d3p1:string z:Id="31">if(input &gt; 0, 1, ignore)</d3p1:string>
           </CurveEquations>
           <ParamInfoList xmlns:d6p1="http://schemas.datacontract.org/2004/07/MidiShapeShifter.Mss.Parameters" z:Id="32" z:Size="5">
             <d6p1:MssParamInfo z:Id="33" i:type="d6p1:MssNumberParamInfo">
