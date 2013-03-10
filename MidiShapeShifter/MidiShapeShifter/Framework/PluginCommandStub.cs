@@ -35,7 +35,7 @@ namespace MidiShapeShifter.Framework
             {
                 base.SetProgram(programNumber);
             }
-            catch (ArgumentOutOfRangeException e)
+            catch (ArgumentOutOfRangeException)
             { 
                 //If nothing is set when the plugin loads then it will default to the first program which is "Blank"
             }
