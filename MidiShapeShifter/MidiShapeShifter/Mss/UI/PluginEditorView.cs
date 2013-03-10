@@ -1493,7 +1493,9 @@ namespace MidiShapeShifter.Mss.UI
                         this.mssParameters.GetVariableParamInfoList(),
                         activeMappingCopy);
                     ReturnStatus<double> evalReturnStatus = this.evaluator.Evaluate(evalInput);
-                    if (evalReturnStatus.IsValid == false)
+                    
+                    //The returned value could be nan if the equation is something like "ignore"
+                    if (evalReturnStatus.IsValid == false || double.IsNaN(evalReturnStatus.Value))
                     {
                         return true;
                     }
