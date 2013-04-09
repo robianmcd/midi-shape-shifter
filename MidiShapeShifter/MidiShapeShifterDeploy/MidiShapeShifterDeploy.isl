@@ -1157,6 +1157,7 @@
 		<row><td>DIRPROPERTY1</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DIRPROPERTY2</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DIRPROPERTY3</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
+		<row><td>DIRPROPERTY4</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DesktopFolder</td><td>TARGETDIR</td><td>.:Desktop</td><td/><td>3</td><td/></row>
 		<row><td>FACTORY_SETTINGS</td><td>DATABASEDIR</td><td>FACTOR~1|Factory Settings</td><td/><td>0</td><td/></row>
 		<row><td>FavoritesFolder</td><td>TARGETDIR</td><td>.:FAVORI~1|Favorites</td><td/><td>0</td><td/></row>
@@ -1168,15 +1169,19 @@
 		<row><td>ISMyProductDir</td><td>ISMyCompanyDir</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
 		<row><td>ISYourDataBaseDir</td><td>ProgramFilesFolder</td><td>MIDISH~1|MIDI Shape Shifter</td><td/><td>0</td><td/></row>
 		<row><td>LocalAppDataFolder</td><td>TARGETDIR</td><td>.:LocalA~1|LocalAppData</td><td/><td>0</td><td/></row>
+		<row><td>MIDI_SHAPE_SHIFTER</td><td>PROGRAM_FILES</td><td>MIDISH~1|MIDI Shape Shifter</td><td/><td>0</td><td/></row>
+		<row><td>MIDI_SHAPE_SHIFTER1</td><td>ProgramFilesDir</td><td>MIDISH~1|MIDI Shape Shifter</td><td/><td>0</td><td/></row>
 		<row><td>MY_COMPANY_NAME</td><td>DIRPROPERTY1</td><td>MYCOMP~1|My Company Name</td><td/><td>0</td><td/></row>
 		<row><td>MY_PRODUCT_NAME</td><td>MY_COMPANY_NAME</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
 		<row><td>MyPicturesFolder</td><td>TARGETDIR</td><td>.:MyPict~1|MyPictures</td><td/><td>0</td><td/></row>
 		<row><td>NetHoodFolder</td><td>TARGETDIR</td><td>.:NetHood</td><td/><td>0</td><td/></row>
 		<row><td>PROGRAMS</td><td>FACTORY_SETTINGS</td><td>Programs</td><td/><td>0</td><td/></row>
 		<row><td>PROGRAMS1</td><td>USER_SETTINGS</td><td>Programs</td><td/><td>0</td><td/></row>
+		<row><td>PROGRAM_FILES</td><td>DIRPROPERTY4</td><td>PROGRA~1|Program Files</td><td/><td>0</td><td/></row>
 		<row><td>PersonalFolder</td><td>TARGETDIR</td><td>.:Personal</td><td/><td>0</td><td/></row>
 		<row><td>PrimaryVolumePath</td><td>TARGETDIR</td><td>.:Primar~1|PrimaryVolumePath</td><td/><td>0</td><td/></row>
 		<row><td>PrintHoodFolder</td><td>TARGETDIR</td><td>.:PRINTH~1|PrintHood</td><td/><td>0</td><td/></row>
+		<row><td>ProgramFilesDir</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>ProgramFilesFolder</td><td>TARGETDIR</td><td>.:PROGRA~1|program files</td><td/><td>0</td><td/></row>
 		<row><td>ProgramMenuFolder</td><td>TARGETDIR</td><td>.:Programs</td><td/><td>3</td><td/></row>
 		<row><td>RecentFolder</td><td>TARGETDIR</td><td>.:Recent</td><td/><td>0</td><td/></row>
@@ -2289,6 +2294,7 @@
 		<row><td>JACOBI.VST.FRAMEWORK.DLL</td><td>1</td></row>
 		<row><td>JACOBI.VST.INTEROP.DLL</td><td>1</td></row>
 		<row><td>LBINDUSTRIALCTRLS.DLL</td><td>1</td></row>
+		<row><td>MSVCR100.DLL</td><td>1</td></row>
 		<row><td>NCALC.DLL</td><td>1</td></row>
 		<row><td>NINJECT.DLL</td><td>1</td></row>
 		<row><td>VISUAL C++ 10.0 CRT (IA64)</td><td>1</td></row>
@@ -2820,7 +2826,7 @@
 		<col def="I2">Order</col>
 		<col def="I2">ISSetupLocation</col>
 		<col def="S255">ISReleaseFlags</col>
-		<row><td>_7A10B818_2562_40C2_BB2B_A301542897EB_</td><td>Microsoft .NET Framework 4.0 Client (Web Download).prq</td><td/><td/><td/></row>
+		<row><td>_7A10B818_2562_40C2_BB2B_A301542897EB_</td><td>Microsoft .NET Framework 4.0 Client (Web Download).prq</td><td>0</td><td/><td/></row>
 	</table>
 
 	<table name="ISSetupType">

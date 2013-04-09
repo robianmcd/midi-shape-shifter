@@ -74,7 +74,8 @@ namespace MidiShapeShifter.Mss
 
         private static RegistryKey CreateMssLocalMachineRegKey()
         {
-            return Registry.LocalMachine.OpenSubKey(@"SOFTWARE\" + MssConstants.APP_NAME);
+            RegistryKey localMachine32 = RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, RegistryView.Registry32);
+            return localMachine32.OpenSubKey(@"SOFTWARE\" + MssConstants.APP_NAME);
         }
     }
 
