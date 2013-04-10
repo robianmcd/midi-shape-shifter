@@ -349,6 +349,7 @@
 		<row><td>ISX_DEFAULTCOMPONENT6</td><td>{F2E33B56-164C-4D79-AF97-02274C3A54F3}</td><td>TRANSFORMATION_PRESETS1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT7</td><td>{E73D3040-0E56-42BD-928A-BCB021D23771}</td><td>USER_SETTINGS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT8</td><td>{84F21DDD-6D00-43A7-A7BA-85C28B1E7741}</td><td>PROGRAMS1</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT9</td><td>{7877CBA8-8255-4657-A56B-41B2774CAFE3}</td><td>ALLUSERSPROFILE</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Jacobi.Vst.Core.dll</td><td>{C3D4A365-E9EB-4BC5-9F12-04A5AE30C549}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>jacobi.vst.core.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Jacobi.Vst.Framework.dll</td><td>{6C91B4D9-B1E3-452C-99EC-3E35503DDFE2}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>jacobi.vst.framework.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>LBIndustrialCtrls.dll</td><td>{F7FB6295-A7D5-4CE9-BCB0-C5D1072483B4}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>lbindustrialctrls.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -1064,6 +1065,7 @@
 	<table name="CreateFolder">
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>ALLUSERSPROFILE</td><td>ISX_DEFAULTCOMPONENT9</td></row>
 		<row><td>FACTORY_SETTINGS</td><td>ISX_DEFAULTCOMPONENT3</td></row>
 		<row><td>GlobalAssemblyCache</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 		<row><td>PROGRAMS1</td><td>ISX_DEFAULTCOMPONENT8</td></row>
@@ -1153,7 +1155,7 @@
 		<row><td>AppDataFolder</td><td>TARGETDIR</td><td>.:APPLIC~1|Application Data</td><td/><td>0</td><td/></row>
 		<row><td>CommonAppDataFolder</td><td>TARGETDIR</td><td>.:Common~1|CommonAppData</td><td/><td>0</td><td/></row>
 		<row><td>CommonFilesFolder</td><td>TARGETDIR</td><td>.:Common</td><td/><td>0</td><td/></row>
-		<row><td>DATABASEDIR</td><td>ISYourDataBaseDir</td><td>.</td><td/><td>0</td><td/></row>
+		<row><td>DATABASEDIR</td><td>MIDI_SHAPE_SHIFTER2</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DIRPROPERTY1</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DIRPROPERTY2</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DIRPROPERTY3</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
@@ -1171,6 +1173,7 @@
 		<row><td>LocalAppDataFolder</td><td>TARGETDIR</td><td>.:LocalA~1|LocalAppData</td><td/><td>0</td><td/></row>
 		<row><td>MIDI_SHAPE_SHIFTER</td><td>PROGRAM_FILES</td><td>MIDISH~1|MIDI Shape Shifter</td><td/><td>0</td><td/></row>
 		<row><td>MIDI_SHAPE_SHIFTER1</td><td>ProgramFilesDir</td><td>MIDISH~1|MIDI Shape Shifter</td><td/><td>0</td><td/></row>
+		<row><td>MIDI_SHAPE_SHIFTER2</td><td>CommonAppDataFolder</td><td>MIDISH~1|MIDI Shape Shifter</td><td/><td>0</td><td/></row>
 		<row><td>MY_COMPANY_NAME</td><td>DIRPROPERTY1</td><td>MYCOMP~1|My Company Name</td><td/><td>0</td><td/></row>
 		<row><td>MY_PRODUCT_NAME</td><td>MY_COMPANY_NAME</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
 		<row><td>MyPicturesFolder</td><td>TARGETDIR</td><td>.:MyPict~1|MyPictures</td><td/><td>0</td><td/></row>
@@ -1901,6 +1904,7 @@
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT6</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT7</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT8</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT9</td></row>
 		<row><td>AlwaysInstall</td><td>Jacobi.Vst.Core.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Jacobi.Vst.Framework.dll</td></row>
 		<row><td>AlwaysInstall</td><td>LBIndustrialCtrls.dll</td></row>
@@ -2213,6 +2217,7 @@
 		<row><td>ISX_DEFAULTCOMPONENT6</td><td/><td/><td>_02FC79EA_6DEE_4702_AF33_A330E290188B_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT7</td><td/><td/><td>_8BF4C031_D478_46D2_8BA8_50B0F463AC77_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT8</td><td/><td/><td>_A6B9DC17_EF2D_4CAA_BEBF_DF8C9B243062_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT9</td><td/><td/><td>_85DB1025_E514_4465_A9CF_1E5538ECBFEC_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Jacobi.Vst.Core.dll</td><td/><td/><td>_67A48FC2_FF76_4DB2_B8D9_A275DB0AFB70_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Jacobi.Vst.Framework.dll</td><td/><td/><td>_EBF1EBDA_B1D1_4571_92C5_67FD01C058C6_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>LBIndustrialCtrls.dll</td><td/><td/><td>_C347D0CC_44D5_4230_9098_1759AA1DEAF3_FILTER</td><td/><td/><td/><td/></row>
