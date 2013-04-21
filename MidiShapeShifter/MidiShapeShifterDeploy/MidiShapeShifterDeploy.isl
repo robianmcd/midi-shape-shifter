@@ -342,6 +342,10 @@
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{224637E0-A050-417C-A288-A6C9D628CFF1}</td><td>ProgramFilesFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{862CBCCF-7E1B-4AED-BD73-F0B6D5DF027F}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT10</td><td>{ED191684-1D4A-455B-A468-0B8C57D42C7E}</td><td>WindowsFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT11</td><td>{15A7E4F4-D444-4122-BC3F-054D04466F3F}</td><td>SystemFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT12</td><td>{39FEFB58-3575-4A50-90D4-02C001F49BE0}</td><td>SYSTEM</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT13</td><td>{E1E8C1FD-49CD-4CE1-BF2D-5AF4FC876B5A}</td><td>System16Folder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{B8C4CE18-851F-4C89-A776-9E789FF3B675}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT3</td><td>{A931FE10-7EEE-4A02-A5D1-B46396AC81B1}</td><td>FACTORY_SETTINGS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT4</td><td>{64B0A94E-F0FB-43BE-A3C8-BBC8F5F6A436}</td><td>PROGRAMS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -357,6 +361,7 @@
 		<row><td>NCalc.dll</td><td>{42502704-3485-4F26-A7E0-13D93849D6D9}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>ncalc.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Ninject.dll</td><td>{A66B98F8-A217-4BD7-8AE4-E1E53569003B}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>ninject.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ZedGraph.dll</td><td>{36C43458-32A7-4A73-8A5F-CDD977530C26}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>zedgraph.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>msvcr100.dll</td><td>{C59BFFF5-97E4-4281-AF92-F3B8E609C990}</td><td>SYSTEM</td><td>2</td><td/><td>msvcr100.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1070,8 +1075,12 @@
 		<row><td>GlobalAssemblyCache</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 		<row><td>PROGRAMS1</td><td>ISX_DEFAULTCOMPONENT8</td></row>
 		<row><td>ProgramFilesFolder</td><td>ISX_DEFAULTCOMPONENT</td></row>
+		<row><td>SYSTEM</td><td>ISX_DEFAULTCOMPONENT12</td></row>
+		<row><td>System16Folder</td><td>ISX_DEFAULTCOMPONENT13</td></row>
+		<row><td>SystemFolder</td><td>ISX_DEFAULTCOMPONENT11</td></row>
 		<row><td>TRANSFORMATION_PRESETS1</td><td>ISX_DEFAULTCOMPONENT6</td></row>
 		<row><td>USER_SETTINGS</td><td>ISX_DEFAULTCOMPONENT7</td></row>
+		<row><td>WindowsFolder</td><td>ISX_DEFAULTCOMPONENT10</td></row>
 	</table>
 
 	<table name="CustomAction">
@@ -1150,12 +1159,13 @@
 		<col def="S255">ISDescription</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S255">ISFolderName</col>
+		<row><td>ALLUSERPROFILE</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>ALLUSERSPROFILE</td><td>TARGETDIR</td><td>.:ALLUSE~1|All Users</td><td/><td>0</td><td/></row>
 		<row><td>AdminToolsFolder</td><td>TARGETDIR</td><td>.:Admint~1|AdminTools</td><td/><td>0</td><td/></row>
 		<row><td>AppDataFolder</td><td>TARGETDIR</td><td>.:APPLIC~1|Application Data</td><td/><td>0</td><td/></row>
 		<row><td>CommonAppDataFolder</td><td>TARGETDIR</td><td>.:Common~1|CommonAppData</td><td/><td>0</td><td/></row>
 		<row><td>CommonFilesFolder</td><td>TARGETDIR</td><td>.:Common</td><td/><td>0</td><td/></row>
-		<row><td>DATABASEDIR</td><td>MIDI_SHAPE_SHIFTER2</td><td>.</td><td/><td>0</td><td/></row>
+		<row><td>DATABASEDIR</td><td>MIDI_SHAPE_SHIFTER5</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DIRPROPERTY1</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DIRPROPERTY2</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>DIRPROPERTY3</td><td>TARGETDIR</td><td>.</td><td/><td>0</td><td/></row>
@@ -1174,6 +1184,9 @@
 		<row><td>MIDI_SHAPE_SHIFTER</td><td>PROGRAM_FILES</td><td>MIDISH~1|MIDI Shape Shifter</td><td/><td>0</td><td/></row>
 		<row><td>MIDI_SHAPE_SHIFTER1</td><td>ProgramFilesDir</td><td>MIDISH~1|MIDI Shape Shifter</td><td/><td>0</td><td/></row>
 		<row><td>MIDI_SHAPE_SHIFTER2</td><td>CommonAppDataFolder</td><td>MIDISH~1|MIDI Shape Shifter</td><td/><td>0</td><td/></row>
+		<row><td>MIDI_SHAPE_SHIFTER3</td><td>ALLUSERPROFILE</td><td>MIDISH~1|MIDI Shape Shifter</td><td/><td>0</td><td/></row>
+		<row><td>MIDI_SHAPE_SHIFTER4</td><td>ALLUSERSPROFILE</td><td>MIDISH~1|MIDI Shape Shifter</td><td/><td>0</td><td/></row>
+		<row><td>MIDI_SHAPE_SHIFTER5</td><td>USERPROFILE</td><td>MIDISH~1|MIDI Shape Shifter</td><td/><td>0</td><td/></row>
 		<row><td>MY_COMPANY_NAME</td><td>DIRPROPERTY1</td><td>MYCOMP~1|My Company Name</td><td/><td>0</td><td/></row>
 		<row><td>MY_PRODUCT_NAME</td><td>MY_COMPANY_NAME</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
 		<row><td>MyPicturesFolder</td><td>TARGETDIR</td><td>.:MyPict~1|MyPictures</td><td/><td>0</td><td/></row>
@@ -1188,6 +1201,7 @@
 		<row><td>ProgramFilesFolder</td><td>TARGETDIR</td><td>.:PROGRA~1|program files</td><td/><td>0</td><td/></row>
 		<row><td>ProgramMenuFolder</td><td>TARGETDIR</td><td>.:Programs</td><td/><td>3</td><td/></row>
 		<row><td>RecentFolder</td><td>TARGETDIR</td><td>.:Recent</td><td/><td>0</td><td/></row>
+		<row><td>SYSTEM</td><td>WindowsFolder</td><td>System</td><td/><td>0</td><td/></row>
 		<row><td>SendToFolder</td><td>TARGETDIR</td><td>.:SendTo</td><td/><td>3</td><td/></row>
 		<row><td>StartMenuFolder</td><td>TARGETDIR</td><td>.:STARTM~1|Start Menu</td><td/><td>3</td><td/></row>
 		<row><td>StartupFolder</td><td>TARGETDIR</td><td>.:StartUp</td><td/><td>3</td><td/></row>
@@ -1897,6 +1911,10 @@
 		<col key="yes" def="s72">Component_</col>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT10</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT11</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT12</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT13</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT2</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT3</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT4</td></row>
@@ -1912,6 +1930,7 @@
 		<row><td>AlwaysInstall</td><td>NCalc.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Ninject.dll</td></row>
 		<row><td>AlwaysInstall</td><td>ZedGraph.dll</td></row>
+		<row><td>AlwaysInstall</td><td>msvcr100.dll</td></row>
 	</table>
 
 	<table name="File">
@@ -1943,6 +1962,7 @@
 		<row><td>line.msst</td><td>ISX_DEFAULTCOMPONENT5</td><td>Line.msst</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Line.msst</td><td>1</td><td/></row>
 		<row><td>midishapeshifter.dll</td><td>MidiShapeShifter.dll</td><td>MIDISH~1.DLL|MidiShapeShifter.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\MidiShapeShifter\bin\vst-dist\MidiShapeShifter.dll</td><td>1</td><td/></row>
 		<row><td>midishapeshifter.net.vstdll</td><td>ISX_DEFAULTCOMPONENT2</td><td>MIDISH~1.VST|MidiShapeShifter.net.vstdll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\MidiShapeShifter\bin\vst-dist\MidiShapeShifter.net.vstdll</td><td>1</td><td/></row>
+		<row><td>msvcr100.dll</td><td>msvcr100.dll</td><td>msvcr100.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Rob\Dropbox\Repos\midi-shape-shifter\MidiShapeShifter\MidiShapeShifterDeploy\install-dist\msvcr100.dll</td><td>1</td><td/></row>
 		<row><td>ncalc.dll</td><td>NCalc.dll</td><td>NCalc.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\NCalc.dll</td><td>1</td><td/></row>
 		<row><td>ninject.dll</td><td>Ninject.dll</td><td>Ninject.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\Ninject.dll</td><td>1</td><td/></row>
 		<row><td>power_curve.msst</td><td>ISX_DEFAULTCOMPONENT5</td><td>POWERC~1.MSST|Power Curve.msst</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Power Curve.msst</td><td>1</td><td/></row>
@@ -2210,6 +2230,10 @@
 		<col def="S0">Miscellaneous</col>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_B53B9A40_CE6A_42CB_B6EB_96AB17939596_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_1D8EF6FD_478F_47E9_BF53_DE4AE7498C43_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT10</td><td/><td/><td>_E2AF82AE_FABB_45EC_A40F_2334F7631716_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT11</td><td/><td/><td>_2FEBAD7A_71BB_43B7_9027_41B361D3929D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT12</td><td/><td/><td>_12262167_AE3C_4B52_8B8B_D02D7EC5E0C2_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT13</td><td/><td/><td>_4B0848D2_8B94_4CB3_BCA4_51490DDC7965_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_FFAB5719_76BB_461A_B668_ED3812C5DE98_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT3</td><td/><td/><td>_3D53B227_00CA_434F_84F4_1A4F19B8077A_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT4</td><td/><td/><td>_6380682F_476F_49BD_A016_50F90573407F_FILTER</td><td/><td/><td/><td/></row>
@@ -2225,6 +2249,7 @@
 		<row><td>NCalc.dll</td><td/><td/><td>_01285225_9A01_44F9_8EEF_289570FD547E_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Ninject.dll</td><td/><td/><td>_93D7943C_1B7A_44CB_A9F3_8D0737A32F83_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ZedGraph.dll</td><td/><td/><td>_53877953_91B4_4594_8843_9EBCCAF40130_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>msvcr100.dll</td><td/><td/><td>_0C1798FE_25F4_42F4_BACE_D8CF98DCD6DB_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
