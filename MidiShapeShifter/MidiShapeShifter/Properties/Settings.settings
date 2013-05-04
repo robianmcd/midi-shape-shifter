@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MidiShapeShifter.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="EquationEditorRelLocation" Type="System.Drawing.Point" Scope="User">
+      <Value Profile="(Default)">70, 250</Value>
+    </Setting>
+    <Setting Name="EquationEditorSize" Type="System.Drawing.Size" Scope="User">
+      <Value Profile="(Default)">278, 116</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
