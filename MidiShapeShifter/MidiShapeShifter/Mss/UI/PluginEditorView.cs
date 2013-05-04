@@ -712,21 +712,23 @@ namespace MidiShapeShifter.Mss.UI
             //Wait for the host to be idle before proceeding.
             this.idleProcessingSignal.WaitOne();
 
-            MappingDlg mapDlg = new MappingDlg();
-            mapDlg.Init(new MappingEntry(), 
-                        false, 
-                        this.msgMetadataFactory, 
-                        this.msgInfoFactory, 
-                        this.dryMssEventOutputPort);
-
-            if (mapDlg.ShowDialog(this) == DialogResult.OK)
+            using (MappingDlg mapDlg = new MappingDlg())
             {
-                int newId = this.mappingMgr.AddMappingEntry(mapDlg.mappingEntry);
+                mapDlg.Init(new MappingEntry(),
+                            false,
+                            this.msgMetadataFactory,
+                            this.msgInfoFactory,
+                            this.dryMssEventOutputPort);
 
-                this.activeMappingInfo.ActiveGraphableEntryType = GraphableEntryType.Mapping;
-                this.activeMappingInfo.ActiveGraphableEntryId = newId;
+                if (mapDlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    int newId = this.mappingMgr.AddMappingEntry(mapDlg.mappingEntry);
 
-                OnActiveGraphableEntryChanged();
+                    this.activeMappingInfo.ActiveGraphableEntryType = GraphableEntryType.Mapping;
+                    this.activeMappingInfo.ActiveGraphableEntryId = newId;
+
+                    OnActiveGraphableEntryChanged();
+                }
             }
         }
 
@@ -737,22 +739,24 @@ namespace MidiShapeShifter.Mss.UI
 
             IMappingEntry activeMappingEntryCopy = this.activeMappingInfo.GetActiveMappingCopy();
 
-            MappingDlg mapDlg = new MappingDlg();
-            mapDlg.Init(activeMappingEntryCopy, 
-                        true, 
-                        this.msgMetadataFactory, 
-                        this.msgInfoFactory,
-                        this.dryMssEventOutputPort);
-            
-            if (mapDlg.ShowDialog(this) == DialogResult.OK)
+            using (MappingDlg mapDlg = new MappingDlg())
             {
-                this.activeMappingInfo.GetActiveMappingManager().ReplaceMappingEntry(activeMappingEntryCopy);
+                mapDlg.Init(activeMappingEntryCopy,
+                            true,
+                            this.msgMetadataFactory,
+                            this.msgInfoFactory,
+                            this.dryMssEventOutputPort);
 
-                RefreshMappingListView();
-                //The equation curve needs to be updated incase the equation uses data1 or data2 
-                //and the input range for these has changed.
-                this.commandQueue.EnqueueCommandOverwriteDups(
-                    EditorCommandId.UpdateEquationCurve, () => UpdateEquationCurve());
+                if (mapDlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    this.activeMappingInfo.GetActiveMappingManager().ReplaceMappingEntry(activeMappingEntryCopy);
+
+                    RefreshMappingListView();
+                    //The equation curve needs to be updated incase the equation uses data1 or data2 
+                    //and the input range for these has changed.
+                    this.commandQueue.EnqueueCommandOverwriteDups(
+                        EditorCommandId.UpdateEquationCurve, () => UpdateEquationCurve());
+                }
             }
         }
 
@@ -820,20 +824,22 @@ namespace MidiShapeShifter.Mss.UI
             //Wait for the host to be idle before proceeding.
             this.idleProcessingSignal.WaitOne();
 
-            GeneratorDlg genDlg = new GeneratorDlg();
-            GenEntryConfigInfo genInfo = new GenEntryConfigInfo();
-            genInfo.InitWithDefaultValues();
-            genDlg.Init(genInfo);
-
-            if (genDlg.ShowDialog() == DialogResult.OK)
+            using (GeneratorDlg genDlg = new GeneratorDlg())
             {
-                //Creates a new mapping entry, adds it the the generator mapping manager and sets
-                //it as the active mapping
-                int entryId = this.genMappingMgr.CreateAndAddEntryFromGenInfo(genDlg.GenInfoResult);
-                this.activeMappingInfo.ActiveGraphableEntryType = GraphableEntryType.Generator;
-                this.activeMappingInfo.ActiveGraphableEntryId = entryId;
+                GenEntryConfigInfo genInfo = new GenEntryConfigInfo();
+                genInfo.InitWithDefaultValues();
+                genDlg.Init(genInfo);
 
-                OnActiveGraphableEntryChanged();
+                if (genDlg.ShowDialog() == DialogResult.OK)
+                {
+                    //Creates a new mapping entry, adds it the the generator mapping manager and sets
+                    //it as the active mapping
+                    int entryId = this.genMappingMgr.CreateAndAddEntryFromGenInfo(genDlg.GenInfoResult);
+                    this.activeMappingInfo.ActiveGraphableEntryType = GraphableEntryType.Generator;
+                    this.activeMappingInfo.ActiveGraphableEntryId = entryId;
+
+                    OnActiveGraphableEntryChanged();
+                }
             }
         }
 
@@ -856,14 +862,15 @@ namespace MidiShapeShifter.Mss.UI
             }
             IGeneratorMappingEntry activeMapping = activeMappingStatus.Value;
 
-            GeneratorDlg genDlg = new GeneratorDlg();
-            genDlg.Init(activeMapping.GenConfigInfo);
-
-
-            if (genDlg.ShowDialog(this) == DialogResult.OK)
+            using (GeneratorDlg genDlg = new GeneratorDlg())
             {
-                this.genMappingMgr.UpdateEntryWithNewGenInfo(genDlg.GenInfoResult, activeMapping.Id);
-                RefreshGeneratorListView();
+                genDlg.Init(activeMapping.GenConfigInfo);
+
+                if (genDlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    this.genMappingMgr.UpdateEntryWithNewGenInfo(genDlg.GenInfoResult, activeMapping.Id);
+                    RefreshGeneratorListView();
+                }
             }
         }
 
@@ -1893,6 +1900,56 @@ namespace MidiShapeShifter.Mss.UI
         {
             AboutPage aboutPage = new AboutPage();
             aboutPage.ShowDialog(this);
+        }
+
+        private void EquationTextBox_Enter(object sender, EventArgs e)
+        {
+            RunEquationEditor((TextBox)sender, "");
+        }
+        
+        protected void RunEquationEditor(TextBox equationBox, string insertCharacter)
+        {
+            //Need to run the dialog on another thread so that a keypress can be supressed:
+            //http://stackoverflow.com/questions/9326508/in-keydown-a-showdialog-makes-suppresskeypress-not-work
+            this.BeginInvoke(new Action(() => {
+                using (EquationEditorDlg equationDlg = new EquationEditorDlg())
+                {
+                    equationDlg.Init(equationBox.Text, equationBox.SelectionStart, insertCharacter, this);
+                    if (equationDlg.ShowDialog() == DialogResult.OK)
+                    {
+                        equationBox.Text = equationDlg.equation;
+                        equationBox.SelectionStart = equationDlg.cursorPosition;
+                    }
+                }
+            }));
+        }
+
+        private void curveEquationTextBox_Click(object sender, EventArgs e)
+        {
+            //If the textbox is not focused then the Enter event handler will handel this.
+            if (((TextBox)sender).Focused == true) 
+            {
+                RunEquationEditor((TextBox)sender, "");
+            }
+        }
+
+        private void EquationTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ShiftKey)
+            {
+                RunEquationEditor((TextBox)sender, "");
+            }
+        }
+
+        private void EquationTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //backspace triggers keypress but delete does not so we just let backspace 
+            //be handeled automatically.
+            if (e.KeyChar != '\b')
+            {
+                e.Handled = true;
+                RunEquationEditor((TextBox)sender, e.KeyChar.ToString());
+            }
         }
 
     }

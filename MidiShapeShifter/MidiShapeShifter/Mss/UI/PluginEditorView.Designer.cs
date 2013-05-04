@@ -392,6 +392,9 @@
             this.pointYEquationTextBox.TabIndex = 13;
             this.pointYEquationTextBox.Visible = false;
             this.pointYEquationTextBox.TextChanged += new System.EventHandler(this.pointEquationTextBox_TextChanged);
+            this.pointYEquationTextBox.Enter += new System.EventHandler(this.EquationTextBox_Enter);
+            this.pointYEquationTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EquationTextBox_KeyDown);
+            this.pointYEquationTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.EquationTextBox_KeyPress);
             // 
             // pointYEquationLabel
             // 
@@ -651,6 +654,9 @@
             this.pointXEquationTextBox.TabIndex = 11;
             this.pointXEquationTextBox.Visible = false;
             this.pointXEquationTextBox.TextChanged += new System.EventHandler(this.pointEquationTextBox_TextChanged);
+            this.pointXEquationTextBox.Enter += new System.EventHandler(this.EquationTextBox_Enter);
+            this.pointXEquationTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EquationTextBox_KeyDown);
+            this.pointXEquationTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.EquationTextBox_KeyPress);
             // 
             // curveEquationTextBox
             // 
@@ -660,7 +666,11 @@
             this.curveEquationTextBox.Size = new System.Drawing.Size(232, 20);
             this.curveEquationTextBox.TabIndex = 9;
             this.curveEquationTextBox.Text = " ";
+            this.curveEquationTextBox.Click += new System.EventHandler(this.curveEquationTextBox_Click);
             this.curveEquationTextBox.TextChanged += new System.EventHandler(this.curveEquationTextBox_TextChanged);
+            this.curveEquationTextBox.Enter += new System.EventHandler(this.EquationTextBox_Enter);
+            this.curveEquationTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EquationTextBox_KeyDown);
+            this.curveEquationTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.EquationTextBox_KeyPress);
             // 
             // groupBox1
             // 
