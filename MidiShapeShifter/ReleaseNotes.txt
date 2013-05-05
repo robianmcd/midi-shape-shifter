@@ -1,3 +1,5 @@
 Release Notes for v1.0.8
+-Fixed 'detune' error message in Sonar X2
+-Added an equation editor dialog so that the equation can be edited in hosts like Sonar and Reaper
 -Added 64-bit support.
--Moved default settings folder from program files to ProgramData.
+-Moved default settings folder from program files to Users Folder.

@@ -4612,7 +4612,7 @@ QwBEAF8AUgBPAE0AAQBFAHgAcAByAGUAcwBzAA==
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{11BE5F71-5333-4744-A44F-D290DF97F102}</td><td/></row>
 		<row><td>ProductName</td><td>Midi Shape Shifter</td><td/></row>
-		<row><td>ProductVersion</td><td>1.0.7</td><td/></row>
+		<row><td>ProductVersion</td><td>1.0.8</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
