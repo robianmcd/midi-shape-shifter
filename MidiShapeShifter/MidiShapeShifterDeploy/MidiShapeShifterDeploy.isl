@@ -361,7 +361,7 @@
 		<row><td>NCalc.dll</td><td>{42502704-3485-4F26-A7E0-13D93849D6D9}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>ncalc.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Ninject.dll</td><td>{A66B98F8-A217-4BD7-8AE4-E1E53569003B}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>ninject.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ZedGraph.dll</td><td>{36C43458-32A7-4A73-8A5F-CDD977530C26}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>zedgraph.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>msvcr100.dll</td><td>{C59BFFF5-97E4-4281-AF92-F3B8E609C990}</td><td>SYSTEM</td><td>2</td><td/><td>msvcr100.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>msvcr110.dll</td><td>{56F07FAC-A0E1-4762-962F-11B07C0F6404}</td><td>SYSTEM</td><td>2</td><td/><td>msvcr110.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1930,7 +1930,7 @@
 		<row><td>AlwaysInstall</td><td>NCalc.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Ninject.dll</td></row>
 		<row><td>AlwaysInstall</td><td>ZedGraph.dll</td></row>
-		<row><td>AlwaysInstall</td><td>msvcr100.dll</td></row>
+		<row><td>AlwaysInstall</td><td>msvcr110.dll</td></row>
 	</table>
 
 	<table name="File">
@@ -1962,7 +1962,7 @@
 		<row><td>line.msst</td><td>ISX_DEFAULTCOMPONENT5</td><td>Line.msst</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Line.msst</td><td>1</td><td/></row>
 		<row><td>midishapeshifter.dll</td><td>MidiShapeShifter.dll</td><td>MIDISH~1.DLL|MidiShapeShifter.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\MidiShapeShifter\bin\vst-dist\MidiShapeShifter.dll</td><td>1</td><td/></row>
 		<row><td>midishapeshifter.net.vstdll</td><td>ISX_DEFAULTCOMPONENT2</td><td>MIDISH~1.VST|MidiShapeShifter.net.vstdll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\MidiShapeShifter\bin\vst-dist\MidiShapeShifter.net.vstdll</td><td>1</td><td/></row>
-		<row><td>msvcr100.dll</td><td>msvcr100.dll</td><td>msvcr100.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Rob\Dropbox\Repos\midi-shape-shifter\MidiShapeShifter\MidiShapeShifterDeploy\install-dist\msvcr100.dll</td><td>1</td><td/></row>
+		<row><td>msvcr110.dll</td><td>msvcr110.dll</td><td>msvcr110.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Rob\Dropbox\Repos\midi-shape-shifter\MidiShapeShifter\MidiShapeShifterDeploy\install-dist\x64\msvcr110.dll</td><td>1</td><td/></row>
 		<row><td>ncalc.dll</td><td>NCalc.dll</td><td>NCalc.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\NCalc.dll</td><td>1</td><td/></row>
 		<row><td>ninject.dll</td><td>Ninject.dll</td><td>Ninject.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\lib\Ninject.dll</td><td>1</td><td/></row>
 		<row><td>power_curve.msst</td><td>ISX_DEFAULTCOMPONENT5</td><td>POWERC~1.MSST|Power Curve.msst</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;install-dist\Factory Settings\Transformation Presets\Power Curve.msst</td><td>1</td><td/></row>
@@ -2249,7 +2249,7 @@
 		<row><td>NCalc.dll</td><td/><td/><td>_01285225_9A01_44F9_8EEF_289570FD547E_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Ninject.dll</td><td/><td/><td>_93D7943C_1B7A_44CB_A9F3_8D0737A32F83_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ZedGraph.dll</td><td/><td/><td>_53877953_91B4_4594_8843_9EBCCAF40130_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>msvcr100.dll</td><td/><td/><td>_0C1798FE_25F4_42F4_BACE_D8CF98DCD6DB_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>msvcr110.dll</td><td/><td/><td>_887D72B5_03AE_4BD4_AE45_5BD6A129CE47_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
