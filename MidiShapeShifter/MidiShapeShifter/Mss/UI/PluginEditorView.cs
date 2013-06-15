@@ -1546,6 +1546,12 @@ namespace MidiShapeShifter.Mss.UI
 
                     UpdateCurveShapeControls();
 
+                    //Ensures that UpdateCurveShapeControls() added the required control point.
+                    if (controlPointsCurve.Points.Count <= pointBeforeNewPointIndex + 1)
+                    {
+                        Debug.Assert(false);
+                    }
+
                     this.mainGraphControl.StartEditing(pane, mousePt, controlPointsCurve, pointBeforeNewPointIndex + 1);
 
                 }

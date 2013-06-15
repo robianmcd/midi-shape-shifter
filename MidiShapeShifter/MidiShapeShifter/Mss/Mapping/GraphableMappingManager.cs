@@ -207,29 +207,35 @@ namespace MidiShapeShifter.Mss.Mapping
 
         public IReturnStatus<CurveShapeInfo> GetCopyOfCurveShapeInfoById(int id)
         {
-            MappingEntryType matchingEntry = GetMappingEntryById(id);
-            if (matchingEntry == null)
+            lock (this.memberLock)
             {
-                return new ReturnStatus<CurveShapeInfo>();
-            }
-            else 
-            {
-                CurveShapeInfo curveInfoClone = matchingEntry.CurveShapeInfo.Clone();
-                return new ReturnStatus<CurveShapeInfo>(curveInfoClone);
+                MappingEntryType matchingEntry = GetMappingEntryById(id);
+                if (matchingEntry == null)
+                {
+                    return new ReturnStatus<CurveShapeInfo>();
+                }
+                else
+                {
+                    CurveShapeInfo curveInfoClone = matchingEntry.CurveShapeInfo.Clone();
+                    return new ReturnStatus<CurveShapeInfo>(curveInfoClone);
+                }
             }
         }
 
         public bool SetCurveShapeInfoForId(int id, CurveShapeInfo curveInfo)
         {
-            MappingEntryType matchingEntry = GetMappingEntryById(id);
-            if (matchingEntry == null)
+            lock (this.memberLock)
             {
-                return false;
-            }
-            else
-            {
-                matchingEntry.CurveShapeInfo = curveInfo.Clone();
-                return true;
+                MappingEntryType matchingEntry = GetMappingEntryById(id);
+                if (matchingEntry == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    matchingEntry.CurveShapeInfo = curveInfo.Clone();
+                    return true;
+                }
             }
         }
 
