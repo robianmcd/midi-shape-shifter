@@ -361,7 +361,7 @@
 		<row><td>NCalc.dll</td><td>{42502704-3485-4F26-A7E0-13D93849D6D9}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>ncalc.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Ninject.dll</td><td>{A66B98F8-A217-4BD7-8AE4-E1E53569003B}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>ninject.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ZedGraph.dll</td><td>{36C43458-32A7-4A73-8A5F-CDD977530C26}</td><td>GlobalAssemblyCache</td><td>2</td><td/><td>zedgraph.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>msvcr110.dll</td><td>{5B2C8A8F-EA7C-4768-8EF0-E341213E8BF2}</td><td>SYSTEM</td><td>2</td><td/><td>msvcr110.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>msvcr110.dll</td><td>{5783DFC0-546B-4EDE-B2A3-7B1BBFDC4B05}</td><td>SYSTEM</td><td>2</td><td/><td>msvcr110.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -2249,7 +2249,7 @@
 		<row><td>NCalc.dll</td><td/><td/><td>_01285225_9A01_44F9_8EEF_289570FD547E_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Ninject.dll</td><td/><td/><td>_93D7943C_1B7A_44CB_A9F3_8D0737A32F83_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ZedGraph.dll</td><td/><td/><td>_53877953_91B4_4594_8843_9EBCCAF40130_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>msvcr110.dll</td><td/><td/><td>_5B891E5F_4D4B_437C_BF43_54DCE097631E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>msvcr110.dll</td><td/><td/><td>_63354C61_211B_4C75_B9FF_429C39C85E7D_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -4612,7 +4612,7 @@ QwBEAF8AUgBPAE0AAQBFAHgAcAByAGUAcwBzAA==
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{11BE5F71-5333-4744-A44F-D290DF97F102}</td><td/></row>
 		<row><td>ProductName</td><td>Midi Shape Shifter</td><td/></row>
-		<row><td>ProductVersion</td><td>1.0.9</td><td/></row>
+		<row><td>ProductVersion</td><td>1.0.10</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
