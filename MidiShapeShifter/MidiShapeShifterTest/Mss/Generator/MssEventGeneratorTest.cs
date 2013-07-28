@@ -14,6 +14,7 @@ using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Relays;
 using MidiShapeShifter.Mss.Parameters;
 using MidiShapeShifter.CSharpUtil;
+using MidiShapeShifter.Mss.Mapping;
 
 namespace MidiShapeShifterTest.Mss.Generator
 {
@@ -137,6 +138,21 @@ namespace MidiShapeShifterTest.Mss.Generator
                 }
             });
 
+            this.genMappingMgrMock
+                .Setup(mgr => mgr.RunFuncOnMappingEntry(It.IsAny<int>(), It.IsAny<MappingEntryAccessor<IGeneratorMappingEntry>>()))
+                .Returns((int id, MappingEntryAccessor<IGeneratorMappingEntry> entryAccessor) => {
+                    var matchingEntry = this.genMappingEntryList.Find(mappingEntry => mappingEntry.Id == id);
+                    if (matchingEntry == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        entryAccessor(matchingEntry);
+                        return true;
+                    }
+                });
+
             eventGenerator = new MssEventGenerator();
             eventGenerator.Init(this.hostInfoRelayMock.Object,
                                 this.wetEventRelayMock.Object,
@@ -187,20 +203,23 @@ namespace MidiShapeShifterTest.Mss.Generator
             Assert.IsEmpty(this.generatedEventList);
         }
 
-        [Test]
-        public void OnUpdate_TransportStoppedForBeatGen_NoEventsGenerated()
-        {
-            this.host_TransportPlaying = false;
 
-            Mock<IGeneratorMappingEntry> mapEntryMock = MockFactory_IGeneratorMappingEntry();
-            mapEntryMock.Object.GenConfigInfo.PeriodType = GenPeriodType.BeatSynced;
+        //The beatSynced Feature was removed so this test no longer applies.
 
-            this.genMappingEntryList.Add(mapEntryMock.Object);
+        //[Test]
+        //public void OnUpdate_TransportStoppedForBeatGen_NoEventsGenerated()
+        //{
+        //    this.host_TransportPlaying = false;
 
-            triggerCycleEnd(DUMMY_CYCLE_END_TIME);
+        //    Mock<IGeneratorMappingEntry> mapEntryMock = MockFactory_IGeneratorMappingEntry();
+        //    mapEntryMock.Object.GenConfigInfo.PeriodType = GenPeriodType.BeatSynced;
 
-            Assert.IsEmpty(this.generatedEventList);
-        }
+        //    this.genMappingEntryList.Add(mapEntryMock.Object);
+
+        //    triggerCycleEnd(DUMMY_CYCLE_END_TIME);
+
+        //    Assert.IsEmpty(this.generatedEventList);
+        //}
 
         [Test]
         public void OnUpdate_GeneratorDisabled_NoEventsGenerated()
@@ -243,8 +262,15 @@ namespace MidiShapeShifterTest.Mss.Generator
         [Test]
         public void OnUpdate_MultipleUpdatesInCycle_PeriodPositionWrapsAround()
         {
+            //This sample rate will cause the generator to update 4 times per second
+            this.host_SampleRate = MssEventGenerator.SAMPLES_PER_GENERATOR_UPDATE * 4;
+            //Set the tempo to 1 bar per second
+            this.host_Tempo = 60 * 4;
+
+            //These previous two settings will mean that on each update the generator will progress through a quarter of the bar.
+
             Mock<IGeneratorMappingEntry> mapEntryMock = MockFactory_IGeneratorMappingEntry();
-            mapEntryMock.Object.GenConfigInfo.PeriodType = GenPeriodType.BeatSynced;
+            mapEntryMock.Object.GenConfigInfo.PeriodType = GenPeriodType.Bars;
 
             this.genMappingEntryList.Add(mapEntryMock.Object);
 
@@ -260,13 +286,13 @@ namespace MidiShapeShifterTest.Mss.Generator
         [Test]
         public void OnUpdate_MultipleGenerators_EventGeneratedForEachGenerator()
         {
-            Mock<IGeneratorMappingEntry> beatSyncedMapEntryMock = MockFactory_IGeneratorMappingEntry();
-            beatSyncedMapEntryMock.Object.GenConfigInfo.PeriodType = GenPeriodType.BeatSynced;
+            Mock<IGeneratorMappingEntry> barBasedMapEntryMock = MockFactory_IGeneratorMappingEntry();
+            barBasedMapEntryMock.Object.GenConfigInfo.PeriodType = GenPeriodType.Bars;
             
             Mock<IGeneratorMappingEntry> timeBasedMapEntryMock = MockFactory_IGeneratorMappingEntry();
             timeBasedMapEntryMock.Object.GenConfigInfo.PeriodType = GenPeriodType.Time;
 
-            this.genMappingEntryList.Add(beatSyncedMapEntryMock.Object);
+            this.genMappingEntryList.Add(barBasedMapEntryMock.Object);
             this.genMappingEntryList.Add(timeBasedMapEntryMock.Object);
 
             triggerCycleEnd(MssEventGenerator.SAMPLES_PER_GENERATOR_UPDATE);
@@ -277,13 +303,13 @@ namespace MidiShapeShifterTest.Mss.Generator
         [Test]
         public void OnUpdate_MultipleGenerators_GeneratorEventsGenerated()
         {
-            Mock<IGeneratorMappingEntry> beatSyncedMapEntryMock = MockFactory_IGeneratorMappingEntry();
-            beatSyncedMapEntryMock.Object.GenConfigInfo.PeriodType = GenPeriodType.BeatSynced;
+            Mock<IGeneratorMappingEntry> barBasedMapEntryMock = MockFactory_IGeneratorMappingEntry();
+            barBasedMapEntryMock.Object.GenConfigInfo.PeriodType = GenPeriodType.Bars;
 
             Mock<IGeneratorMappingEntry> timeBasedMapEntryMock = MockFactory_IGeneratorMappingEntry();
             timeBasedMapEntryMock.Object.GenConfigInfo.PeriodType = GenPeriodType.Time;
 
-            this.genMappingEntryList.Add(beatSyncedMapEntryMock.Object);
+            this.genMappingEntryList.Add(barBasedMapEntryMock.Object);
             this.genMappingEntryList.Add(timeBasedMapEntryMock.Object);
 
             triggerCycleEnd(MssEventGenerator.SAMPLES_PER_GENERATOR_UPDATE);

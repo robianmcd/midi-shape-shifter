@@ -98,7 +98,7 @@ namespace MidiShapeShifter.Mss.Generator
                             if (mssEvent.mssMsg.Data3 > 0)
                             {
                                 genEntry.GenConfigInfo.Enabled = true;
-                                genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = 0;
+                                genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = double.NaN;
                                 genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate = mssEvent.sampleTime - SAMPLES_PER_GENERATOR_UPDATE;
                                 genEntry.GenHistoryInfo.LastValueSent = double.NaN;
                                 genEntry.GenHistoryInfo.Initialized = true;
@@ -106,7 +106,7 @@ namespace MidiShapeShifter.Mss.Generator
                             else
                             {
                                 genEntry.GenConfigInfo.Enabled = false;
-                                genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = 0;
+                                genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = double.NaN;
                                 genEntry.GenHistoryInfo.Initialized = false;
                             }
                             break;
@@ -129,6 +129,7 @@ namespace MidiShapeShifter.Mss.Generator
                         case GenOperation.SetPosition:
                             if (double.IsNaN(mssEvent.mssMsg.Data3) == false)
                             {
+                                //TODO: The value that get's set here will not actually be used. Instead the next value will be used.
                                 genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = mssEvent.mssMsg.Data3;
                             }
                             break;
@@ -279,13 +280,15 @@ namespace MidiShapeShifter.Mss.Generator
             //Stores the relative position through the period that the next event for genEntry 
             //will occur.
             double relPosInPeriod;
+            bool reachedEndOfPeriod;
             if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.BeatSynced)
             {
                 //TODO: this code does not work. relPosInPeriod can be negative which screws everything up.
-
+                //It also doesn't take looping into account
                 relPosInPeriod = GetRelPosInBeatSyncedPeriod(genEntry.GenConfigInfo,
                         genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate + 
                         SAMPLES_PER_GENERATOR_UPDATE);
+                reachedEndOfPeriod = false;
             }
             else if (genEntry.GenConfigInfo.PeriodType == GenPeriodType.Time ||
                      genEntry.GenConfigInfo.PeriodType == GenPeriodType.Bars)
@@ -293,8 +296,17 @@ namespace MidiShapeShifter.Mss.Generator
                 int periodSizeInSamples = GetPeriodSizeInSamples(genEntry.GenConfigInfo);
                 double RelativeperiodIncrement = 
                         ((double)SAMPLES_PER_GENERATOR_UPDATE) / ((double)periodSizeInSamples);
-                relPosInPeriod = genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate +
-                                        RelativeperiodIncrement;
+
+                //PercentThroughPeriodOnLastUpdate will be NaN the first time it's generator is updated.
+                if (double.IsNaN(genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate) == false)
+                {
+                    relPosInPeriod = genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate +
+                                            RelativeperiodIncrement;
+                }
+                else {
+                    relPosInPeriod = 0;
+                }
+                reachedEndOfPeriod = (relPosInPeriod >= 1);
                 //Remove the interger component of relPosInPeriod so that it is between 0 and 1.
                 relPosInPeriod = relPosInPeriod % 1;
             }
@@ -309,9 +321,7 @@ namespace MidiShapeShifter.Mss.Generator
 
             //If this generator is not set to loop and it has finished one full period then disable it
             //it and return null so that no more events are sent.
-            if (genEntry.GenConfigInfo.Loop == false && 
-                (relPosInPeriod < genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate ||
-                GetPeriodSizeInSamples(genEntry.GenConfigInfo) < SAMPLES_PER_GENERATOR_UPDATE))
+            if (genEntry.GenConfigInfo.Loop == false && reachedEndOfPeriod)
             {
                 genEntry.GenConfigInfo.Enabled = false;
                 genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = 0;
