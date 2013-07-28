@@ -16,6 +16,8 @@ using MidiShapeShifter.Mss.UI;
 using MidiShapeShifter.Mss.Relays;
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
 using MidiShapeShifter.Mss.Parameters;
+using System.Threading;
+using System.Globalization;
 
 namespace MidiShapeShifter.Mss
 {
@@ -85,11 +87,18 @@ namespace MidiShapeShifter.Mss
         protected EventLogger eventLogger;
 
         static MssComponentHub() {
-
+            //Some countries use a comma instead of a decimal point. This is not supported by NCalc so we 
+            //need to ensure everyone is using a "."
+            if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator != ".")
+            {
+                Thread.CurrentThread.CurrentCulture = new CultureInfo("en-Us");
+            }
         }
 
         public MssComponentHub()
         {
+            Logger.Info(1, "Initializing MssComponentHub");
+
             ConstructNonSerializableMembers();
 
             //Construct Serializable members
@@ -216,6 +225,11 @@ namespace MidiShapeShifter.Mss
                                             this.HostInfoOutputPort, 
                                             this.activeMappingInfo);
             }
+        }
+
+        public override string ToString()
+        {
+            return String.Format("MssComponentHub, numMappings: {0}, numGenMappings {1}", this.mappingMgr.GetNumEntries(), this.genMappingMgr.GetNumEntries());
         }
 
     }

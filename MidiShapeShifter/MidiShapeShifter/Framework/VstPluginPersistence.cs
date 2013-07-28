@@ -138,6 +138,8 @@ namespace MidiShapeShifter.Framework
             {
                 PluginDeserialized(deserializedRoot);
             }
+
+            Logger.Info(21, string.Format("Finished loading new program: {0}", deserializedRoot.ToString()));
         }
 
         /// <summary>

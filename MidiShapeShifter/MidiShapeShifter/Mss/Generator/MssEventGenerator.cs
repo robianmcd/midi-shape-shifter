@@ -156,114 +156,107 @@ namespace MidiShapeShifter.Mss.Generator
 
             foreach (int genEntryId in genEntryIdList)
             {
-                var retStatus = this.generatorMappingMgr.GetCopyOfMappingEntryById(genEntryId);
-                IGeneratorMappingEntry genEntry;
-                if (retStatus.IsValid)
-                {
-                    genEntry = retStatus.Value;
-                }
-                else
-                {
-                    continue;
-                }
 
-                //In order to generate events we need to some information about the 
-                //host. If any of this information hasn't been initialized yet then just don't 
-                //generate anything for this generator.
-                switch (genEntry.GenConfigInfo.PeriodType)
-                {
-                    case GenPeriodType.BeatSynced:
-                        if (this.hostInfoOutputPort.TempoIsInitialized == false ||
-                            this.hostInfoOutputPort.TimeSignatureIsInitialized == false ||
-                            this.hostInfoOutputPort.CalculatedBarZeroIsInitialized == false ||
-                            this.hostInfoOutputPort.TransportPlayingIsInitialized == false)
-                        {
-                            continue;
-                        }
+                this.generatorMappingMgr.RunFuncOnMappingEntry(genEntryId, (genEntry) => {
 
-                        //If the host stopped playing then nothing will be generated for this generator
-                        //and it will need to be reinitialized when the host starts playing again.
-                        if (this.hostInfoOutputPort.TransportPlaying == false)
-                        {
-                            genEntry.GenHistoryInfo.Initialized = false;
-                            continue;
-                        }
-                        break;
-
-                    case GenPeriodType.Time:
-
-                        if (this.hostInfoOutputPort.TimeSignatureIsInitialized == false)
-                        {
-                            continue;
-                        }
-                        break;
-
-                    case GenPeriodType.Bars:
-                        if (this.hostInfoOutputPort.TempoIsInitialized == false ||
-                            this.hostInfoOutputPort.TimeSignatureIsInitialized == false)
-                        {
-                            continue;
-                        }
-                        break;
-
-                    default:
-                        Debug.Assert(false);
-                        break;
-                }
-
-                //Only enabled generators should generate anything
-                if (genEntry.GenConfigInfo.Enabled == true)
-                {
-                    //Initializes the history info for this generator if it has not already been
-                    //initialized.
-                    if (genEntry.GenHistoryInfo.Initialized == false)
+                    //In order to generate events we need to some information about the 
+                    //host. If any of this information hasn't been initialized yet then just don't 
+                    //generate anything for this generator.
+                    switch (genEntry.GenConfigInfo.PeriodType)
                     {
-                        //The GenHistoryInfo will be initialized such that it appears to have been
-                        //updated on the last processing cycle.
-                        genEntry.GenHistoryInfo.InitAllMembers(
-                                this.sampleTimeAtEndOfLastCycle,
-                                genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate,
-                                double.NaN);
-                    }
-
-                    //Generate events for this generator until the next event coming from this 
-                    //generator would fall into the next audio processing cycle. The enabled status
-                    //of a generator can change in a call to GenerateEvent() so we need to ensure 
-                    //that this generator is still enabled.
-                    while (genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate +
-                            SAMPLES_PER_GENERATOR_UPDATE <= sampleTimeAtEndOfCycle &&
-                            genEntry.GenConfigInfo.Enabled == true)
-                    {
-                        MssEvent generatedEvent = GenerateEvent(genEntry);
-                        if (generatedEvent != null)
-                        {
-                            //This can be true in the following scenario.
-                            //  1. At the end of a cycle a generator generates a genmodify message
-                            //  2. The gen modify event gets caught by this class when all the wet events are sent out 
-                            //     which enables a generator and sets it's SampleTimeAtLastGeneratorUpdate to one cycle 
-                            //     before the time of the gen modify event.
-                            //  3. The newly enabled generator doesn't get generated this cycle because HostInfoOutputPort_BeforeProcessingCycleEnd
-                            //     has already finished.
-                            //  4. On the next cycle the newly enabled generator starts getting generated but it has 
-                            //     events that should have gone out last cycle.
-                            //
-                            // Just ignoreing the events is not a great solution as they really should have been sent 
-                            // out last cycle. But this does give us an easy way to prevent infinate feedback loops.
-                            if (this.sampleTimeAtEndOfLastCycle >= generatedEvent.sampleTime)
+                        case GenPeriodType.BeatSynced:
+                            if (this.hostInfoOutputPort.TempoIsInitialized == false ||
+                                this.hostInfoOutputPort.TimeSignatureIsInitialized == false ||
+                                this.hostInfoOutputPort.CalculatedBarZeroIsInitialized == false ||
+                                this.hostInfoOutputPort.TransportPlayingIsInitialized == false)
                             {
-                                continue;
+                                return;
                             }
 
-                            this.dryMssEventInputPort.ReceiveDryMssEvent(generatedEvent);                
+                            //If the host stopped playing then nothing will be generated for this generator
+                            //and it will need to be reinitialized when the host starts playing again.
+                            if (this.hostInfoOutputPort.TransportPlaying == false)
+                            {
+                                genEntry.GenHistoryInfo.Initialized = false;
+                                return;
+                            }
+                            break;
+
+                        case GenPeriodType.Time:
+
+                            if (this.hostInfoOutputPort.TimeSignatureIsInitialized == false)
+                            {
+                                return;
+                            }
+                            break;
+
+                        case GenPeriodType.Bars:
+                            if (this.hostInfoOutputPort.TempoIsInitialized == false ||
+                                this.hostInfoOutputPort.TimeSignatureIsInitialized == false)
+                            {
+                                return;
+                            }
+                            break;
+
+                        default:
+                            Debug.Assert(false);
+                            break;
+                    }
+
+                    //Only enabled generators should generate anything
+                    if (genEntry.GenConfigInfo.Enabled == true)
+                    {
+                        //Initializes the history info for this generator if it has not already been
+                        //initialized.
+                        if (genEntry.GenHistoryInfo.Initialized == false)
+                        {
+                            //The GenHistoryInfo will be initialized such that it appears to have been
+                            //updated on the last processing cycle.
+                            genEntry.GenHistoryInfo.InitAllMembers(
+                                    this.sampleTimeAtEndOfLastCycle,
+                                    genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate,
+                                    double.NaN);
+                        }
+
+                        //Generate events for this generator until the next event coming from this 
+                        //generator would fall into the next audio processing cycle. The enabled status
+                        //of a generator can change in a call to GenerateEvent() so we need to ensure 
+                        //that this generator is still enabled.
+                        while (genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate +
+                                SAMPLES_PER_GENERATOR_UPDATE <= sampleTimeAtEndOfCycle &&
+                                genEntry.GenConfigInfo.Enabled == true)
+                        {
+                            MssEvent generatedEvent = GenerateEvent(genEntry);
+                            if (generatedEvent != null)
+                            {
+                                //This can be true in the following scenario.
+                                //  1. At the end of a cycle a generator generates a genmodify message
+                                //  2. The gen modify event gets caught by this class when all the wet events are sent out 
+                                //     which enables a generator and sets it's SampleTimeAtLastGeneratorUpdate to one cycle 
+                                //     before the time of the gen modify event.
+                                //  3. The newly enabled generator doesn't get generated this cycle because HostInfoOutputPort_BeforeProcessingCycleEnd
+                                //     has already finished.
+                                //  4. On the next cycle the newly enabled generator starts getting generated but it has 
+                                //     events that should have gone out last cycle.
+                                //
+                                // Just ignoreing the events is not a great solution as they really should have been sent 
+                                // out last cycle. But this does give us an easy way to prevent infinate feedback loops.
+                                if (this.sampleTimeAtEndOfLastCycle >= generatedEvent.sampleTime)
+                                {
+                                    continue;
+                                }
+
+                                this.dryMssEventInputPort.ReceiveDryMssEvent(generatedEvent);
+                            }
                         }
                     }
-                }
-                else
-                {
-                    genEntry.GenHistoryInfo.Initialized = false;
-                }
+                    else
+                    {
+                        genEntry.GenHistoryInfo.Initialized = false;
+                    }
+                });
 
-                this.generatorMappingMgr.ReplaceMappingEntry(genEntry);
+                
             }
 
             

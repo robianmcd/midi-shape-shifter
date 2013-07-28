@@ -112,6 +112,10 @@ namespace MidiShapeShifter.Mss.Evaluation
                 out HashSet<int> erroneousCurveIndexSet
             )
         {
+            Logger.HighVolume(23, String.Format("Sampling Expression - xGap: {0}, variableParamInfo: {1}", 
+                xDistanceBetweenPoints,
+                EnumerableUtils.ToString(variableParamInfoList)));
+
             erroneousControlPointIndexSet = new HashSet<int>();
             erroneousCurveIndexSet = new HashSet<int>();
 
@@ -159,6 +163,8 @@ namespace MidiShapeShifter.Mss.Evaluation
 
                 int numPointsInCurve = (int)((curveEndXVal - curveStartXVal) / xDistanceBetweenPoints) + 1;
 
+                Logger.HighVolume(24, string.Format("Sampling curve {0}. Points in curve: {1}", curveIndex, numPointsInCurve));
+
                 if (numPointsInCurve == 0) {
                     return;
                 }
@@ -175,6 +181,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                 {
                     lock (erroneousCurveIndexSet2)
                     {
+                        Logger.HighVolume(25, string.Format("Sampling exiting early as first eval status for curve {0} was invalid", curveIndex));
                         erroneousCurveIndexSet2.Add(curveIndex);
                         noErrorsEncountered = false;
                         loopState.Stop();
@@ -200,6 +207,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                     {
                         lock (erroneousCurveIndexSet2)
                         {
+                            Logger.HighVolume(25, string.Format("Sampling exiting. point {0} for curve {1} was invalid.", pointIndex, curveIndex));
                             erroneousCurveIndexSet2.Add(curveIndex);
                             noErrorsEncountered = false;
                             loopState.Stop();
@@ -297,6 +305,9 @@ namespace MidiShapeShifter.Mss.Evaluation
             List<XyPoint<string>> pointEquations,
             ref HashSet<int> erroneousControlPointIndexSet)
         {
+            Logger.HighVolume(26, string.Format("CalculateControlPointValues - pointEquations: {0}, transformParamInfoList: {1}",
+                EnumerableUtils.ToString(pointEquations), EnumerableUtils.ToString(transformParamInfoList)));
+
             erroneousControlPointIndexSet.Clear();
 
             var controlPointList = new List<XyPoint<double>>();
@@ -323,8 +334,10 @@ namespace MidiShapeShifter.Mss.Evaluation
                 var yEquationStatus = CreateExpressionFromString(pointEquation.Y, EvalType.ControlPoint);
 
                 if (!xEquationStatus.IsValid || !yEquationStatus.IsValid) {
+                    Logger.HighVolume(27, string.Format("The x or y equation for control point {0} was not a valid equation. Equations: {1}",
+                        i, pointEquation));
                     erroneousControlPointIndexSet.Add(i);
-                    return new ReturnStatus<List<XyPoint<double>>>();
+                    return new ReturnStatus<List<XyPoint<double>>>(controlPointList, false);
                 }
 
                 //Evaluate the equation for the current control point's X value
@@ -340,8 +353,11 @@ namespace MidiShapeShifter.Mss.Evaluation
                 //If one of the equations could not be evaluated return false
                 if (pointXEvalJob.OutputIsValid == false || pointYEvalJob.OutputIsValid == false)
                 {
+                    Logger.HighVolume(28, string.Format("The x or y equation for control point {0} encountered an error while being evaluated. Equations: {1}",
+                       i, pointEquation));
+
                     erroneousControlPointIndexSet.Add(i);
-                    return new ReturnStatus<List<XyPoint<double>>>();
+                    return new ReturnStatus<List<XyPoint<double>>>(controlPointList, false);
                 }
 
                 //Store the current control point's X and Y coordinates in this.controlPointValues.
@@ -357,13 +373,15 @@ namespace MidiShapeShifter.Mss.Evaluation
                 //invalid return status.
                 if (controlPointList[i - 1].X > controlPointList[i].X)
                 {
+                    Logger.HighVolume(29, string.Format("The control points are not in order. X{0}: {1}, X{2}, {3}",
+                        i - 1, controlPointList[i - 1].X, i, controlPointList[i].X));
                     erroneousControlPointIndexSet.Add(i);
                     erroneousControlPointIndexSet.Add(i - 1);
-                    return new ReturnStatus<List<XyPoint<double>>>();
+                    return new ReturnStatus<List<XyPoint<double>>>(controlPointList, false);
                 }
             }
 
-            return new ReturnStatus<List<XyPoint<double>>>(controlPointList);
+            return new ReturnStatus<List<XyPoint<double>>>(controlPointList, true);
         }
 
 

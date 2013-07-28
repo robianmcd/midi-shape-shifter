@@ -19,7 +19,6 @@ namespace MidiShapeShifter.Mss.Mapping
 
 
         IReturnStatus<CurveShapeInfo> GetCopyOfCurveShapeInfoById(int id);
-        bool SetCurveShapeInfoForId(int id, CurveShapeInfo curveInfo);
 
         bool RunFuncOnMappingEntry(int id, MappingEntryAccessor<IMappingEntry> mappingEntryAccessor);
 

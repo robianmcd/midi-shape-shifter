@@ -222,23 +222,6 @@ namespace MidiShapeShifter.Mss.Mapping
             }
         }
 
-        public bool SetCurveShapeInfoForId(int id, CurveShapeInfo curveInfo)
-        {
-            lock (this.memberLock)
-            {
-                MappingEntryType matchingEntry = GetMappingEntryById(id);
-                if (matchingEntry == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    matchingEntry.CurveShapeInfo = curveInfo.Clone();
-                    return true;
-                }
-            }
-        }
-
         public bool ReplaceMappingEntry(MappingEntryType mappingEntry)
         {
             lock (this.memberLock)

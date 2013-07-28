@@ -107,6 +107,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\LBIndustrialCtrls.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="NCalc, Version=1.3.6.0, Culture=neutral, PublicKeyToken=973cde3f1cafed03, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\NCalc.dll</HintPath>
@@ -137,6 +138,7 @@
     <Compile Include="CSharpUtil\CustomListUtils.cs" />
     <Compile Include="CSharpUtil\CustomMathUtils.cs" />
     <Compile Include="CSharpUtil\DrawingControl.cs" />
+    <Compile Include="CSharpUtil\EnumerableUtils.cs" />
     <Compile Include="CSharpUtil\FileTreeFolderNode.cs" />
     <Compile Include="CSharpUtil\LruCache.cs" />
     <Compile Include="CSharpUtil\ReturnStatus.cs" />
@@ -148,6 +150,7 @@
     <Compile Include="Framework\VstPluginPersistence.cs" />
     <Compile Include="Framework\VstTimeInfoTransmitter.cs" />
     <Compile Include="Ioc\IocMgr.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Midi\MidiUtil.cs" />
     <Compile Include="Mss\BaseSettingsFileMgr.cs" />
     <Compile Include="Mss\EventLogger.cs" />

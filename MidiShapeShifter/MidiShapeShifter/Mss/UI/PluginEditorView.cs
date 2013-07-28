@@ -453,6 +453,11 @@ namespace MidiShapeShifter.Mss.UI
                 IMappingEntry activeMapping = this.activeMappingInfo.GetActiveMappingCopy();
                 CurveShapeInfo curveInfo = activeMapping.CurveShapeInfo;
 
+                Logger.HighVolume(2, string.Format(
+                    "Updating curve shape controls. Curve equations: {0}. Point equations: {1}. Equation type: {2}", 
+                    EnumerableUtils.ToString(curveInfo.CurveEquations), EnumerableUtils.ToString(curveInfo.PointEquations), curveInfo.SelectedEquationType.ToString()));
+
+
                 IMssMsgInfo outMsgInfo =
                     this.msgInfoFactory.Create(activeMapping.OutMssMsgRange.MsgType);
 
@@ -966,25 +971,19 @@ namespace MidiShapeShifter.Mss.UI
             {
                 int activeId = this.activeMappingInfo.ActiveGraphableEntryId;
                 IBaseGraphableMappingManager activeManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
-                IReturnStatus<CurveShapeInfo> getCurveInfoStatus = activeManager.GetCopyOfCurveShapeInfoById(activeId);
-
-                if (!getCurveInfoStatus.IsValid)
+                activeManager.RunFuncOnMappingEntry(activeId, (mappingEntry) => 
                 {
-                    Debug.Assert(false);
-                    return;
-                }
+                    CurveShapeInfo curveInfo = mappingEntry.CurveShapeInfo;
 
-                CurveShapeInfo curveInfo = getCurveInfoStatus.Value;
+                    Debug.Assert(curveInfo.SelectedEquationType == EquationType.Curve);
 
-                Debug.Assert(curveInfo.SelectedEquationType == EquationType.Curve);
+                    string expressionString = this.curveEquationTextBox.Text;
+                    int curCurve = curveInfo.SelectedEquationIndex;
+                    curveInfo.CurveEquations[curCurve] = expressionString;                
+                });
 
-                string expressionString = this.curveEquationTextBox.Text;
-                int curCurve = curveInfo.SelectedEquationIndex;
-                curveInfo.CurveEquations[curCurve] = expressionString;
-
-                activeManager.SetCurveShapeInfoForId(activeId, curveInfo);
-
-                UpdateEquationCurve();
+                this.commandQueue.EnqueueCommandOverwriteDups(
+                    EditorCommandId.UpdateEquationCurve, () => UpdateEquationCurve());
             }
         }
 
@@ -994,18 +993,16 @@ namespace MidiShapeShifter.Mss.UI
             {
                 int activeId = this.activeMappingInfo.ActiveGraphableEntryId;
                 IBaseGraphableMappingManager activeManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
+                activeManager.RunFuncOnMappingEntry(activeId, (mappingEntry) =>
+                {
+                    CurveShapeInfo curveInfo = mappingEntry.CurveShapeInfo;
 
-                IReturnStatus<CurveShapeInfo> curveInfoRetStatus = activeManager.GetCopyOfCurveShapeInfoById(activeId);
-                Debug.Assert(curveInfoRetStatus.IsValid && curveInfoRetStatus.Value.SelectedEquationType == EquationType.Point);
-                CurveShapeInfo curveInfo = curveInfoRetStatus.Value;
-
-                string xExpressionString = this.pointXEquationTextBox.Text;
-                string yExpressionString = this.pointYEquationTextBox.Text;
-                int curCurve = curveInfo.SelectedEquationIndex;
-                curveInfo.PointEquations[curCurve].X = xExpressionString;
-                curveInfo.PointEquations[curCurve].Y = yExpressionString;
-
-                activeManager.SetCurveShapeInfoForId(activeId, curveInfo);
+                    string xExpressionString = this.pointXEquationTextBox.Text;
+                    string yExpressionString = this.pointYEquationTextBox.Text;
+                    int curCurve = curveInfo.SelectedEquationIndex;
+                    curveInfo.PointEquations[curCurve].X = xExpressionString;
+                    curveInfo.PointEquations[curCurve].Y = yExpressionString;
+                });
 
                 this.commandQueue.EnqueueCommandOverwriteDups(
                     EditorCommandId.UpdateEquationCurve, () => UpdateEquationCurve());
@@ -1016,8 +1013,18 @@ namespace MidiShapeShifter.Mss.UI
         {
             if (this.activeMappingInfo.GetActiveMappingExists())
             {
-                IMappingEntry activeMappingEntryCopy = this.activeMappingInfo.GetActiveMappingCopy();
+                var mappingManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
+                int activeMappingId = this.activeMappingInfo.ActiveGraphableEntryId;
+
+                Logger.HighVolume(3, string.Format("Updating equation curve for mapping with id: {0}", activeMappingId));
+
+                IMappingEntry activeMappingEntryCopy = mappingManager.GetCopyOfMappingEntryById(activeMappingId).Value;
                 CurveShapeInfo curveInfoCopy = activeMappingEntryCopy.CurveShapeInfo;
+
+                Logger.HighVolume(22, string.Format(
+                    "Updating equation curve. Curve equations: {0}. Point equations: {1}. Equation type: {2}",
+                    EnumerableUtils.ToString(curveInfoCopy.CurveEquations), EnumerableUtils.ToString(curveInfoCopy.PointEquations), curveInfoCopy.SelectedEquationType.ToString()));
+
 
                 GraphPane graphPane = this.mainGraphControl.GraphPane;
 
@@ -1025,6 +1032,7 @@ namespace MidiShapeShifter.Mss.UI
                         curveItem => curveItem.Label.Text == GRAPH_CONTROL_POINTS_LABEL);
                 if (pointsCurve == null)
                 {
+                    Logger.Verbose(4, "Points curve not found! Creating one.");
                     pointsCurve = EqGraphConfig.CreadControlPointsCurve(GRAPH_CONTROL_POINTS_LABEL);
                     graphPane.CurveList.Add(pointsCurve);
                 }
@@ -1035,7 +1043,7 @@ namespace MidiShapeShifter.Mss.UI
                 HashSet<int> erroneousControlPointIndexSet;
                 HashSet<int> erroneousCurveIndexSet;
 
-                curveInfoCopy.AllEquationsAreValid = this.evaluator.SampleExpressionWithDefaultInputValues(
+                bool allEquationsAreValid = this.evaluator.SampleExpressionWithDefaultInputValues(
                         1.0 / ((double)NUM_GRAPH_POINTS - 1.0),
                         this.mssParameters.GetVariableParamInfoList(),
                         activeMappingEntryCopy,
@@ -1043,7 +1051,27 @@ namespace MidiShapeShifter.Mss.UI
                         out curvePointsByCurveList,
                         out erroneousControlPointIndexSet,
                         out erroneousCurveIndexSet);
-                this.activeMappingInfo.GetActiveGraphableEntryManager().SetCurveShapeInfoForId(this.activeMappingInfo.ActiveGraphableEntryId, curveInfoCopy);
+
+                if (curveInfoCopy.AllEquationsAreValid != allEquationsAreValid) {
+                    curveInfoCopy.AllEquationsAreValid = allEquationsAreValid;
+                    mappingManager.RunFuncOnMappingEntry(activeMappingId, (mappingEntry) =>
+                    {
+                        Logger.Verbose(5, String.Format("AllEquationsAreValid changed to: {0}", allEquationsAreValid));
+                        mappingEntry.CurveShapeInfo.AllEquationsAreValid = allEquationsAreValid;
+                    });
+                }
+
+                if (pointsCurve.Points == null)
+                {
+                    Logger.Error(6, "pointsCurve.Points is null.");
+                    return;
+                }
+                if (pointList == null)
+                {
+                    Logger.Error(7, "pointList is null.");
+                    return;
+                }
+                Logger.HighVolume(8, string.Format("Num existing control points: {0}. Num control points after evaluation: {1}", pointsCurve.Points.Count, pointList.Count));
 
                 if (curveInfoCopy.AllEquationsAreValid)
                 {
@@ -1054,12 +1082,14 @@ namespace MidiShapeShifter.Mss.UI
 
                         if (i <= pointsCurve.Points.Count - 1)
                         {
+                            Logger.HighVolume(9, string.Format("overriding point at index: {0}", i));
                             pointsCurve.Points[i].X = curControlPoint.X;
                             pointsCurve.Points[i].Y = curControlPoint.Y;
                             pointsCurve.Points[i].ColorValue = 0;
                         }
                         else
                         {
+                            Logger.HighVolume(10, string.Format("Adding point at index: {0}", i));
                             pointsCurveEdit.Add(curControlPoint.X, curControlPoint.Y);
                         }
                     }
@@ -1067,6 +1097,7 @@ namespace MidiShapeShifter.Mss.UI
                     //index of the next point.
                     for (int i = pointsCurve.Points.Count - 1; i >= pointList.Count; i--)
                     {
+                        Logger.HighVolume(11, string.Format("Removing point at index: {0}", pointsCurve.Points.Count - 1 - i));
                         pointsCurveEdit.RemoveAt(i);
                     }
 
@@ -1441,122 +1472,145 @@ namespace MidiShapeShifter.Mss.UI
                 return false;
             }
 
-            IMappingEntry activeMappingCopy = this.activeMappingInfo.GetActiveMappingCopy();
-            CurveShapeInfo curveInfoCopy = activeMappingCopy.CurveShapeInfo;
+            Logger.Info(12, string.Format("Equation graph clicked at ({0}, {1}).", e.X, e.Y));
+            
+
+
             IBaseGraphableMappingManager activeMappingManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
             int activeId = this.activeMappingInfo.ActiveGraphableEntryId;
 
-            if (this.activeMappingInfo.GetActiveMappingExists() && curveInfoCopy.AllEquationsAreValid)
+            activeMappingManager.RunFuncOnMappingEntry(activeId, (activeMapping) =>
             {
-                Point mousePt = new Point(e.X, e.Y);
-
-                GraphPane pane = this.mainGraphControl.GraphPane;
+                Logger.Verbose(13, string.Format("Clicked on mapping with id: {0}", activeId));
                 
+                CurveShapeInfo curveInfo = activeMapping.CurveShapeInfo;
 
-                RectangleF chartRect = pane.Chart.Rect;
-
-                XyPoint<double> newPoint = new XyPoint<double>();
-                newPoint.X = (e.X - chartRect.Left) / (double)chartRect.Width;
-                newPoint.Y = (chartRect.Height - (e.Y - chartRect.Top)) / (double)chartRect.Height;
-
-                LineItem controlPointsCurve;
-                int nearestPointIndex;
-
-                //If the click was close enough to an exsisting control point then start dragging 
-                //it. The distances that is deemed "close enough" is defined in 
-                //EqGraphConfig.ConfigureEqGraph.
-                if (GetClickedControlPoint(mousePt, out controlPointsCurve, out nearestPointIndex))
+                if (this.activeMappingInfo.GetActiveMappingExists() && curveInfo.AllEquationsAreValid)
                 {
-                    this.mainGraphControl.StartEditing(pane, mousePt, controlPointsCurve, nearestPointIndex);
-                    return true;
-                }
+                    Point mousePt = new Point(e.X, e.Y);
 
-                //If the click event occured in the chart
-                if (newPoint.X >= 0 && newPoint.X <= 1 && newPoint.Y >= 0 && newPoint.Y <= 1)
-                {
-                    int pointBeforeNewPointIndex = -1;
-                    int pointAfterNewPointIndex = -1;
+                    GraphPane pane = this.mainGraphControl.GraphPane;
 
-                    Debug.Assert(controlPointsCurve.Points.Count == curveInfoCopy.PointEquations.Count);
-                    for (int i = 0; i < controlPointsCurve.Points.Count; i++)
+
+                    RectangleF chartRect = pane.Chart.Rect;
+
+                    XyPoint<double> newPoint = new XyPoint<double>();
+                    newPoint.X = (e.X - chartRect.Left) / (double)chartRect.Width;
+                    newPoint.Y = (chartRect.Height - (e.Y - chartRect.Top)) / (double)chartRect.Height;
+
+                    LineItem controlPointsCurve;
+                    int nearestPointIndex;
+
+                    //If the click was close enough to an exsisting control point then start dragging 
+                    //it. The distances that is deemed "close enough" is defined in 
+                    //EqGraphConfig.ConfigureEqGraph.
+                    if (GetClickedControlPoint(mousePt, out controlPointsCurve, out nearestPointIndex))
                     {
-                        if (controlPointsCurve.Points[i].X > newPoint.X)
+                        if (controlPointsCurve == null || controlPointsCurve.Points == null)
                         {
-                            pointBeforeNewPointIndex = i - 1;
-                            pointAfterNewPointIndex = i;
-                            break;
+                            Logger.Error(20, "Found existing point but controlPointsCurve was null");
+                            return;
                         }
 
+                        Logger.Info(14, string.Format("Editing existing point. Num control points: {0}. Clicked control point index: {1}", controlPointsCurve.Points.Count, nearestPointIndex));
+                        this.mainGraphControl.StartEditing(pane, mousePt, controlPointsCurve, nearestPointIndex);
+                        return;
                     }
 
-                    if (pointAfterNewPointIndex == -1)
+                    //If the click event occured in the chart
+                    if (newPoint.X >= 0 && newPoint.X <= 1 && newPoint.Y >= 0 && newPoint.Y <= 1)
                     {
-                        pointBeforeNewPointIndex = controlPointsCurve.Points.Count - 1;
-                    }
+                        int pointBeforeNewPointIndex = -1;
+                        int pointAfterNewPointIndex = -1;
 
-                    //Adjust the new point's Y value so that it is on the equation line.
-                    EvaluationCurveInput evalInput = new EvaluationCurveInput();
-                    evalInput.Init(newPoint.X, newPoint.X, newPoint.X,
-                        this.mssParameters.GetVariableParamInfoList(),
-                        activeMappingCopy);
-                    ReturnStatus<double> evalReturnStatus = this.evaluator.Evaluate(evalInput);
-                    
-                    //The returned value could be nan if the equation is something like "ignore"
-                    if (evalReturnStatus.IsValid == false || double.IsNaN(evalReturnStatus.Value))
-                    {
-                        return true;
-                    }
-                    newPoint.Y = evalReturnStatus.Value;
-
-                    //Copy curve equation from before the new point and assign it to the new line
-                    //segment after the new point
-                    string equationToDuplicate = curveInfoCopy.CurveEquations[pointBeforeNewPointIndex + 1];
-                    curveInfoCopy.CurveEquations.Insert(pointBeforeNewPointIndex + 1, equationToDuplicate);
-                    //If the new equation is being inserted before the one that is currently 
-                    //selected then the index of the currenly selected equation must be incremented.
-                    if (curveInfoCopy.SelectedEquationType == EquationType.Curve &&
-                        curveInfoCopy.SelectedEquationIndex > pointBeforeNewPointIndex + 1)
-                    {
-                        curveInfoCopy.SelectedEquationIndex++;
-                    }
-
-                    XyPoint<string> newPointEquation = new XyPoint<string>();
-                    newPointEquation.X = Math.Round(newPoint.X, NUM_DECIMALS_IN_CONTROL_POINT).ToString();
-                    newPointEquation.Y = Math.Round(newPoint.Y, NUM_DECIMALS_IN_CONTROL_POINT).ToString();
-
-                    //Add the new point to curveInfo
-                    if (pointAfterNewPointIndex != -1)
-                    {
-                        curveInfoCopy.PointEquations.Insert(pointAfterNewPointIndex, newPointEquation);
-                        //If the new point equation is being inserted before the point that is 
-                        //currently selected then the index of the currenly selected point 
-                        //equation must be incremented.
-                        if (curveInfoCopy.SelectedEquationType == EquationType.Point &&
-                        curveInfoCopy.SelectedEquationIndex >= pointAfterNewPointIndex)
+                        Debug.Assert(controlPointsCurve.Points.Count == curveInfo.PointEquations.Count);
+                        for (int i = 0; i < controlPointsCurve.Points.Count; i++)
                         {
-                            curveInfoCopy.SelectedEquationIndex++;
+                            if (controlPointsCurve.Points[i].X > newPoint.X)
+                            {
+                                pointBeforeNewPointIndex = i - 1;
+                                pointAfterNewPointIndex = i;
+                                break;
+                            }
+
                         }
+
+                        if (pointAfterNewPointIndex == -1)
+                        {
+                            pointBeforeNewPointIndex = controlPointsCurve.Points.Count - 1;
+                        }
+
+                        //Adjust the new point's Y value so that it is on the equation line.
+                        EvaluationCurveInput evalInput = new EvaluationCurveInput();
+                        evalInput.Init(newPoint.X, newPoint.X, newPoint.X,
+                            this.mssParameters.GetVariableParamInfoList(),
+                            activeMapping);
+                        ReturnStatus<double> evalReturnStatus = this.evaluator.Evaluate(evalInput);
+
+                        //The returned value could be nan if the equation is something like "ignore"
+                        if (evalReturnStatus.IsValid == false || double.IsNaN(evalReturnStatus.Value))
+                        {
+                            Logger.Info(15, "Cannot add contrl point. Could be clicking on a function like 'ignore'.");
+                            return;
+                        }
+                        newPoint.Y = evalReturnStatus.Value;
+
+                        //Copy curve equation from before the new point and assign it to the new line
+                        //segment after the new point
+                        string equationToDuplicate = curveInfo.CurveEquations[pointBeforeNewPointIndex + 1];
+                        curveInfo.CurveEquations.Insert(pointBeforeNewPointIndex + 1, equationToDuplicate);
+                        //If the new equation is being inserted before the one that is currently 
+                        //selected then the index of the currenly selected equation must be incremented.
+                        if (curveInfo.SelectedEquationType == EquationType.Curve &&
+                            curveInfo.SelectedEquationIndex > pointBeforeNewPointIndex + 1)
+                        {
+                            curveInfo.SelectedEquationIndex++;
+                        }
+
+                        XyPoint<string> newPointEquation = new XyPoint<string>();
+                        newPointEquation.X = Math.Round(newPoint.X, NUM_DECIMALS_IN_CONTROL_POINT).ToString();
+                        newPointEquation.Y = Math.Round(newPoint.Y, NUM_DECIMALS_IN_CONTROL_POINT).ToString();
+
+                        //Add the new point to curveInfo
+                        if (pointAfterNewPointIndex != -1)
+                        {
+                            curveInfo.PointEquations.Insert(pointAfterNewPointIndex, newPointEquation);
+                            //If the new point equation is being inserted before the point that is 
+                            //currently selected then the index of the currenly selected point 
+                            //equation must be incremented.
+                            if (curveInfo.SelectedEquationType == EquationType.Point &&
+                            curveInfo.SelectedEquationIndex >= pointAfterNewPointIndex)
+                            {
+                                curveInfo.SelectedEquationIndex++;
+                            }
+                        }
+                        else
+                        {
+                            curveInfo.PointEquations.Add(newPointEquation);
+                        }
+                        Logger.StartLoggingHighVolume(16, string.Format(
+                            "Calling UpdateCurveShapeControls. Num curve equations: {0}. Num point equations: {1}. Num control points: {2}", 
+                            curveInfo.CurveEquations.Count, curveInfo.PointEquations.Count, controlPointsCurve.Points.Count));
+                        
+                        UpdateCurveShapeControls();
+                        
+                        Logger.StopLoggingHighVolume(17, string.Format(
+                            "Returning from UpdateCurveShapeControls. Num curve equations: {0}. Num point equations: {1}. Num control points: {2}", 
+                            curveInfo.CurveEquations.Count, curveInfo.PointEquations.Count, controlPointsCurve.Points.Count));
+
+                        //Ensures that UpdateCurveShapeControls() added the required control point.
+                        if (controlPointsCurve.Points.Count <= pointBeforeNewPointIndex + 1)
+                        {
+                            Logger.Error(18, string.Format("Trying to edit point at {0} but only {1} point(s) exist.", pointBeforeNewPointIndex + 1, controlPointsCurve.Points.Count));
+                            Debug.Assert(false);
+                            return;
+                        }
+
+                        Logger.Info(19, "Editing new control point");
+                        this.mainGraphControl.StartEditing(pane, mousePt, controlPointsCurve, pointBeforeNewPointIndex + 1);
                     }
-                    else
-                    {
-                        curveInfoCopy.PointEquations.Add(newPointEquation);
-                    }
-                    //This needs to be called before UpdateCurveShapeControls() so that it can use the uptodate curve info.
-                    activeMappingManager.SetCurveShapeInfoForId(activeId, curveInfoCopy);
-
-                    UpdateCurveShapeControls();
-
-                    //Ensures that UpdateCurveShapeControls() added the required control point.
-                    if (controlPointsCurve.Points.Count <= pointBeforeNewPointIndex + 1)
-                    {
-                        Debug.Assert(false);
-                    }
-
-                    this.mainGraphControl.StartEditing(pane, mousePt, controlPointsCurve, pointBeforeNewPointIndex + 1);
-
                 }
-
-            }
+            });
 
             return true;
         }
@@ -1687,22 +1741,23 @@ namespace MidiShapeShifter.Mss.UI
 
             IBaseGraphableMappingManager activeMappingManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
             int activeMappingId = this.activeMappingInfo.ActiveGraphableEntryId;
-            CurveShapeInfo curveInfoCopy = activeMappingManager.GetCopyOfCurveShapeInfoById(activeMappingId).Value;
 
-            curveInfoCopy.PointEquations.RemoveAt(deletePointParams.pointIndex);
-            curveInfoCopy.CurveEquations.RemoveAt(deletePointParams.pointIndex + 1);
+            activeMappingManager.RunFuncOnMappingEntry(activeMappingId, (activeMappingEntry) => {
+                CurveShapeInfo curveInfo = activeMappingEntry.CurveShapeInfo;
 
-            if (curveInfoCopy.SelectedEquationIndex > deletePointParams.pointIndex)
-            {
-                curveInfoCopy.SelectedEquationIndex--;
-            }
-            else if (curveInfoCopy.SelectedEquationIndex == deletePointParams.pointIndex &&
-                    curveInfoCopy.SelectedEquationType == EquationType.Point)
-            {
-                curveInfoCopy.SelectedEquationType = EquationType.Curve;                
-            }
+                curveInfo.PointEquations.RemoveAt(deletePointParams.pointIndex);
+                curveInfo.CurveEquations.RemoveAt(deletePointParams.pointIndex + 1);
 
-            activeMappingManager.SetCurveShapeInfoForId(activeMappingId, curveInfoCopy);
+                if (curveInfo.SelectedEquationIndex > deletePointParams.pointIndex)
+                {
+                    curveInfo.SelectedEquationIndex--;
+                }
+                else if (curveInfo.SelectedEquationIndex == deletePointParams.pointIndex &&
+                        curveInfo.SelectedEquationType == EquationType.Point)
+                {
+                    curveInfo.SelectedEquationType = EquationType.Curve;
+                }
+            });            
 
             this.commandQueue.EnqueueCommandOverwriteDups(
                 EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
@@ -1714,24 +1769,25 @@ namespace MidiShapeShifter.Mss.UI
             {
                 IBaseGraphableMappingManager activeMappingManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
                 int activeMappingId = this.activeMappingInfo.ActiveGraphableEntryId;
-                CurveShapeInfo curveInfoCopy = activeMappingManager.GetCopyOfCurveShapeInfoById(activeMappingId).Value;
 
-                if (curveInfoCopy.SelectedEquationType == EquationType.Curve)
-                {
-                    curveInfoCopy.SelectedEquationType = EquationType.Point;
-                }
-                else if (curveInfoCopy.SelectedEquationType == EquationType.Point)
-                {
-                    curveInfoCopy.SelectedEquationType = EquationType.Curve;
-                    curveInfoCopy.SelectedEquationIndex++;
-                }
-                else
-                {
-                    //Unknown equation type
-                    Debug.Assert(false);
-                }
+                activeMappingManager.RunFuncOnMappingEntry(activeMappingId, (activeMappingEntry) => {
+                    CurveShapeInfo curveInfo = activeMappingEntry.CurveShapeInfo;
 
-                activeMappingManager.SetCurveShapeInfoForId(activeMappingId, curveInfoCopy);
+                    if (curveInfo.SelectedEquationType == EquationType.Curve)
+                    {
+                        curveInfo.SelectedEquationType = EquationType.Point;
+                    }
+                    else if (curveInfo.SelectedEquationType == EquationType.Point)
+                    {
+                        curveInfo.SelectedEquationType = EquationType.Curve;
+                        curveInfo.SelectedEquationIndex++;
+                    }
+                    else
+                    {
+                        //Unknown equation type
+                        Debug.Assert(false);
+                    }
+                });
 
                 this.commandQueue.EnqueueCommandOverwriteDups(
                     EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
@@ -1749,24 +1805,25 @@ namespace MidiShapeShifter.Mss.UI
             {
                 IBaseGraphableMappingManager activeMappingManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
                 int activeMappingId = this.activeMappingInfo.ActiveGraphableEntryId;
-                CurveShapeInfo curveInfoCopy = activeMappingManager.GetCopyOfCurveShapeInfoById(activeMappingId).Value;
 
-                if (curveInfoCopy.SelectedEquationType == EquationType.Curve)
-                {
-                    curveInfoCopy.SelectedEquationType = EquationType.Point;
-                    curveInfoCopy.SelectedEquationIndex--;
-                }
-                else if (curveInfoCopy.SelectedEquationType == EquationType.Point)
-                {
-                    curveInfoCopy.SelectedEquationType = EquationType.Curve;
-                }
-                else
-                {
-                    //Unknown equation type
-                    Debug.Assert(false);
-                }
+                activeMappingManager.RunFuncOnMappingEntry(activeMappingId, (activeMappingEntry) => {
+                    CurveShapeInfo curveInfo = activeMappingEntry.CurveShapeInfo;
 
-                activeMappingManager.SetCurveShapeInfoForId(activeMappingId, curveInfoCopy);
+                    if (curveInfo.SelectedEquationType == EquationType.Curve)
+                    {
+                        curveInfo.SelectedEquationType = EquationType.Point;
+                        curveInfo.SelectedEquationIndex--;
+                    }
+                    else if (curveInfo.SelectedEquationType == EquationType.Point)
+                    {
+                        curveInfo.SelectedEquationType = EquationType.Curve;
+                    }
+                    else
+                    {
+                        //Unknown equation type
+                        Debug.Assert(false);
+                    }
+                });
 
                 this.commandQueue.EnqueueCommandOverwriteDups(
                     EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
@@ -1848,17 +1905,19 @@ namespace MidiShapeShifter.Mss.UI
             {
                 IBaseGraphableMappingManager activeMappingManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
                 int activeMappingId = this.activeMappingInfo.ActiveGraphableEntryId;
-                CurveShapeInfo curveInfoCopy = activeMappingManager.GetCopyOfCurveShapeInfoById(activeMappingId).Value;
 
-                curveInfoCopy.CurveEquations.Clear();
+                activeMappingManager.RunFuncOnMappingEntry(activeMappingId, (activeMappingEntry) =>
+                {
+                    CurveShapeInfo curveInfo = activeMappingEntry.CurveShapeInfo;
 
-                curveInfoCopy.CurveEquations.Add(CurveShapeInfo.DEFAULT_EQUATION);
-                curveInfoCopy.PointEquations.Clear();
+                    curveInfo.CurveEquations.Clear();
 
-                curveInfoCopy.SelectedEquationIndex = 0;
-                curveInfoCopy.SelectedEquationType = EquationType.Curve;
+                    curveInfo.CurveEquations.Add(CurveShapeInfo.DEFAULT_EQUATION);
+                    curveInfo.PointEquations.Clear();
 
-                activeMappingManager.SetCurveShapeInfoForId(activeMappingId, curveInfoCopy);
+                    curveInfo.SelectedEquationIndex = 0;
+                    curveInfo.SelectedEquationType = EquationType.Curve;
+                });
 
                 this.commandQueue.EnqueueCommandOverwriteDups(
                     EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());

@@ -68,6 +68,10 @@ namespace MidiShapeShifter.Mss.Parameters
             return (MssParamInfo)this.MemberwiseClone();
         }
 
+        override public string ToString() {
+            return string.Format("MssParamInfo - name: {0}, raw: {1}, max: {2}, min: {3}",
+                this.Name, this.RawValue, this.MaxValue, this.MinValue);
+        }
 
     }
 }

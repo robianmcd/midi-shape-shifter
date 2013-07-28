@@ -31,5 +31,10 @@ namespace MidiShapeShifter.CSharpUtil
         {
             return (XyPoint<CoordinateType>)this.MemberwiseClone();
         }
+
+        public override string ToString()
+        {
+            return "X: " + String.Format("{0}", X) + " Y: " + String.Format("{0}", Y);
+        }
     }
 }
