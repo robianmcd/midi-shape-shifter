@@ -438,10 +438,10 @@
     <None Include="Resources\images\imgAboutBlue.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\images\imgLogoWide.jpg" />
+    <None Include="Resources\images\imgLogoWide.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\images\imgLogoWide.png" />
+    <None Include="Resources\images\imgHelp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

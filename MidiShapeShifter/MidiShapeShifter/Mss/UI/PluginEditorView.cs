@@ -2017,5 +2017,10 @@ namespace MidiShapeShifter.Mss.UI
             }
         }
 
+        private void onlineHelp_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://code.google.com/p/midi-shape-shifter/wiki/OnlineDocumentation");
+        }
+
     }
 }

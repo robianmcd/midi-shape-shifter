@@ -47,19 +47,10 @@
             this.coverUpUglyLine = new System.Windows.Forms.Label();
             this.presetToolStrip = new System.Windows.Forms.ToolStrip();
             this.curvePresetLabel = new System.Windows.Forms.ToolStripLabel();
-            this.curvePresetList = new System.Windows.Forms.ToolStripDropDownButton();
-            this.openPresetBtn = new System.Windows.Forms.ToolStripButton();
-            this.savePresetBtn = new System.Windows.Forms.ToolStripSplitButton();
-            this.savePresetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SavePresetAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pointYEquationTextBox = new System.Windows.Forms.TextBox();
             this.pointYEquationLabel = new System.Windows.Forms.Label();
             this.pointXEquationLabel = new System.Windows.Forms.Label();
-            this.resetGraphBtn = new System.Windows.Forms.Button();
-            this.nextEquationBtn = new System.Windows.Forms.Button();
-            this.prevEquationBtn = new System.Windows.Forms.Button();
             this.curveEquationLabel = new System.Windows.Forms.Label();
-            this.graphOutputTypeImg = new System.Windows.Forms.PictureBox();
             this.graphInputTypeCombo = new System.Windows.Forms.ComboBox();
             this.graphInputLable = new System.Windows.Forms.Label();
             this.presetParam4Title = new System.Windows.Forms.Label();
@@ -99,20 +90,12 @@
             this.outParamsColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.overrideColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.mappingGroupBox = new System.Windows.Forms.GroupBox();
-            this.moveMappingDownBtn = new System.Windows.Forms.Button();
-            this.moveMappingUpBtn = new System.Windows.Forms.Button();
-            this.addMappingBtn = new System.Windows.Forms.Button();
-            this.editMappingBtn = new System.Windows.Forms.Button();
-            this.deleteMappingBtn = new System.Windows.Forms.Button();
             this.generatorGroupBox = new System.Windows.Forms.GroupBox();
             this.generatorListView = new System.Windows.Forms.ListView();
             this.generaotrNameColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.generatorPeriodColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.generatorLoopColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.generatorEnabledColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.addGeneratorBtn = new System.Windows.Forms.Button();
-            this.editGeneratorBtn = new System.Windows.Forms.Button();
-            this.deleteGeneratorBtn = new System.Windows.Forms.Button();
             this.programToolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.programList = new System.Windows.Forms.ToolStripDropDownButton();
@@ -121,14 +104,32 @@
             this.saveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutPage = new System.Windows.Forms.ToolStripButton();
+            this.onlineHelp = new System.Windows.Forms.ToolStripButton();
+            this.addGeneratorBtn = new System.Windows.Forms.Button();
+            this.editGeneratorBtn = new System.Windows.Forms.Button();
+            this.deleteGeneratorBtn = new System.Windows.Forms.Button();
+            this.moveMappingDownBtn = new System.Windows.Forms.Button();
+            this.moveMappingUpBtn = new System.Windows.Forms.Button();
+            this.addMappingBtn = new System.Windows.Forms.Button();
+            this.editMappingBtn = new System.Windows.Forms.Button();
+            this.deleteMappingBtn = new System.Windows.Forms.Button();
+            this.curvePresetList = new System.Windows.Forms.ToolStripDropDownButton();
+            this.openPresetBtn = new System.Windows.Forms.ToolStripButton();
+            this.savePresetBtn = new System.Windows.Forms.ToolStripSplitButton();
+            this.savePresetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SavePresetAsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetGraphBtn = new System.Windows.Forms.Button();
+            this.nextEquationBtn = new System.Windows.Forms.Button();
+            this.prevEquationBtn = new System.Windows.Forms.Button();
+            this.graphOutputTypeImg = new System.Windows.Forms.PictureBox();
             this.paramContextMenu.SuspendLayout();
             this.curveGroup.SuspendLayout();
             this.presetToolStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.graphOutputTypeImg)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.mappingGroupBox.SuspendLayout();
             this.generatorGroupBox.SuspendLayout();
             this.programToolStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.graphOutputTypeImg)).BeginInit();
             this.SuspendLayout();
             // 
             // mainGraphControl
@@ -331,58 +332,6 @@
             this.curvePresetLabel.Size = new System.Drawing.Size(42, 29);
             this.curvePresetLabel.Text = "Preset:";
             // 
-            // curvePresetList
-            // 
-            this.curvePresetList.AutoSize = false;
-            this.curvePresetList.BackColor = System.Drawing.Color.White;
-            this.curvePresetList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.curvePresetList.Image = ((System.Drawing.Image)(resources.GetObject("curvePresetList.Image")));
-            this.curvePresetList.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.curvePresetList.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
-            this.curvePresetList.Name = "curvePresetList";
-            this.curvePresetList.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.curvePresetList.Size = new System.Drawing.Size(155, 22);
-            this.curvePresetList.Text = "Line";
-            this.curvePresetList.ToolTipText = "Select a transformation preset.";
-            // 
-            // openPresetBtn
-            // 
-            this.openPresetBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.openPresetBtn.Image = global::MidiShapeShifter.Properties.Resources.imgOpenBlue;
-            this.openPresetBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.openPresetBtn.Name = "openPresetBtn";
-            this.openPresetBtn.Size = new System.Drawing.Size(23, 29);
-            this.openPresetBtn.Text = "Open Program";
-            this.openPresetBtn.Click += new System.EventHandler(this.openTransformPreset_Click);
-            // 
-            // savePresetBtn
-            // 
-            this.savePresetBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.savePresetBtn.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.savePresetMenuItem,
-            this.SavePresetAsMenuItem});
-            this.savePresetBtn.Image = global::MidiShapeShifter.Properties.Resources.imgSaveBlue;
-            this.savePresetBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.savePresetBtn.Name = "savePresetBtn";
-            this.savePresetBtn.Size = new System.Drawing.Size(32, 29);
-            this.savePresetBtn.Text = "Save Program";
-            this.savePresetBtn.ButtonClick += new System.EventHandler(this.saveTransformPreset_Click);
-            // 
-            // savePresetMenuItem
-            // 
-            this.savePresetMenuItem.Image = global::MidiShapeShifter.Properties.Resources.imgSaveBlue;
-            this.savePresetMenuItem.Name = "savePresetMenuItem";
-            this.savePresetMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.savePresetMenuItem.Text = "Save Preset";
-            this.savePresetMenuItem.Click += new System.EventHandler(this.saveTransformPreset_Click);
-            // 
-            // SavePresetAsMenuItem
-            // 
-            this.SavePresetAsMenuItem.Name = "SavePresetAsMenuItem";
-            this.SavePresetAsMenuItem.Size = new System.Drawing.Size(158, 22);
-            this.SavePresetAsMenuItem.Text = "Save Preset As...";
-            this.SavePresetAsMenuItem.Click += new System.EventHandler(this.saveTransformPresetAs_Click);
-            // 
             // pointYEquationTextBox
             // 
             this.pointYEquationTextBox.Enabled = false;
@@ -416,45 +365,6 @@
             this.pointXEquationLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.pointXEquationLabel.Visible = false;
             // 
-            // resetGraphBtn
-            // 
-            this.resetGraphBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgTrashBlue;
-            this.resetGraphBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.resetGraphBtn.Location = new System.Drawing.Point(54, 234);
-            this.resetGraphBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.resetGraphBtn.Name = "resetGraphBtn";
-            this.resetGraphBtn.Size = new System.Drawing.Size(24, 24);
-            this.resetGraphBtn.TabIndex = 7;
-            this.resetGraphBtn.UseVisualStyleBackColor = true;
-            this.resetGraphBtn.EnabledChanged += new System.EventHandler(this.resetGraphBtn_EnabledChanged);
-            this.resetGraphBtn.Click += new System.EventHandler(this.resetGraphBtn_Click);
-            // 
-            // nextEquationBtn
-            // 
-            this.nextEquationBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgRightBlue;
-            this.nextEquationBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.nextEquationBtn.Location = new System.Drawing.Point(30, 234);
-            this.nextEquationBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.nextEquationBtn.Name = "nextEquationBtn";
-            this.nextEquationBtn.Size = new System.Drawing.Size(24, 24);
-            this.nextEquationBtn.TabIndex = 6;
-            this.nextEquationBtn.UseVisualStyleBackColor = true;
-            this.nextEquationBtn.EnabledChanged += new System.EventHandler(this.nextEquationBtn_EnabledChanged);
-            this.nextEquationBtn.Click += new System.EventHandler(this.nextEquationBtn_Click);
-            // 
-            // prevEquationBtn
-            // 
-            this.prevEquationBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgLeftBlue;
-            this.prevEquationBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.prevEquationBtn.Location = new System.Drawing.Point(6, 234);
-            this.prevEquationBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.prevEquationBtn.Name = "prevEquationBtn";
-            this.prevEquationBtn.Size = new System.Drawing.Size(24, 24);
-            this.prevEquationBtn.TabIndex = 5;
-            this.prevEquationBtn.UseVisualStyleBackColor = true;
-            this.prevEquationBtn.EnabledChanged += new System.EventHandler(this.prevEquationBtn_EnabledChanged);
-            this.prevEquationBtn.Click += new System.EventHandler(this.prevEquationBtn_Click);
-            // 
             // curveEquationLabel
             // 
             this.curveEquationLabel.Location = new System.Drawing.Point(6, 268);
@@ -463,16 +373,6 @@
             this.curveEquationLabel.TabIndex = 8;
             this.curveEquationLabel.Text = "Y = ";
             this.curveEquationLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // graphOutputTypeImg
-            // 
-            this.graphOutputTypeImg.BackColor = System.Drawing.Color.White;
-            this.graphOutputTypeImg.Location = new System.Drawing.Point(16, 65);
-            this.graphOutputTypeImg.Name = "graphOutputTypeImg";
-            this.graphOutputTypeImg.Size = new System.Drawing.Size(19, 117);
-            this.graphOutputTypeImg.TabIndex = 25;
-            this.graphOutputTypeImg.TabStop = false;
-            this.graphOutputTypeImg.Paint += new System.Windows.Forms.PaintEventHandler(this.graphOutputTypeImg_Paint);
             // 
             // graphInputTypeCombo
             // 
@@ -1004,70 +904,6 @@
             this.mappingGroupBox.TabStop = false;
             this.mappingGroupBox.Text = "Mapings";
             // 
-            // moveMappingDownBtn
-            // 
-            this.moveMappingDownBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDownBlue;
-            this.moveMappingDownBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.moveMappingDownBtn.Location = new System.Drawing.Point(105, 164);
-            this.moveMappingDownBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.moveMappingDownBtn.Name = "moveMappingDownBtn";
-            this.moveMappingDownBtn.Size = new System.Drawing.Size(24, 24);
-            this.moveMappingDownBtn.TabIndex = 5;
-            this.moveMappingDownBtn.UseVisualStyleBackColor = true;
-            this.moveMappingDownBtn.EnabledChanged += new System.EventHandler(this.moveDownBtn_EnabledChanged);
-            this.moveMappingDownBtn.Click += new System.EventHandler(this.moveMappingDownBtn_Click);
-            // 
-            // moveMappingUpBtn
-            // 
-            this.moveMappingUpBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgUpBlue;
-            this.moveMappingUpBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.moveMappingUpBtn.Location = new System.Drawing.Point(81, 164);
-            this.moveMappingUpBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.moveMappingUpBtn.Name = "moveMappingUpBtn";
-            this.moveMappingUpBtn.Size = new System.Drawing.Size(24, 24);
-            this.moveMappingUpBtn.TabIndex = 4;
-            this.moveMappingUpBtn.UseVisualStyleBackColor = true;
-            this.moveMappingUpBtn.EnabledChanged += new System.EventHandler(this.moveUpBtn_EnabledChanged);
-            this.moveMappingUpBtn.Click += new System.EventHandler(this.moveMappingUpBtn_Click);
-            // 
-            // addMappingBtn
-            // 
-            this.addMappingBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgAddBlue;
-            this.addMappingBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.addMappingBtn.Location = new System.Drawing.Point(8, 164);
-            this.addMappingBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.addMappingBtn.Name = "addMappingBtn";
-            this.addMappingBtn.Size = new System.Drawing.Size(24, 24);
-            this.addMappingBtn.TabIndex = 1;
-            this.addMappingBtn.UseVisualStyleBackColor = true;
-            this.addMappingBtn.Click += new System.EventHandler(this.addMappingBtn_Click);
-            // 
-            // editMappingBtn
-            // 
-            this.editMappingBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgEditBlue;
-            this.editMappingBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.editMappingBtn.Location = new System.Drawing.Point(57, 164);
-            this.editMappingBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.editMappingBtn.Name = "editMappingBtn";
-            this.editMappingBtn.Size = new System.Drawing.Size(24, 24);
-            this.editMappingBtn.TabIndex = 3;
-            this.editMappingBtn.UseVisualStyleBackColor = true;
-            this.editMappingBtn.EnabledChanged += new System.EventHandler(this.editBtn_EnabledChanged);
-            this.editMappingBtn.Click += new System.EventHandler(this.editMappingBtn_Click);
-            // 
-            // deleteMappingBtn
-            // 
-            this.deleteMappingBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDeleteBlue;
-            this.deleteMappingBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.deleteMappingBtn.Location = new System.Drawing.Point(32, 164);
-            this.deleteMappingBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.deleteMappingBtn.Name = "deleteMappingBtn";
-            this.deleteMappingBtn.Size = new System.Drawing.Size(24, 24);
-            this.deleteMappingBtn.TabIndex = 2;
-            this.deleteMappingBtn.UseVisualStyleBackColor = true;
-            this.deleteMappingBtn.EnabledChanged += new System.EventHandler(this.deleteBtn_EnabledChanged);
-            this.deleteMappingBtn.Click += new System.EventHandler(this.deleteMappingBtn_Click);
-            // 
             // generatorGroupBox
             // 
             this.generatorGroupBox.BackColor = System.Drawing.SystemColors.Control;
@@ -1123,44 +959,6 @@
             this.generatorEnabledColHeader.Text = "Enabled";
             this.generatorEnabledColHeader.Width = 58;
             // 
-            // addGeneratorBtn
-            // 
-            this.addGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgAddBlue;
-            this.addGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.addGeneratorBtn.Location = new System.Drawing.Point(8, 146);
-            this.addGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.addGeneratorBtn.Name = "addGeneratorBtn";
-            this.addGeneratorBtn.Size = new System.Drawing.Size(24, 24);
-            this.addGeneratorBtn.TabIndex = 1;
-            this.addGeneratorBtn.UseVisualStyleBackColor = true;
-            this.addGeneratorBtn.Click += new System.EventHandler(this.addGeneratorBtn_Click);
-            // 
-            // editGeneratorBtn
-            // 
-            this.editGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgEditBlue;
-            this.editGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.editGeneratorBtn.Location = new System.Drawing.Point(57, 146);
-            this.editGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.editGeneratorBtn.Name = "editGeneratorBtn";
-            this.editGeneratorBtn.Size = new System.Drawing.Size(24, 24);
-            this.editGeneratorBtn.TabIndex = 3;
-            this.editGeneratorBtn.UseVisualStyleBackColor = true;
-            this.editGeneratorBtn.EnabledChanged += new System.EventHandler(this.editBtn_EnabledChanged);
-            this.editGeneratorBtn.Click += new System.EventHandler(this.editGeneratorBtn_Click);
-            // 
-            // deleteGeneratorBtn
-            // 
-            this.deleteGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDeleteBlue;
-            this.deleteGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.deleteGeneratorBtn.Location = new System.Drawing.Point(32, 146);
-            this.deleteGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
-            this.deleteGeneratorBtn.Name = "deleteGeneratorBtn";
-            this.deleteGeneratorBtn.Size = new System.Drawing.Size(24, 24);
-            this.deleteGeneratorBtn.TabIndex = 2;
-            this.deleteGeneratorBtn.UseVisualStyleBackColor = true;
-            this.deleteGeneratorBtn.EnabledChanged += new System.EventHandler(this.deleteBtn_EnabledChanged);
-            this.deleteGeneratorBtn.Click += new System.EventHandler(this.deleteGeneratorBtn_Click);
-            // 
             // programToolStrip
             // 
             this.programToolStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(236)))));
@@ -1170,7 +968,8 @@
             this.programList,
             this.openProgram,
             this.saveSplitButton,
-            this.aboutPage});
+            this.aboutPage,
+            this.onlineHelp});
             this.programToolStrip.Location = new System.Drawing.Point(0, 0);
             this.programToolStrip.Name = "programToolStrip";
             this.programToolStrip.Size = new System.Drawing.Size(712, 32);
@@ -1245,6 +1044,220 @@
             this.aboutPage.Text = "About";
             this.aboutPage.Click += new System.EventHandler(this.aboutPage_Click);
             // 
+            // onlineHelp
+            // 
+            this.onlineHelp.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.onlineHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.onlineHelp.Image = global::MidiShapeShifter.Properties.Resources.imgHelp;
+            this.onlineHelp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.onlineHelp.Name = "onlineHelp";
+            this.onlineHelp.Size = new System.Drawing.Size(23, 29);
+            this.onlineHelp.Text = "Online Help";
+            this.onlineHelp.Click += new System.EventHandler(this.onlineHelp_Click);
+            // 
+            // addGeneratorBtn
+            // 
+            this.addGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgAddBlue;
+            this.addGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.addGeneratorBtn.Location = new System.Drawing.Point(8, 146);
+            this.addGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.addGeneratorBtn.Name = "addGeneratorBtn";
+            this.addGeneratorBtn.Size = new System.Drawing.Size(24, 24);
+            this.addGeneratorBtn.TabIndex = 1;
+            this.addGeneratorBtn.UseVisualStyleBackColor = true;
+            this.addGeneratorBtn.Click += new System.EventHandler(this.addGeneratorBtn_Click);
+            // 
+            // editGeneratorBtn
+            // 
+            this.editGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgEditBlue;
+            this.editGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.editGeneratorBtn.Location = new System.Drawing.Point(57, 146);
+            this.editGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.editGeneratorBtn.Name = "editGeneratorBtn";
+            this.editGeneratorBtn.Size = new System.Drawing.Size(24, 24);
+            this.editGeneratorBtn.TabIndex = 3;
+            this.editGeneratorBtn.UseVisualStyleBackColor = true;
+            this.editGeneratorBtn.EnabledChanged += new System.EventHandler(this.editBtn_EnabledChanged);
+            this.editGeneratorBtn.Click += new System.EventHandler(this.editGeneratorBtn_Click);
+            // 
+            // deleteGeneratorBtn
+            // 
+            this.deleteGeneratorBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDeleteBlue;
+            this.deleteGeneratorBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.deleteGeneratorBtn.Location = new System.Drawing.Point(32, 146);
+            this.deleteGeneratorBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.deleteGeneratorBtn.Name = "deleteGeneratorBtn";
+            this.deleteGeneratorBtn.Size = new System.Drawing.Size(24, 24);
+            this.deleteGeneratorBtn.TabIndex = 2;
+            this.deleteGeneratorBtn.UseVisualStyleBackColor = true;
+            this.deleteGeneratorBtn.EnabledChanged += new System.EventHandler(this.deleteBtn_EnabledChanged);
+            this.deleteGeneratorBtn.Click += new System.EventHandler(this.deleteGeneratorBtn_Click);
+            // 
+            // moveMappingDownBtn
+            // 
+            this.moveMappingDownBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDownBlue;
+            this.moveMappingDownBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.moveMappingDownBtn.Location = new System.Drawing.Point(105, 164);
+            this.moveMappingDownBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.moveMappingDownBtn.Name = "moveMappingDownBtn";
+            this.moveMappingDownBtn.Size = new System.Drawing.Size(24, 24);
+            this.moveMappingDownBtn.TabIndex = 5;
+            this.moveMappingDownBtn.UseVisualStyleBackColor = true;
+            this.moveMappingDownBtn.EnabledChanged += new System.EventHandler(this.moveDownBtn_EnabledChanged);
+            this.moveMappingDownBtn.Click += new System.EventHandler(this.moveMappingDownBtn_Click);
+            // 
+            // moveMappingUpBtn
+            // 
+            this.moveMappingUpBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgUpBlue;
+            this.moveMappingUpBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.moveMappingUpBtn.Location = new System.Drawing.Point(81, 164);
+            this.moveMappingUpBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.moveMappingUpBtn.Name = "moveMappingUpBtn";
+            this.moveMappingUpBtn.Size = new System.Drawing.Size(24, 24);
+            this.moveMappingUpBtn.TabIndex = 4;
+            this.moveMappingUpBtn.UseVisualStyleBackColor = true;
+            this.moveMappingUpBtn.EnabledChanged += new System.EventHandler(this.moveUpBtn_EnabledChanged);
+            this.moveMappingUpBtn.Click += new System.EventHandler(this.moveMappingUpBtn_Click);
+            // 
+            // addMappingBtn
+            // 
+            this.addMappingBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgAddBlue;
+            this.addMappingBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.addMappingBtn.Location = new System.Drawing.Point(8, 164);
+            this.addMappingBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.addMappingBtn.Name = "addMappingBtn";
+            this.addMappingBtn.Size = new System.Drawing.Size(24, 24);
+            this.addMappingBtn.TabIndex = 1;
+            this.addMappingBtn.UseVisualStyleBackColor = true;
+            this.addMappingBtn.Click += new System.EventHandler(this.addMappingBtn_Click);
+            // 
+            // editMappingBtn
+            // 
+            this.editMappingBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgEditBlue;
+            this.editMappingBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.editMappingBtn.Location = new System.Drawing.Point(57, 164);
+            this.editMappingBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.editMappingBtn.Name = "editMappingBtn";
+            this.editMappingBtn.Size = new System.Drawing.Size(24, 24);
+            this.editMappingBtn.TabIndex = 3;
+            this.editMappingBtn.UseVisualStyleBackColor = true;
+            this.editMappingBtn.EnabledChanged += new System.EventHandler(this.editBtn_EnabledChanged);
+            this.editMappingBtn.Click += new System.EventHandler(this.editMappingBtn_Click);
+            // 
+            // deleteMappingBtn
+            // 
+            this.deleteMappingBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgDeleteBlue;
+            this.deleteMappingBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.deleteMappingBtn.Location = new System.Drawing.Point(32, 164);
+            this.deleteMappingBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.deleteMappingBtn.Name = "deleteMappingBtn";
+            this.deleteMappingBtn.Size = new System.Drawing.Size(24, 24);
+            this.deleteMappingBtn.TabIndex = 2;
+            this.deleteMappingBtn.UseVisualStyleBackColor = true;
+            this.deleteMappingBtn.EnabledChanged += new System.EventHandler(this.deleteBtn_EnabledChanged);
+            this.deleteMappingBtn.Click += new System.EventHandler(this.deleteMappingBtn_Click);
+            // 
+            // curvePresetList
+            // 
+            this.curvePresetList.AutoSize = false;
+            this.curvePresetList.BackColor = System.Drawing.Color.White;
+            this.curvePresetList.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.curvePresetList.Image = ((System.Drawing.Image)(resources.GetObject("curvePresetList.Image")));
+            this.curvePresetList.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.curvePresetList.Margin = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            this.curvePresetList.Name = "curvePresetList";
+            this.curvePresetList.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.curvePresetList.Size = new System.Drawing.Size(155, 22);
+            this.curvePresetList.Text = "Line";
+            this.curvePresetList.ToolTipText = "Select a transformation preset.";
+            // 
+            // openPresetBtn
+            // 
+            this.openPresetBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.openPresetBtn.Image = global::MidiShapeShifter.Properties.Resources.imgOpenBlue;
+            this.openPresetBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.openPresetBtn.Name = "openPresetBtn";
+            this.openPresetBtn.Size = new System.Drawing.Size(23, 29);
+            this.openPresetBtn.Text = "Open Program";
+            this.openPresetBtn.Click += new System.EventHandler(this.openTransformPreset_Click);
+            // 
+            // savePresetBtn
+            // 
+            this.savePresetBtn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.savePresetBtn.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.savePresetMenuItem,
+            this.SavePresetAsMenuItem});
+            this.savePresetBtn.Image = global::MidiShapeShifter.Properties.Resources.imgSaveBlue;
+            this.savePresetBtn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.savePresetBtn.Name = "savePresetBtn";
+            this.savePresetBtn.Size = new System.Drawing.Size(32, 29);
+            this.savePresetBtn.Text = "Save Program";
+            this.savePresetBtn.ButtonClick += new System.EventHandler(this.saveTransformPreset_Click);
+            // 
+            // savePresetMenuItem
+            // 
+            this.savePresetMenuItem.Image = global::MidiShapeShifter.Properties.Resources.imgSaveBlue;
+            this.savePresetMenuItem.Name = "savePresetMenuItem";
+            this.savePresetMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.savePresetMenuItem.Text = "Save Preset";
+            this.savePresetMenuItem.Click += new System.EventHandler(this.saveTransformPreset_Click);
+            // 
+            // SavePresetAsMenuItem
+            // 
+            this.SavePresetAsMenuItem.Name = "SavePresetAsMenuItem";
+            this.SavePresetAsMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.SavePresetAsMenuItem.Text = "Save Preset As...";
+            this.SavePresetAsMenuItem.Click += new System.EventHandler(this.saveTransformPresetAs_Click);
+            // 
+            // resetGraphBtn
+            // 
+            this.resetGraphBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgTrashBlue;
+            this.resetGraphBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.resetGraphBtn.Location = new System.Drawing.Point(54, 234);
+            this.resetGraphBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.resetGraphBtn.Name = "resetGraphBtn";
+            this.resetGraphBtn.Size = new System.Drawing.Size(24, 24);
+            this.resetGraphBtn.TabIndex = 7;
+            this.resetGraphBtn.UseVisualStyleBackColor = true;
+            this.resetGraphBtn.EnabledChanged += new System.EventHandler(this.resetGraphBtn_EnabledChanged);
+            this.resetGraphBtn.Click += new System.EventHandler(this.resetGraphBtn_Click);
+            // 
+            // nextEquationBtn
+            // 
+            this.nextEquationBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgRightBlue;
+            this.nextEquationBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.nextEquationBtn.Location = new System.Drawing.Point(30, 234);
+            this.nextEquationBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.nextEquationBtn.Name = "nextEquationBtn";
+            this.nextEquationBtn.Size = new System.Drawing.Size(24, 24);
+            this.nextEquationBtn.TabIndex = 6;
+            this.nextEquationBtn.UseVisualStyleBackColor = true;
+            this.nextEquationBtn.EnabledChanged += new System.EventHandler(this.nextEquationBtn_EnabledChanged);
+            this.nextEquationBtn.Click += new System.EventHandler(this.nextEquationBtn_Click);
+            // 
+            // prevEquationBtn
+            // 
+            this.prevEquationBtn.BackgroundImage = global::MidiShapeShifter.Properties.Resources.imgLeftBlue;
+            this.prevEquationBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.prevEquationBtn.Location = new System.Drawing.Point(6, 234);
+            this.prevEquationBtn.Margin = new System.Windows.Forms.Padding(0);
+            this.prevEquationBtn.Name = "prevEquationBtn";
+            this.prevEquationBtn.Size = new System.Drawing.Size(24, 24);
+            this.prevEquationBtn.TabIndex = 5;
+            this.prevEquationBtn.UseVisualStyleBackColor = true;
+            this.prevEquationBtn.EnabledChanged += new System.EventHandler(this.prevEquationBtn_EnabledChanged);
+            this.prevEquationBtn.Click += new System.EventHandler(this.prevEquationBtn_Click);
+            // 
+            // graphOutputTypeImg
+            // 
+            this.graphOutputTypeImg.BackColor = System.Drawing.Color.White;
+            this.graphOutputTypeImg.Location = new System.Drawing.Point(16, 65);
+            this.graphOutputTypeImg.Name = "graphOutputTypeImg";
+            this.graphOutputTypeImg.Size = new System.Drawing.Size(19, 117);
+            this.graphOutputTypeImg.TabIndex = 25;
+            this.graphOutputTypeImg.TabStop = false;
+            this.graphOutputTypeImg.Paint += new System.Windows.Forms.PaintEventHandler(this.graphOutputTypeImg_Paint);
+            // 
             // PluginEditorView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1263,12 +1276,12 @@
             this.curveGroup.PerformLayout();
             this.presetToolStrip.ResumeLayout(false);
             this.presetToolStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.graphOutputTypeImg)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.mappingGroupBox.ResumeLayout(false);
             this.generatorGroupBox.ResumeLayout(false);
             this.programToolStrip.ResumeLayout(false);
             this.programToolStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.graphOutputTypeImg)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1362,6 +1375,7 @@
         private System.Windows.Forms.ContextMenuStrip paramContextMenu;
         private System.Windows.Forms.ToolStripMenuItem editParamMenuItem;
         private System.Windows.Forms.ToolStripButton aboutPage;
+        private System.Windows.Forms.ToolStripButton onlineHelp;
 
     }
 }
