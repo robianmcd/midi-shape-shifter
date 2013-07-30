@@ -27,7 +27,8 @@ namespace MidiShapeShifter.Mss.Generator
         /// </summary>
         public int CreateAndAddEntryFromGenInfo(GenEntryConfigInfo genInfo)
         {
-            lock(this.memberLock) {
+            lock (MssComponentHub.criticalSectioinLock)
+            {
                 IGeneratorMappingEntry mappingEntry = new GeneratorMappingEntry();
                 int curId = this.nextId;
                 this.nextId++;
@@ -47,7 +48,7 @@ namespace MidiShapeShifter.Mss.Generator
         /// </summary>
         public bool UpdateEntryWithNewGenInfo(GenEntryConfigInfo genInfo, int id)
         {
-            lock(this.memberLock)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 IGeneratorMappingEntry mappingEntry = GetMappingEntryById(id);
                 if (mappingEntry == null){
@@ -129,7 +130,8 @@ namespace MidiShapeShifter.Mss.Generator
         /// </summary>
         public override IEnumerable<IGeneratorMappingEntry> GetCopiesOfMappingEntriesForMsg(MssMsg inputMsg)
         {
-            lock(this.memberLock) {
+            lock (MssComponentHub.criticalSectioinLock)
+            {
                 List<IGeneratorMappingEntry> associatedEntryList = new List<IGeneratorMappingEntry>();
                 if (inputMsg.Type == MssMsgType.RelBarPeriodPos || inputMsg.Type == MssMsgType.RelTimePeriodPos)
                 {

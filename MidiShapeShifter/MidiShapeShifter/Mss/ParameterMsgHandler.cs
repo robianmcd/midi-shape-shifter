@@ -49,7 +49,7 @@ namespace MidiShapeShifter.Mss
 
         protected void WetEventReceived(List<MssEvent> wetEventList)
         {
-            lock (locker)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 foreach (MssEvent wetEvent in wetEventList)
                 {
@@ -74,7 +74,7 @@ namespace MidiShapeShifter.Mss
 
         protected void ParameterValueChanged(MssParameterID paramId, double newValue)
         {
-            lock (locker)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 if (this.hostInfoOutput.SampleRateIsInitialized == false)
                 {
@@ -114,7 +114,7 @@ namespace MidiShapeShifter.Mss
 
         protected void OnBeforeProcessingCycleEnd(long sampleTimeAtEndOfCycle)
         {
-            lock(locker)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 this.watchOffestAtLastCycleEnd = this.stopwatch.Elapsed.Ticks;
                 this.sampleTimeAtLastCycleEnd = sampleTimeAtEndOfCycle;

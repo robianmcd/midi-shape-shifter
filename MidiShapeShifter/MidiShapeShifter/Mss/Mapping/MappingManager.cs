@@ -27,7 +27,8 @@ namespace MidiShapeShifter.Mss.Mapping
         /// <returns> True if an entry is successfully moved up in the list</returns>
         public bool MoveEntryUp(int id) 
         {
-            lock (this.memberLock) {
+            lock (MssComponentHub.criticalSectioinLock)
+            {
                 int entryIndex = GetMappingEntryIndexById(id);
                 if (entryIndex == -1 || entryIndex == 0)
                 {
@@ -54,7 +55,7 @@ namespace MidiShapeShifter.Mss.Mapping
         /// <returns> True if an entry is successfully moved up in the list</returns>
         public bool MoveEntryDown(int id)
         {
-            lock (this.memberLock)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 int entryIndex = GetMappingEntryIndexById(id);
                 if (entryIndex == -1 || entryIndex == this.mappingEntryList.Count - 1)
@@ -85,7 +86,7 @@ namespace MidiShapeShifter.Mss.Mapping
         /// <returns>An enumeration of MappingEntry objects that match <paramref name="inputMsg"/>.</returns>
         public override IEnumerable<IMappingEntry> GetCopiesOfMappingEntriesForMsg(MssMsg inputMsg) 
         {
-            lock (this.memberLock)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 var associatedEntiresQuery =
                     from entry in mappingEntryList

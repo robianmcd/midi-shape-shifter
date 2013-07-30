@@ -35,24 +35,24 @@ namespace MidiShapeShifter.Mss.Mapping
         protected List<MappingEntryType> mappingEntryList = new List<MappingEntryType>();
 
 
-        protected Object memberLock = new Object();
+        //protected Object memberLock = new Object();
 
         [OnSerializing]
         protected void OnSerializing(StreamingContext context)
         {
-            Monitor.Enter(this.memberLock);
+            Monitor.Enter(MssComponentHub.criticalSectioinLock);
         }
 
         [OnSerialized]
         protected void OnSerialized(StreamingContext context)
         {
-            Monitor.Exit(this.memberLock);
+            Monitor.Exit(MssComponentHub.criticalSectioinLock);
         }
 
         [OnDeserialized]
         protected void OnDeserialized(StreamingContext context)
         {
-            this.memberLock = new Object();
+            //this.memberLock = new Object();
         }
 
 
@@ -82,7 +82,7 @@ namespace MidiShapeShifter.Mss.Mapping
         /// <returns>Returns the id of the newly added entry</returns>
         public int AddMappingEntry(MappingEntryType newEntry)
         {
-            lock (this.memberLock)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 newEntry.Id = this.nextId;
                 this.nextId++;
@@ -98,7 +98,7 @@ namespace MidiShapeShifter.Mss.Mapping
         /// </remarks>
         public bool RemoveMappingEntry(int id)
         {
-            lock (this.memberLock)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 MappingEntryType mappingEntry = GetMappingEntryById(id);
                 if (mappingEntry == null)
@@ -120,7 +120,7 @@ namespace MidiShapeShifter.Mss.Mapping
         /// </summary>
         protected MappingEntryType GetMappingEntryById(int id)
         {
-            lock (this.memberLock)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 return mappingEntryList.Find(entry => entry.Id == id);
             }
@@ -132,14 +132,14 @@ namespace MidiShapeShifter.Mss.Mapping
         /// </summary>
         public int GetMappingEntryIndexById(int id)
         {
-            lock (this.memberLock)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 return mappingEntryList.FindIndex(entry => entry.Id == id);
             }
         }
 
         public int GetMappingEntryIdByIndex(int index) {
-            lock (this.memberLock)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 return mappingEntryList[index].Id;
             }
@@ -151,7 +151,7 @@ namespace MidiShapeShifter.Mss.Mapping
         /// </remarks>
         public IReturnStatus<MappingEntryType> GetCopyOfMappingEntryById(int id)
         {
-            lock (this.memberLock)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 MappingEntryType mappingEntry = GetMappingEntryById(id);
                 if (mappingEntry == null)
@@ -169,7 +169,7 @@ namespace MidiShapeShifter.Mss.Mapping
         public List<MappingEntryType> GetCopyOfMappingEntryList()
         {
 
-            lock (this.memberLock)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 List<MappingEntryType> entryListCopy = this.mappingEntryList.Clone();
                 return entryListCopy;
@@ -179,7 +179,7 @@ namespace MidiShapeShifter.Mss.Mapping
 
         public bool RunFuncOnMappingEntry(int id, MappingEntryAccessor<MappingEntryType> mappingEntryAccessor)
         {
-            lock (this.memberLock)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 MappingEntryType mappingEntry = GetMappingEntryById(id);
 
@@ -196,7 +196,7 @@ namespace MidiShapeShifter.Mss.Mapping
         }
 
         public int GetNumEntries() {
-            lock (this.memberLock)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 return mappingEntryList.Count;
             }
@@ -207,7 +207,7 @@ namespace MidiShapeShifter.Mss.Mapping
 
         public IReturnStatus<CurveShapeInfo> GetCopyOfCurveShapeInfoById(int id)
         {
-            lock (this.memberLock)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 MappingEntryType matchingEntry = GetMappingEntryById(id);
                 if (matchingEntry == null)
@@ -224,7 +224,7 @@ namespace MidiShapeShifter.Mss.Mapping
 
         public bool ReplaceMappingEntry(MappingEntryType mappingEntry)
         {
-            lock (this.memberLock)
+            lock (MssComponentHub.criticalSectioinLock)
             {
                 int index = GetMappingEntryIndexById(mappingEntry.Id);
                 if (index != -1)
@@ -242,7 +242,8 @@ namespace MidiShapeShifter.Mss.Mapping
         public List<int> GetEntryIdList() {
             List<int> entryIdList = new List<int>();
 
-            lock (this.memberLock) {
+            lock (MssComponentHub.criticalSectioinLock)
+            {
                 foreach (MappingEntryType entry in this.mappingEntryList) {
                     entryIdList.Add(entry.Id);
                 }

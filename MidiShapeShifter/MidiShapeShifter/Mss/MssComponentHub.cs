@@ -42,7 +42,9 @@ namespace MidiShapeShifter.Mss
         protected MssEventGenerator mssEventGenrator;
         [DataMember(Name = "GenMappingMgr")]
         protected GeneratorMappingManager genMappingMgr;
-        
+
+        public static readonly Object criticalSectioinLock = new Object();
+
         /// <summary>
         ///     Passes unprocessed MssEvents from the "Framework" namespace to the "Mss" namespace.
         /// </summary>
