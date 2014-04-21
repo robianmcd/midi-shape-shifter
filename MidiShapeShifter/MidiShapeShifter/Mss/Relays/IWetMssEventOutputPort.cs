@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MidiShapeShifter.Mss.Relays
 {
-    public delegate void WetMssEventsReceivedEventHandler(List<MssEvent> mssEventList);
+    public delegate void WetMssEventReceivedEventHandler(MssEvent mssEventList);
     public delegate void SendingWetMssEventsEventHandler(List<MssEvent> mssEventList, 
             long sampleTimeAtEndOfProcessingCycle);
 
@@ -13,7 +13,7 @@ namespace MidiShapeShifter.Mss.Relays
     {
         bool OnlySendOnProcessingCycleEnd { get; set; }
 
-        event WetMssEventsReceivedEventHandler WetMssEventsReceived;
+        event WetMssEventReceivedEventHandler WetMssEventsReceived;
         event SendingWetMssEventsEventHandler SendingWetMssEvents;
     }
 }

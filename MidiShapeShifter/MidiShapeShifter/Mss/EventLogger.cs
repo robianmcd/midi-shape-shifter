@@ -22,7 +22,7 @@ namespace MidiShapeShifter.Mss
                          IWetMssEventOutputPort wetMssEventOutputPort)
         {
             dryMssEventOutputPort.DryMssEventRecieved += new DryMssEventRecievedEventHandler(DryEventRecieved);
-            wetMssEventOutputPort.WetMssEventsReceived += new WetMssEventsReceivedEventHandler(WetEventListRecieved);
+            wetMssEventOutputPort.WetMssEventsReceived += new WetMssEventReceivedEventHandler(WetEventRecieved);
 
             wetMssEventOutputPort.SendingWetMssEvents += new SendingWetMssEventsEventHandler(OnCycleEnd);
         }
@@ -35,14 +35,13 @@ namespace MidiShapeShifter.Mss
             Debug.WriteLine("In: " + FormatEvent(dryEvent));
         }
 
-        protected void WetEventListRecieved(List<MssEvent> eventList)
+        protected void WetEventRecieved(MssEvent wetEvent)
         {
             if (!enabled)
             {
                 return;
             }
-            eventList.ForEach(wetEvent =>
-                Debug.WriteLine("Out: " + FormatEvent(wetEvent)));
+            Debug.WriteLine("Out: " + FormatEvent(wetEvent));
         }
 
         protected void OnCycleEnd(List<MssEvent> mssEventList, long sampleTimeAtEndOfProcessingCycle) {

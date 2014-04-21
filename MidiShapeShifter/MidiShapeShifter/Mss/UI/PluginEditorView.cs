@@ -384,10 +384,21 @@ namespace MidiShapeShifter.Mss.UI
             ParameterValueKnobControlDict.TryGetLeftByRight(out paramId, knob);
             MssParamInfo paramInfo = mssParameters.GetParameterInfoCopy(paramId);
 
-            if (paramInfo.RawValue != knob.Value)
+            double knobValue = GetRoundedKnobValueAsDouble(knob);
+
+            if (paramInfo.RawValue != knobValue)
             {
-                this.mssParameters.SetParameterRawValue(paramId, knob.Value);
+                this.mssParameters.SetParameterRawValue(paramId, knobValue);
             }
+        }
+
+        //Knob values are stored as floats which are less percise than doubles. The max and min value for a parameter 
+        //are stored as doubles so if the knob is set to 0.01f and the min value for a parameter is set to 0.01 then 
+        //then knob value will actually be less than the min value. To avoid this we round the knob value so that it 
+        //should end up being the same as a double value as long as the double value is less than 6 digits.
+        protected double GetRoundedKnobValueAsDouble(LBKnob knob) 
+        {
+            return Math.Round((double)knob.Value, 6);
         }
 
         protected void OnActiveGraphableEntryChanged()
@@ -912,7 +923,10 @@ namespace MidiShapeShifter.Mss.UI
             LBKnob knob;
             if (ParameterValueKnobControlDict.TryGetRightByLeft(paramId, out knob) == true)
             {
-                if (knob.Value != paramInfo.RawValue)
+                double knobValue = GetRoundedKnobValueAsDouble(knob);
+
+
+                if (knobValue != paramInfo.RawValue)
                 {
                     knob.Value = (float)value;
                 }

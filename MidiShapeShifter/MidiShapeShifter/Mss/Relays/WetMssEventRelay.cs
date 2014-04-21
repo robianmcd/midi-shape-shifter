@@ -56,21 +56,18 @@ namespace MidiShapeShifter.Mss.Relays
             }
         }
 
-        public void ReceiveWetMssEventList(List<MssEvent> mssEventList)
+        public void ReceiveWetMssEvent(MssEvent mssEvent)
         {
-            foreach(MssEvent mssEvent in mssEventList)
+            Debug.Assert(mssEvent != null);
+
+            lock (this.relayLock)
             {
-                Debug.Assert(mssEvent != null);
+                this.mssEventBuffer.Add(mssEvent);
             }
 
-            lock(this.relayLock)
-            {
-                this.mssEventBuffer.AddRange(mssEventList);
-            }
-            
             if (WetMssEventsReceived != null)
             {
-                WetMssEventsReceived(mssEventList);
+                WetMssEventsReceived(mssEvent);
             }
 
             if (this.OnlySendOnProcessingCycleEnd == false && SendingWetMssEvents != null)
@@ -80,7 +77,7 @@ namespace MidiShapeShifter.Mss.Relays
         }
 
         //Always sent immediately after recieving Mss Events
-        public event WetMssEventsReceivedEventHandler WetMssEventsReceived;
+        public event WetMssEventReceivedEventHandler WetMssEventsReceived;
         //If OnlySendOnProcessingCycleEnd is set to true then this event will 
         //only be sent at the end of a processing cycle.
         public event SendingWetMssEventsEventHandler SendingWetMssEvents;

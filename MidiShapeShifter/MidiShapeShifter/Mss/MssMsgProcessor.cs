@@ -45,7 +45,7 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         /// <param name="mssMsg">A MSS message to process.</param>
         /// <returns> A list resulting messages.</returns>
-        public List<MssMsg> ProcessMssMsg(MssMsg mssMsg)
+        public IEnumerable<MssMsg> ProcessMssMsg(MssMsg mssMsg)
         {
             //Apply the pre mapping query processing. If this causes the msg type to change then
             //apply it again for the new type.
@@ -118,12 +118,10 @@ namespace MidiShapeShifter.Mss
                             staticMsgInfo.ApplyPostProcessing(preProcessedMsg, outMsg);
                         } while (curMsgType != mssMsg.Type);
 
-                        outMessages.Add(outMsg);
+                        yield return outMsg;
                     }
                 }
             }
-
-            return outMessages;
         }
 
         /// <summary>

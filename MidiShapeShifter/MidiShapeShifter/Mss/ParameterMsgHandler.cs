@@ -38,7 +38,7 @@ namespace MidiShapeShifter.Mss
             this.hostInfoOutput = hostInfoOutput;
 
             this.wetEventOutput.WetMssEventsReceived += 
-                new WetMssEventsReceivedEventHandler(WetEventReceived);
+                new WetMssEventReceivedEventHandler(WetEventReceived);
 
             this.mssParameters.ParameterValueChanged +=
                 new ParameterValueChangedEventHandler(ParameterValueChanged);
@@ -47,26 +47,24 @@ namespace MidiShapeShifter.Mss
                 new ProcessingCycleEndEventHandler(OnBeforeProcessingCycleEnd);
         }
 
-        protected void WetEventReceived(List<MssEvent> wetEventList)
+        protected void WetEventReceived(MssEvent wetEvent)
         {
             lock (MssComponentHub.criticalSectioinLock)
             {
-                foreach (MssEvent wetEvent in wetEventList)
+                if (wetEvent.mssMsg.Type == MssMsgType.Parameter)
                 {
-                    if (wetEvent.mssMsg.Type == MssMsgType.Parameter)
+                    if (Enum.IsDefined(typeof(MssParameterID), (int)wetEvent.mssMsg.Data1) == false)
                     {
-                        if (Enum.IsDefined(typeof(MssParameterID), (int)wetEvent.mssMsg.Data1) == false)
-                        {
-                            //Unknown MssParameterId
-                            Debug.Assert(false);
-                            continue;
-                        }
-
-                        this.mssParameters.SetParameterRelativeValue(
-                            (MssParameterID)(int)wetEvent.mssMsg.Data1,
-                            wetEvent.mssMsg.Data3);
+                        //Unknown MssParameterId
+                        Debug.Assert(false);
+                        return;
                     }
+
+                    this.mssParameters.SetParameterRelativeValue(
+                        (MssParameterID)(int)wetEvent.mssMsg.Data1,
+                        wetEvent.mssMsg.Data3);
                 }
+                
             }
         }
 

@@ -69,7 +69,7 @@ namespace MidiShapeShifter.Mss.Generator
 
             //Adds listener for generator toggle messages.
             wetMssEventOutputPort.WetMssEventsReceived += new 
-                    WetMssEventsReceivedEventHandler(WetMssEventOutputPort_WetMssEventsReceived);
+                    WetMssEventReceivedEventHandler(WetMssEventOutputPort_WetMssEventReceived);
 
             this.hostInfoOutputPort = hostInfoOutputPort;
             
@@ -84,63 +84,61 @@ namespace MidiShapeShifter.Mss.Generator
         /// <summary>
         /// Listens for GeneratorToggle messages
         /// </summary>
-        protected void WetMssEventOutputPort_WetMssEventsReceived(List<MssEvent> mssEventList)
+        protected void WetMssEventOutputPort_WetMssEventReceived(MssEvent mssEvent)
         {
-            foreach(MssEvent mssEvent in mssEventList)
+            if (mssEvent.mssMsg.Type == MssMsgType.GeneratorModify)
             {
-                if (mssEvent.mssMsg.Type == MssMsgType.GeneratorModify)
+                this.generatorMappingMgr.RunFuncOnMappingEntry(mssEvent.mssMsg.Data1AsInt, genEntry => 
                 {
-                    this.generatorMappingMgr.RunFuncOnMappingEntry(mssEvent.mssMsg.Data1AsInt, genEntry => 
+                    switch ((GenOperation)mssEvent.mssMsg.Data2) 
                     {
-                        switch ((GenOperation)mssEvent.mssMsg.Data2) 
+                    case GenOperation.OnOff:
+                        if (mssEvent.mssMsg.Data3 > 0)
                         {
-                        case GenOperation.OnOff:
-                            if (mssEvent.mssMsg.Data3 > 0)
-                            {
-                                genEntry.GenConfigInfo.Enabled = true;
-                                genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = double.NaN;
-                                genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate = mssEvent.sampleTime - SAMPLES_PER_GENERATOR_UPDATE;
-                                genEntry.GenHistoryInfo.LastValueSent = double.NaN;
-                                genEntry.GenHistoryInfo.Initialized = true;
-                            }
-                            else
-                            {
-                                genEntry.GenConfigInfo.Enabled = false;
-                                genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = double.NaN;
-                                genEntry.GenHistoryInfo.Initialized = false;
-                            }
-                            break;
-                            
-                        case GenOperation.PlayPause:
-                            if (mssEvent.mssMsg.Data3 > 0)
-                            {
-                                genEntry.GenConfigInfo.Enabled = true;
-                                genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate = mssEvent.sampleTime - SAMPLES_PER_GENERATOR_UPDATE;
-                                genEntry.GenHistoryInfo.LastValueSent = double.NaN;
-                                genEntry.GenHistoryInfo.Initialized = true;
-                            }
-                            else
-                            {
-                                genEntry.GenConfigInfo.Enabled = false;
-                                genEntry.GenHistoryInfo.Initialized = false;
-                            }
-                            break;
-                        
-                        case GenOperation.SetPosition:
-                            if (double.IsNaN(mssEvent.mssMsg.Data3) == false)
-                            {
-                                //TODO: The value that get's set here will not actually be used. Instead the next value will be used.
-                                genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = mssEvent.mssMsg.Data3;
-                            }
-                            break;
-
-                        default:
-                            Debug.Assert(false,"Unknown generator modify operation.");
-                            break;
+                            genEntry.GenConfigInfo.Enabled = true;
+                            genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = double.NaN;
+                            genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate = mssEvent.sampleTime - SAMPLES_PER_GENERATOR_UPDATE;
+                            genEntry.GenHistoryInfo.LastValueSent = double.NaN;
+                            genEntry.GenHistoryInfo.Initialized = true;
                         }
-                    });
-                }
+                        else
+                        {
+                            genEntry.GenConfigInfo.Enabled = false;
+                            genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = double.NaN;
+                            genEntry.GenHistoryInfo.Initialized = false;
+                        }
+                        break;
+                            
+                    case GenOperation.PlayPause:
+                        if (mssEvent.mssMsg.Data3 > 0)
+                        {
+                            genEntry.GenConfigInfo.Enabled = true;
+                            genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate = mssEvent.sampleTime - SAMPLES_PER_GENERATOR_UPDATE;
+                            genEntry.GenHistoryInfo.LastValueSent = double.NaN;
+                            genEntry.GenHistoryInfo.Initialized = true;
+                        }
+                        else
+                        {
+                            genEntry.GenConfigInfo.Enabled = false;
+                            genEntry.GenHistoryInfo.Initialized = false;
+                        }
+                        break;
+                        
+                    case GenOperation.SetPosition:
+                        if (double.IsNaN(mssEvent.mssMsg.Data3) == false)
+                        {
+                            //TODO: The value that get's set here will not actually be used. Instead the next value will be used.
+                            genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate = mssEvent.mssMsg.Data3;
+                        }
+                        break;
+
+                    default:
+                        Debug.Assert(false,"Unknown generator modify operation.");
+                        break;
+                    }
+                });
             }
+            
         }
 
         /// <summary>
@@ -332,7 +330,7 @@ namespace MidiShapeShifter.Mss.Generator
             MssMsg relPosMsg = CreateInputMsgForGenMappingEntry(genEntry, relPosInPeriod);
             //Processing the relPosMsg should convert it into a Generator message and apply the 
             //equation for this generator to it's data3.
-            List<MssMsg> processedMsgList = this.mssMsgProcessor.ProcessMssMsg(relPosMsg);
+            List<MssMsg> processedMsgList = this.mssMsgProcessor.ProcessMssMsg(relPosMsg).ToList();
 
             //Sample time for new event.
             long updatedSampleTime = genEntry.GenHistoryInfo.SampleTimeAtLastGeneratorUpdate +

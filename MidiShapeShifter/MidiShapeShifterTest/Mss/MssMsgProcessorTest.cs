@@ -209,10 +209,8 @@ namespace MidiShapeShifterTest.Mss
 
             msgProcessor.Init(mapMgrMock.Object, mssParameterViewerMock.Object);
 
-            List<MssMsg> returnedMsgList = msgProcessor.ProcessMssMsg(inputMsg);
-
             //Ensure returnedMsgList and desiredReturnedMsgList contain the same elements.
-            foreach(MssMsg returnedMsg in returnedMsgList) 
+            foreach (MssMsg returnedMsg in msgProcessor.ProcessMssMsg(inputMsg)) 
             {
                 int foundIndex = desiredReturnedMsgList.FindIndex(
                     desiredReturnedMsg => desiredReturnedMsg.Equals(returnedMsg));

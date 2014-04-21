@@ -7,7 +7,7 @@ namespace MidiShapeShifter.Mss.Relays
 {
     public interface IWetMssEventInputPort
     {
-        void ReceiveWetMssEventList(List<MssEvent> mssEventList);
+        void ReceiveWetMssEvent(MssEvent mssEvent);
         void OnProcessingCycleEnd(long SampleTimeAtEndOfCycle);
     }
 }
