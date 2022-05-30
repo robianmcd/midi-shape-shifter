@@ -7,7 +7,7 @@ namespace MidiShapeShifter.CSharpUtil
     {
         public delegate Value ValueCreator();
 
-        Dictionary<Key, ValueWithReference> cache;
+        private readonly Dictionary<Key, ValueWithReference> cache;
 
         //The maximum number of elements that can fit in the cache.
         protected int maxCacheSize;

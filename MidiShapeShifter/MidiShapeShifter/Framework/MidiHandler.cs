@@ -22,24 +22,15 @@ namespace MidiShapeShifter.Framework
 
         //Allows this class to send MssEvents to the DryMssEventRelay
         private Func<IDryMssEventInputPort> getDryMssEventInputPort;
-        protected IDryMssEventInputPort dryMssEventInputPort
-        {
-            get { return this.getDryMssEventInputPort(); }
-        }
+        protected IDryMssEventInputPort dryMssEventInputPort => this.getDryMssEventInputPort();
 
         //Allows this class to receive MssEvents from the WetMssEventRelay
         private Func<IWetMssEventOutputPort> getWetMssEventOutputPort;
-        protected IWetMssEventOutputPort wetMssEventOutputPort
-        {
-            get { return this.getWetMssEventOutputPort(); }
-        }
+        protected IWetMssEventOutputPort wetMssEventOutputPort => this.getWetMssEventOutputPort();
 
         //Allows this class to receive host information from the HostInfoRelay
         private Func<IHostInfoOutputPort> getHostInfoOutputPort;
-        protected IHostInfoOutputPort hostInfoOutputPort
-        {
-            get { return this.getHostInfoOutputPort(); }
-        }
+        protected IHostInfoOutputPort hostInfoOutputPort => this.getHostInfoOutputPort();
 
 
         //The sample time at the start of the current processing cycle.
@@ -83,10 +74,7 @@ namespace MidiShapeShifter.Framework
             this.vstHost = vstHost;
         }
 
-        public int ChannelCount
-        {
-            get { return 16; }
-        }
+        public int ChannelCount => 16;
 
         /// <summary>
         ///     Midi events are received from the host on this method and are either send to the DryMssEventRelay or 
@@ -196,10 +184,12 @@ namespace MidiShapeShifter.Framework
                                                          long sampleTimeAtStartOfProcessingCycle,
                                                          double sampleRate)
         {
-            MssEvent mssEvent = new MssEvent();
+            MssEvent mssEvent = new MssEvent
+            {
 
-            //Sets the sample time for mssEvent.
-            mssEvent.sampleTime = sampleTimeAtStartOfProcessingCycle + midiEvent.DeltaFrames;
+                //Sets the sample time for mssEvent.
+                sampleTime = sampleTimeAtStartOfProcessingCycle + midiEvent.DeltaFrames
+            };
 
             MssMsgType msgType = MidiUtil.GetMssTypeFromMidiData(midiEvent.Data);
             mssEvent.mssMsg.Type = msgType;
@@ -256,9 +246,8 @@ namespace MidiShapeShifter.Framework
             byte[] midiData = new byte[3];
 
             //Get status half of first byte.
-            byte statusByte;
 
-            if (MidiUtil.GetStatusFromMssMsgType(mssEvent.mssMsg.Type, out statusByte) == false)
+            if (MidiUtil.GetStatusFromMssMsgType(mssEvent.mssMsg.Type, out byte statusByte) == false)
             {
                 return null;
             }
@@ -292,10 +281,7 @@ namespace MidiShapeShifter.Framework
 
         #region IVstPluginMidiSource Members
 
-        int IVstPluginMidiSource.ChannelCount
-        {
-            get { return 16; }
-        }
+        int IVstPluginMidiSource.ChannelCount => 16;
 
         #endregion
     }

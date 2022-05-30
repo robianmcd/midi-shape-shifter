@@ -6,7 +6,7 @@ namespace MidiShapeShifter.Mss.UI
 {
     public partial class EquationEditorDlg : Form
     {
-        Control parentControl;
+        private Control parentControl;
 
         public string equation = "";
         public int cursorPosition = 0;

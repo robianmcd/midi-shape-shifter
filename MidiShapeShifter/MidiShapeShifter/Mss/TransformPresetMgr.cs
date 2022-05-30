@@ -55,30 +55,15 @@ namespace MidiShapeShifter.Mss
             InitBase();
         }
 
-        public override string SettingsFileExtension
-        {
-            get { return TRANSFORM_PRESET_FILE_EXTENSION; }
-        }
+        public override string SettingsFileExtension => TRANSFORM_PRESET_FILE_EXTENSION;
 
-        public override string TypeOfSettingsName
-        {
-            get { return "Tramsformation Preset"; }
-        }
+        public override string TypeOfSettingsName => "Tramsformation Preset";
 
-        public override string RootFolderForFactorySettings
-        {
-            get { return MssFileSystemLocations.FactoryTransformPresetFolder; }
-        }
+        public override string RootFolderForFactorySettings => MssFileSystemLocations.FactoryTransformPresetFolder;
 
-        public override string RootFolderForUserSettings
-        {
-            get { return MssFileSystemLocations.UserTransformPresetFolder; }
-        }
+        public override string RootFolderForUserSettings => MssFileSystemLocations.UserTransformPresetFolder;
 
-        protected override bool EnforceUniqueSettingsFileNames
-        {
-            get { return false; }
-        }
+        protected override bool EnforceUniqueSettingsFileNames => false;
 
         protected override SettingsFileInfo CreateDefaultActiveSettingsFileInfo()
         {

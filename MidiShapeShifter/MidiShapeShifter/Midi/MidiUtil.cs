@@ -104,8 +104,7 @@ namespace MidiShapeShifter.Midi
             Debug.Assert((byte3 >> 7) == 0);
 
             byte[] midiData = new byte[3];
-            byte statusByte;
-            bool successfullyConvertedType = GetStatusFromMssMsgType(msgType, out statusByte);
+            bool successfullyConvertedType = GetStatusFromMssMsgType(msgType, out byte statusByte);
             Debug.Assert(successfullyConvertedType);
             statusByte |= (byte)(channel - 1);
 

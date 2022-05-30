@@ -14,7 +14,7 @@ namespace MidiShapeShifter.Framework
         //Receives information about the audio processing cycle and sends it out to which ever classes need to know 
         //about it.
         private Func<IHostInfoInputPort> getHostInfoInputPort;
-        protected IHostInfoInputPort hostInfoInputPort { get { return this.getHostInfoInputPort(); } }
+        protected IHostInfoInputPort hostInfoInputPort => this.getHostInfoInputPort();
 
         public void Init(Func<IHostInfoInputPort> getHostInfoInputPort)
         {
@@ -26,7 +26,7 @@ namespace MidiShapeShifter.Framework
             //Ensures that the host is transmitting all the required time info.
             Debug.Assert((timeInfo.Flags & RequiredTimeInfoFlags) == RequiredTimeInfoFlags);
 
-            double quarterNotesPerBar = ((double)timeInfo.TimeSignatureNumerator /
+            double quarterNotesPerBar = (timeInfo.TimeSignatureNumerator /
                                      (double)timeInfo.TimeSignatureDenominator) / 0.25;
             double barPos = timeInfo.PpqPosition / quarterNotesPerBar;
 

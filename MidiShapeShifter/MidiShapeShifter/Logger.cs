@@ -19,23 +19,27 @@ namespace MidiShapeShifter
         {
             traceSource = new TraceSource("mss");
 
-            FileLogTraceListener logListener = new FileLogTraceListener();
-            logListener.BaseFileName = "mss-log";
-            logListener.CustomLocation = MssFileSystemLocations.SettingsFolder;
-            logListener.AutoFlush = true;
-            logListener.MaxFileSize = 5000000; //5MB
-            logListener.Delimiter = " | ";
-            logListener.LogFileCreationSchedule = LogFileCreationScheduleOption.Weekly;
-            logListener.DiskSpaceExhaustedBehavior = DiskSpaceExhaustedOption.DiscardMessages;
-            logListener.TraceOutputOptions = TraceOptions.ThreadId;
+            FileLogTraceListener logListener = new FileLogTraceListener
+            {
+                BaseFileName = "mss-log",
+                CustomLocation = MssFileSystemLocations.SettingsFolder,
+                AutoFlush = true,
+                MaxFileSize = 5000000, //5MB
+                Delimiter = " | ",
+                LogFileCreationSchedule = LogFileCreationScheduleOption.Weekly,
+                DiskSpaceExhaustedBehavior = DiskSpaceExhaustedOption.DiscardMessages,
+                TraceOutputOptions = TraceOptions.ThreadId
+            };
 
             TextWriterTraceListener logWriterListener = new TextWriterTraceListener(MssFileSystemLocations.SettingsFolder + "log.txt");
             traceSource.Listeners.Add(logListener);
 
-            traceSource.Switch = new SourceSwitch("switch", "");
+            traceSource.Switch = new SourceSwitch("switch", "")
+            {
 
-            //TODO: this should probably be loaded from the registry or a settings file.
-            traceSource.Switch.Level = SourceLevels.Warning;
+                //TODO: this should probably be loaded from the registry or a settings file.
+                Level = SourceLevels.Warning
+            };
 
 
             //Remove log files from previous weeks

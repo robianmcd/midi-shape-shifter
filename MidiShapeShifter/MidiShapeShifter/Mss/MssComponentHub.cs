@@ -35,35 +35,35 @@ namespace MidiShapeShifter.Mss
         [DataMember(Name = "GenMappingMgr")]
         protected GeneratorMappingManager genMappingMgr;
 
-        public static readonly Object criticalSectioinLock = new Object();
+        public static readonly object criticalSectioinLock = new object();
 
         /// <summary>
         ///     Passes unprocessed MssEvents from the "Framework" namespace to the "Mss" namespace.
         /// </summary>
         protected DryMssEventRelay _dryMssEventRelay;
-        public IDryMssEventInputPort DryMssEventInputPort { get { return this._dryMssEventRelay; } }
-        public IDryMssEventOutputPort DryMssEventOutputPort { get { return this._dryMssEventRelay; } }
+        public IDryMssEventInputPort DryMssEventInputPort => this._dryMssEventRelay;
+        public IDryMssEventOutputPort DryMssEventOutputPort => this._dryMssEventRelay;
 
         /// <summary>
         ///     Passes processed MssEvents from the "Mss" namespace to the "Framework" namespace.
         /// </summary>
         protected WetMssEventRelay _wetMssEventRelay;
-        public IWetMssEventInputPort WetMssEventInputPort { get { return this._wetMssEventRelay; } }
-        public IWetMssEventOutputPort WetMssEventOutputPort { get { return this._wetMssEventRelay; } }
+        public IWetMssEventInputPort WetMssEventInputPort => this._wetMssEventRelay;
+        public IWetMssEventOutputPort WetMssEventOutputPort => this._wetMssEventRelay;
 
         /// <summary>
         ///     Passes information about the host from the "Framework" namespace to the "Mss" namespace
         /// </summary>
         protected HostInfoRelay _hostInfoRelay;
-        public IHostInfoInputPort HostInfoInputPort { get { return this._hostInfoRelay; } }
-        public IHostInfoOutputPort HostInfoOutputPort { get { return this._hostInfoRelay; } }
+        public IHostInfoInputPort HostInfoInputPort => this._hostInfoRelay;
+        public IHostInfoOutputPort HostInfoOutputPort => this._hostInfoRelay;
 
         protected MssParameters _mssParameters;
-        public MssParameters MssParameters { get { return this._mssParameters; } }
+        public MssParameters MssParameters => this._mssParameters;
 
         [DataMember(Name = "MssProgramMgr")]
         protected MssProgramMgr _mssProgramMgr;
-        public MssProgramMgr MssProgramMgr { get { return this._mssProgramMgr; } }
+        public MssProgramMgr MssProgramMgr => this._mssProgramMgr;
 
         protected TransformPresetMgr transformPresetMgr;
 
@@ -140,8 +140,8 @@ namespace MidiShapeShifter.Mss
             this.eventLogger.Init(this.DryMssEventOutputPort, this.WetMssEventOutputPort);
 
             this.msgEntryMetadataFactory.Init(this.genMappingMgr,
-                                              (IMssParameterViewer)this.MssParameters);
-            this.msgInfoFactory.Init(this.genMappingMgr, (IMssParameterViewer)this.MssParameters);
+                                              MssParameters);
+            this.msgInfoFactory.Init(this.genMappingMgr, MssParameters);
 
             this.sendEventsToHostTrigger.Init(this.HostInfoOutputPort, this.WetMssEventInputPort);
             this.paramMsgHandler.Init(this.MssParameters,
@@ -224,7 +224,7 @@ namespace MidiShapeShifter.Mss
 
         public override string ToString()
         {
-            return String.Format("MssComponentHub, numMappings: {0}, numGenMappings {1}", this.mappingMgr.GetNumEntries(), this.genMappingMgr.GetNumEntries());
+            return string.Format("MssComponentHub, numMappings: {0}, numGenMappings {1}", this.mappingMgr.GetNumEntries(), this.genMappingMgr.GetNumEntries());
         }
 
     }

@@ -53,7 +53,7 @@ namespace MidiShapeShifter.Mss
         public override int GetHashCode()
         {
             int hash = 13;
-            hash = (hash * 7) + (int)this.Name.GetHashCode();
+            hash = (hash * 7) + this.Name.GetHashCode();
             hash = (hash * 7) + this.FileLocationType.GetHashCode();
             hash = (hash * 7) + this.FilePath.GetHashCode();
             return hash;

@@ -14,7 +14,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
     /// </summary>
     public abstract class MssMsgRangeEntryMetadata
     {
-        public readonly static List<MssMsgType> VALID_INPUT_TYPES;
+        public static readonly List<MssMsgType> VALID_INPUT_TYPES;
 
         public abstract MssMsgType MsgType { get; }
 
@@ -120,8 +120,10 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         /// <param name="io">Specifies wheather this associated with the input or output entry fields.</param>
         public void AttachToDlg(MappingDlg mappingDlg, IoType io)
         {
-            this.msgRange = new MssMsgRange();
-            this.msgRange.MsgType = this.MsgType;
+            this.msgRange = new MssMsgRange
+            {
+                MsgType = this.MsgType
+            };
 
             this.ioCatagory = io;
             this.mappingDlg = mappingDlg;
@@ -283,8 +285,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         /// <returns>True if entry field 1 contains valid user input.</returns>
         public bool ValidateEntryField1()
         {
-            string errorMsg;
-            this.entryField1IsValid = SetData1RangeFromField(out errorMsg);
+            this.entryField1IsValid = SetData1RangeFromField(out string errorMsg);
 
             //EntryField1 could be null if EntryField1 is not used by the active msg type
             if (this.EntryField1 != null)
@@ -321,8 +322,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         /// <returns>True if entry field 2 contains valid user input.</returns>
         public bool ValidateEntryField2()
         {
-            string errorMsg;
-            this.entryField2IsValid = SetData2RangeFromField(out errorMsg);
+            this.entryField2IsValid = SetData2RangeFromField(out string errorMsg);
 
             //EntryField2 could be null if EntryField2 is not used by the active msg type
             if (this.EntryField2 != null)
@@ -361,8 +361,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         {
             if (this.entryField1IsValid == false)
             {
-                string dummyErrMsg;
-                this.entryField1IsValid = SetData1RangeFromField(out dummyErrMsg);
+                this.entryField1IsValid = SetData1RangeFromField(out string dummyErrMsg);
 
                 //The precondition has been violated
                 Debug.Assert(this.entryField1IsValid);
@@ -370,8 +369,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 
             if (this.entryField2IsValid == false)
             {
-                string dummyErrMsg;
-                this.entryField2IsValid = SetData2RangeFromField(out dummyErrMsg);
+                this.entryField2IsValid = SetData2RangeFromField(out string dummyErrMsg);
 
                 //The precondition has been violated
                 Debug.Assert(this.entryField2IsValid);

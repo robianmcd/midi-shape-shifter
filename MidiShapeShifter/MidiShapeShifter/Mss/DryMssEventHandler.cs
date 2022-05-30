@@ -55,9 +55,11 @@ namespace MidiShapeShifter.Mss
         {
             foreach (MssMsg mssMsg in this.mssMsgProcessor.ProcessMssMsg(dryMssEvent.mssMsg))
             {
-                MssEvent wetEvent = new MssEvent();
-                wetEvent.mssMsg = mssMsg;
-                wetEvent.sampleTime = dryMssEvent.sampleTime;
+                MssEvent wetEvent = new MssEvent
+                {
+                    mssMsg = mssMsg,
+                    sampleTime = dryMssEvent.sampleTime
+                };
 
                 //Send the processed MssEvent to the WetMssEventRelay
                 this.wetMssEventInputPort.ReceiveWetMssEvent(wetEvent);

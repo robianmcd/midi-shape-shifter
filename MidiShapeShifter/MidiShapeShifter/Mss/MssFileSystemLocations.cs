@@ -20,53 +20,17 @@ namespace MidiShapeShifter.Mss
             }
         }
 
-        public static string FactorySettingsFolder
-        {
-            get
-            {
-                return SettingsFolder + @"Factory Settings\";
-            }
-        }
+        public static string FactorySettingsFolder => SettingsFolder + @"Factory Settings\";
 
-        public static string UserSettingsFolder
-        {
-            get
-            {
-                return SettingsFolder + @"User Settings\";
-            }
-        }
+        public static string UserSettingsFolder => SettingsFolder + @"User Settings\";
 
-        public static string FactoryProgramsFolder
-        {
-            get
-            {
-                return FactorySettingsFolder + @"Programs\";
-            }
-        }
+        public static string FactoryProgramsFolder => FactorySettingsFolder + @"Programs\";
 
-        public static string UserProgramsFolder
-        {
-            get
-            {
-                return UserSettingsFolder + @"Programs\";
-            }
-        }
+        public static string UserProgramsFolder => UserSettingsFolder + @"Programs\";
 
-        public static string FactoryTransformPresetFolder
-        {
-            get
-            {
-                return FactorySettingsFolder + @"Transformation Presets\";
-            }
-        }
+        public static string FactoryTransformPresetFolder => FactorySettingsFolder + @"Transformation Presets\";
 
-        public static string UserTransformPresetFolder
-        {
-            get
-            {
-                return UserSettingsFolder + @"Transformation Presets\";
-            }
-        }
+        public static string UserTransformPresetFolder => UserSettingsFolder + @"Transformation Presets\";
 
         private static RegistryKey CreateMssLocalMachineRegKey()
         {

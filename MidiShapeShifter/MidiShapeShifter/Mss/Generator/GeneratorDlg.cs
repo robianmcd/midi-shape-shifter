@@ -73,8 +73,7 @@ namespace MidiShapeShifter.Mss.Generator
         /// <returns>True if the content is valid. False otherwise.</returns>
         protected bool ValidatePeriodTextBox()
         {
-            int periodSize;
-            if (int.TryParse(this.periodTextBox.Text.Trim(), out periodSize) && periodSize > 0)
+            if (int.TryParse(this.periodTextBox.Text.Trim(), out int periodSize) && periodSize > 0)
             {
                 this.errorProvider.SetError(this.periodTextBox, "");
                 return true;
@@ -146,9 +145,8 @@ namespace MidiShapeShifter.Mss.Generator
             }
             else
             {
-                int periodSize;
                 //this should always be able to be parsed as an int because ValidatePeriodTextBox() returned true.
-                int.TryParse(this.periodTextBox.Text.Trim(), out periodSize);
+                int.TryParse(this.periodTextBox.Text.Trim(), out int periodSize);
                 this.GenInfoResult.TimePeriodInMs = periodSize;
             }
 

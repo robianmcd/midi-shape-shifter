@@ -18,7 +18,7 @@ namespace MidiShapeShifter.Framework
         public event ProgramActivatedEventHandler ProgramActivated;
 
         protected Func<MssProgramMgr> getMssProgramMgr;
-        protected MssProgramMgr mssProgramMgr { get { return this.getMssProgramMgr(); } }
+        protected MssProgramMgr mssProgramMgr => this.getMssProgramMgr();
         protected IVstHost vstHost;
 
         /// <summary>
@@ -93,8 +93,10 @@ namespace MidiShapeShifter.Framework
             }
 
             // create a new parameter category object
-            VstParameterCategory paramCategory = new VstParameterCategory();
-            paramCategory.Name = categoryName;
+            VstParameterCategory paramCategory = new VstParameterCategory
+            {
+                Name = categoryName
+            };
 
             ParameterCategories.Add(paramCategory);
 
@@ -112,10 +114,12 @@ namespace MidiShapeShifter.Framework
 
         public VstProgramCollection CreatePrograms()
         {
-            VstProgramCollection newPrograms = new VstProgramCollection();
+            VstProgramCollection newPrograms = new VstProgramCollection
+            {
 
-            //Add active program to the top of the list
-            newPrograms.Add(CreateProgramFromSettingsFileInfo(this.mssProgramMgr.GetActiveSettingsFile()));
+                //Add active program to the top of the list
+                CreateProgramFromSettingsFileInfo(this.mssProgramMgr.GetActiveSettingsFile())
+            };
 
             foreach (SettingsFileInfo progInfo in this.mssProgramMgr.FlatSettingsFileList)
             {
@@ -203,10 +207,7 @@ namespace MidiShapeShifter.Framework
 
                 return this._activeProgram;
             }
-            set
-            {
-                ActivateProgram(value);
-            }
+            set => ActivateProgram(value);
         }
 
         protected void ActivateProgram(VstProgram program)

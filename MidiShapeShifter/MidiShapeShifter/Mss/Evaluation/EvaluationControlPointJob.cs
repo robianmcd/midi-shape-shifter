@@ -22,7 +22,7 @@ namespace MidiShapeShifter.Mss.Evaluation
             this.expression = expression;
 
             this.expression.EvaluateFunction += FunctionHandler;
-            SetExpressionBaseParameters((EvaluationInput)evalInput);
+            SetExpressionBaseParameters(evalInput);
         }
 
     }

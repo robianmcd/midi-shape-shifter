@@ -8,10 +8,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
     //TODO: comment this class
     public class ParameterMsgRangeEntryMetadata : MssMsgRangeEntryMetadata
     {
-        public override MssMsgType MsgType
-        {
-            get { return MssMsgType.Parameter; }
-        }
+        public override MssMsgType MsgType => MssMsgType.Parameter;
 
         protected IMssParameterViewer parameterViewer;
 
@@ -70,13 +67,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             ((ComboBox)EntryField1).SelectedIndex = paramIndex;
         }
 
-        public override Control EntryField2
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override Control EntryField2 => null;
 
         protected override void SetMappingDlgEntryFieldCustomProperties()
         {
@@ -108,9 +99,6 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             throw new NotImplementedException();
         }
 
-        protected override bool canSelectSameAsInput
-        {
-            get { return false; }
-        }
+        protected override bool canSelectSameAsInput => false;
     }
 }

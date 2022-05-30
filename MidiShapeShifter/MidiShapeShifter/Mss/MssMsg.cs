@@ -76,9 +76,9 @@ namespace MidiShapeShifter.Mss
         public double Data2;
         public double Data3;
 
-        public int Data1AsInt { get { return (int)Math.Round(this.Data1); } }
-        public int Data2AsInt { get { return (int)Math.Round(this.Data2); } }
-        public int Data3AsInt { get { return (int)Math.Round(this.Data3); } }
+        public int Data1AsInt => (int)Math.Round(this.Data1);
+        public int Data2AsInt => (int)Math.Round(this.Data2);
+        public int Data3AsInt => (int)Math.Round(this.Data3);
 
         public MssMsg() { }
 

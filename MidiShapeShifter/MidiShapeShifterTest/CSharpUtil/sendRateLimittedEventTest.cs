@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace MidiShapeShifterTest.CSharpUtil
 {
-    class SendRateLimittedEventTest
+    internal class SendRateLimittedEventTest
     {
         //I was getting some random failures with this set to 500.
         protected const int EVENT_WAIT_TIMEOUT = 1000;

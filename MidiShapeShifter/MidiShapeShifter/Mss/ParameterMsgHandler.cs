@@ -83,9 +83,10 @@ namespace MidiShapeShifter.Mss
                                              (int)paramId,
                                              MssMsgUtil.UNUSED_MSS_MSG_DATA,
                                              relValue);
-                MssEvent paramEvent = new MssEvent();
-
-                paramEvent.mssMsg = paramMsg;
+                MssEvent paramEvent = new MssEvent
+                {
+                    mssMsg = paramMsg
+                };
 
                 long ticksSinceCycleEnd = watchOffestAtParamChanged - this.watchOffestAtLastCycleEnd;
                 double secondsSinceCycleEnd = ticksSinceCycleEnd / (double)TimeSpan.TicksPerSecond;

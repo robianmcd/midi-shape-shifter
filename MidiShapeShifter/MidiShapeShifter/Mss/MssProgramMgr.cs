@@ -44,8 +44,8 @@ namespace MidiShapeShifter.Mss
         protected string _activeSettingsFileName;
         public override string ActiveSettingsFileName
         {
-            get { return this._activeSettingsFileName; }
-            protected set { this._activeSettingsFileName = value; }
+            get => this._activeSettingsFileName;
+            protected set => this._activeSettingsFileName = value;
         }
 
 
@@ -62,30 +62,15 @@ namespace MidiShapeShifter.Mss
             InitBase();
         }
 
-        public override string SettingsFileExtension
-        {
-            get { return "mssp"; }
-        }
+        public override string SettingsFileExtension => "mssp";
 
-        public override string TypeOfSettingsName
-        {
-            get { return "MSS Program"; }
-        }
+        public override string TypeOfSettingsName => "MSS Program";
 
-        public override string RootFolderForFactorySettings
-        {
-            get { return MssFileSystemLocations.FactoryProgramsFolder; }
-        }
+        public override string RootFolderForFactorySettings => MssFileSystemLocations.FactoryProgramsFolder;
 
-        public override string RootFolderForUserSettings
-        {
-            get { return MssFileSystemLocations.UserProgramsFolder; }
-        }
+        public override string RootFolderForUserSettings => MssFileSystemLocations.UserProgramsFolder;
 
-        protected override bool EnforceUniqueSettingsFileNames
-        {
-            get { return true; }
-        }
+        protected override bool EnforceUniqueSettingsFileNames => true;
 
         protected override SettingsFileInfo CreateDefaultActiveSettingsFileInfo()
         {

@@ -1,10 +1,7 @@
 ﻿namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    class RelBarPeriodPosMsgInfo : GenericRelitivePosMsgInfo
+    internal class RelBarPeriodPosMsgInfo : GenericRelitivePosMsgInfo
     {
-        public override MssMsgType MsgType
-        {
-            get { return MssMsgType.RelBarPeriodPos; }
-        }
+        public override MssMsgType MsgType => MssMsgType.RelBarPeriodPos;
     }
 }

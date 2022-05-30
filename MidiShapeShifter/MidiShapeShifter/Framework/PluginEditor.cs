@@ -17,7 +17,7 @@ namespace MidiShapeShifter.Framework
     public class PluginEditor : IVstPluginEditor
     {
         private Func<MssComponentHub> getMssHub;
-        protected MssComponentHub MssHub { get { return this.getMssHub(); } }
+        protected MssComponentHub MssHub => this.getMssHub();
 
         protected bool pluginEditorIsOpen = false;
         protected IntPtr pluginHandle;

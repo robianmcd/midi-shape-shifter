@@ -2,20 +2,11 @@
 
 namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 {
-    class ChanAftertouchMsgRangeEntryMetadata : MidiMsgRangeEntryMetadata
+    internal class ChanAftertouchMsgRangeEntryMetadata : MidiMsgRangeEntryMetadata
     {
-        public override MssMsgType MsgType
-        {
-            get { return MssMsgType.ChanAftertouch; }
-        }
+        public override MssMsgType MsgType => MssMsgType.ChanAftertouch;
 
-        public override Control EntryField2
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override Control EntryField2 => null;
 
         protected override void SetMappingDlgEntryFieldCustomProperties()
         {

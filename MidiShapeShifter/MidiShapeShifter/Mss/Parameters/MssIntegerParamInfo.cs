@@ -4,26 +4,17 @@ using System.Runtime.Serialization;
 namespace MidiShapeShifter.Mss.Parameters
 {
     [DataContract]
-    class MssIntegerParamInfo : MssParamInfo
+    internal class MssIntegerParamInfo : MssParamInfo
     {
         protected const double DEFAULT_INTEGER_PRAM_VALUE = 0;
         protected const int DEFAULT_INTEGER_PRAM_MIN_VALUE = 0;
         protected const int DEFAULT_INTEGER_PRAM_MAX_VALUE = 1;
 
-        public override MssParamType paramType
-        {
-            get { return MssParamType.Integer; }
-        }
+        public override MssParamType paramType => MssParamType.Integer;
 
-        public override bool allowUserToEditMaxMin
-        {
-            get { return true; }
-        }
+        public override bool allowUserToEditMaxMin => true;
 
-        public override ValueInputType methodOfValueInput
-        {
-            get { return ValueInputType.Integer; }
-        }
+        public override ValueInputType methodOfValueInput => ValueInputType.Integer;
 
         protected override void SetMembersWithDefaultValues()
         {

@@ -19,7 +19,7 @@ namespace MidiShapeShifter.Mss.Parameters
         public abstract bool allowUserToEditMaxMin { get; }
         public abstract ValueInputType methodOfValueInput { get; }
         //It is only nessesary to impliment this if methodOfValueInput is set to Selection.
-        public virtual IList<string> ValueNameList { get { return null; } }
+        public virtual IList<string> ValueNameList => null;
 
         [DataMember]
         public string Name;
@@ -65,7 +65,7 @@ namespace MidiShapeShifter.Mss.Parameters
             return (MssParamInfo)this.MemberwiseClone();
         }
 
-        override public string ToString()
+        public override string ToString()
         {
             return string.Format("MssParamInfo - name: {0}, raw: {1}, max: {2}, min: {3}",
                 this.Name, this.RawValue, this.MaxValue, this.MinValue);

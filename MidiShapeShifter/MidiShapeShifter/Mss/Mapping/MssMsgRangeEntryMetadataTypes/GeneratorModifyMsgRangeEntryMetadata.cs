@@ -6,10 +6,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 {
     public class GeneratorModifyMsgRangeEntryMetadata : MsgRangeEntryMetadataWithGenSelect
     {
-        public override MssMsgType MsgType
-        {
-            get { return MssMsgType.GeneratorModify; }
-        }
+        public override MssMsgType MsgType => MssMsgType.GeneratorModify;
 
         public override Control EntryField2
         {
@@ -65,9 +62,6 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             ((ComboBox)EntryField2).SelectedIndex = 0;
         }
 
-        protected override bool canSelectSameAsInput
-        {
-            get { return false; }
-        }
+        protected override bool canSelectSameAsInput => false;
     }
 }

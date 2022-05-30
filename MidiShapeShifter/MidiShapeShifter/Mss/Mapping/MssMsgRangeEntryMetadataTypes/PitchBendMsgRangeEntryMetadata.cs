@@ -4,18 +4,9 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 {
     public class PitchBendMsgRangeEntryMetadata : MidiMsgRangeEntryMetadata
     {
-        public override MssMsgType MsgType
-        {
-            get { return MssMsgType.PitchBend; }
-        }
+        public override MssMsgType MsgType => MssMsgType.PitchBend;
 
-        public override Control EntryField2
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public override Control EntryField2 => null;
 
         protected override void SetMappingDlgEntryFieldCustomProperties()
         {

@@ -12,10 +12,7 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
             this.genMappingMgr = genMappingMgr;
         }
 
-        public override MssMsgType MsgType
-        {
-            get { return MssMsgType.GeneratorModify; }
-        }
+        public override MssMsgType MsgType => MssMsgType.GeneratorModify;
 
         public override string ConvertData1ToString(double Data1)
         {

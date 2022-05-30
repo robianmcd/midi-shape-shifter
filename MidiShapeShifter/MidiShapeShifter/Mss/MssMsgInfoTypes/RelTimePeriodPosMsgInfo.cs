@@ -2,9 +2,6 @@
 {
     public class RelTimePeriodPosMsgInfo : GenericRelitivePosMsgInfo
     {
-        public override MssMsgType MsgType
-        {
-            get { return MssMsgType.RelTimePeriodPos; }
-        }
+        public override MssMsgType MsgType => MssMsgType.RelTimePeriodPos;
     }
 }

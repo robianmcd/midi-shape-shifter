@@ -2,9 +2,6 @@
 {
     public class CCMsgRangeEntryMetadata : MidiMsgRangeEntryMetadata
     {
-        public override MssMsgType MsgType
-        {
-            get { return MssMsgType.CC; }
-        }
+        public override MssMsgType MsgType => MssMsgType.CC;
     }
 }

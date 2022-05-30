@@ -22,7 +22,7 @@ namespace MidiShapeShifter.Framework
         protected PluginPrograms pluginPrograms;
 
         private Func<MssParameters> getMssParameters;
-        protected MssParameters mssParameters { get { return this.getMssParameters(); } }
+        protected MssParameters mssParameters => this.getMssParameters();
 
         protected HashSet<MssParameterID> parametersBeingModified;
 
@@ -107,9 +107,11 @@ namespace MidiShapeShifter.Framework
                 this.pluginPrograms.GetParameterCategory(DEFAULT_PARAMETER_CATEGORY_NAME);
 
             // Variable parameter
-            VstParameterInfo paramInfo = new VstParameterInfo();
-            paramInfo.Category = paramCategory;
-            paramInfo.CanBeAutomated = true;
+            VstParameterInfo paramInfo = new VstParameterInfo
+            {
+                Category = paramCategory,
+                CanBeAutomated = true
+            };
 
             if (MssParameters.PRESET_PARAM_ID_LIST.Contains(paramId))
             {
@@ -174,9 +176,8 @@ namespace MidiShapeShifter.Framework
         private void VstParameter_Changed(object sender, PropertyChangedEventArgs e)
         {
             VstParameter changedParam = (VstParameter)sender;
-            MssParameterID paramID;
             //Gets the MssParameterID associated with the changed parameter.
-            VstParameterManagerDict.TryGetLeftByRight(out paramID, changedParam.Info.ParameterManager);
+            VstParameterManagerDict.TryGetLeftByRight(out MssParameterID paramID, changedParam.Info.ParameterManager);
 
             if (this.parametersBeingModified.Contains(paramID) == false)
             {
@@ -199,9 +200,8 @@ namespace MidiShapeShifter.Framework
         /// <param name="name">New name of the changed parameter.</param>
         private void MssParameters_NameChanged(MssParameterID paramId, string name)
         {
-            VstParameterManager paramMgr;
             //Looks up the VstParameterManager associated with the changed parameter
-            VstParameterManagerDict.TryGetRightByLeft(paramId, out paramMgr);
+            VstParameterManagerDict.TryGetRightByLeft(paramId, out VstParameterManager paramMgr);
             if (paramMgr.ActiveParameter.Info.Name != name)
             {
                 paramMgr.ActiveParameter.Info.Name = GetParamNameFromString(name);
@@ -216,9 +216,8 @@ namespace MidiShapeShifter.Framework
         /// <param name="value">New value of the changed parameter.</param>
         private void MssParameters_ValueChanged(MssParameterID paramId, double value)
         {
-            VstParameterManager paramMgr;
             //Looks up the VstParameterManager associated with the changed parameter
-            VstParameterManagerDict.TryGetRightByLeft(paramId, out paramMgr);
+            VstParameterManagerDict.TryGetRightByLeft(paramId, out VstParameterManager paramMgr);
             if (paramMgr.ActiveParameter != null)
             {
                 if (paramMgr.ActiveParameter.Value != value)

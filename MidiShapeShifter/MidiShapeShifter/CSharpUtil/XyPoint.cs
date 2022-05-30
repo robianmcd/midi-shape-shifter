@@ -24,14 +24,14 @@ namespace MidiShapeShifter.CSharpUtil
         }
 
         //This will only create a deep copy if CoordinateType is a value type.
-        XyPoint<CoordinateType> Clone()
+        private XyPoint<CoordinateType> Clone()
         {
             return (XyPoint<CoordinateType>)this.MemberwiseClone();
         }
 
         public override string ToString()
         {
-            return "X: " + String.Format("{0}", X) + " Y: " + String.Format("{0}", Y);
+            return "X: " + string.Format("{0}", X) + " Y: " + string.Format("{0}", Y);
         }
     }
 }

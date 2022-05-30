@@ -20,9 +20,6 @@ namespace MidiShapeShifter.Mss.Evaluation
             this.EquationStr = equationStr;
         }
 
-        public override EquationType equationType
-        {
-            get { return EquationType.Point; }
-        }
+        public override EquationType equationType => EquationType.Point;
     }
 }

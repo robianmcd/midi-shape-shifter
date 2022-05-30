@@ -6,13 +6,12 @@ using NUnit.Framework;
 namespace MidiShapeShifterTest.Mss.Mapping
 {
     [TestFixture]
-    class EntryFieldInterpretingUtilsTest
+    internal class EntryFieldInterpretingUtilsTest
     {
         [Test]
         public void InterpretAsInt_ValidInteger_SuccessfullyExtractsInt()
         {
-            int outValue;
-            bool successfullyInturpreted = EntryFieldInterpretingUtils.InterpretAsInt("25", out outValue);
+            bool successfullyInturpreted = EntryFieldInterpretingUtils.InterpretAsInt("25", out int outValue);
 
             Assert.IsTrue(successfullyInturpreted);
             Assert.AreEqual(25, outValue);
@@ -21,8 +20,7 @@ namespace MidiShapeShifterTest.Mss.Mapping
         [Test]
         public void InterpretAsInt_ValidIntegerWithWhitespace_SuccessfullyExtractsInt()
         {
-            int outValue;
-            bool successfullyInturpreted = EntryFieldInterpretingUtils.InterpretAsInt("  12  ", out outValue);
+            bool successfullyInturpreted = EntryFieldInterpretingUtils.InterpretAsInt("  12  ", out int outValue);
 
             Assert.IsTrue(successfullyInturpreted);
             Assert.AreEqual(12, outValue);
@@ -31,8 +29,7 @@ namespace MidiShapeShifterTest.Mss.Mapping
         [Test]
         public void InterpretAsInt_NonIntegerString_CannotExtractInt()
         {
-            int outValue;
-            bool successfullyInturpreted = EntryFieldInterpretingUtils.InterpretAsInt("1b", out outValue);
+            bool successfullyInturpreted = EntryFieldInterpretingUtils.InterpretAsInt("1b", out int outValue);
 
             Assert.IsFalse(successfullyInturpreted);
         }
@@ -40,8 +37,7 @@ namespace MidiShapeShifterTest.Mss.Mapping
         [Test]
         public void InterpretAsInt_DecimalInput_CannotExtractInt()
         {
-            int outValue;
-            bool successfullyInturpreted = EntryFieldInterpretingUtils.InterpretAsInt("1.5", out outValue);
+            bool successfullyInturpreted = EntryFieldInterpretingUtils.InterpretAsInt("1.5", out int outValue);
 
             Assert.IsFalse(successfullyInturpreted);
         }
@@ -66,10 +62,8 @@ namespace MidiShapeShifterTest.Mss.Mapping
         [Test]
         public void InterpretAsRangeOfInts_ValidIntegerRange_SuccessfullyExtractsRange()
         {
-            int outRangeTop;
-            int outRangeBottom;
             bool successfullyInturpreted =
-                EntryFieldInterpretingUtils.InterpretAsRangeOfInts("10 - 20", out outRangeTop, out outRangeBottom);
+                EntryFieldInterpretingUtils.InterpretAsRangeOfInts("10 - 20", out int outRangeTop, out int outRangeBottom);
 
             Assert.IsTrue(successfullyInturpreted);
             Assert.AreEqual(10, outRangeBottom);
@@ -79,10 +73,8 @@ namespace MidiShapeShifterTest.Mss.Mapping
         [Test]
         public void InterpretAsRangeOfInts_BackwardsIntegerRange_SuccessfullyAssignSmallerNumberToRangeBottomAndLargerNumberToRangeTop()
         {
-            int outRangeTop;
-            int outRangeBottom;
             bool successfullyInturpreted =
-                EntryFieldInterpretingUtils.InterpretAsRangeOfInts("85-6", out outRangeTop, out outRangeBottom);
+                EntryFieldInterpretingUtils.InterpretAsRangeOfInts("85-6", out int outRangeTop, out int outRangeBottom);
 
             Assert.IsTrue(successfullyInturpreted);
             Assert.AreEqual(6, outRangeBottom);
@@ -92,10 +84,8 @@ namespace MidiShapeShifterTest.Mss.Mapping
         [Test]
         public void InterpretAsRangeOfInts_SingleInteger_ReturnsFalse()
         {
-            int outRangeTop;
-            int outRangeBottom;
             bool successfullyInturpreted =
-                EntryFieldInterpretingUtils.InterpretAsRangeOfInts("9", out outRangeTop, out outRangeBottom);
+                EntryFieldInterpretingUtils.InterpretAsRangeOfInts("9", out int outRangeTop, out int outRangeBottom);
 
             Assert.IsFalse(successfullyInturpreted);
         }
@@ -103,10 +93,8 @@ namespace MidiShapeShifterTest.Mss.Mapping
         [Test]
         public void InterpretAsRangeOfInts_RangeOfLetters_ReturnsFalse()
         {
-            int outRangeTop;
-            int outRangeBottom;
             bool successfullyInturpreted =
-                EntryFieldInterpretingUtils.InterpretAsRangeOfInts("a-z", out outRangeTop, out outRangeBottom);
+                EntryFieldInterpretingUtils.InterpretAsRangeOfInts("a-z", out int outRangeTop, out int outRangeBottom);
 
             Assert.IsFalse(successfullyInturpreted);
         }
@@ -114,10 +102,8 @@ namespace MidiShapeShifterTest.Mss.Mapping
         [Test]
         public void InterpretAsRangeOfInts_RangeWithDecimal_ReturnsFalse()
         {
-            int outRangeTop;
-            int outRangeBottom;
             bool successfullyInturpreted =
-                EntryFieldInterpretingUtils.InterpretAsRangeOfInts("10.3-15", out outRangeTop, out outRangeBottom);
+                EntryFieldInterpretingUtils.InterpretAsRangeOfInts("10.3-15", out int outRangeTop, out int outRangeBottom);
 
             Assert.IsFalse(successfullyInturpreted);
         }

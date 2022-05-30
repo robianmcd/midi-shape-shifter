@@ -27,15 +27,15 @@ namespace MidiShapeShifter.Mss
         protected double _data1RangeBottom;
         public double Data1RangeBottom
         {
-            get { return this._data1RangeBottom; }
-            set { this._data1RangeBottom = value; }
+            get => this._data1RangeBottom;
+            set => this._data1RangeBottom = value;
         }
         [DataMember(Name = "Data1RangeTop")]
         protected double _data1RangeTop;
         public double Data1RangeTop
         {
-            get { return this._data1RangeTop; }
-            set { this._data1RangeTop = value; }
+            get => this._data1RangeTop;
+            set => this._data1RangeTop = value;
         }
 
         /// <summary>
@@ -45,15 +45,15 @@ namespace MidiShapeShifter.Mss
         protected double _data2RangeBottom;
         public double Data2RangeBottom
         {
-            get { return this._data2RangeBottom; }
-            set { this._data2RangeBottom = value; }
+            get => this._data2RangeBottom;
+            set => this._data2RangeBottom = value;
         }
         [DataMember(Name = "Data2RangeTop")]
         protected double _data2RangeTop;
         public double Data2RangeTop
         {
-            get { return this._data2RangeTop; }
-            set { this._data2RangeTop = value; }
+            get => this._data2RangeTop;
+            set => this._data2RangeTop = value;
         }
 
         /// <summary>

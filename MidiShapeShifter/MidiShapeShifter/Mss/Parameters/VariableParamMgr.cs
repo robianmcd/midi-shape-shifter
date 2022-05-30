@@ -1,5 +1,4 @@
 ﻿using MidiShapeShifter.CSharpUtil;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
@@ -16,7 +15,7 @@ namespace MidiShapeShifter.Mss.Parameters
         [DataMember]
         protected Dictionary<MssParameterID, MssParamInfo> variableParamDict;
 
-        protected Object memberLock = new Object();
+        protected object memberLock = new object();
 
         public VariableParamMgr()
         {
@@ -27,7 +26,7 @@ namespace MidiShapeShifter.Mss.Parameters
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            this.memberLock = new Object();
+            this.memberLock = new object();
         }
 
         /// <summary>

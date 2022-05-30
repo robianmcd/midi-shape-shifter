@@ -28,8 +28,8 @@ namespace MidiShapeShifter.Mss.Mapping
         protected int _id = UNINITIALIZED_ID;
         public int Id
         {
-            get { return this._id; }
-            set { this._id = value; }
+            get => this._id;
+            set => this._id = value;
         }
 
         /// <summary>
@@ -40,8 +40,8 @@ namespace MidiShapeShifter.Mss.Mapping
         protected IMssMsgRange _inMssMsgRange;
         public IMssMsgRange InMssMsgRange
         {
-            get { return this._inMssMsgRange; }
-            set { this._inMssMsgRange = value; }
+            get => this._inMssMsgRange;
+            set => this._inMssMsgRange = value;
         }
 
         /// <summary>
@@ -52,8 +52,8 @@ namespace MidiShapeShifter.Mss.Mapping
         protected IMssMsgRange _outMssMsgRange;
         public IMssMsgRange OutMssMsgRange
         {
-            get { return this._outMssMsgRange; }
-            set { this._outMssMsgRange = value; }
+            get => this._outMssMsgRange;
+            set => this._outMssMsgRange = value;
         }
 
         /// <summary>
@@ -72,8 +72,8 @@ namespace MidiShapeShifter.Mss.Mapping
         protected CurveShapeInfo _curveShapeInfo;
         public CurveShapeInfo CurveShapeInfo
         {
-            get { return this._curveShapeInfo; }
-            set { this._curveShapeInfo = value; }
+            get => this._curveShapeInfo;
+            set => this._curveShapeInfo = value;
         }
 
         [DataMember]
@@ -87,8 +87,8 @@ namespace MidiShapeShifter.Mss.Mapping
         protected MssMsgDataField _primaryInputSource;
         public MssMsgDataField PrimaryInputSource
         {
-            get { return this._primaryInputSource; }
-            set { this._primaryInputSource = value; }
+            get => this._primaryInputSource;
+            set => this._primaryInputSource = value;
         }
 
         public MappingEntry()
