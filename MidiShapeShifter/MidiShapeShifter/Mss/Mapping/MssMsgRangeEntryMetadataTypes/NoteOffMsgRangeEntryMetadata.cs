@@ -2,9 +2,6 @@
 {
     public class NoteOffMsgRangeEntryMetadata : MidiMsgRangeEntryMetadata
     {
-        public override MssMsgType MsgType
-        {
-            get { return MssMsgType.NoteOff; }
-        }
+        public override MssMsgType MsgType => MssMsgType.NoteOff;
     }
 }

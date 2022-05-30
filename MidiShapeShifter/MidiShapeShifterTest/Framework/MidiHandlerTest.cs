@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace MidiShapeShifterTest.Framework
 {
     [TestFixture]
-    class MidiHandlerTest
+    internal class MidiHandlerTest
     {
         protected IDryMssEventInputPort dryMssEventInputPort;
         protected IWetMssEventOutputPort wetMssEventOutputPort;
@@ -42,8 +42,10 @@ namespace MidiShapeShifterTest.Framework
         [Test]
         public void Process_NoteOn_SentToRelay()
         {
-            VstEventCollection vstEvents = new VstEventCollection();
-            vstEvents.Add(Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.NoteOn)));
+            VstEventCollection vstEvents = new VstEventCollection
+            {
+                Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.NoteOn))
+            };
 
             Test_Process_VstEventCollection_SentToReplay(vstEvents, 1);
         }
@@ -51,13 +53,15 @@ namespace MidiShapeShifterTest.Framework
         [Test]
         public void Process_MultipleMsgTypes_SentToRelay()
         {
-            VstEventCollection vstEvents = new VstEventCollection();
-            vstEvents.Add(Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.NoteOn)));
-            vstEvents.Add(Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.NoteOff)));
-            vstEvents.Add(Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.CC)));
-            vstEvents.Add(Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.ChanAftertouch)));
-            vstEvents.Add(Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.PitchBend)));
-            vstEvents.Add(Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.PolyAftertouch)));
+            VstEventCollection vstEvents = new VstEventCollection
+            {
+                Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.NoteOn)),
+                Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.NoteOff)),
+                Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.CC)),
+                Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.ChanAftertouch)),
+                Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.PitchBend)),
+                Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.PolyAftertouch))
+            };
 
             Test_Process_VstEventCollection_SentToReplay(vstEvents, 6);
         }
@@ -75,10 +79,12 @@ namespace MidiShapeShifterTest.Framework
         [Test]
         public void Process_SomeSupportedSomeUnsupporedEvents_SomeSentToRelay()
         {
-            VstEventCollection vstEvents = new VstEventCollection();
+            VstEventCollection vstEvents = new VstEventCollection
+            {
 
-            //Supported event type
-            vstEvents.Add(Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.PitchBend)));
+                //Supported event type
+                Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.PitchBend))
+            };
 
             //Unsupported event type
             VstMidiSysExEvent unsupportedEvent = new VstMidiSysExEvent(0, new byte[3]);
@@ -137,9 +143,11 @@ namespace MidiShapeShifterTest.Framework
 
             long sampleTime = 123456;
 
-            MssEvent internalEvent = new MssEvent();
-            internalEvent.mssMsg = new MssMsg(MssMsgType.Generator, 0, 0, 0);
-            internalEvent.sampleTime = sampleTime;
+            MssEvent internalEvent = new MssEvent
+            {
+                mssMsg = new MssMsg(MssMsgType.Generator, 0, 0, 0),
+                sampleTime = sampleTime
+            };
 
             VstMidiEvent convertedEvent = midiHandler.ConvertMssEventToVstMidiEventWrapper(
                 internalEvent, sampleTime, this.hostInfoOutputPort.SampleRate);

@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace MidiShapeShifterTest.Mss
 {
     [TestFixture]
-    class MssMsgProcessorTest
+    internal class MssMsgProcessorTest
     {
         protected static readonly CurveShapeInfo DEFAULT_CURVE_SHAPE_INFO;
 
@@ -28,8 +28,10 @@ namespace MidiShapeShifterTest.Mss
 
             List<IMappingEntry> matchingEntries = new List<IMappingEntry>();
 
-            List<MssMsg> desiredReturnedMsgList = new List<MssMsg>();
-            desiredReturnedMsgList.Add((MssMsg)inputMsg.Clone());
+            List<MssMsg> desiredReturnedMsgList = new List<MssMsg>
+            {
+                (MssMsg)inputMsg.Clone()
+            };
 
             Test_ProcessMssMsg(inputMsg, matchingEntries, desiredReturnedMsgList, false);
         }
@@ -45,8 +47,10 @@ namespace MidiShapeShifterTest.Mss
                 MssMsgType.NoteOff, 1, 1, 64, 64);
             matchingEntries.Add(mapsNoteOffToSameMsg);
 
-            List<MssMsg> desiredReturnedMsgList = new List<MssMsg>();
-            desiredReturnedMsgList.Add((MssMsg)inputMsg.Clone());
+            List<MssMsg> desiredReturnedMsgList = new List<MssMsg>
+            {
+                (MssMsg)inputMsg.Clone()
+            };
 
             Test_ProcessMssMsg(inputMsg, matchingEntries, desiredReturnedMsgList, false);
         }
@@ -62,8 +66,10 @@ namespace MidiShapeShifterTest.Mss
                 MssMsgType.CC, 2, 2, 100, 100);
             matchingEntries.Add(mappingEntry);
 
-            List<MssMsg> desiredReturnedMsgList = new List<MssMsg>();
-            desiredReturnedMsgList.Add(Factory_MssMsg(MssMsgType.CC, 2, 100, 0));
+            List<MssMsg> desiredReturnedMsgList = new List<MssMsg>
+            {
+                Factory_MssMsg(MssMsgType.CC, 2, 100, 0)
+            };
 
             Test_ProcessMssMsg(inputMsg, matchingEntries, desiredReturnedMsgList, false);
         }
@@ -79,8 +85,10 @@ namespace MidiShapeShifterTest.Mss
                 MssMsgType.PolyAftertouch, 1, 2, 50, 60);
             matchingEntries.Add(mappingEntry);
 
-            List<MssMsg> desiredReturnedMsgList = new List<MssMsg>();
-            desiredReturnedMsgList.Add(Factory_MssMsg(MssMsgType.PolyAftertouch, 2, 54, 100));
+            List<MssMsg> desiredReturnedMsgList = new List<MssMsg>
+            {
+                Factory_MssMsg(MssMsgType.PolyAftertouch, 2, 54, 100)
+            };
 
             Test_ProcessMssMsg(inputMsg, matchingEntries, desiredReturnedMsgList, false);
         }
@@ -96,8 +104,10 @@ namespace MidiShapeShifterTest.Mss
                 MssMsgType.NoteOn, 1, 5, 0, 127);
             matchingEntries.Add(mappingEntry);
 
-            List<MssMsg> desiredReturnedMsgList = new List<MssMsg>();
-            desiredReturnedMsgList.Add(Factory_MssMsg(MssMsgType.NoteOn, 3, 127, 100));
+            List<MssMsg> desiredReturnedMsgList = new List<MssMsg>
+            {
+                Factory_MssMsg(MssMsgType.NoteOn, 3, 127, 100)
+            };
 
             Test_ProcessMssMsg(inputMsg, matchingEntries, desiredReturnedMsgList, false);
         }
@@ -118,9 +128,11 @@ namespace MidiShapeShifterTest.Mss
                 MssMsgType.CC, 3, 3, 66, 66);
             matchingEntries.Add(mappingEntry2);
 
-            List<MssMsg> desiredReturnedMsgList = new List<MssMsg>();
-            desiredReturnedMsgList.Add(Factory_MssMsg(MssMsgType.NoteOn, 2, 65, 100));
-            desiredReturnedMsgList.Add(Factory_MssMsg(MssMsgType.CC, 3, 66, 100));
+            List<MssMsg> desiredReturnedMsgList = new List<MssMsg>
+            {
+                Factory_MssMsg(MssMsgType.NoteOn, 2, 65, 100),
+                Factory_MssMsg(MssMsgType.CC, 3, 66, 100)
+            };
 
             Test_ProcessMssMsg(inputMsg, matchingEntries, desiredReturnedMsgList, false);
         }
@@ -136,8 +148,10 @@ namespace MidiShapeShifterTest.Mss
                 MssMsgType.PitchBend, 1, 1, 10, 10);
             matchingEntries.Add(mappingEntry);
 
-            List<MssMsg> desiredReturnedMsgList = new List<MssMsg>();
-            desiredReturnedMsgList.Add(Factory_MssMsg(MssMsgType.PitchBend, 1, 10, 16383));
+            List<MssMsg> desiredReturnedMsgList = new List<MssMsg>
+            {
+                Factory_MssMsg(MssMsgType.PitchBend, 1, 10, 16383)
+            };
 
             Test_ProcessMssMsg(inputMsg, matchingEntries, desiredReturnedMsgList, false);
         }

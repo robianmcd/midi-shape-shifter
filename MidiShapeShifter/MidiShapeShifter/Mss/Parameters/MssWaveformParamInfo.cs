@@ -8,14 +8,14 @@ namespace MidiShapeShifter.Mss.Parameters
     public enum WaveformShap { Sin, Square, Triangle, Ramp, Saw }
 
     [DataContract]
-    class MssWaveformParamInfo : MssParamInfo
+    internal class MssWaveformParamInfo : MssParamInfo
     {
         private static readonly IList<string> _valueNameList;
 
         static MssWaveformParamInfo()
         {
             int numWaveformShapes = Enum.GetValues(typeof(WaveformShap)).Length;
-            List<String> valueNames = new List<string>(numWaveformShapes);
+            List<string> valueNames = new List<string>(numWaveformShapes);
             valueNames.Insert((int)WaveformShap.Sin, "Sin");
             valueNames.Insert((int)WaveformShap.Square, "Square");
             valueNames.Insert((int)WaveformShap.Triangle, "Triangle");
@@ -30,22 +30,13 @@ namespace MidiShapeShifter.Mss.Parameters
         }
 
 
-        public override MssParamType paramType
-        {
-            get { return MssParamType.Waveform; }
-        }
+        public override MssParamType paramType => MssParamType.Waveform;
 
-        public override bool allowUserToEditMaxMin
-        {
-            get { return false; }
-        }
+        public override bool allowUserToEditMaxMin => false;
 
-        public override ValueInputType methodOfValueInput
-        {
-            get { return ValueInputType.Selection; }
-        }
+        public override ValueInputType methodOfValueInput => ValueInputType.Selection;
 
-        public override IList<string> ValueNameList { get { return _valueNameList; } }
+        public override IList<string> ValueNameList => _valueNameList;
 
         protected override void SetMembersWithDefaultValues()
         {

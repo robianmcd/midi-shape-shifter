@@ -120,14 +120,15 @@ namespace MidiShapeShifter.Mss
 
         public CurveShapeInfo Clone()
         {
-            CurveShapeInfo curveInfoClone = new CurveShapeInfo();
-
-            curveInfoClone.CurveEquations = new List<string>(this.CurveEquations.Clone());
-            curveInfoClone.PointEquations = this.PointEquations.Clone();
-            curveInfoClone.SelectedEquationIndex = this.SelectedEquationIndex;
-            curveInfoClone.SelectedEquationType = this.SelectedEquationType;
-            curveInfoClone.ParamInfoList = this.ParamInfoList.Clone();
-            curveInfoClone.AllEquationsAreValid = this.AllEquationsAreValid;
+            CurveShapeInfo curveInfoClone = new CurveShapeInfo
+            {
+                CurveEquations = new List<string>(this.CurveEquations.Clone()),
+                PointEquations = this.PointEquations.Clone(),
+                SelectedEquationIndex = this.SelectedEquationIndex,
+                SelectedEquationType = this.SelectedEquationType,
+                ParamInfoList = this.ParamInfoList.Clone(),
+                AllEquationsAreValid = this.AllEquationsAreValid
+            };
 
             return curveInfoClone;
         }

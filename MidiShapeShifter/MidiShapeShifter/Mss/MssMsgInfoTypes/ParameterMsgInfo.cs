@@ -12,10 +12,7 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
             this.paramViewer = paramViewer;
         }
 
-        public override MssMsgType MsgType
-        {
-            get { return MssMsgType.Parameter; }
-        }
+        public override MssMsgType MsgType => MssMsgType.Parameter;
 
         public override string ConvertData1ToString(double Data1)
         {

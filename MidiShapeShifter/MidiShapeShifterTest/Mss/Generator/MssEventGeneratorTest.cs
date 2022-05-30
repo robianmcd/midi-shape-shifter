@@ -13,7 +13,7 @@ using System.Linq;
 namespace MidiShapeShifterTest.Mss.Generator
 {
     [TestFixture]
-    class MssEventGeneratorTest
+    internal class MssEventGeneratorTest
     {
         //Object to run tests on
         protected MssEventGenerator eventGenerator;
@@ -329,14 +329,18 @@ namespace MidiShapeShifterTest.Mss.Generator
 
         protected List<MssMsg> ProcessMssMsg_CopyData3(MssMsg mssMsg)
         {
-            MssMsg msg = new MssMsg();
-            msg.Type = MssMsgType.Generator;
-            msg.Data1 = 0;
-            msg.Data2 = MssMsgUtil.UNUSED_MSS_MSG_DATA;
-            msg.Data3 = mssMsg.Data3;
+            MssMsg msg = new MssMsg
+            {
+                Type = MssMsgType.Generator,
+                Data1 = 0,
+                Data2 = MssMsgUtil.UNUSED_MSS_MSG_DATA,
+                Data3 = mssMsg.Data3
+            };
 
-            List<MssMsg> retList = new List<MssMsg>();
-            retList.Add(msg);
+            List<MssMsg> retList = new List<MssMsg>
+            {
+                msg
+            };
             return retList;
         }
 

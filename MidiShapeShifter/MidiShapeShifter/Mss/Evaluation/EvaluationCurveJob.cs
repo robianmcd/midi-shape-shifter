@@ -73,7 +73,7 @@ namespace MidiShapeShifter.Mss.Evaluation
             this.expression = expression;
 
             this.expression.EvaluateFunction += FunctionHandler;
-            SetExpressionBaseParameters((EvaluationInput)evalInput);
+            SetExpressionBaseParameters(evalInput);
             SetExpressionCurveParameters(this.evalInput, this.expression);
         }
 
@@ -221,10 +221,9 @@ namespace MidiShapeShifter.Mss.Evaluation
                 return false;
             }
 
-            double output;
             bool success = HandleWaveformFunc(evaluatedArgs[0],
                                               (WaveformShap)evaluatedArgs[1],
-                                              out output);
+                                              out double output);
             args.Result = output;
             return success;
         }

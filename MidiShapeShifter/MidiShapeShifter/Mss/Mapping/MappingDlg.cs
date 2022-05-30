@@ -164,8 +164,10 @@ namespace MidiShapeShifter.Mss.Mapping
                     curEntryMetadata = this.outMsgMetadata;
                 }
 
-                IMssMsgRange learnedRange = new MssMsgRange();
-                learnedRange.MsgType = curMsg.Type;
+                IMssMsgRange learnedRange = new MssMsgRange
+                {
+                    MsgType = curMsg.Type
+                };
 
                 //If the type is the same as the last message and either data1 or data2 has changed 
                 //then treat this as a range of notes.

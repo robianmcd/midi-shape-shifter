@@ -43,9 +43,9 @@ namespace MidiShapeShifter.Mss.Evaluation
                            IMappingEntry mappingEntry)
         {
             IStaticMssMsgInfo inMsgInfo = Factory_StaticMssMsgInfo.Create(mssMsg.Type);
-            double relativeData1 = (double)mssMsg.Data1 / (double)(inMsgInfo.MaxData1Value - inMsgInfo.MinData1Value);
-            double relativeData2 = (double)mssMsg.Data2 / (double)(inMsgInfo.MaxData2Value - inMsgInfo.MinData2Value);
-            double relativeData3 = (double)mssMsg.Data3 / (double)(inMsgInfo.MaxData3Value - inMsgInfo.MinData3Value);
+            double relativeData1 = mssMsg.Data1 / (double)(inMsgInfo.MaxData1Value - inMsgInfo.MinData1Value);
+            double relativeData2 = mssMsg.Data2 / (double)(inMsgInfo.MaxData2Value - inMsgInfo.MinData2Value);
+            double relativeData3 = mssMsg.Data3 / (double)(inMsgInfo.MaxData3Value - inMsgInfo.MinData3Value);
 
             this.Init(relativeData1, relativeData2, relativeData3,
                       variableParamInfoList,
@@ -103,9 +103,6 @@ namespace MidiShapeShifter.Mss.Evaluation
             }
         }
 
-        public override EquationType equationType
-        {
-            get { return EquationType.Curve; }
-        }
+        public override EquationType equationType => EquationType.Curve;
     }
 }

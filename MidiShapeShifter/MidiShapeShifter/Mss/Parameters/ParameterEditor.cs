@@ -108,8 +108,7 @@ namespace MidiShapeShifter.Mss.Parameters
             }
             else if (this.inputParamInfo.methodOfValueInput == ValueInputType.Integer)
             {
-                int minValueAsInt;
-                if (int.TryParse(this.minParamValueTextBox.Text, out minValueAsInt) == false)
+                if (int.TryParse(this.minParamValueTextBox.Text, out int minValueAsInt) == false)
                 {
                     this.errorProvider.SetError(this.minParamValueTextBox, ERR_NOT_INT);
                     resultParamInfoSetSuccessfully = false;
@@ -151,8 +150,7 @@ namespace MidiShapeShifter.Mss.Parameters
             }
             else if (this.inputParamInfo.methodOfValueInput == ValueInputType.Integer)
             {
-                int maxValueAsInt;
-                if (int.TryParse(this.maxParamValueTextBox.Text, out maxValueAsInt) == false)
+                if (int.TryParse(this.maxParamValueTextBox.Text, out int maxValueAsInt) == false)
                 {
                     this.errorProvider.SetError(this.maxParamValueTextBox, ERR_NOT_INT);
                     resultParamInfoSetSuccessfully = false;
@@ -211,8 +209,7 @@ namespace MidiShapeShifter.Mss.Parameters
             }
             else if (this.inputParamInfo.methodOfValueInput == ValueInputType.Integer)
             {
-                int valueAsInt;
-                if (int.TryParse(this.paramValueTextBox.Text, out valueAsInt) == false)
+                if (int.TryParse(this.paramValueTextBox.Text, out int valueAsInt) == false)
                 {
                     this.errorProvider.SetError(this.paramValueTextBox, ERR_NOT_INT);
                     resultParamInfoSetSuccessfully = false;

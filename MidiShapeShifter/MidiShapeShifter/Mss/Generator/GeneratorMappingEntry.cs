@@ -20,8 +20,8 @@ namespace MidiShapeShifter.Mss.Generator
         protected GenEntryConfigInfo _genConfigInfo;
         public GenEntryConfigInfo GenConfigInfo
         {
-            get { return this._genConfigInfo; }
-            set { this._genConfigInfo = value; }
+            get => this._genConfigInfo;
+            set => this._genConfigInfo = value;
         }
 
         /// <summary>
@@ -30,8 +30,8 @@ namespace MidiShapeShifter.Mss.Generator
         protected GenEntryHistoryInfo _genHistoryInfo;
         public GenEntryHistoryInfo GenHistoryInfo
         {
-            get { return this._genHistoryInfo; }
-            set { this._genHistoryInfo = value; }
+            get => this._genHistoryInfo;
+            set => this._genHistoryInfo = value;
         }
 
         public GeneratorMappingEntry()
@@ -110,7 +110,7 @@ namespace MidiShapeShifter.Mss.Generator
             return Clone();
         }
 
-        new public GeneratorMappingEntry Clone()
+        public new GeneratorMappingEntry Clone()
         {
             GeneratorMappingEntry mappingEntryClone = new GeneratorMappingEntry();
             DeepCloneIntoExistingInstance(mappingEntryClone);

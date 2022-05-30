@@ -2,10 +2,7 @@
 {
     public class PitchBendMsgInfo : MidiMsgInfo
     {
-        public override MssMsgType MsgType
-        {
-            get { return MssMsgType.PitchBend; }
-        }
+        public override MssMsgType MsgType => MssMsgType.PitchBend;
 
         public override string ConvertData2ToString(double Data2)
         {

@@ -14,7 +14,7 @@ namespace MidiShapeShifter.Mss.Mapping
         where MappingEntryType : class, IMappingEntry
     {
 
-        abstract public IEnumerable<MappingEntryType> GetCopiesOfMappingEntriesForMsg(MidiShapeShifter.Mss.MssMsg inputMsg);
+        public abstract IEnumerable<MappingEntryType> GetCopiesOfMappingEntriesForMsg(MidiShapeShifter.Mss.MssMsg inputMsg);
 
         /// <summary>
         ///     A unique id will be associated with each element in mappingEntryList. This field 
@@ -54,22 +54,22 @@ namespace MidiShapeShifter.Mss.Mapping
 
         IEnumerable<IMappingEntry> IBaseGraphableMappingManager.GetCopiesOfMappingEntriesForMsg(MidiShapeShifter.Mss.MssMsg inputMsg)
         {
-            return (IEnumerable<IMappingEntry>)GetCopiesOfMappingEntriesForMsg(inputMsg);
+            return GetCopiesOfMappingEntriesForMsg(inputMsg);
         }
 
         IReturnStatus<IMappingEntry> IBaseGraphableMappingManager.GetCopyOfMappingEntryById(int id)
         {
-            return (IReturnStatus<IMappingEntry>)GetCopyOfMappingEntryById(id);
+            return GetCopyOfMappingEntryById(id);
         }
 
         IEnumerable<IMappingEntry> IBaseGraphableMappingManager.GetCopyOfMappingEntryList()
         {
-            return (IEnumerable<IMappingEntry>)GetCopyOfMappingEntryList();
+            return GetCopyOfMappingEntryList();
         }
 
         bool IBaseGraphableMappingManager.RunFuncOnMappingEntry(int id, MappingEntryAccessor<IMappingEntry> mappingEntryAccessor)
         {
-            return RunFuncOnMappingEntry(id, mappingEntryAccessor as MappingEntryAccessor<MappingEntryType>);
+            return RunFuncOnMappingEntry(id, mappingEntryAccessor);
         }
 
         /// <summary>

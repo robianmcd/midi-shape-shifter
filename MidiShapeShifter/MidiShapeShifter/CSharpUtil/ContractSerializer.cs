@@ -9,7 +9,7 @@ namespace MidiShapeShifter.CSharpUtil
 {
     public static class ContractSerializer
     {
-        private static List<Type> knownTypes;
+        private static readonly List<Type> knownTypes;
 
         static ContractSerializer()
         {
@@ -30,8 +30,10 @@ namespace MidiShapeShifter.CSharpUtil
             DataContractSerializer serializer = new DataContractSerializer(
                     typeof(SerializableType), knownTypes, 0x7FFF, false, true, null);
 
-            XmlWriterSettings writerSettings = new XmlWriterSettings();
-            writerSettings.Indent = true;
+            XmlWriterSettings writerSettings = new XmlWriterSettings
+            {
+                Indent = true
+            };
 
             using (var writer = XmlWriter.Create(outStream, writerSettings))
             {

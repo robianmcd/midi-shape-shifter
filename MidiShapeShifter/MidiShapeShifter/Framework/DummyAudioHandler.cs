@@ -23,7 +23,7 @@ namespace MidiShapeShifter.Framework
         //Receives information about the audio processing cycle and sends it out to which ever classes need to know 
         //about it.
         private Func<IHostInfoInputPort> getHostInfoInputPort;
-        protected IHostInfoInputPort hostInfoInputPort { get { return this.getHostInfoInputPort(); } }
+        protected IHostInfoInputPort hostInfoInputPort => this.getHostInfoInputPort();
 
         //Interprets a VstTimeInfo object and sends the relavent information out to the HostInfoRelay.
         protected VstTimeInfoTransmitter timeInfoTransmitter;

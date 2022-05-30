@@ -57,8 +57,8 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         public FileTreeFolderNode<SettingsFileInfo> SettingsFileTree
         {
-            get { return this._settingsFileTree; }
-            private set { this._settingsFileTree = value; }
+            get => this._settingsFileTree;
+            private set => this._settingsFileTree = value;
         }
 
         protected List<SettingsFileInfo> _flatSettingsFileList;
@@ -67,8 +67,8 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         public List<SettingsFileInfo> FlatSettingsFileList
         {
-            get { return this._flatSettingsFileList; }
-            protected set { this._flatSettingsFileList = value; }
+            get => this._flatSettingsFileList;
+            protected set => this._flatSettingsFileList = value;
         }
 
 
@@ -231,8 +231,10 @@ namespace MidiShapeShifter.Mss
         {
             SettingsFileInfo activeSettingsFile = GetActiveSettingsFile();
 
-            SaveFileDialog dlg = new SaveFileDialog();
-            dlg.Filter = this.GetSettingsFileFilter();
+            SaveFileDialog dlg = new SaveFileDialog
+            {
+                Filter = this.GetSettingsFileFilter()
+            };
 
             if (activeSettingsFile.FileLocationType == SettingsFileLocationType.User)
             {

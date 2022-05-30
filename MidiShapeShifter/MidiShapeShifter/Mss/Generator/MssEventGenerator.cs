@@ -288,7 +288,7 @@ namespace MidiShapeShifter.Mss.Generator
             {
                 int periodSizeInSamples = GetPeriodSizeInSamples(genEntry.GenConfigInfo);
                 double RelativeperiodIncrement =
-                        ((double)SAMPLES_PER_GENERATOR_UPDATE) / ((double)periodSizeInSamples);
+                        SAMPLES_PER_GENERATOR_UPDATE / ((double)periodSizeInSamples);
 
                 //PercentThroughPeriodOnLastUpdate will be NaN the first time it's generator is updated.
                 if (double.IsNaN(genEntry.GenHistoryInfo.PercentThroughPeriodOnLastUpdate) == false)
@@ -352,9 +352,11 @@ namespace MidiShapeShifter.Mss.Generator
             else
             {
                 //Initialize the fields in the new event and return it.
-                MssEvent generatedEvent = new MssEvent();
-                generatedEvent.mssMsg = processedMsgList[0];
-                generatedEvent.sampleTime = updatedSampleTime;
+                MssEvent generatedEvent = new MssEvent
+                {
+                    mssMsg = processedMsgList[0],
+                    sampleTime = updatedSampleTime
+                };
 
                 genEntry.GenHistoryInfo.LastValueSent = generatedEvent.mssMsg.Data3;
 

@@ -2,9 +2,6 @@
 {
     public class CCMsgInfo : MidiMsgInfo
     {
-        public override MssMsgType MsgType
-        {
-            get { return MssMsgType.CC; }
-        }
+        public override MssMsgType MsgType => MssMsgType.CC;
     }
 }

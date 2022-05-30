@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss.Relays
@@ -14,7 +13,7 @@ namespace MidiShapeShifter.Mss.Relays
     /// </remarks>
     public class WetMssEventRelay : IWetMssEventRelay
     {
-        protected object relayLock = new Object();
+        protected object relayLock = new object();
 
         protected List<MssEvent> mssEventBuffer = new List<MssEvent>();
         protected bool _onlySendOnProcessingCycleEnd = true;
@@ -44,14 +43,8 @@ namespace MidiShapeShifter.Mss.Relays
         /// </summary>
         public bool OnlySendOnProcessingCycleEnd
         {
-            get
-            {
-                return this._onlySendOnProcessingCycleEnd;
-            }
-            set
-            {
-                this._onlySendOnProcessingCycleEnd = value;
-            }
+            get => this._onlySendOnProcessingCycleEnd;
+            set => this._onlySendOnProcessingCycleEnd = value;
         }
 
         public void ReceiveWetMssEvent(MssEvent mssEvent)

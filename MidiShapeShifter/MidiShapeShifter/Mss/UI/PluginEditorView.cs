@@ -128,8 +128,8 @@ namespace MidiShapeShifter.Mss.UI
                 UpdateInfoForParameter(paramId);
             }
 
-            this.msgMetadataFactory.Init(genMappingMgr, (IMssParameterViewer)mssParameters);
-            this.msgInfoFactory.Init(genMappingMgr, (IMssParameterViewer)mssParameters);
+            this.msgMetadataFactory.Init(genMappingMgr, mssParameters);
+            this.msgInfoFactory.Init(genMappingMgr, mssParameters);
 
             RefreshMappingListView();
             RefreshGeneratorListView();
@@ -191,22 +191,19 @@ namespace MidiShapeShifter.Mss.UI
 
             foreach (LBKnob paramKnob in ParameterValueKnobControlDict.RightKeys)
             {
-                MssParameterID paramId;
-                ParameterValueKnobControlDict.TryGetLeftByRight(out paramId, paramKnob);
+                ParameterValueKnobControlDict.TryGetLeftByRight(out MssParameterID paramId, paramKnob);
                 ParameterAllControlsDict[paramKnob] = paramId;
             }
 
             foreach (Label paramValue in ParameterValueLabelControlDict.RightKeys)
             {
-                MssParameterID paramId;
-                ParameterValueLabelControlDict.TryGetLeftByRight(out paramId, paramValue);
+                ParameterValueLabelControlDict.TryGetLeftByRight(out MssParameterID paramId, paramValue);
                 ParameterAllControlsDict[paramValue] = paramId;
             }
 
             foreach (Label paramName in ParameterNameControlDict.RightKeys)
             {
-                MssParameterID paramId;
-                ParameterNameControlDict.TryGetLeftByRight(out paramId, paramName);
+                ParameterNameControlDict.TryGetLeftByRight(out MssParameterID paramId, paramName);
                 ParameterAllControlsDict[paramName] = paramId;
             }
         }
@@ -325,8 +322,10 @@ namespace MidiShapeShifter.Mss.UI
         /// <returns>The ListViewItem representation of a MappingEntry</returns>
         public ListViewItem GetMappingListViewRow(IMappingEntry entry)
         {
-            ListViewItem mappingItem = new ListViewItem(entry.GetReadableMsgType(IoType.Input));
-            mappingItem.Tag = entry;
+            ListViewItem mappingItem = new ListViewItem(entry.GetReadableMsgType(IoType.Input))
+            {
+                Tag = entry
+            };
             mappingItem.SubItems.Add(entry.InMssMsgRange.GetData1RangeStr(this.msgInfoFactory));
             mappingItem.SubItems.Add(entry.InMssMsgRange.GetData2RangeStr(this.msgInfoFactory));
 
@@ -364,8 +363,10 @@ namespace MidiShapeShifter.Mss.UI
         /// <returns>The ListViewItem representation of a GeneratorMappingEntry</returns>
         public ListViewItem GetGeneratorListViewRow(IGeneratorMappingEntry entry)
         {
-            ListViewItem genMappingItem = new ListViewItem(entry.GenConfigInfo.Name);
-            genMappingItem.Tag = entry;
+            ListViewItem genMappingItem = new ListViewItem(entry.GenConfigInfo.Name)
+            {
+                Tag = entry
+            };
             genMappingItem.SubItems.Add(entry.GetReadablePeriod());
             genMappingItem.SubItems.Add(entry.GetReadableLoopStatus());
             genMappingItem.SubItems.Add(entry.GetReadableEnabledStatus());
@@ -376,8 +377,7 @@ namespace MidiShapeShifter.Mss.UI
         private void lbKnob_KnobChangeValue(object sender, LBKnobEventArgs e)
         {
             LBKnob knob = (LBKnob)sender;
-            MssParameterID paramId;
-            ParameterValueKnobControlDict.TryGetLeftByRight(out paramId, knob);
+            ParameterValueKnobControlDict.TryGetLeftByRight(out MssParameterID paramId, knob);
             MssParamInfo paramInfo = mssParameters.GetParameterInfoCopy(paramId);
 
             double knobValue = GetRoundedKnobValueAsDouble(knob);
@@ -429,12 +429,10 @@ namespace MidiShapeShifter.Mss.UI
             //Update Parameter controls
             foreach (MssParameterID curId in MssParameters.PRESET_PARAM_ID_LIST)
             {
-                LBKnob curKnob;
-                Label curValueLabel;
                 bool knobFound;
                 bool labelFound;
-                knobFound = this.ParameterValueKnobControlDict.TryGetRightByLeft(curId, out curKnob);
-                labelFound = this.ParameterValueLabelControlDict.TryGetRightByLeft(curId, out curValueLabel);
+                knobFound = this.ParameterValueKnobControlDict.TryGetRightByLeft(curId, out LBKnob curKnob);
+                labelFound = this.ParameterValueLabelControlDict.TryGetRightByLeft(curId, out Label curValueLabel);
 
                 if (knobFound == false || labelFound == false)
                 {
@@ -636,10 +634,12 @@ namespace MidiShapeShifter.Mss.UI
             float x = this.graphOutputTypeImg.Width / 2;
             float y = this.graphOutputTypeImg.Height / 2;
 
-            StringFormat drawFormat = new StringFormat();
-            drawFormat.Alignment = StringAlignment.Center;
-            drawFormat.LineAlignment = StringAlignment.Center;
-            drawFormat.FormatFlags = StringFormatFlags.DirectionVertical;
+            StringFormat drawFormat = new StringFormat
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center,
+                FormatFlags = StringFormatFlags.DirectionVertical
+            };
 
             graphics.RotateTransform(180);
             //Multiply X and Y by -1 becasue we rotated by 180 degrees.
@@ -895,8 +895,7 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
-            Label paramNameLabel;
-            if (ParameterNameControlDict.TryGetRightByLeft(paramId, out paramNameLabel) == true)
+            if (ParameterNameControlDict.TryGetRightByLeft(paramId, out Label paramNameLabel) == true)
             {
                 if (paramNameLabel.Text != name)
                 {
@@ -917,8 +916,7 @@ namespace MidiShapeShifter.Mss.UI
             MssParamInfo paramInfo = mssParameters.GetParameterInfoCopy(paramId);
 
             //Update the knob
-            LBKnob knob;
-            if (ParameterValueKnobControlDict.TryGetRightByLeft(paramId, out knob) == true)
+            if (ParameterValueKnobControlDict.TryGetRightByLeft(paramId, out LBKnob knob) == true)
             {
                 double knobValue = GetRoundedKnobValueAsDouble(knob);
 
@@ -930,8 +928,7 @@ namespace MidiShapeShifter.Mss.UI
             }
 
             //Update the value label
-            Label parameterValueDisplay;
-            if (ParameterValueLabelControlDict.TryGetRightByLeft(paramId, out parameterValueDisplay) == true)
+            if (ParameterValueLabelControlDict.TryGetRightByLeft(paramId, out Label parameterValueDisplay) == true)
             {
                 string valueString = paramInfo.GetValueAsString();
                 if (valueString != parameterValueDisplay.Text)
@@ -954,8 +951,7 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
-            LBKnob knob;
-            if (ParameterValueKnobControlDict.TryGetRightByLeft(paramId, out knob) == true)
+            if (ParameterValueKnobControlDict.TryGetRightByLeft(paramId, out LBKnob knob) == true)
             {
                 knob.MinValue = (float)minValue;
             }
@@ -969,8 +965,7 @@ namespace MidiShapeShifter.Mss.UI
                 return;
             }
 
-            LBKnob knob;
-            if (ParameterValueKnobControlDict.TryGetRightByLeft(paramId, out knob) == true)
+            if (ParameterValueKnobControlDict.TryGetRightByLeft(paramId, out LBKnob knob) == true)
             {
                 knob.MaxValue = (float)maxValue;
             }
@@ -1049,26 +1044,22 @@ namespace MidiShapeShifter.Mss.UI
                 }
                 IPointListEdit pointsCurveEdit = (IPointListEdit)pointsCurve.Points;
 
-                List<XyPoint<double>> pointList;
-                List<List<XyPoint<double>>> curvePointsByCurveList;
-                HashSet<int> erroneousControlPointIndexSet;
-                HashSet<int> erroneousCurveIndexSet;
 
                 bool allEquationsAreValid = this.evaluator.SampleExpressionWithDefaultInputValues(
-                        1.0 / ((double)NUM_GRAPH_POINTS - 1.0),
+                        1.0 / (NUM_GRAPH_POINTS - 1.0),
                         this.mssParameters.GetVariableParamInfoList(),
                         activeMappingEntryCopy,
-                        out pointList,
-                        out curvePointsByCurveList,
-                        out erroneousControlPointIndexSet,
-                        out erroneousCurveIndexSet);
+                        out List<XyPoint<double>> pointList,
+                        out List<List<XyPoint<double>>> curvePointsByCurveList,
+                        out HashSet<int> erroneousControlPointIndexSet,
+                        out HashSet<int> erroneousCurveIndexSet);
 
                 if (curveInfoCopy.AllEquationsAreValid != allEquationsAreValid)
                 {
                     curveInfoCopy.AllEquationsAreValid = allEquationsAreValid;
                     mappingManager.RunFuncOnMappingEntry(activeMappingId, (mappingEntry) =>
                     {
-                        Logger.Verbose(5, String.Format("AllEquationsAreValid changed to: {0}", allEquationsAreValid));
+                        Logger.Verbose(5, string.Format("AllEquationsAreValid changed to: {0}", allEquationsAreValid));
                         mappingEntry.CurveShapeInfo.AllEquationsAreValid = allEquationsAreValid;
                     });
                 }
@@ -1285,8 +1276,10 @@ namespace MidiShapeShifter.Mss.UI
         {
             foreach (SettingsFileInfo program in programTreeNode.ChildFileList)
             {
-                var programMenuItem = new ToolStripMenuItem(program.Name);
-                programMenuItem.Tag = program;
+                var programMenuItem = new ToolStripMenuItem(program.Name)
+                {
+                    Tag = program
+                };
                 programMenuItem.Click += new EventHandler(itemClickedHandler);
                 dropDownItems.Add(programMenuItem);
             }
@@ -1431,9 +1424,11 @@ namespace MidiShapeShifter.Mss.UI
 
         private void openProgram_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Filter = this.programMgr.GetSettingsFileFilter();
-            dlg.InitialDirectory = MssFileSystemLocations.UserProgramsFolder;
+            OpenFileDialog dlg = new OpenFileDialog
+            {
+                Filter = this.programMgr.GetSettingsFileFilter(),
+                InitialDirectory = MssFileSystemLocations.UserProgramsFolder
+            };
 
             if (dlg.ShowDialog() == DialogResult.OK)
             {
@@ -1455,9 +1450,11 @@ namespace MidiShapeShifter.Mss.UI
 
         private void openTransformPreset_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Filter = this.transformPresetMgr.GetSettingsFileFilter();
-            dlg.InitialDirectory = MssFileSystemLocations.UserTransformPresetFolder;
+            OpenFileDialog dlg = new OpenFileDialog
+            {
+                Filter = this.transformPresetMgr.GetSettingsFileFilter(),
+                InitialDirectory = MssFileSystemLocations.UserTransformPresetFolder
+            };
 
             if (dlg.ShowDialog() == DialogResult.OK)
             {
@@ -1507,17 +1504,17 @@ namespace MidiShapeShifter.Mss.UI
 
                     RectangleF chartRect = pane.Chart.Rect;
 
-                    XyPoint<double> newPoint = new XyPoint<double>();
-                    newPoint.X = (e.X - chartRect.Left) / (double)chartRect.Width;
-                    newPoint.Y = (chartRect.Height - (e.Y - chartRect.Top)) / (double)chartRect.Height;
+                    XyPoint<double> newPoint = new XyPoint<double>
+                    {
+                        X = (e.X - chartRect.Left) / (double)chartRect.Width,
+                        Y = (chartRect.Height - (e.Y - chartRect.Top)) / (double)chartRect.Height
+                    };
 
-                    LineItem controlPointsCurve;
-                    int nearestPointIndex;
 
                     //If the click was close enough to an exsisting control point then start dragging 
                     //it. The distances that is deemed "close enough" is defined in 
                     //EqGraphConfig.ConfigureEqGraph.
-                    if (GetClickedControlPoint(mousePt, out controlPointsCurve, out nearestPointIndex))
+                    if (GetClickedControlPoint(mousePt, out LineItem controlPointsCurve, out int nearestPointIndex))
                     {
                         if (controlPointsCurve == null || controlPointsCurve.Points == null)
                         {
@@ -1580,9 +1577,11 @@ namespace MidiShapeShifter.Mss.UI
                             curveInfo.SelectedEquationIndex++;
                         }
 
-                        XyPoint<string> newPointEquation = new XyPoint<string>();
-                        newPointEquation.X = Math.Round(newPoint.X, NUM_DECIMALS_IN_CONTROL_POINT).ToString();
-                        newPointEquation.Y = Math.Round(newPoint.Y, NUM_DECIMALS_IN_CONTROL_POINT).ToString();
+                        XyPoint<string> newPointEquation = new XyPoint<string>
+                        {
+                            X = Math.Round(newPoint.X, NUM_DECIMALS_IN_CONTROL_POINT).ToString(),
+                            Y = Math.Round(newPoint.Y, NUM_DECIMALS_IN_CONTROL_POINT).ToString()
+                        };
 
                         //Add the new point to curveInfo
                         if (pointAfterNewPointIndex != -1)
@@ -1698,27 +1697,29 @@ namespace MidiShapeShifter.Mss.UI
 
             if (this.activeMappingInfo.GetActiveMappingExists())
             {
-                LineItem controlPointCurve;
-                int nearestPointIndex;
 
                 //If the click was close enough to an exsisting control point then start dragging 
                 //it. The distances that is deemed "close enough" is defined in 
                 //EqGraphConfig.ConfigureEqGraph.
                 bool controlPointClicked =
-                    GetClickedControlPoint(mousePt, out controlPointCurve, out nearestPointIndex);
+                    GetClickedControlPoint(mousePt, out LineItem controlPointCurve, out int nearestPointIndex);
 
 
                 // create a new menu item
-                ToolStripMenuItem item = new ToolStripMenuItem();
-                item.Name = "ZedMenuDeletePoint";
-                // This is the text that will show up in the menu
-                item.Text = "Delete Point";
+                ToolStripMenuItem item = new ToolStripMenuItem
+                {
+                    Name = "ZedMenuDeletePoint",
+                    // This is the text that will show up in the menu
+                    Text = "Delete Point"
+                };
 
                 this.activeMappingInfo.GetActiveGraphableEntryManager().RunFuncOnMappingEntry(this.activeMappingInfo.ActiveGraphableEntryId,
                     (mappingEntry) => item.Enabled = controlPointClicked && mappingEntry.CurveShapeInfo.AllEquationsAreValid);
 
-                DeletePointParams deletePointParams = new DeletePointParams();
-                deletePointParams.pointIndex = nearestPointIndex;
+                DeletePointParams deletePointParams = new DeletePointParams
+                {
+                    pointIndex = nearestPointIndex
+                };
                 item.Tag = deletePointParams;
 
                 // Add a handler that will respond when that menu item is selected
@@ -1733,10 +1734,9 @@ namespace MidiShapeShifter.Mss.UI
             GraphPane pane = this.mainGraphControl.GraphPane;
             controlPointCurve = (LineItem)pane.CurveList.Find(curveItem => curveItem.Label.Text == GRAPH_CONTROL_POINTS_LABEL);
 
-            CurveItem nearestCurve;
 
             return pane.FindNearestPoint(mousePt, controlPointCurve,
-                    out nearestCurve, out controlPointIndex);
+                    out CurveItem nearestCurve, out controlPointIndex);
         }
 
         private void ZedGraph_DeletePoint(object sender, EventArgs e)

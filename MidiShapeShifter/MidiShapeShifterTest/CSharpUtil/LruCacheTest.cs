@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace MidiShapeShifterTest.CSharpUtil
 {
     [TestFixture]
-    class LruCacheTest
+    internal class LruCacheTest
     {
         [Test]
         public void GetKeyValuePairRemover_CacheSizeOf1_CreateValueGetsCalledForEveryNewElement()

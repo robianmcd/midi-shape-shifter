@@ -51,19 +51,23 @@ namespace MidiShapeShifter.Mss.Parameters
 
         static MssParameters()
         {
-            VARIABLE_PARAM_ID_LIST = new List<MssParameterID>(NUM_VARIABLE_PARAMS);
-            VARIABLE_PARAM_ID_LIST.Add(MssParameterID.VariableA);
-            VARIABLE_PARAM_ID_LIST.Add(MssParameterID.VariableB);
-            VARIABLE_PARAM_ID_LIST.Add(MssParameterID.VariableC);
-            VARIABLE_PARAM_ID_LIST.Add(MssParameterID.VariableD);
-            VARIABLE_PARAM_ID_LIST.Add(MssParameterID.VariableE);
+            VARIABLE_PARAM_ID_LIST = new List<MssParameterID>(NUM_VARIABLE_PARAMS)
+            {
+                MssParameterID.VariableA,
+                MssParameterID.VariableB,
+                MssParameterID.VariableC,
+                MssParameterID.VariableD,
+                MssParameterID.VariableE
+            };
 
-            PRESET_PARAM_ID_LIST = new List<MssParameterID>(NUM_PRESET_PARAMS);
-            PRESET_PARAM_ID_LIST.Add(MssParameterID.Preset1);
-            PRESET_PARAM_ID_LIST.Add(MssParameterID.Preset2);
-            PRESET_PARAM_ID_LIST.Add(MssParameterID.Preset3);
-            PRESET_PARAM_ID_LIST.Add(MssParameterID.Preset4);
-            PRESET_PARAM_ID_LIST.Add(MssParameterID.Preset5);
+            PRESET_PARAM_ID_LIST = new List<MssParameterID>(NUM_PRESET_PARAMS)
+            {
+                MssParameterID.Preset1,
+                MssParameterID.Preset2,
+                MssParameterID.Preset3,
+                MssParameterID.Preset4,
+                MssParameterID.Preset5
+            };
 
             ALL_PARAMS_ID_LIST = new List<MssParameterID>(NUM_VARIABLE_PARAMS + NUM_PRESET_PARAMS);
             ALL_PARAMS_ID_LIST.AddRange(VARIABLE_PARAM_ID_LIST);

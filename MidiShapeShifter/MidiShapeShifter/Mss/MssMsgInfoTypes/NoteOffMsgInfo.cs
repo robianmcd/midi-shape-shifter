@@ -1,10 +1,7 @@
 ﻿namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    class NoteOffMsgInfo : MidiMsgInfo
+    internal class NoteOffMsgInfo : MidiMsgInfo
     {
-        public override MssMsgType MsgType
-        {
-            get { return MssMsgType.NoteOff; }
-        }
+        public override MssMsgType MsgType => MssMsgType.NoteOff;
     }
 }

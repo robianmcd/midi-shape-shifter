@@ -24,24 +24,12 @@ namespace MidiShapeShifter.CSharpUtil
     /// </remarks>
     public class TwoWayDictionary<TLeft, TRight>
     {
-        IDictionary<TLeft, TRight> leftToRight = new Dictionary<TLeft, TRight>();
-        IDictionary<TRight, TLeft> rightToLeft = new Dictionary<TRight, TLeft>();
+        private readonly IDictionary<TLeft, TRight> leftToRight = new Dictionary<TLeft, TRight>();
+        private readonly IDictionary<TRight, TLeft> rightToLeft = new Dictionary<TRight, TLeft>();
 
-        public ICollection<TLeft> LeftKeys
-        {
-            get
-            {
-                return leftToRight.Keys;
-            }
-        }
+        public ICollection<TLeft> LeftKeys => leftToRight.Keys;
 
-        public ICollection<TRight> RightKeys
-        {
-            get
-            {
-                return rightToLeft.Keys;
-            }
-        }
+        public ICollection<TRight> RightKeys => rightToLeft.Keys;
 
         public void Add(TLeft left, TRight right)
         {

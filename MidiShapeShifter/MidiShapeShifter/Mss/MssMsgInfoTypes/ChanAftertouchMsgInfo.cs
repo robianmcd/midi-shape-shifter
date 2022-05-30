@@ -1,11 +1,8 @@
 ﻿namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    class ChanAftertouchMsgInfo : MidiMsgInfo
+    internal class ChanAftertouchMsgInfo : MidiMsgInfo
     {
-        public override MssMsgType MsgType
-        {
-            get { return MssMsgType.ChanAftertouch; }
-        }
+        public override MssMsgType MsgType => MssMsgType.ChanAftertouch;
 
         public override string ConvertData2ToString(double Data2)
         {

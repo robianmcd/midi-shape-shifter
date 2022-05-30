@@ -35,10 +35,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                 return _outputVal;
             }
 
-            protected set
-            {
-                _outputVal = value;
-            }
+            protected set => _outputVal = value;
         }
         private double _outputVal;
 

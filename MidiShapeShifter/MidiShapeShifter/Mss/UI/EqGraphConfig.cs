@@ -98,21 +98,26 @@ namespace MidiShapeShifter.Mss.UI
 
         public static LineItem CreadControlPointsCurve(string curveLabel)
         {
-            LineItem pointsCurve = new LineItem(curveLabel);
+            LineItem pointsCurve = new LineItem(curveLabel)
+            {
 
-            //Configure appearance
-            pointsCurve.Symbol = new Symbol(SymbolType.Circle, Color.Transparent);
+                //Configure appearance
+                Symbol = new Symbol(SymbolType.Circle, Color.Transparent)
+                {
+                    Fill = new Fill(SEGMENT_COLOR_BY_STATUS)
+                    {
+                        Type = FillType.GradientByColorValue,
+                        SecondaryValueGradientColor = Color.Empty,
+                        RangeMin = 0,
+                        RangeMax = SEGMENT_COLOR_BY_STATUS.Length - 1,
+                        RangeDefault = 0,
+                        IsVisible = true
+                    },
 
-            pointsCurve.Symbol.Fill = new Fill(SEGMENT_COLOR_BY_STATUS);
-            pointsCurve.Symbol.Fill.Type = FillType.GradientByColorValue;
-            pointsCurve.Symbol.Fill.SecondaryValueGradientColor = Color.Empty;
-            pointsCurve.Symbol.Fill.RangeMin = 0;
-            pointsCurve.Symbol.Fill.RangeMax = SEGMENT_COLOR_BY_STATUS.Length - 1;
-            pointsCurve.Symbol.Fill.RangeDefault = 0;
-            pointsCurve.Symbol.Fill.IsVisible = true;
-
-            pointsCurve.Symbol.Size = 17;
-            pointsCurve.Symbol.IsAntiAlias = true;
+                    Size = 17,
+                    IsAntiAlias = true
+                }
+            };
             pointsCurve.Line.IsVisible = false;
 
             return pointsCurve;

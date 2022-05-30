@@ -44,39 +44,24 @@ namespace MidiShapeShifter.Framework
         /// <summary>
         /// Gets the audio processor object.
         /// </summary>
-        public DummyAudioHandler AudioHandler
-        {
-            get { return GetInstance<DummyAudioHandler>(); }
-        }
+        public DummyAudioHandler AudioHandler => GetInstance<DummyAudioHandler>();
 
         /// <summary>
         /// Gets the midi processor object.
         /// </summary>
-        public MidiHandler MidiHandler
-        {
-            get { return GetInstance<MidiHandler>(); }
-        }
+        public MidiHandler MidiHandler => GetInstance<MidiHandler>();
 
         /// <summary>
         /// Gets the plugin editor object.
         /// </summary>
-        public PluginEditor PluginEditor
-        {
-            get { return GetInstance<PluginEditor>(); }
-        }
+        public PluginEditor PluginEditor => GetInstance<PluginEditor>();
 
         /// <summary>
         /// Gets the plugin programs object.
         /// </summary>
-        public PluginPrograms PluginPrograms
-        {
-            get { return GetInstance<PluginPrograms>(); }
-        }
+        public PluginPrograms PluginPrograms => GetInstance<PluginPrograms>();
 
-        public VstPluginPersistence<MssComponentHub> VstPluginPersistence
-        {
-            get { return (VstPluginPersistence<MssComponentHub>)GetInstance<IVstPluginPersistence>(); }
-        }
+        public VstPluginPersistence<MssComponentHub> VstPluginPersistence => (VstPluginPersistence<MssComponentHub>)GetInstance<IVstPluginPersistence>();
 
         /// <summary>
         /// Implement this when you do audio processing.
@@ -154,7 +139,7 @@ namespace MidiShapeShifter.Framework
         protected override IVstPluginMidiSource CreateMidiSource(IVstPluginMidiSource instance)
         {
             // we implement this interface on out midi processor.
-            return (IVstPluginMidiSource)MidiHandler;
+            return MidiHandler;
         }
 
         /// <summary>

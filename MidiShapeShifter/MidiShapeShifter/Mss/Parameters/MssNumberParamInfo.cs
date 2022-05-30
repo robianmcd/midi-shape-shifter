@@ -9,20 +9,11 @@ namespace MidiShapeShifter.Mss.Parameters
         protected const int DEFAULT_NUMBER_PRAM_MIN_VALUE = 0;
         protected const int DEFAULT_NUMBER_PRAM_MAX_VALUE = 1;
 
-        public override MssParamType paramType
-        {
-            get { return MssParamType.Number; }
-        }
+        public override MssParamType paramType => MssParamType.Number;
 
-        public override bool allowUserToEditMaxMin
-        {
-            get { return true; }
-        }
+        public override bool allowUserToEditMaxMin => true;
 
-        public override ValueInputType methodOfValueInput
-        {
-            get { return ValueInputType.Number; }
-        }
+        public override ValueInputType methodOfValueInput => ValueInputType.Number;
 
         protected override void SetMembersWithDefaultValues()
         {

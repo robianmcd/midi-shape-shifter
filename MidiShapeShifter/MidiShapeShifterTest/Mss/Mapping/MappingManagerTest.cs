@@ -250,10 +250,12 @@ namespace MidiShapeShifterTest.Mss.Mapping
             MssMsgRange outMsgRange = new MssMsgRange();
             outMsgRange.InitPublicMembers(msgType, chanRangeBottom, chanRamgeTop, paramRangeBottom, paramRangeTop);
 
-            IMappingEntry mapEntry = new MappingEntry();
-            mapEntry.InMssMsgRange = inMsgRange;
-            mapEntry.OutMssMsgRange = outMsgRange;
-            mapEntry.OverrideDuplicates = DEFAULT_OVERRIDE_DUPLICATES;
+            IMappingEntry mapEntry = new MappingEntry
+            {
+                InMssMsgRange = inMsgRange,
+                OutMssMsgRange = outMsgRange,
+                OverrideDuplicates = DEFAULT_OVERRIDE_DUPLICATES
+            };
 
             CurveShapeInfo curveInfo = new CurveShapeInfo();
             curveInfo.InitWithDefaultValues();

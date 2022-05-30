@@ -2,9 +2,6 @@
 {
     public class PolyAftertouchMsgInfo : MidiMsgInfo
     {
-        public override MssMsgType MsgType
-        {
-            get { return MssMsgType.PolyAftertouch; }
-        }
+        public override MssMsgType MsgType => MssMsgType.PolyAftertouch;
     }
 }

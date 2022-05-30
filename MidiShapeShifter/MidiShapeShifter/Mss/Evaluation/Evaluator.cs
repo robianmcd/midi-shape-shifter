@@ -110,7 +110,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                 out HashSet<int> erroneousCurveIndexSet
             )
         {
-            Logger.HighVolume(23, String.Format("Sampling Expression - xGap: {0}, variableParamInfo: {1}",
+            Logger.HighVolume(23, string.Format("Sampling Expression - xGap: {0}, variableParamInfo: {1}",
                 xDistanceBetweenPoints,
                 EnumerableUtils.ToString(variableParamInfoList)));
 
