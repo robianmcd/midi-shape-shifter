@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 
 namespace MidiShapeShifter.CSharpUtil
@@ -31,7 +29,7 @@ namespace MidiShapeShifter.CSharpUtil
             this.parentNode = parentNode;
         }
 
-        public List<FileTreeFileInfo> AddDirectory(string dirPath, 
+        public List<FileTreeFileInfo> AddDirectory(string dirPath,
                                                    Func<string, FileTreeFileInfo> CreateFileInfo,
                                                    string fileExtension)
         {

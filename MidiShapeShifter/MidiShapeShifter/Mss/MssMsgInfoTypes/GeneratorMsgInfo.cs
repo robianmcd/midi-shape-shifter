@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
-
-using MidiShapeShifter.Mss.Generator;
+﻿using MidiShapeShifter.Mss.Generator;
+using System;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
@@ -36,7 +31,7 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
             else
             {
                 return "";
-            }        
+            }
         }
 
         public override string ConvertData2ToString(double Data2)

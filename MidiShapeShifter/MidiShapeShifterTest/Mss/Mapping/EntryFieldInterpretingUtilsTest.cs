@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using NUnit.Framework;
-
+﻿
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Mapping;
+using NUnit.Framework;
 
 namespace MidiShapeShifterTest.Mss.Mapping
 {
@@ -54,7 +49,7 @@ namespace MidiShapeShifterTest.Mss.Mapping
         [Test]
         public void InterpretAsRangeAllStr_UppercaseVersionOfRangeAllString_ReturnsTrue()
         {
-            bool stringIsRangeAllStr = 
+            bool stringIsRangeAllStr =
                 EntryFieldInterpretingUtils.InterpretAsRangeAllStr(MssMsgUtil.RANGE_ALL_STR.ToUpper());
 
             Assert.IsTrue(stringIsRangeAllStr);
@@ -73,7 +68,7 @@ namespace MidiShapeShifterTest.Mss.Mapping
         {
             int outRangeTop;
             int outRangeBottom;
-            bool successfullyInturpreted = 
+            bool successfullyInturpreted =
                 EntryFieldInterpretingUtils.InterpretAsRangeOfInts("10 - 20", out outRangeTop, out outRangeBottom);
 
             Assert.IsTrue(successfullyInturpreted);
@@ -99,7 +94,7 @@ namespace MidiShapeShifterTest.Mss.Mapping
         {
             int outRangeTop;
             int outRangeBottom;
-            bool successfullyInturpreted = 
+            bool successfullyInturpreted =
                 EntryFieldInterpretingUtils.InterpretAsRangeOfInts("9", out outRangeTop, out outRangeBottom);
 
             Assert.IsFalse(successfullyInturpreted);

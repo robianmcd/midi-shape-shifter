@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
 
 namespace MidiShapeShifter.CSharpUtil
@@ -13,9 +10,9 @@ namespace MidiShapeShifter.CSharpUtil
         private readonly Queue<T> queue;
         private readonly int maxSize;
         public bool Closing { get; protected set; }
-  
-        public ConsumerBlockingQueue(int maxSize = -1) 
-        { 
+
+        public ConsumerBlockingQueue(int maxSize = -1)
+        {
             this.maxSize = maxSize;
             this.Closing = true;
             this.queue = new Queue<T>();

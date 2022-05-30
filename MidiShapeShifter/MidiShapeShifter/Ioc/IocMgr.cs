@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Ninject;
+﻿
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Evaluation;
+using Ninject;
 
 namespace MidiShapeShifter.Ioc
 {

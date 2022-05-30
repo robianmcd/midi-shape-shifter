@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Jacobi.Vst.Framework;
+using Jacobi.Vst.Framework.Plugin;
+using MidiShapeShifter.Mss;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
-using Jacobi.Vst.Framework;
-using Jacobi.Vst.Framework.Plugin;
-
-using MidiShapeShifter.Mss;
 
 namespace MidiShapeShifter.Framework
 {
@@ -118,7 +116,7 @@ namespace MidiShapeShifter.Framework
 
             //Add active program to the top of the list
             newPrograms.Add(CreateProgramFromSettingsFileInfo(this.mssProgramMgr.GetActiveSettingsFile()));
-            
+
             foreach (SettingsFileInfo progInfo in this.mssProgramMgr.FlatSettingsFileList)
             {
                 VstProgram program = CreateProgramFromSettingsFileInfo(progInfo);
@@ -127,7 +125,8 @@ namespace MidiShapeShifter.Framework
             return newPrograms;
         }
 
-        public VstProgram CreateProgramFromSettingsFileInfo(SettingsFileInfo settingsFileInfo) {
+        public VstProgram CreateProgramFromSettingsFileInfo(SettingsFileInfo settingsFileInfo)
+        {
             VstProgram program = CreateProgram(ParameterInfos);
             this.ProgramFullNames.Add(settingsFileInfo.Name);
             program.Name = GetValidProgramName(settingsFileInfo.Name);
@@ -143,7 +142,7 @@ namespace MidiShapeShifter.Framework
             }
             else
             {
-                return inputProgramName;    
+                return inputProgramName;
             }
         }
 

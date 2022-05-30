@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
-using MidiShapeShifter.Mss.Generator;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -10,8 +8,8 @@ namespace MidiShapeShifter.Mss.Mapping
         IMssMsgRange InMssMsgRange { get; set; }
         IMssMsgRange OutMssMsgRange { get; set; }
         bool OverrideDuplicates { get; set; }
-        MssMsgDataField PrimaryInputSource{get; set;}
-        string ActiveTransformPresetName{get; set;}
+        MssMsgDataField PrimaryInputSource { get; set; }
+        string ActiveTransformPresetName { get; set; }
 
         string GetReadableMsgType(IoType ioCategory);
         string GetReadableOverrideDuplicates();

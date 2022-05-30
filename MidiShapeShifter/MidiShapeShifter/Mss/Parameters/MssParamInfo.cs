@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.Serialization;
-using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss.Parameters
 {
@@ -68,7 +65,8 @@ namespace MidiShapeShifter.Mss.Parameters
             return (MssParamInfo)this.MemberwiseClone();
         }
 
-        override public string ToString() {
+        override public string ToString()
+        {
             return string.Format("MssParamInfo - name: {0}, raw: {1}, max: {2}, min: {3}",
                 this.Name, this.RawValue, this.MaxValue, this.MinValue);
         }

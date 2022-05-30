@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Diagnostics;
-
-using MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes;
+﻿using MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes;
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
-using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.Relays;
+using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -19,13 +13,13 @@ namespace MidiShapeShifter.Mss.Mapping
     /// </summary>
     public partial class MappingDlg : Form
     {
-        protected enum LearnMode {In, Out, Off}
+        protected enum LearnMode { In, Out, Off }
         protected LearnMode learnMode;
 
         public Factory_MssMsgRangeEntryMetadata MsgMetadataFactory;
         public IFactory_MssMsgInfo MsgInfoFactory;
 
-        public bool UseMappingEntryForDefaultValues {get; protected set;}
+        public bool UseMappingEntryForDefaultValues { get; protected set; }
 
         protected MssMsgRangeEntryMetadata inMsgMetadata;
         protected MssMsgRangeEntryMetadata outMsgMetadata;
@@ -39,14 +33,14 @@ namespace MidiShapeShifter.Mss.Mapping
         ///     default values for all of the entry fields. If the dialog exits with DialogResult.OK then mappingEntry 
         ///     is populated based on data from the entry fields.
         /// </summary>
-        public IMappingEntry mappingEntry {get; private set;}
+        public IMappingEntry mappingEntry { get; private set; }
 
         public MappingDlg()
         {
             InitializeComponent();
 
             //Add the types that are valid for input to the input combo.
-            foreach(MssMsgType msgType in MssMsgRangeEntryMetadata.VALID_INPUT_TYPES)
+            foreach (MssMsgType msgType in MssMsgRangeEntryMetadata.VALID_INPUT_TYPES)
             {
                 this.inTypeCombo.Items.Add(MssMsg.MssMsgTypeNames[(int)msgType]);
             }
@@ -62,8 +56,8 @@ namespace MidiShapeShifter.Mss.Mapping
         /// <param name="useMappingEntryForDefaultValues"> 
         ///     If true, use the data in <paramref name="mappingEntry"/> to populate the entry fields.
         /// </param>
-        public void Init(IMappingEntry mappingEntry, 
-                         bool useMappingEntryForDefaultValues, 
+        public void Init(IMappingEntry mappingEntry,
+                         bool useMappingEntryForDefaultValues,
                          Factory_MssMsgRangeEntryMetadata msgMetadataFactory,
                          IFactory_MssMsgInfo msgInfoFactory,
                          IDryMssEventOutputPort dryEventOut)
@@ -74,7 +68,7 @@ namespace MidiShapeShifter.Mss.Mapping
             this.MsgInfoFactory = msgInfoFactory;
             this.dryEventOut = dryEventOut;
 
-            this.dryEventOut.DryMssEventRecieved += 
+            this.dryEventOut.DryMssEventRecieved +=
                 new DryMssEventRecievedEventHandler(dryMssEventOutputPort_DryMssEventRecieved);
 
             if (useMappingEntryForDefaultValues == true)
@@ -89,7 +83,8 @@ namespace MidiShapeShifter.Mss.Mapping
                 //This could be disabled if we are editing a mapping with an input type like Parameter. If 
                 //this is disabled then we don't want to check it off because that will make it impossible
                 //to edit the output fields.
-                if (this.outSameAsInCheckBox.Enabled) {
+                if (this.outSameAsInCheckBox.Enabled)
+                {
                     this.outSameAsInCheckBox.Checked =
                         (this.mappingEntry.InMssMsgRange.Equals(this.mappingEntry.OutMssMsgRange));
                 }
@@ -120,8 +115,8 @@ namespace MidiShapeShifter.Mss.Mapping
 
             MssMsg curMsg = dryMssEvent.mssMsg;
 
-            if (this.learnMode != LearnMode.Off && 
-                curMsg.Type != MssMsgType.NoteOff && 
+            if (this.learnMode != LearnMode.Off &&
+                curMsg.Type != MssMsgType.NoteOff &&
                 curMsg.Type != MssMsgType.Generator)
             {
                 if (curMsg.Type == MssMsgType.NoteOn)
@@ -157,10 +152,10 @@ namespace MidiShapeShifter.Mss.Mapping
                 {
                     return;
                 }
-                
+
 
                 MssMsgRangeEntryMetadata curEntryMetadata;
-                if(this.learnMode == LearnMode.In)
+                if (this.learnMode == LearnMode.In)
                 {
                     curEntryMetadata = this.inMsgMetadata;
                 }
@@ -207,14 +202,14 @@ namespace MidiShapeShifter.Mss.Mapping
 
                 this.lastMsgReceived = curMsg;
             }
-            
+
         }
 
         /// <summary>
         ///     Gets the MssMsgType associated with the current selection in the ComboBox specified by 
         ///     <paramref name="combo"/>.
         /// </summary>
-        public MssMsgType GetMessageTypeFromCombo(ComboBox combo) 
+        public MssMsgType GetMessageTypeFromCombo(ComboBox combo)
         {
             return (MssMsgType)MssMsg.MssMsgTypeNames.FindIndex(item => item.Equals(combo.Text));
         }
@@ -237,13 +232,14 @@ namespace MidiShapeShifter.Mss.Mapping
                 this.outEntryField2TextBox.Text = this.inEntryField2TextBox.Text;
                 this.errorProvider.SetError(this.outEntryField2TextBox, "");
                 this.outEntryField2Combo.SelectedIndex = this.inEntryField2Combo.SelectedIndex;
-                
+
             }
 
             UpdateOutEntryFieldsEnabledStatus();
         }
 
-        protected void UpdateOutEntryFieldsEnabledStatus() {
+        protected void UpdateOutEntryFieldsEnabledStatus()
+        {
             bool enabledStatus = !this.outSameAsInCheckBox.Checked;
 
             outTypeCombo.Enabled = enabledStatus;
@@ -321,8 +317,8 @@ namespace MidiShapeShifter.Mss.Mapping
             UpdateOutEntryFieldsEnabledStatus();
         }
 
-        protected void MsgTypeComboChanged(ComboBox msgTypeCombo, 
-                                           IoType ioCategory, 
+        protected void MsgTypeComboChanged(ComboBox msgTypeCombo,
+                                           IoType ioCategory,
                                            ref MssMsgRangeEntryMetadata msgMetadata)
         {
             MssMsgType msgType = GetMessageTypeFromCombo(msgTypeCombo);
@@ -399,7 +395,7 @@ namespace MidiShapeShifter.Mss.Mapping
                 this.lastMsgReceived = null;
                 this.inLearnBtn.Text = "Learn";
             }
-            else 
+            else
             {
                 this.learnMode = LearnMode.In;
                 this.inLearnBtn.Text = "Stop Learn";
@@ -430,7 +426,7 @@ namespace MidiShapeShifter.Mss.Mapping
             this.dryEventOut.DryMssEventRecieved -=
                 new DryMssEventRecievedEventHandler(dryMssEventOutputPort_DryMssEventRecieved);
         }
-   
+
 
     }
 }

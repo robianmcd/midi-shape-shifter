@@ -1,8 +1,5 @@
-﻿using System;
+﻿using MidiShapeShifter.CSharpUtil;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MidiShapeShifter.CSharpUtil;
 
 namespace MidiShapeShifter.Mss.Mapping
 {

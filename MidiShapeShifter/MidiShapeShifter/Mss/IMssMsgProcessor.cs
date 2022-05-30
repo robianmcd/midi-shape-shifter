@@ -1,7 +1,4 @@
-﻿using System;
-
-using MidiShapeShifter.Mss;
-using MidiShapeShifter.Mss.Mapping;
+﻿using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.Parameters;
 using System.Collections.Generic;
 

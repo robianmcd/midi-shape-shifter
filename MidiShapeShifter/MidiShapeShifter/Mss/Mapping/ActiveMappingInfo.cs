@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
+﻿using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Generator;
 using System.Diagnostics;
-using MidiShapeShifter.CSharpUtil;
+using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -22,8 +18,8 @@ namespace MidiShapeShifter.Mss.Mapping
         protected IMappingManager mappingManager;
         protected IGeneratorMappingManager genMappingManager;
 
-        public void InitNonserializableMembers(IMappingManager mappingMgr, 
-                         IGeneratorMappingManager genMappingMgr) 
+        public void InitNonserializableMembers(IMappingManager mappingMgr,
+                         IGeneratorMappingManager genMappingMgr)
         {
             this.mappingManager = mappingMgr;
             this.genMappingManager = genMappingMgr;
@@ -70,7 +66,8 @@ namespace MidiShapeShifter.Mss.Mapping
             }
         }
 
-        public bool GetActiveMappingExists() {
+        public bool GetActiveMappingExists()
+        {
             return this.ActiveGraphableEntryId >= 0;
         }
 

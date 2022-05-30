@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using MidiShapeShifter.Mss.Generator;
-using MidiShapeShifter.CSharpUtil;
+﻿using MidiShapeShifter.Mss.Generator;
+using System;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
@@ -26,7 +21,7 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         {
             string data1String = "";
 
-            bool idExists = this.genMappingMgr.RunFuncOnMappingEntry((int)Data1, 
+            bool idExists = this.genMappingMgr.RunFuncOnMappingEntry((int)Data1,
                 (genEntry) => data1String = genEntry.GenConfigInfo.Name);
 
             if (idExists)

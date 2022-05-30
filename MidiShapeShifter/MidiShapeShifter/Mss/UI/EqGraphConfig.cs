@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using System.Diagnostics;
 
 using ZedGraph;
 
@@ -23,7 +19,7 @@ namespace MidiShapeShifter.Mss.UI
         private static readonly Color[] SEGMENT_COLOR_BY_STATUS;
         private static readonly GraphSegmentColorStausFlags DEFAULT_SEGMENT_COLOR_STATUS = GraphSegmentColorStausFlags.Enabled;
 
-        static EqGraphConfig() 
+        static EqGraphConfig()
         {
             SEGMENT_COLOR_BY_STATUS = new Color[8];
             SEGMENT_COLOR_BY_STATUS[(int)GraphSegmentColorStausFlags.Enabled] = Color.FromArgb(119, 189, 216); //H198 S45 V85
@@ -114,7 +110,7 @@ namespace MidiShapeShifter.Mss.UI
             pointsCurve.Symbol.Fill.RangeMax = SEGMENT_COLOR_BY_STATUS.Length - 1;
             pointsCurve.Symbol.Fill.RangeDefault = 0;
             pointsCurve.Symbol.Fill.IsVisible = true;
-            
+
             pointsCurve.Symbol.Size = 17;
             pointsCurve.Symbol.IsAntiAlias = true;
             pointsCurve.Line.IsVisible = false;

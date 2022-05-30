@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-
-namespace MidiShapeShifter.Mss
+﻿namespace MidiShapeShifter.Mss
 {
     public static class MssMsgUtil
     {

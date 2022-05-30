@@ -1,10 +1,6 @@
-﻿using System.Diagnostics;
-using System.Runtime.Serialization;
-
-using MidiShapeShifter.CSharpUtil;
+﻿using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Mapping;
-using MidiShapeShifter.Mss.UI;
-using MidiShapeShifter.Mss.Generator;
+using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss
 {
@@ -30,12 +26,13 @@ namespace MidiShapeShifter.Mss
         {
             get
             {
-                if (this.activeMappingInfo.GetActiveMappingExists() == false) {
+                if (this.activeMappingInfo.GetActiveMappingExists() == false)
+                {
                     return null;
                 }
 
                 IBaseGraphableMappingManager activeMappingManager = activeMappingInfo.GetActiveGraphableEntryManager();
-                
+
                 string activeSettingsFileName = null;
                 activeMappingManager.RunFuncOnMappingEntry(activeMappingInfo.ActiveGraphableEntryId,
                         (mappingEntry) => activeSettingsFileName = mappingEntry.ActiveTransformPresetName);
@@ -92,7 +89,7 @@ namespace MidiShapeShifter.Mss
         {
             SettingsFileInfo defaultActiveProgram = new SettingsFileInfo();
             //Sets the default program
-            defaultActiveProgram.Init(MssFileSystemLocations.FactoryProgramsFolder + DEFAULT_TRANSFORM_PRESET_NAME + 
+            defaultActiveProgram.Init(MssFileSystemLocations.FactoryProgramsFolder + DEFAULT_TRANSFORM_PRESET_NAME +
                                       "." + TRANSFORM_PRESET_FILE_EXTENSION);
 
             return defaultActiveProgram;
@@ -102,7 +99,7 @@ namespace MidiShapeShifter.Mss
         {
             IBaseGraphableMappingManager activeMappingManager = activeMappingInfo.GetActiveGraphableEntryManager();
 
-            activeMappingManager.RunFuncOnMappingEntry(activeMappingInfo.ActiveGraphableEntryId, (mappingEntry) => 
+            activeMappingManager.RunFuncOnMappingEntry(activeMappingInfo.ActiveGraphableEntryId, (mappingEntry) =>
                     ContractSerializer.Serialize<CurveShapeInfo>(fs, mappingEntry.CurveShapeInfo));
         }
 

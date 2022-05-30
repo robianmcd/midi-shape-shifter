@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 using NCalc;
-
-
-using MidiShapeShifter.CSharpUtil;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {
@@ -29,7 +22,7 @@ namespace MidiShapeShifter.Mss.Evaluation
             this.expression = expression;
 
             this.expression.EvaluateFunction += FunctionHandler;
-            SetExpressionBaseParameters((EvaluationInput) evalInput);
+            SetExpressionBaseParameters((EvaluationInput)evalInput);
         }
 
     }

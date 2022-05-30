@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -23,7 +20,7 @@ namespace MidiShapeShifter.Mss.Mapping
             {
                 return true;
             }
-            else 
+            else
             {
                 return false;
             }

@@ -1,21 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Ninject;
+﻿using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Ioc;
-
-using NUnit.Framework;
-using Moq;
-
-using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss;
-using MidiShapeShifter.Mss.Mapping;
-using MidiShapeShifter.Mss.MssMsgInfoTypes;
-using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.Evaluation;
+using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.Parameters;
+using Moq;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace MidiShapeShifterTest.Mss
 {
@@ -34,7 +25,7 @@ namespace MidiShapeShifterTest.Mss
         public void ProcessMssMsg_NoMappings_MsgIsUnaffected()
         {
             MssMsg inputMsg = Factory_MssMsg(MssMsgType.NoteOn, 1, 64, 100);
-            
+
             List<IMappingEntry> matchingEntries = new List<IMappingEntry>();
 
             List<MssMsg> desiredReturnedMsgList = new List<MssMsg>();
@@ -179,8 +170,8 @@ namespace MidiShapeShifterTest.Mss
         ///     Simulates the equation "x*2" in each mapping if true. Simulates the equation "x" in each mapping if 
         ///     false. 
         /// </param>
-        protected void Test_ProcessMssMsg(MssMsg inputMsg, 
-                                         List<IMappingEntry> matchingEntries, 
+        protected void Test_ProcessMssMsg(MssMsg inputMsg,
+                                         List<IMappingEntry> matchingEntries,
                                          List<MssMsg> desiredReturnedMsgList,
                                          bool doubleData3)
         {
@@ -199,7 +190,7 @@ namespace MidiShapeShifterTest.Mss
             mssEvanuatorMock.Setup(evaluator => evaluator.Evaluate(It.IsAny<EvaluationCurveInput>()))
                             .Returns((EvaluationCurveInput input) => new ReturnStatus<double>(input.RelData3 * inputMultiple, true));
             IocMgr.Kernel.Rebind<IEvaluator>().ToConstant(mssEvanuatorMock.Object);
-            
+
             MssMsgProcessor msgProcessor = new MssMsgProcessor();
 
             var mapMgrMock = new Mock<IBaseGraphableMappingManager>();
@@ -210,7 +201,7 @@ namespace MidiShapeShifterTest.Mss
             msgProcessor.Init(mapMgrMock.Object, mssParameterViewerMock.Object);
 
             //Ensure returnedMsgList and desiredReturnedMsgList contain the same elements.
-            foreach (MssMsg returnedMsg in msgProcessor.ProcessMssMsg(inputMsg)) 
+            foreach (MssMsg returnedMsg in msgProcessor.ProcessMssMsg(inputMsg))
             {
                 int foundIndex = desiredReturnedMsgList.FindIndex(
                     desiredReturnedMsg => desiredReturnedMsg.Equals(returnedMsg));

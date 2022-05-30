@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using MidiShapeShifter.CSharpUtil;
 using NUnit.Framework;
-
-using MidiShapeShifter.CSharpUtil;
 using System.Threading;
 
 namespace MidiShapeShifterTest.CSharpUtil

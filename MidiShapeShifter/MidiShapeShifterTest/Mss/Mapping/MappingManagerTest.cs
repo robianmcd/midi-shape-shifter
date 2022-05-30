@@ -1,15 +1,8 @@
-﻿using System;
+﻿using MidiShapeShifter.Mss;
+using MidiShapeShifter.Mss.Mapping;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Diagnostics;
-
-using NUnit.Framework;
-using Moq;
-
-using MidiShapeShifter.Mss;
-using MidiShapeShifter.Mss.Mapping;
-using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
 
 namespace MidiShapeShifterTest.Mss.Mapping
@@ -17,7 +10,7 @@ namespace MidiShapeShifterTest.Mss.Mapping
     [TestFixture]
     public class MappingManagerTest
     {
-        
+
         protected const bool DEFAULT_OVERRIDE_DUPLICATES = false;
         protected const MssMsgType DEFAULT_MSG_TYPE = MssMsgType.NoteOn;
         //useful for when you need to test two message types that do not match. Other types do not need to be tested here
@@ -136,10 +129,10 @@ namespace MidiShapeShifterTest.Mss.Mapping
 
             List<IMappingEntry> mappingEntryList = mappingMgr.GetCopyOfMappingEntryList();
 
-            Assert.AreEqual(mappingEntry1.Id,mappingEntryList[0].Id);
-            Assert.AreEqual(mappingEntry3.Id,mappingEntryList[1].Id);
-            Assert.AreEqual(mappingEntry2.Id,mappingEntryList[2].Id);
-            Assert.AreEqual(mappingEntry4.Id,mappingEntryList[3].Id);
+            Assert.AreEqual(mappingEntry1.Id, mappingEntryList[0].Id);
+            Assert.AreEqual(mappingEntry3.Id, mappingEntryList[1].Id);
+            Assert.AreEqual(mappingEntry2.Id, mappingEntryList[2].Id);
+            Assert.AreEqual(mappingEntry4.Id, mappingEntryList[3].Id);
         }
 
         [Test]
@@ -163,7 +156,7 @@ namespace MidiShapeShifterTest.Mss.Mapping
         public void GetAssociatedEntries_MsgOnlyMatchesPartsOfEntriesInMgr_TheEnumerationReturnedIsEmpty()
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();
-            
+
             IMappingEntry mappingEntry1 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 1, 1, 3, 127);
             IMappingEntry mappingEntry2 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(DEFAULT_MSG_TYPE, 2, 16, 2, 2);
             IMappingEntry mappingEntry3 = Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(SECONDARY_MSG_TYPE, 1, 1, 2, 2);
@@ -247,8 +240,8 @@ namespace MidiShapeShifterTest.Mss.Mapping
         }
 
         protected IMappingEntry Factory_IMappingEntry_MapsIdenticalMidiMsgRanges(
-            MssMsgType msgType, 
-            int chanRangeBottom, int chanRamgeTop, 
+            MssMsgType msgType,
+            int chanRangeBottom, int chanRamgeTop,
             int paramRangeBottom, int paramRangeTop)
         {
             MssMsgRange inMsgRange = new MssMsgRange();
@@ -275,7 +268,7 @@ namespace MidiShapeShifterTest.Mss.Mapping
         }
 
         protected void TestCase_GetAssociatedEntries_ManagerWithThreeOverlappingEntriesThatMatchAMsg(
-            bool Entry1Override, bool Entry2Override, bool Entry3Override, 
+            bool Entry1Override, bool Entry2Override, bool Entry3Override,
             bool Entry1Matches, bool Entry2Matches, bool Entry3Matches)
         {
             MappingManager mappingMgr = Factory_MappingManager_Default();

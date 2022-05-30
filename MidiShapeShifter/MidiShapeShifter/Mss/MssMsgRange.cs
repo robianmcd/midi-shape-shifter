@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
+﻿using MidiShapeShifter.Mss.MssMsgInfoTypes;
+using System;
 using System.Runtime.Serialization;
-
-using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mss
 {
@@ -22,7 +17,7 @@ namespace MidiShapeShifter.Mss
         ///     recreated so that it contains information about the new MssMsgType
         /// </summary>
         [DataMember]
-        public MssMsgType MsgType {get; set;}
+        public MssMsgType MsgType { get; set; }
 
         /// <summary>
         ///     Specifies the range of accepted Data1 values
@@ -30,24 +25,36 @@ namespace MidiShapeShifter.Mss
 
         [DataMember(Name = "Data1RangeBottom")]
         protected double _data1RangeBottom;
-        public double Data1RangeBottom { get { return this._data1RangeBottom; }
-                                      set { this._data1RangeBottom = value; } }
+        public double Data1RangeBottom
+        {
+            get { return this._data1RangeBottom; }
+            set { this._data1RangeBottom = value; }
+        }
         [DataMember(Name = "Data1RangeTop")]
         protected double _data1RangeTop;
-        public double Data1RangeTop { get { return this._data1RangeTop; }
-                                      set { this._data1RangeTop = value; } }
+        public double Data1RangeTop
+        {
+            get { return this._data1RangeTop; }
+            set { this._data1RangeTop = value; }
+        }
 
         /// <summary>
         ///     Specifies the range of accepted Data2 values
         /// </summary>
         [DataMember(Name = "Data2RangeBottom")]
         protected double _data2RangeBottom;
-        public double Data2RangeBottom { get { return this._data2RangeBottom; } 
-                                      set { this._data2RangeBottom = value; } }
+        public double Data2RangeBottom
+        {
+            get { return this._data2RangeBottom; }
+            set { this._data2RangeBottom = value; }
+        }
         [DataMember(Name = "Data2RangeTop")]
         protected double _data2RangeTop;
-        public double Data2RangeTop { get { return this._data2RangeTop; } 
-                                      set { this._data2RangeTop = value; } }
+        public double Data2RangeTop
+        {
+            get { return this._data2RangeTop; }
+            set { this._data2RangeTop = value; }
+        }
 
         /// <summary>
         ///     Initializes the public member varialbes of this class. This method does not need to 
@@ -112,15 +119,15 @@ namespace MidiShapeShifter.Mss
         /// <param name="maxValueStr">
         ///     String representation of the highest value aloud for the type of data in the range.
         /// </param>
-        protected string GetRangeString(string rangeBottomStr, string rangeTopStr, 
+        protected string GetRangeString(string rangeBottomStr, string rangeTopStr,
                                         string minValueStr, string maxValueStr)
         {
             if (rangeBottomStr == MssMsgUtil.UNUSED_MSS_MSG_STRING ||
-                   rangeTopStr == MssMsgUtil.UNUSED_MSS_MSG_STRING) 
+                   rangeTopStr == MssMsgUtil.UNUSED_MSS_MSG_STRING)
             {
                 return MssMsgUtil.UNUSED_MSS_MSG_STRING;
-            } 
-            else if (rangeBottomStr == rangeTopStr) 
+            }
+            else if (rangeBottomStr == rangeTopStr)
             {
                 return rangeBottomStr;
             }
@@ -130,7 +137,7 @@ namespace MidiShapeShifter.Mss
             }
             else
             {
-                return rangeBottomStr + "-" + rangeTopStr;                    
+                return rangeBottomStr + "-" + rangeTopStr;
             }
         }
 
@@ -175,8 +182,8 @@ namespace MidiShapeShifter.Mss
         public IMssMsgRange Clone()
         {
             MssMsgRange msgRangeClone = new MssMsgRange();
-            msgRangeClone.InitPublicMembers(this.MsgType, 
-                                            this.Data1RangeBottom, this.Data1RangeTop, 
+            msgRangeClone.InitPublicMembers(this.MsgType,
+                                            this.Data1RangeBottom, this.Data1RangeTop,
                                             this.Data2RangeBottom, this.Data2RangeTop);
 
             return msgRangeClone;

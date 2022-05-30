@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace MidiShapeShifter.Mss.UI
@@ -12,7 +7,7 @@ namespace MidiShapeShifter.Mss.UI
     public partial class EquationEditorDlg : Form
     {
         Control parentControl;
-        
+
         public string equation = "";
         public int cursorPosition = 0;
 
@@ -25,8 +20,8 @@ namespace MidiShapeShifter.Mss.UI
         {
             this.parentControl = parentControl;
 
-            this.equationTextBox.Text = 
-                    equationStr.Substring(0, initialCursorPosition) + 
+            this.equationTextBox.Text =
+                    equationStr.Substring(0, initialCursorPosition) +
                     insertCharacter +
                     equationStr.Substring(initialCursorPosition, equationStr.Length - initialCursorPosition);
             this.equationTextBox.SelectionStart = initialCursorPosition + insertCharacter.Length;

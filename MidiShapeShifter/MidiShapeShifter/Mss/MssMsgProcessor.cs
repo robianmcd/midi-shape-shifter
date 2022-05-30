@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-
-using Ninject;
-
+﻿using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Ioc;
-
-using MidiShapeShifter.CSharpUtil;
-using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.Evaluation;
-using MidiShapeShifter.Mss.Parameters;
+using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
+using MidiShapeShifter.Mss.Parameters;
+using Ninject;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace MidiShapeShifter.Mss
 {
@@ -50,12 +45,12 @@ namespace MidiShapeShifter.Mss
             //Apply the pre mapping query processing. If this causes the msg type to change then
             //apply it again for the new type.
             MssMsgType curMsgType;
-            do 
+            do
             {
                 curMsgType = mssMsg.Type;
                 IStaticMssMsgInfo staticMsgInfo = Factory_StaticMssMsgInfo.Create(mssMsg.Type);
                 staticMsgInfo.ApplyPreMappingQueryProcessing(mssMsg);
-            } while(curMsgType != mssMsg.Type);
+            } while (curMsgType != mssMsg.Type);
 
             //Retrieves mappings from the MappingManager that will affect mssMsg
             IEnumerable<IMappingEntry> mappingEntries = this.mappingMgr.GetCopiesOfMappingEntriesForMsg(mssMsg);
@@ -80,7 +75,7 @@ namespace MidiShapeShifter.Mss
 
                     if (evalReturnStatus.IsValid == false)
                     {
-                        continue;                        
+                        continue;
                     }
 
                     double mappedRelativeData3 = evalReturnStatus.Value;

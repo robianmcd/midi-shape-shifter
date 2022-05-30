@@ -1,9 +1,5 @@
-﻿using System;
+﻿using MidiShapeShifter.Mss.Parameters;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {
@@ -14,7 +10,7 @@ namespace MidiShapeShifter.Mss.Evaluation
     {
         public string EquationStr { get; set; }
 
-        public void Init(List<MssParamInfo> variableParamInfoList, 
+        public void Init(List<MssParamInfo> variableParamInfoList,
                          List<MssParamInfo> transformParamInfoList,
                         string equationStr)
         {

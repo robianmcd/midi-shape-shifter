@@ -1,5 +1,5 @@
-﻿using System;
-using MidiShapeShifter.Mss.MssMsgInfoTypes;
+﻿using MidiShapeShifter.Mss.MssMsgInfoTypes;
+using System;
 
 namespace MidiShapeShifter.Mss
 {

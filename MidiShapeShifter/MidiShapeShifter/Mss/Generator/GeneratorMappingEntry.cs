@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using MidiShapeShifter.Mss.Mapping;
+using System;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-
-using MidiShapeShifter.Mss.Mapping;
 
 namespace MidiShapeShifter.Mss.Generator
 {
@@ -22,15 +18,21 @@ namespace MidiShapeShifter.Mss.Generator
     {
         [DataMember(Name = "GenConfigInfo")]
         protected GenEntryConfigInfo _genConfigInfo;
-        public GenEntryConfigInfo GenConfigInfo { get { return this._genConfigInfo; } 
-                                                  set { this._genConfigInfo = value; } }
-        
+        public GenEntryConfigInfo GenConfigInfo
+        {
+            get { return this._genConfigInfo; }
+            set { this._genConfigInfo = value; }
+        }
+
         /// <summary>
         /// Stores information about previously generated events.
         /// </summary>
         protected GenEntryHistoryInfo _genHistoryInfo;
-        public GenEntryHistoryInfo GenHistoryInfo { get { return this._genHistoryInfo; } 
-                                                    set { this._genHistoryInfo = value; } }
+        public GenEntryHistoryInfo GenHistoryInfo
+        {
+            get { return this._genHistoryInfo; }
+            set { this._genHistoryInfo = value; }
+        }
 
         public GeneratorMappingEntry()
         {
@@ -38,7 +40,7 @@ namespace MidiShapeShifter.Mss.Generator
         }
 
         public void InitAllMembers(IMssMsgRange inMsgRange, IMssMsgRange outMsgRange,
-                            bool overrideDuplicates, CurveShapeInfo curveShapeInfo, 
+                            bool overrideDuplicates, CurveShapeInfo curveShapeInfo,
                             GenEntryConfigInfo generatorConfigInfo)
         {
             this.GenConfigInfo = generatorConfigInfo;
@@ -97,7 +99,8 @@ namespace MidiShapeShifter.Mss.Generator
             {
                 return this.GenConfigInfo.Name;
             }
-            else {
+            else
+            {
                 return "";
             }
         }
@@ -107,7 +110,8 @@ namespace MidiShapeShifter.Mss.Generator
             return Clone();
         }
 
-        new public GeneratorMappingEntry Clone() {
+        new public GeneratorMappingEntry Clone()
+        {
             GeneratorMappingEntry mappingEntryClone = new GeneratorMappingEntry();
             DeepCloneIntoExistingInstance(mappingEntryClone);
             return mappingEntryClone;

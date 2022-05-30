@@ -1,11 +1,8 @@
-﻿using System.Diagnostics;
-
-using Jacobi.Vst.Core;
+﻿using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
-
 using MidiShapeShifter.Mss;
-using MidiShapeShifter.Mss.Mapping;
+using System.Diagnostics;
 
 namespace MidiShapeShifter.Framework
 {
@@ -96,7 +93,7 @@ namespace MidiShapeShifter.Framework
                 return newDummpAudioHandler;
             }
 
-            return base.CreateAudioProcessor(instance); 
+            return base.CreateAudioProcessor(instance);
         }
 
         /// <summary>
@@ -110,8 +107,8 @@ namespace MidiShapeShifter.Framework
             if (instance == null)
             {
                 MidiHandler newMidiHandler = new MidiHandler();
-                newMidiHandler.Init(() => this.MssHub.DryMssEventInputPort, 
-                                    () => this.MssHub.WetMssEventOutputPort, 
+                newMidiHandler.Init(() => this.MssHub.DryMssEventInputPort,
+                                    () => this.MssHub.WetMssEventOutputPort,
                                     () => this.MssHub.HostInfoOutputPort);
                 return newMidiHandler;
             }
@@ -129,11 +126,11 @@ namespace MidiShapeShifter.Framework
             if (instance == null)
             {
                 var pluginPersistence = new VstPluginPersistence<MssComponentHub>();
-                pluginPersistence.Init(() => this.MssHub, 
-                                       this.PluginPrograms, 
+                pluginPersistence.Init(() => this.MssHub,
+                                       this.PluginPrograms,
                                        () => this.MssHub.MssProgramMgr,
                                        () => this.MssHub.PluginEditorView);
-                pluginPersistence.PluginDeserialized += 
+                pluginPersistence.PluginDeserialized +=
                     new VstPluginPersistence<MssComponentHub>.PluginDeserializedEventHandler(
                         VstPluginPersistence_PluginDeserialized);
                 pluginPersistence.BeforePluginDeserialized +=

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-using System.Windows.Forms;
-
+﻿using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Mapping;
-using MidiShapeShifter.Mss.MssMsgInfoTypes;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.Serialization;
-using MidiShapeShifter.CSharpUtil;
 
 namespace MidiShapeShifter.Mss.Generator
 {
@@ -51,10 +45,12 @@ namespace MidiShapeShifter.Mss.Generator
             lock (MssComponentHub.criticalSectioinLock)
             {
                 IGeneratorMappingEntry mappingEntry = GetMappingEntryById(id);
-                if (mappingEntry == null){
+                if (mappingEntry == null)
+                {
                     return false;
                 }
-                else {
+                else
+                {
                     InitializeEntryFromGenInfo(genInfo, id, mappingEntry);
                     return true;
                 }
@@ -117,7 +113,7 @@ namespace MidiShapeShifter.Mss.Generator
                 mappingEntry.CurveShapeInfo = new CurveShapeInfo();
                 mappingEntry.CurveShapeInfo.InitWithDefaultValues();
             }
-            
+
         }
 
         /// <summary>
@@ -135,7 +131,7 @@ namespace MidiShapeShifter.Mss.Generator
                 List<IGeneratorMappingEntry> associatedEntryList = new List<IGeneratorMappingEntry>();
                 if (inputMsg.Type == MssMsgType.RelBarPeriodPos || inputMsg.Type == MssMsgType.RelTimePeriodPos)
                 {
-                    IReturnStatus<IGeneratorMappingEntry> associatedEntryCopy = 
+                    IReturnStatus<IGeneratorMappingEntry> associatedEntryCopy =
                             GetCopyOfMappingEntryById((int)inputMsg.Data1);
                     if (associatedEntryCopy.IsValid)
                     {

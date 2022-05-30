@@ -1,10 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-using System.Runtime.Serialization;
+﻿using System.IO;
 
 namespace MidiShapeShifter.Mss
 {
@@ -18,8 +12,8 @@ namespace MidiShapeShifter.Mss
         public string FilePath { get; private set; }
 
         public SettingsFileInfo()
-        { 
-            
+        {
+
         }
 
         public void Init(string filePath)

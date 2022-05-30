@@ -1,30 +1,21 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using LBSoft.IndustrialCtrls.Knobs;
+using MidiShapeShifter.CSharpUtil;
+using MidiShapeShifter.Ioc;
+using MidiShapeShifter.Mss.Evaluation;
+using MidiShapeShifter.Mss.Generator;
+using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes;
+using MidiShapeShifter.Mss.MssMsgInfoTypes;
+using MidiShapeShifter.Mss.Parameters;
+using MidiShapeShifter.Mss.Relays;
+using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Threading;
-
-using Ninject;
-using MidiShapeShifter.Ioc;
-
-using MidiShapeShifter.CSharpUtil;
-using MidiShapeShifter.Framework;
-using MidiShapeShifter.Mss;
-using MidiShapeShifter.Mss.Mapping;
-using MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes;
-using MidiShapeShifter.Mss.Generator;
-using MidiShapeShifter.Mss.Relays;
-using MidiShapeShifter.Mss.MssMsgInfoTypes;
-using MidiShapeShifter.Mss.Evaluation;
-using MidiShapeShifter.Mss.Parameters;
-
-
-using LBSoft.IndustrialCtrls.Knobs;
-
+using System.Windows.Forms;
 using ZedGraph;
-
 //Winforms and ZedGraphs both define Label
 using Label = System.Windows.Forms.Label;
 
@@ -98,8 +89,8 @@ namespace MidiShapeShifter.Mss.UI
             this.IgnoreGraphableEntrySelectionChangedHandler = false;
         }
 
-        public void Init(MssParameters mssParameters, 
-                         IMappingManager mappingMgr, 
+        public void Init(MssParameters mssParameters,
+                         IMappingManager mappingMgr,
                          GeneratorMappingManager genMappingMgr,
                          MssProgramMgr programMgr,
                          TransformPresetMgr transformPresetMgr,
@@ -114,7 +105,7 @@ namespace MidiShapeShifter.Mss.UI
             this.transformPresetMgr = transformPresetMgr;
             this.genMappingMgr = genMappingMgr;
             this.programMgr = programMgr;
-            
+
             this.dryMssEventOutputPort = dryMssEventOutputPort;
             this.hostInfoOutputPort = hostInfoOutputPort;
 
@@ -132,9 +123,9 @@ namespace MidiShapeShifter.Mss.UI
 
 
             //Set parameters from MssParameters
-            foreach(MssParameterID paramId in Enum.GetValues(typeof(MssParameterID)))
+            foreach (MssParameterID paramId in Enum.GetValues(typeof(MssParameterID)))
             {
-                UpdateInfoForParameter(paramId);                
+                UpdateInfoForParameter(paramId);
             }
 
             this.msgMetadataFactory.Init(genMappingMgr, (IMssParameterViewer)mssParameters);
@@ -225,7 +216,7 @@ namespace MidiShapeShifter.Mss.UI
             bool EnableMappingButtons;
             bool EnableGeneratorButtons;
 
-            if (this.activeMappingInfo.ActiveGraphableEntryId < 0) 
+            if (this.activeMappingInfo.ActiveGraphableEntryId < 0)
             {
                 EnableMappingButtons = false;
                 EnableGeneratorButtons = false;
@@ -251,7 +242,8 @@ namespace MidiShapeShifter.Mss.UI
             this.editMappingBtn.Enabled = EnableMappingButtons;
 
             int activeMappingIndex = -1;
-            if (EnableMappingButtons) {
+            if (EnableMappingButtons)
+            {
                 activeMappingIndex = this.mappingMgr.GetMappingEntryIndexById(this.activeMappingInfo.ActiveGraphableEntryId);
             }
 
@@ -347,11 +339,14 @@ namespace MidiShapeShifter.Mss.UI
             return mappingItem;
         }
 
-        public int getIndexForGenIdInListView(int id) {
+        public int getIndexForGenIdInListView(int id)
+        {
             int index = 0;
-            foreach(ListViewItem item in this.generatorListView.Items) {
+            foreach (ListViewItem item in this.generatorListView.Items)
+            {
                 var genEntry = (IGeneratorMappingEntry)item.Tag;
-                if (genEntry.Id == id) {
+                if (genEntry.Id == id)
+                {
                     return index;
                 }
 
@@ -377,8 +372,9 @@ namespace MidiShapeShifter.Mss.UI
 
             return genMappingItem;
         }
-                
-        private void lbKnob_KnobChangeValue(object sender, LBKnobEventArgs e) {
+
+        private void lbKnob_KnobChangeValue(object sender, LBKnobEventArgs e)
+        {
             LBKnob knob = (LBKnob)sender;
             MssParameterID paramId;
             ParameterValueKnobControlDict.TryGetLeftByRight(out paramId, knob);
@@ -396,7 +392,7 @@ namespace MidiShapeShifter.Mss.UI
         //are stored as doubles so if the knob is set to 0.01f and the min value for a parameter is set to 0.01 then 
         //then knob value will actually be less than the min value. To avoid this we round the knob value so that it 
         //should end up being the same as a double value as long as the double value is less than 6 digits.
-        protected double GetRoundedKnobValueAsDouble(LBKnob knob) 
+        protected double GetRoundedKnobValueAsDouble(LBKnob knob)
         {
             return Math.Round((double)knob.Value, 6);
         }
@@ -455,7 +451,7 @@ namespace MidiShapeShifter.Mss.UI
                 }
                 else
                 {
-                    curKnob.KnobColor = KNOB_COLOR_DISABLED;                    
+                    curKnob.KnobColor = KNOB_COLOR_DISABLED;
                 }
             }
 
@@ -465,20 +461,20 @@ namespace MidiShapeShifter.Mss.UI
                 CurveShapeInfo curveInfo = activeMapping.CurveShapeInfo;
 
                 Logger.HighVolume(2, string.Format(
-                    "Updating curve shape controls. Curve equations: {0}. Point equations: {1}. Equation type: {2}", 
+                    "Updating curve shape controls. Curve equations: {0}. Point equations: {1}. Equation type: {2}",
                     EnumerableUtils.ToString(curveInfo.CurveEquations), EnumerableUtils.ToString(curveInfo.PointEquations), curveInfo.SelectedEquationType.ToString()));
 
 
                 IMssMsgInfo outMsgInfo =
                     this.msgInfoFactory.Create(activeMapping.OutMssMsgRange.MsgType);
 
-            //Update preset controls
+                //Update preset controls
                 repopulateTransformPresetList();
 
-            //Update Graph controls (the equation curve is not updated until the end)
+                //Update Graph controls (the equation curve is not updated until the end)
                 SetGraphOutputLabelText(outMsgInfo.Data3Name);
 
-            //Update the buttons under the graph
+                //Update the buttons under the graph
                 if (curveInfo.SelectedEquationType == EquationType.Curve)
                 {
                     this.prevEquationBtn.Enabled = (curveInfo.SelectedEquationIndex > 0);
@@ -495,7 +491,7 @@ namespace MidiShapeShifter.Mss.UI
                     Debug.Assert(false);
                 }
 
-            //Update equations controls
+                //Update equations controls
                 MakeAppropriateEquationControlsVisable(curveInfo.SelectedEquationType);
                 if (curveInfo.SelectedEquationType == EquationType.Curve)
                 {
@@ -519,16 +515,16 @@ namespace MidiShapeShifter.Mss.UI
             }
             else //Active mapping does not exsist
             {
-            //Update preset controls
+                //Update preset controls
                 repopulateTransformPresetList();
 
-            //Update Graph controls (the equation curve is not updated until the end)
+                //Update Graph controls (the equation curve is not updated until the end)
                 SetGraphOutputLabelText(GRAPH_DEFAULT_OUTPUT_LABEL);
 
-            //Update the buttons under the graph
+                //Update the buttons under the graph
                 //Nothing to do.
 
-            //Update equations controls
+                //Update equations controls
                 MakeAppropriateEquationControlsVisable(EquationType.Curve);
                 this.curveEquationTextBox.Text = "";
             }
@@ -561,10 +557,10 @@ namespace MidiShapeShifter.Mss.UI
             this.curveEquationLabel.Visible = isCurveEquation;
             this.curveEquationTextBox.Visible = isCurveEquation;
 
-            this.pointXEquationLabel.Visible = ! isCurveEquation;
-            this.pointXEquationTextBox.Visible = ! isCurveEquation;
-            this.pointYEquationLabel.Visible = ! isCurveEquation;
-            this.pointYEquationTextBox.Visible = ! isCurveEquation;
+            this.pointXEquationLabel.Visible = !isCurveEquation;
+            this.pointXEquationTextBox.Visible = !isCurveEquation;
+            this.pointYEquationLabel.Visible = !isCurveEquation;
+            this.pointYEquationTextBox.Visible = !isCurveEquation;
         }
 
         protected void SetGraphOutputLabelText(string outputText)
@@ -590,8 +586,8 @@ namespace MidiShapeShifter.Mss.UI
             {
                 this.graphInputTypeCombo.Enabled = true;
 
-                MssMsgType inMsgType = (MssMsgType) (-1);
-                MssMsgDataField primaryInputSource = (MssMsgDataField) (-1);
+                MssMsgType inMsgType = (MssMsgType)(-1);
+                MssMsgDataField primaryInputSource = (MssMsgDataField)(-1);
                 this.activeMappingInfo.GetActiveGraphableEntryManager().RunFuncOnMappingEntry(this.activeMappingInfo.ActiveGraphableEntryId,
                     mappingEntry =>
                     {
@@ -601,7 +597,7 @@ namespace MidiShapeShifter.Mss.UI
 
                 IMssMsgInfo inputInfo =
                     this.msgInfoFactory.Create(inMsgType);
-                MssMsgDataField[] dataFieldArray = 
+                MssMsgDataField[] dataFieldArray =
                     (MssMsgDataField[])Enum.GetValues(typeof(MssMsgDataField));
 
                 foreach (MssMsgDataField dataField in dataFieldArray)
@@ -635,7 +631,7 @@ namespace MidiShapeShifter.Mss.UI
 
             System.Drawing.Font drawFont = new System.Drawing.Font(
                     this.graphInputLable.Font.FontFamily, this.graphInputLable.Font.Size);
-            System.Drawing.SolidBrush drawBrush = new 
+            System.Drawing.SolidBrush drawBrush = new
                 System.Drawing.SolidBrush(System.Drawing.Color.Black);
             float x = this.graphOutputTypeImg.Width / 2;
             float y = this.graphOutputTypeImg.Height / 2;
@@ -653,7 +649,7 @@ namespace MidiShapeShifter.Mss.UI
         }
 
         protected void GraphableEntrySelectionChanged(
-            ListView modifiedListView, 
+            ListView modifiedListView,
             GraphableEntryType mappingType,
             ListViewItemSelectionChangedEventArgs eventArgs)
         {
@@ -704,7 +700,8 @@ namespace MidiShapeShifter.Mss.UI
 
         protected void UpdateInfoForParameter(MssParameterID paramID)
         {
-            if (MssParameters.PRESET_PARAM_ID_LIST.Contains(paramID) && this.mssParameters.GetActiveMappingExists() == false) {
+            if (MssParameters.PRESET_PARAM_ID_LIST.Contains(paramID) && this.mssParameters.GetActiveMappingExists() == false)
+            {
                 return;
             }
 
@@ -802,7 +799,7 @@ namespace MidiShapeShifter.Mss.UI
             }
 
             deleteGraphableMappingEntry(this.genMappingMgr, this.generatorListView);
-            
+
         }
 
         private void deleteGraphableMappingEntry(IBaseGraphableMappingManager graphableMappingManager, ListView graphableEntryListView)
@@ -985,7 +982,7 @@ namespace MidiShapeShifter.Mss.UI
             {
                 int activeId = this.activeMappingInfo.ActiveGraphableEntryId;
                 IBaseGraphableMappingManager activeManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
-                activeManager.RunFuncOnMappingEntry(activeId, (mappingEntry) => 
+                activeManager.RunFuncOnMappingEntry(activeId, (mappingEntry) =>
                 {
                     CurveShapeInfo curveInfo = mappingEntry.CurveShapeInfo;
 
@@ -993,7 +990,7 @@ namespace MidiShapeShifter.Mss.UI
 
                     string expressionString = this.curveEquationTextBox.Text;
                     int curCurve = curveInfo.SelectedEquationIndex;
-                    curveInfo.CurveEquations[curCurve] = expressionString;                
+                    curveInfo.CurveEquations[curCurve] = expressionString;
                 });
 
                 this.commandQueue.EnqueueCommandOverwriteDups(
@@ -1066,7 +1063,8 @@ namespace MidiShapeShifter.Mss.UI
                         out erroneousControlPointIndexSet,
                         out erroneousCurveIndexSet);
 
-                if (curveInfoCopy.AllEquationsAreValid != allEquationsAreValid) {
+                if (curveInfoCopy.AllEquationsAreValid != allEquationsAreValid)
+                {
                     curveInfoCopy.AllEquationsAreValid = allEquationsAreValid;
                     mappingManager.RunFuncOnMappingEntry(activeMappingId, (mappingEntry) =>
                     {
@@ -1090,7 +1088,7 @@ namespace MidiShapeShifter.Mss.UI
                 if (curveInfoCopy.AllEquationsAreValid)
                 {
                     //Update modified points and add new points
-                    for(int i = 0; i < pointList.Count; i++)
+                    for (int i = 0; i < pointList.Count; i++)
                     {
                         XyPoint<double> curControlPoint = pointList[i];
 
@@ -1115,7 +1113,7 @@ namespace MidiShapeShifter.Mss.UI
                         pointsCurveEdit.RemoveAt(i);
                     }
 
-                    if(curveInfoCopy.SelectedEquationType == EquationType.Point)
+                    if (curveInfoCopy.SelectedEquationType == EquationType.Point)
                     {
                         pointsCurve.Points[curveInfoCopy.SelectedEquationIndex].ColorValue = 1;
                     }
@@ -1123,12 +1121,13 @@ namespace MidiShapeShifter.Mss.UI
 
                     RemoveEquationCurvesFromGraph();
 
-                    for(int curveIndex = 0; curveIndex < curvePointsByCurveList.Count; curveIndex++)  {
+                    for (int curveIndex = 0; curveIndex < curvePointsByCurveList.Count; curveIndex++)
+                    {
                         List<XyPoint<double>> curCurvePoints = curvePointsByCurveList[curveIndex];
 
                         LineItem curCurve = EqGraphConfig.CreateEqCurve(EQUATION_CURVE_LABEL_PREFIX + "-" + curveIndex);
                         IPointListEdit curCurveEdit = (IPointListEdit)curCurve.Points;
-                        
+
 
                         for (int curPointIndex = 0; curPointIndex < curCurvePoints.Count; curPointIndex++)
                         {
@@ -1169,12 +1168,12 @@ namespace MidiShapeShifter.Mss.UI
                         curPointColorStatus |= GraphSegmentColorStausFlags.Selected;
                     }
 
-                    if (curveInfoCopy.AllEquationsAreValid) 
+                    if (curveInfoCopy.AllEquationsAreValid)
                     {
                         curPointColorStatus |= GraphSegmentColorStausFlags.Enabled;
                     }
 
-                    if (erroneousControlPointIndexSet.Contains(i)) 
+                    if (erroneousControlPointIndexSet.Contains(i))
                     {
                         curPointColorStatus |= GraphSegmentColorStausFlags.Erroneous;
                     }
@@ -1224,7 +1223,7 @@ namespace MidiShapeShifter.Mss.UI
             GraphPane pane = this.mainGraphControl.GraphPane;
             //Itterate through this list backwards so that removing an element wont affect the 
             //index of the next element.
-            for(int i = pane.CurveList.Count - 1; i >= 0; i--)
+            for (int i = pane.CurveList.Count - 1; i >= 0; i--)
             {
                 CurveItem curve = pane.CurveList[i];
 
@@ -1257,7 +1256,7 @@ namespace MidiShapeShifter.Mss.UI
         }
 
         protected void repopulateSettingsFileList(
-                ToolStripDropDownButton settingsList, 
+                ToolStripDropDownButton settingsList,
                 BaseSettingsFileMgr settingsFileMgr,
                 EventHandler itemClickedHandler)
         {
@@ -1274,8 +1273,8 @@ namespace MidiShapeShifter.Mss.UI
             }
             settingsList.DropDownItems.Clear();
 
-            populateSettingsFileList(settingsList.DropDownItems, 
-                                     settingsFileMgr.SettingsFileTree, 
+            populateSettingsFileList(settingsList.DropDownItems,
+                                     settingsFileMgr.SettingsFileTree,
                                      itemClickedHandler);
         }
 
@@ -1326,7 +1325,7 @@ namespace MidiShapeShifter.Mss.UI
 
             if (delBtn.Enabled == true)
             {
-                delBtn.BackgroundImage = 
+                delBtn.BackgroundImage =
                     global::MidiShapeShifter.Properties.Resources.imgDeleteBlue;
             }
             else
@@ -1358,7 +1357,7 @@ namespace MidiShapeShifter.Mss.UI
 
             if (moveUpBtn.Enabled == true)
             {
-                moveUpBtn.BackgroundImage = 
+                moveUpBtn.BackgroundImage =
                     global::MidiShapeShifter.Properties.Resources.imgUpBlue;
             }
             else
@@ -1487,7 +1486,7 @@ namespace MidiShapeShifter.Mss.UI
             }
 
             Logger.Info(12, string.Format("Equation graph clicked at ({0}, {1}).", e.X, e.Y));
-            
+
 
 
             IBaseGraphableMappingManager activeMappingManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
@@ -1496,7 +1495,7 @@ namespace MidiShapeShifter.Mss.UI
             activeMappingManager.RunFuncOnMappingEntry(activeId, (activeMapping) =>
             {
                 Logger.Verbose(13, string.Format("Clicked on mapping with id: {0}", activeId));
-                
+
                 CurveShapeInfo curveInfo = activeMapping.CurveShapeInfo;
 
                 if (this.activeMappingInfo.GetActiveMappingExists() && curveInfo.AllEquationsAreValid)
@@ -1603,13 +1602,13 @@ namespace MidiShapeShifter.Mss.UI
                             curveInfo.PointEquations.Add(newPointEquation);
                         }
                         Logger.StartLoggingHighVolume(16, string.Format(
-                            "Calling UpdateCurveShapeControls. Num curve equations: {0}. Num point equations: {1}. Num control points: {2}", 
+                            "Calling UpdateCurveShapeControls. Num curve equations: {0}. Num point equations: {1}. Num control points: {2}",
                             curveInfo.CurveEquations.Count, curveInfo.PointEquations.Count, controlPointsCurve.Points.Count));
-                        
+
                         UpdateCurveShapeControls();
-                        
+
                         Logger.StopLoggingHighVolume(17, string.Format(
-                            "Returning from UpdateCurveShapeControls. Num curve equations: {0}. Num point equations: {1}. Num control points: {2}", 
+                            "Returning from UpdateCurveShapeControls. Num curve equations: {0}. Num point equations: {1}. Num control points: {2}",
                             curveInfo.CurveEquations.Count, curveInfo.PointEquations.Count, controlPointsCurve.Points.Count));
 
                         //Ensures that UpdateCurveShapeControls() added the required control point.
@@ -1629,9 +1628,9 @@ namespace MidiShapeShifter.Mss.UI
             return true;
         }
 
-        private bool mainGraphControl_EditDragEvent(ZedGraphControl sender, 
-                                                    PointPair newPointPosition, 
-                                                    int pointBeingEditedIndex, 
+        private bool mainGraphControl_EditDragEvent(ZedGraphControl sender,
+                                                    PointPair newPointPosition,
+                                                    int pointBeingEditedIndex,
                                                     CurveItem curveBeingEdited)
         {
             if (this.activeMappingInfo.GetActiveMappingExists() == false)
@@ -1641,7 +1640,7 @@ namespace MidiShapeShifter.Mss.UI
                 return false;
             }
 
-            if (pointBeingEditedIndex > 0 && 
+            if (pointBeingEditedIndex > 0 &&
                     newPointPosition.X <= curveBeingEdited[pointBeingEditedIndex - 1].X)
             {
                 newPointPosition.X = curveBeingEdited[pointBeingEditedIndex - 1].X;
@@ -1705,7 +1704,7 @@ namespace MidiShapeShifter.Mss.UI
                 //If the click was close enough to an exsisting control point then start dragging 
                 //it. The distances that is deemed "close enough" is defined in 
                 //EqGraphConfig.ConfigureEqGraph.
-                bool controlPointClicked = 
+                bool controlPointClicked =
                     GetClickedControlPoint(mousePt, out controlPointCurve, out nearestPointIndex);
 
 
@@ -1728,7 +1727,7 @@ namespace MidiShapeShifter.Mss.UI
             }
         }
 
-        private bool GetClickedControlPoint(Point mousePt, 
+        private bool GetClickedControlPoint(Point mousePt,
             out LineItem controlPointCurve, out int controlPointIndex)
         {
             GraphPane pane = this.mainGraphControl.GraphPane;
@@ -1749,14 +1748,15 @@ namespace MidiShapeShifter.Mss.UI
                 Debug.Assert(false);
                 return;
             }
-            
+
             ToolStripDropDownItem item = (ToolStripDropDownItem)sender;
             DeletePointParams deletePointParams = (DeletePointParams)item.Tag;
 
             IBaseGraphableMappingManager activeMappingManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
             int activeMappingId = this.activeMappingInfo.ActiveGraphableEntryId;
 
-            activeMappingManager.RunFuncOnMappingEntry(activeMappingId, (activeMappingEntry) => {
+            activeMappingManager.RunFuncOnMappingEntry(activeMappingId, (activeMappingEntry) =>
+            {
                 CurveShapeInfo curveInfo = activeMappingEntry.CurveShapeInfo;
 
                 curveInfo.PointEquations.RemoveAt(deletePointParams.pointIndex);
@@ -1771,7 +1771,7 @@ namespace MidiShapeShifter.Mss.UI
                 {
                     curveInfo.SelectedEquationType = EquationType.Curve;
                 }
-            });            
+            });
 
             this.commandQueue.EnqueueCommandOverwriteDups(
                 EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
@@ -1784,7 +1784,8 @@ namespace MidiShapeShifter.Mss.UI
                 IBaseGraphableMappingManager activeMappingManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
                 int activeMappingId = this.activeMappingInfo.ActiveGraphableEntryId;
 
-                activeMappingManager.RunFuncOnMappingEntry(activeMappingId, (activeMappingEntry) => {
+                activeMappingManager.RunFuncOnMappingEntry(activeMappingId, (activeMappingEntry) =>
+                {
                     CurveShapeInfo curveInfo = activeMappingEntry.CurveShapeInfo;
 
                     if (curveInfo.SelectedEquationType == EquationType.Curve)
@@ -1820,7 +1821,8 @@ namespace MidiShapeShifter.Mss.UI
                 IBaseGraphableMappingManager activeMappingManager = this.activeMappingInfo.GetActiveGraphableEntryManager();
                 int activeMappingId = this.activeMappingInfo.ActiveGraphableEntryId;
 
-                activeMappingManager.RunFuncOnMappingEntry(activeMappingId, (activeMappingEntry) => {
+                activeMappingManager.RunFuncOnMappingEntry(activeMappingId, (activeMappingEntry) =>
+                {
                     CurveShapeInfo curveInfo = activeMappingEntry.CurveShapeInfo;
 
                     if (curveInfo.SelectedEquationType == EquationType.Curve)
@@ -1912,8 +1914,8 @@ namespace MidiShapeShifter.Mss.UI
             }
 
             DialogResult result = MessageBox.Show(
-                "Are you sure you to reset all equations and control points for this mapping?", 
-                MssConstants.APP_NAME, 
+                "Are you sure you to reset all equations and control points for this mapping?",
+                MssConstants.APP_NAME,
                 MessageBoxButtons.YesNoCancel);
             if (result == DialogResult.Yes)
             {
@@ -1945,7 +1947,7 @@ namespace MidiShapeShifter.Mss.UI
             {
                 ComboBox inputTypeCombo = (ComboBox)sender;
 
-                this.activeMappingInfo.GetActiveMappingManager().RunFuncOnMappingEntry(this.activeMappingInfo.ActiveGraphableEntryId, 
+                this.activeMappingInfo.GetActiveMappingManager().RunFuncOnMappingEntry(this.activeMappingInfo.ActiveGraphableEntryId,
                     (mappingEntry) => mappingEntry.PrimaryInputSource = this.DataFieldsInGraphInputCombo[inputTypeCombo.SelectedIndex]);
 
                 this.commandQueue.EnqueueCommandOverwriteDups(
@@ -1985,12 +1987,13 @@ namespace MidiShapeShifter.Mss.UI
         {
             RunEquationEditor((TextBox)sender, "");
         }
-        
+
         protected void RunEquationEditor(TextBox equationBox, string insertCharacter)
         {
             //Need to run the dialog on another thread so that a keypress can be supressed:
             //http://stackoverflow.com/questions/9326508/in-keydown-a-showdialog-makes-suppresskeypress-not-work
-            this.BeginInvoke(new Action(() => {
+            this.BeginInvoke(new Action(() =>
+            {
                 using (EquationEditorDlg equationDlg = new EquationEditorDlg())
                 {
                     equationDlg.Init(equationBox.Text, equationBox.SelectionStart, insertCharacter, this);
@@ -2006,7 +2009,7 @@ namespace MidiShapeShifter.Mss.UI
         private void curveEquationTextBox_Click(object sender, EventArgs e)
         {
             //If the textbox is not focused then the Enter event handler will handel this.
-            if (((TextBox)sender).Focused == true) 
+            if (((TextBox)sender).Focused == true)
             {
                 RunEquationEditor((TextBox)sender, "");
             }

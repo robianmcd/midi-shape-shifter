@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace MidiShapeShifter.Mss.Generator
 {
@@ -102,26 +97,26 @@ namespace MidiShapeShifter.Mss.Generator
             switch (SelectedPeriodType)
             {
 
-            case GenPeriodType.Bars:
-            case GenPeriodType.BeatSynced:
-                //Beat Synced generators are not currently supported
-                Debug.Assert(SelectedPeriodType != GenPeriodType.BeatSynced);
+                case GenPeriodType.Bars:
+                case GenPeriodType.BeatSynced:
+                    //Beat Synced generators are not currently supported
+                    Debug.Assert(SelectedPeriodType != GenPeriodType.BeatSynced);
 
-                this.periodCombo.Visible = true;
-                this.periodTextBox.Visible = false;
-                this.periodLbl.Text = "Period";
-                break;
+                    this.periodCombo.Visible = true;
+                    this.periodTextBox.Visible = false;
+                    this.periodLbl.Text = "Period";
+                    break;
 
-            case GenPeriodType.Time:
-                this.periodCombo.Visible = false;
-                this.periodTextBox.Visible = true;
-                this.periodLbl.Text = "Period(ms)";
-                break;
+                case GenPeriodType.Time:
+                    this.periodCombo.Visible = false;
+                    this.periodTextBox.Visible = true;
+                    this.periodLbl.Text = "Period(ms)";
+                    break;
 
-            default:
-                //Unknown period type
-                Debug.Assert(false);
-                break;
+                default:
+                    //Unknown period type
+                    Debug.Assert(false);
+                    break;
             }
         }
 

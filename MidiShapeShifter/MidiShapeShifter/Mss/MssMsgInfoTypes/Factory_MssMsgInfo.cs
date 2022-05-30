@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-using System.Runtime.Serialization;
-
-using MidiShapeShifter.Mss.Generator;
+﻿using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.Parameters;
+using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {

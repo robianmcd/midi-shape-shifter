@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Diagnostics;
-using System.Windows.Forms;
 using System.Runtime.Serialization;
-using System.Collections.ObjectModel;
-using MidiShapeShifter.CSharpUtil;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -25,7 +19,7 @@ namespace MidiShapeShifter.Mss.Mapping
         ///     GetAssociatedEntries().
         /// </remarks>
         /// <returns> True if an entry is successfully moved up in the list</returns>
-        public bool MoveEntryUp(int id) 
+        public bool MoveEntryUp(int id)
         {
             lock (MssComponentHub.criticalSectioinLock)
             {
@@ -84,7 +78,7 @@ namespace MidiShapeShifter.Mss.Mapping
         /// </summary>
         /// <param name="inputMsg">MssMsg to query the MappingManager with.</param>
         /// <returns>An enumeration of MappingEntry objects that match <paramref name="inputMsg"/>.</returns>
-        public override IEnumerable<IMappingEntry> GetCopiesOfMappingEntriesForMsg(MssMsg inputMsg) 
+        public override IEnumerable<IMappingEntry> GetCopiesOfMappingEntriesForMsg(MssMsg inputMsg)
         {
             lock (MssComponentHub.criticalSectioinLock)
             {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace MidiShapeShifter.CSharpUtil
@@ -36,10 +32,10 @@ namespace MidiShapeShifter.CSharpUtil
                 }
                 else
                 {
-                    return inStr.Substring(0, numCharsInOutString) + ellipse;                    
+                    return inStr.Substring(0, numCharsInOutString) + ellipse;
                 }
             }
-            
+
         }
     }
 }

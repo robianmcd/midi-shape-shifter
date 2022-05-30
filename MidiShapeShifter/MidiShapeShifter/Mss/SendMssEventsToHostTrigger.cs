@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 using MidiShapeShifter.Mss.Relays;
 
 namespace MidiShapeShifter.Mss
@@ -16,7 +12,7 @@ namespace MidiShapeShifter.Mss
         protected IWetMssEventInputPort wetMssEventInputPort;
 
         public void Init(IHostInfoOutputPort hostInfoOutputPort, IWetMssEventInputPort wetMssEventInputPort)
-        { 
+        {
             hostInfoOutputPort.ProcessingCycleEnd += new ProcessingCycleEndEventHandler(hostInfoOutputPort_ProcessingCycleEndSampleTimeRecieved);
             this.wetMssEventInputPort = wetMssEventInputPort;
         }

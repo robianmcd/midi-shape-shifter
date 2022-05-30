@@ -1,10 +1,6 @@
-﻿using System;
+﻿using MidiShapeShifter.CSharpUtil;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MidiShapeShifter.CSharpUtil;
 using System.Runtime.Serialization;
-using MidiShapeShifter.Mss.Generator;
 using System.Threading;
 
 namespace MidiShapeShifter.Mss.Mapping
@@ -56,7 +52,8 @@ namespace MidiShapeShifter.Mss.Mapping
         }
 
 
-        IEnumerable<IMappingEntry> IBaseGraphableMappingManager.GetCopiesOfMappingEntriesForMsg(MidiShapeShifter.Mss.MssMsg inputMsg) {
+        IEnumerable<IMappingEntry> IBaseGraphableMappingManager.GetCopiesOfMappingEntriesForMsg(MidiShapeShifter.Mss.MssMsg inputMsg)
+        {
             return (IEnumerable<IMappingEntry>)GetCopiesOfMappingEntriesForMsg(inputMsg);
         }
 
@@ -138,7 +135,8 @@ namespace MidiShapeShifter.Mss.Mapping
             }
         }
 
-        public int GetMappingEntryIdByIndex(int index) {
+        public int GetMappingEntryIdByIndex(int index)
+        {
             lock (MssComponentHub.criticalSectioinLock)
             {
                 return mappingEntryList[index].Id;
@@ -195,7 +193,8 @@ namespace MidiShapeShifter.Mss.Mapping
             }
         }
 
-        public int GetNumEntries() {
+        public int GetNumEntries()
+        {
             lock (MssComponentHub.criticalSectioinLock)
             {
                 return mappingEntryList.Count;
@@ -239,12 +238,14 @@ namespace MidiShapeShifter.Mss.Mapping
             }
         }
 
-        public List<int> GetEntryIdList() {
+        public List<int> GetEntryIdList()
+        {
             List<int> entryIdList = new List<int>();
 
             lock (MssComponentHub.criticalSectioinLock)
             {
-                foreach (MappingEntryType entry in this.mappingEntryList) {
+                foreach (MappingEntryType entry in this.mappingEntryList)
+                {
                     entryIdList.Add(entry.Id);
                 }
             }

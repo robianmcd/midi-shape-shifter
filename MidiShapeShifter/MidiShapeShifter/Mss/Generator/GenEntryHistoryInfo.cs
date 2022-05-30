@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MidiShapeShifter.Mss.Generator
 {
@@ -41,7 +38,7 @@ namespace MidiShapeShifter.Mss.Generator
         public GenEntryHistoryInfo()
         {
             this.Initialized = false;
-			this.PercentThroughPeriodOnLastUpdate = double.NaN;
+            this.PercentThroughPeriodOnLastUpdate = double.NaN;
         }
 
         public void InitAllMembers(long sampleTimeAtLastGeneratorUpdate,

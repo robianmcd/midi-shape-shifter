@@ -1,13 +1,6 @@
-﻿using System;
+﻿using MidiShapeShifter.Mss.Parameters;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-
-using MidiShapeShifter.CSharpUtil;
-using MidiShapeShifter.Mss.Mapping;
-using MidiShapeShifter.Mss.MssMsgInfoTypes;
-using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {

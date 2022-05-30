@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Ninject;
+﻿
 using MidiShapeShifter.Ioc;
-
-using MidiShapeShifter.Mss.Relays;
 using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.Parameters;
+using MidiShapeShifter.Mss.Relays;
+using Ninject;
 
 namespace MidiShapeShifter.Mss
 {
@@ -40,8 +35,8 @@ namespace MidiShapeShifter.Mss
         /// <param name="dryMssEventOutputPort">Sends unprocessed MssEvents from the host.</param>
         /// <param name="wetMssEventInputPort">Receives processed MssEvents to be sent back to the host</param>
         /// <param name="mappingMgr">The MappingManager that will be used by mssMsgProcessor</param>
-        public void Init(IDryMssEventOutputPort dryMssEventOutputPort, 
-                         IWetMssEventInputPort wetMssEventInputPort, 
+        public void Init(IDryMssEventOutputPort dryMssEventOutputPort,
+                         IWetMssEventInputPort wetMssEventInputPort,
                          IMappingManager mappingMgr,
                          IMssParameterViewer mssParameters)
         {
@@ -58,7 +53,8 @@ namespace MidiShapeShifter.Mss
         /// <param name="dryMssEvent"></param>
         protected void dryMssEventOutputPort_DryMssEventRecieved(MssEvent dryMssEvent)
         {
-            foreach (MssMsg mssMsg in this.mssMsgProcessor.ProcessMssMsg(dryMssEvent.mssMsg)) {
+            foreach (MssMsg mssMsg in this.mssMsgProcessor.ProcessMssMsg(dryMssEvent.mssMsg))
+            {
                 MssEvent wetEvent = new MssEvent();
                 wetEvent.mssMsg = mssMsg;
                 wetEvent.sampleTime = dryMssEvent.sampleTime;

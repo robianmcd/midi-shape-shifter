@@ -1,5 +1,4 @@
-﻿using System;
-namespace MidiShapeShifter.Mss.Relays
+﻿namespace MidiShapeShifter.Mss.Relays
 {
     public delegate void DryMssEventRecievedEventHandler(MssEvent mssEvent);
 

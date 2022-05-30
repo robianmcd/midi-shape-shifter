@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using MidiShapeShifter.Mss.Relays;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using MidiShapeShifter.Mss.MssMsgInfoTypes;
-using MidiShapeShifter.Mss.Relays;
 
 namespace MidiShapeShifter.Mss
 {
     public class EventLogger
     {
         protected bool enabled;
-        public EventLogger() {
+        public EventLogger()
+        {
             this.enabled = false;
         }
 
@@ -29,7 +24,8 @@ namespace MidiShapeShifter.Mss
 
         protected void DryEventRecieved(MssEvent dryEvent)
         {
-            if (!enabled) {
+            if (!enabled)
+            {
                 return;
             }
             Debug.WriteLine("In: " + FormatEvent(dryEvent));
@@ -44,7 +40,8 @@ namespace MidiShapeShifter.Mss
             Debug.WriteLine("Out: " + FormatEvent(wetEvent));
         }
 
-        protected void OnCycleEnd(List<MssEvent> mssEventList, long sampleTimeAtEndOfProcessingCycle) {
+        protected void OnCycleEnd(List<MssEvent> mssEventList, long sampleTimeAtEndOfProcessingCycle)
+        {
             if (!enabled)
             {
                 return;
@@ -52,14 +49,15 @@ namespace MidiShapeShifter.Mss
             Debug.Write(".");
         }
 
-        protected string FormatEvent(MssEvent mssEvent) {
+        protected string FormatEvent(MssEvent mssEvent)
+        {
             return string.Format("{0} {1}, {2}, {3} at {4}",
                     mssEvent.mssMsg.Type,
                     Math.Round(mssEvent.mssMsg.Data1, 3),
                     Math.Round(mssEvent.mssMsg.Data2, 3),
                     Math.Round(mssEvent.mssMsg.Data3, 3),
                     mssEvent.sampleTime);
-            
+
         }
 
     }

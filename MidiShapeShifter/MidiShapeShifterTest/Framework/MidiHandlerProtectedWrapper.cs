@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 using Jacobi.Vst.Core;
-using Jacobi.Vst.Framework;
 
 using MidiShapeShifter.Framework;
 using MidiShapeShifter.Mss;
@@ -15,7 +10,7 @@ namespace MidiShapeShifterTest.Framework
     {
         public MssEvent ConvertVstMidiEventToMssEventWrapper(VstMidiEvent midiEvent,
                                                          long processingCycleStartTime,
-                                                         double sampleRate) 
+                                                         double sampleRate)
         {
             return ConvertVstMidiEventToMssEvent(midiEvent, processingCycleStartTime, sampleRate);
         }
@@ -26,6 +21,6 @@ namespace MidiShapeShifterTest.Framework
         {
             return ConvertMssEventToVstMidiEvent(mssEvent, processingCycleStartTime, sampleRate);
         }
-         
+
     }
 }

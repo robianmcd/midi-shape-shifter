@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using NUnit.Framework;
-
+﻿
 using MidiShapeShifter.CSharpUtil;
-
-using NCalc.Domain;
-using NCalc;
-using System.Diagnostics;
+using NUnit.Framework;
 
 
 namespace MidiShapeShifterTest.CSharpUtil
@@ -42,7 +33,8 @@ namespace MidiShapeShifterTest.CSharpUtil
         }
 
         [Test]
-        public void GetKeyValuePairRemover_MultipleValuesAdded_CorrectValueIsReturned() {
+        public void GetKeyValuePairRemover_MultipleValuesAdded_CorrectValueIsReturned()
+        {
             var cache = new LruCache<int, int>(2);
 
             int value1 = cache.GetAndAddValue(1, () => 10);
@@ -90,7 +82,8 @@ namespace MidiShapeShifterTest.CSharpUtil
         }
 
 
-        protected void AddKeyAndAssertCreateValueIsCalled<Key, Value>(LruCache<Key, Value> cache, Key key, bool createValueShouldBeCalled) {
+        protected void AddKeyAndAssertCreateValueIsCalled<Key, Value>(LruCache<Key, Value> cache, Key key, bool createValueShouldBeCalled)
+        {
             bool createValueIsCalled = false;
             cache.GetAndAddValue(key, () =>
             {

@@ -1,20 +1,14 @@
-﻿using System;
+﻿using MidiShapeShifter.CSharpUtil;
+using MidiShapeShifter.Ioc;
+using MidiShapeShifter.Mss;
+using MidiShapeShifter.Mss.Generator;
+using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.Parameters;
+using MidiShapeShifter.Mss.Relays;
+using Moq;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Ninject;
-using MidiShapeShifter.Ioc;
-
-using NUnit.Framework;
-using Moq;
-
-using MidiShapeShifter.Mss.Generator;
-using MidiShapeShifter.Mss;
-using MidiShapeShifter.Mss.Relays;
-using MidiShapeShifter.Mss.Parameters;
-using MidiShapeShifter.CSharpUtil;
-using MidiShapeShifter.Mss.Mapping;
 
 namespace MidiShapeShifterTest.Mss.Generator
 {
@@ -59,7 +53,7 @@ namespace MidiShapeShifterTest.Mss.Generator
         protected const double BAR_POS_INCREMENT = 0.25;
 
         protected List<MssEvent> generatedEventList = new List<MssEvent>();
- 
+
         [SetUp]
         public void Init()
         {
@@ -126,21 +120,23 @@ namespace MidiShapeShifterTest.Mss.Generator
 
             this.genMappingMgrMock.Setup(mgr => mgr.GetEntryIdList()).Returns(() => this.genMappingEntryList.Select(mappingEntry => mappingEntry.Id).ToList());
 
-            this.genMappingMgrMock.Setup(mgr => mgr.GetCopyOfMappingEntryById(It.IsAny<int>())).Returns((int id) => 
+            this.genMappingMgrMock.Setup(mgr => mgr.GetCopyOfMappingEntryById(It.IsAny<int>())).Returns((int id) =>
             {
                 var matchingEntry = this.genMappingEntryList.Find(mappingEntry => mappingEntry.Id == id);
                 if (matchingEntry == null)
                 {
                     return new ReturnStatus<IGeneratorMappingEntry>();
                 }
-                else {
+                else
+                {
                     return new ReturnStatus<IGeneratorMappingEntry>(matchingEntry);
                 }
             });
 
             this.genMappingMgrMock
                 .Setup(mgr => mgr.RunFuncOnMappingEntry(It.IsAny<int>(), It.IsAny<MappingEntryAccessor<IGeneratorMappingEntry>>()))
-                .Returns((int id, MappingEntryAccessor<IGeneratorMappingEntry> entryAccessor) => {
+                .Returns((int id, MappingEntryAccessor<IGeneratorMappingEntry> entryAccessor) =>
+                {
                     var matchingEntry = this.genMappingEntryList.Find(mappingEntry => mappingEntry.Id == id);
                     if (matchingEntry == null)
                     {
@@ -169,7 +165,7 @@ namespace MidiShapeShifterTest.Mss.Generator
 
             this.nextBarPos = 0;
         }
-        
+
         [Test]
         public void OnUpdate_EmptyMappingMgr_NoEventsGenerated()
         {
@@ -288,7 +284,7 @@ namespace MidiShapeShifterTest.Mss.Generator
         {
             Mock<IGeneratorMappingEntry> barBasedMapEntryMock = MockFactory_IGeneratorMappingEntry();
             barBasedMapEntryMock.Object.GenConfigInfo.PeriodType = GenPeriodType.Bars;
-            
+
             Mock<IGeneratorMappingEntry> timeBasedMapEntryMock = MockFactory_IGeneratorMappingEntry();
             timeBasedMapEntryMock.Object.GenConfigInfo.PeriodType = GenPeriodType.Time;
 
@@ -325,7 +321,7 @@ namespace MidiShapeShifterTest.Mss.Generator
 
         protected void triggerCycleEnd(long sampleTime)
         {
-            hostInfoRelayMock.Raise(hostRelay => 
+            hostInfoRelayMock.Raise(hostRelay =>
                 hostRelay.BeforeProcessingCycleEnd += null, sampleTime);
             hostInfoRelayMock.Raise(hostRelay =>
                 hostRelay.ProcessingCycleEnd += null, sampleTime);
@@ -379,7 +375,7 @@ namespace MidiShapeShifterTest.Mss.Generator
         {
             var genEntryMock = new Mock<IGeneratorMappingEntry>();
 
-            genEntryMock.Setup(genEntry=> genEntry.Id).Returns(this.nextId);
+            genEntryMock.Setup(genEntry => genEntry.Id).Returns(this.nextId);
             nextId++;
 
             GenEntryConfigInfo configInfo = Factory_GenEntryConfigInfo_Default();

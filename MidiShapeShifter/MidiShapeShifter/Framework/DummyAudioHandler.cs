@@ -1,12 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-
-using Jacobi.Vst.Core;
+﻿using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
-
-using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Relays;
+using System;
 
 namespace MidiShapeShifter.Framework
 {
@@ -43,7 +39,7 @@ namespace MidiShapeShifter.Framework
             timeInfoTransmitter = new VstTimeInfoTransmitter();
         }
 
-        public void Init(Func<IHostInfoInputPort>getHostInfoInputPort)
+        public void Init(Func<IHostInfoInputPort> getHostInfoInputPort)
         {
             timeInfoTransmitter.Init(getHostInfoInputPort);
             this.getHostInfoInputPort = getHostInfoInputPort;

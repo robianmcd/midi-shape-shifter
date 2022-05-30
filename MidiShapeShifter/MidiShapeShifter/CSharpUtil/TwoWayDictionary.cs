@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
 
 namespace MidiShapeShifter.CSharpUtil
 {
@@ -30,8 +27,9 @@ namespace MidiShapeShifter.CSharpUtil
         IDictionary<TLeft, TRight> leftToRight = new Dictionary<TLeft, TRight>();
         IDictionary<TRight, TLeft> rightToLeft = new Dictionary<TRight, TLeft>();
 
-        public ICollection<TLeft> LeftKeys {
-            get 
+        public ICollection<TLeft> LeftKeys
+        {
+            get
             {
                 return leftToRight.Keys;
             }
