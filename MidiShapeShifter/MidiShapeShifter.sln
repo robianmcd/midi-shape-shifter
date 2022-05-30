@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32519.379
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidiShapeShifter", "MidiShapeShifter\MidiShapeShifter.csproj", "{D19470F9-7D1E-4385-AD34-C7D826649F89}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidiShapeShifterTest", "MidiShapeShifterTest\MidiShapeShifterTest.csproj", "{F51E9F9B-101C-4F76-92C3-F28904E58466}"
@@ -9,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidiShapeShifterTest", "Mid
 	EndProjectSection
 EndProject
 Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "MidiShapeShifterDeploy", "MidiShapeShifterDeploy\MidiShapeShifterDeploy.isproj", "{6F2EB9CD-F68B-4796-8DD3-12AC1FE15B1F}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MidiShapeShifterInstaller", "MidiShapeShifterInstaller\MidiShapeShifterInstaller.vdproj", "{F78ED296-80A0-4300-AA3B-B754688E6B98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,8 +118,27 @@ Global
 		{6F2EB9CD-F68B-4796-8DD3-12AC1FE15B1F}.Release|Mixed Platforms.ActiveCfg = CD_ROM
 		{6F2EB9CD-F68B-4796-8DD3-12AC1FE15B1F}.Release|x64.ActiveCfg = CD_ROM
 		{6F2EB9CD-F68B-4796-8DD3-12AC1FE15B1F}.Release|x86.ActiveCfg = DVD-5
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.All|Any CPU.ActiveCfg = Debug
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.All|Mixed Platforms.ActiveCfg = Debug
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.All|x64.ActiveCfg = Debug
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.All|x86.ActiveCfg = Debug
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.Debug|Any CPU.ActiveCfg = Debug
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.Debug|x64.ActiveCfg = Debug
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.Debug|x86.ActiveCfg = Debug
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.Deploy|Any CPU.ActiveCfg = Debug
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.Deploy|Mixed Platforms.ActiveCfg = Debug
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.Deploy|x64.ActiveCfg = Debug
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.Deploy|x86.ActiveCfg = Debug
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.Release|Any CPU.ActiveCfg = Release
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.Release|Mixed Platforms.ActiveCfg = Release
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.Release|x64.ActiveCfg = Release
+		{F78ED296-80A0-4300-AA3B-B754688E6B98}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CA0D4DBA-EB98-4AF2-8981-EA9405A3F5A9}
 	EndGlobalSection
 EndGlobal
