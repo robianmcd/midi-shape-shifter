@@ -289,7 +289,7 @@
             "SourcePath" = "8:..\\..\\docs\\Documentation Link.url"
             "TargetName" = "8:Documentation Link.url"
             "Tag" = "8:"
-            "Folder" = "8:_130D65857871419795D81E5ADCC2297A"
+            "Folder" = "8:_2932CECA40E146858151E43C8A8BF567"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -475,22 +475,11 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_130D65857871419795D81E5ADCC2297A"
-                    {
-                    "Name" = "8:MidiShapeShifter"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_99A7C37A49DF450D8CEF7F793B640AA4"
-                        "Folders"
-                        {
-                        }
-                    }
                 }
             }
             "{994432C3-9487-495D-8656-3E829A8DBDDE}:_74218CEADAA049ACA52A4867E704A42C"
             {
-            "DefaultLocation" = "8:[ProgramFiles64Folder]\\VSTPlugins\\MidiShapeShifter"
+            "DefaultLocation" = "8:[ProgramFiles64Folder]\\VSTPlugins\\"
             "Name" = "8:VSTPlugins"
             "AlwaysCreate" = "11:TRUE"
             "Condition" = "8:"
@@ -539,7 +528,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:MidiShapeShifterInstaller"
         "ProductCode" = "8:{F8A7F7E4-7EDB-400A-8B4B-8AD5CE2CFCC9}"
-        "PackageCode" = "8:{396C1DED-8E75-4E1C-9C15-853A9904A6CC}"
+        "PackageCode" = "8:{333A841C-ECCE-4BEB-9C98-0C6E4C2ED0FA}"
         "UpgradeCode" = "8:{09722608-4566-4848-B2B8-387064B8147D}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -668,7 +657,7 @@
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
             "Target" = "8:_74218CEADAA049ACA52A4867E704A42C"
-            "Folder" = "8:_130D65857871419795D81E5ADCC2297A"
+            "Folder" = "8:_2932CECA40E146858151E43C8A8BF567"
             "WorkingFolder" = "8:_74218CEADAA049ACA52A4867E704A42C"
             "Icon" = "8:"
             "Feature" = "8:"
