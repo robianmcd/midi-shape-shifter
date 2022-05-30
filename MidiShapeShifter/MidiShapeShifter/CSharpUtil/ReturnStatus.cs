@@ -2,20 +2,21 @@
 {
     public enum ValidStatus { Valid, Invalid }
 
-    public interface IReturnStatus<out ReturnType> {
-        ReturnType Value {get;}
-        bool IsValid {get;}
+    public interface IReturnStatus<out ReturnType>
+    {
+        ReturnType Value { get; }
+        bool IsValid { get; }
     }
 
     public interface IReturnStatus<out ReturnType, out StatusType>
     {
-        ReturnType Value {get;}
-        StatusType Status {get;}
+        ReturnType Value { get; }
+        StatusType Status { get; }
     }
 
     public class ReturnStatus<ReturnType> : IReturnStatus<ReturnType>
     {
-        public ReturnType Value { get; set;}
+        public ReturnType Value { get; set; }
         public bool IsValid { get; set; }
 
         public ReturnStatus(ReturnType returnVal, bool returnValIsValid)

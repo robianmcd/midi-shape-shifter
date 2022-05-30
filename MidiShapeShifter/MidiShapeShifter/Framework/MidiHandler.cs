@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-
-using Jacobi.Vst.Core;
+﻿using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
-using Jacobi.Vst.Framework.Plugin;
-
-using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Midi;
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Relays;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace MidiShapeShifter.Framework
 {
@@ -26,26 +22,26 @@ namespace MidiShapeShifter.Framework
 
         //Allows this class to send MssEvents to the DryMssEventRelay
         private Func<IDryMssEventInputPort> getDryMssEventInputPort;
-        protected IDryMssEventInputPort dryMssEventInputPort 
-        { 
-            get { return this.getDryMssEventInputPort(); } 
+        protected IDryMssEventInputPort dryMssEventInputPort
+        {
+            get { return this.getDryMssEventInputPort(); }
         }
 
         //Allows this class to receive MssEvents from the WetMssEventRelay
         private Func<IWetMssEventOutputPort> getWetMssEventOutputPort;
-        protected IWetMssEventOutputPort wetMssEventOutputPort 
-        { 
-            get { return this.getWetMssEventOutputPort(); } 
+        protected IWetMssEventOutputPort wetMssEventOutputPort
+        {
+            get { return this.getWetMssEventOutputPort(); }
         }
 
         //Allows this class to receive host information from the HostInfoRelay
         private Func<IHostInfoOutputPort> getHostInfoOutputPort;
-        protected IHostInfoOutputPort hostInfoOutputPort 
+        protected IHostInfoOutputPort hostInfoOutputPort
         {
-            get { return this.getHostInfoOutputPort(); } 
+            get { return this.getHostInfoOutputPort(); }
         }
 
-        
+
         //The sample time at the start of the current processing cycle.
         protected long SampleTimeAtStartOfProcessingCycle = 0;
 
@@ -55,8 +51,8 @@ namespace MidiShapeShifter.Framework
         {
         }
 
-        public void Init(Func<IDryMssEventInputPort> getDryMssEventInputPort, 
-                         Func<IWetMssEventOutputPort> getWetMssEventOutputPort, 
+        public void Init(Func<IDryMssEventInputPort> getDryMssEventInputPort,
+                         Func<IWetMssEventOutputPort> getWetMssEventOutputPort,
                          Func<IHostInfoOutputPort> getHostInfoOutputPort)
         {
             //Connects up this class to the required relays.
@@ -69,8 +65,8 @@ namespace MidiShapeShifter.Framework
 
         protected void AttachHandlersToRelayEvents()
         {
-            this.wetMssEventOutputPort.SendingWetMssEvents += 
-                new SendingWetMssEventsEventHandler(IWetMssEventOutputPort_SendingWetMssEvents);            
+            this.wetMssEventOutputPort.SendingWetMssEvents +=
+                new SendingWetMssEventsEventHandler(IWetMssEventOutputPort_SendingWetMssEvents);
         }
 
         public void OnRelayInstancesReplaced()
@@ -111,15 +107,15 @@ namespace MidiShapeShifter.Framework
                 if (evnt.EventType == VstEventTypes.MidiEvent)
                 {
                     VstMidiEvent midiEvent = (VstMidiEvent)evnt;
-                    MssEvent mssEvent = ConvertVstMidiEventToMssEvent(midiEvent, 
-                                                                      this.SampleTimeAtStartOfProcessingCycle, 
+                    MssEvent mssEvent = ConvertVstMidiEventToMssEvent(midiEvent,
+                                                                      this.SampleTimeAtStartOfProcessingCycle,
                                                                       this.hostInfoOutputPort.SampleRate);
 
                     if (mssEvent == null)
                     {
                         outEvents.Add(evnt);
                     }
-                    else 
+                    else
                     {
                         this.dryMssEventInputPort.ReceiveDryMssEvent(mssEvent);
                     }
@@ -140,10 +136,11 @@ namespace MidiShapeShifter.Framework
         ///     If wetMssEventOutputPort is configured to only output when a processing cycle ends then 
         ///     sampleTimeAtEndOfProcessingCycle will contain the end time the cycle that just ended. 
         /// </param>
-        public void IWetMssEventOutputPort_SendingWetMssEvents(List<MssEvent> mssEvents, 
+        public void IWetMssEventOutputPort_SendingWetMssEvents(List<MssEvent> mssEvents,
             long sampleTimeAtEndOfProcessingCycle)
         {
-            if (this.vstHost == null) {
+            if (this.vstHost == null)
+            {
                 return;
             }
 
@@ -158,9 +155,9 @@ namespace MidiShapeShifter.Framework
                 foreach (MssEvent mssEvent in mssEvents)
                 {
                     //This will return null if there is no valid conversion.
-                    VstMidiEvent midiEvent = 
+                    VstMidiEvent midiEvent =
                         ConvertMssEventToVstMidiEvent(mssEvent,
-                                                      this.SampleTimeAtStartOfProcessingCycle, 
+                                                      this.SampleTimeAtStartOfProcessingCycle,
                                                       this.hostInfoOutputPort.SampleRate);
                     if (midiEvent != null)
                     {
@@ -186,7 +183,7 @@ namespace MidiShapeShifter.Framework
         ///     ending cycle has finished.
         /// </summary>
         public void OnProcessingCycleEnd(long sampleTimeAtEndOfLastProcessingCycle)
-        { 
+        {
             //Sets the sample time that the next processing cycle will start
             SampleTimeAtStartOfProcessingCycle = sampleTimeAtEndOfLastProcessingCycle + 1;
         }
@@ -195,8 +192,8 @@ namespace MidiShapeShifter.Framework
         ///     Attempts to create an MssEvent representation of <paramref name="midiEvent"/>.
         /// </summary>
         /// <returns>The MssEvent representation of midiEvent or null of there is no valid conversion.</returns>
-        protected static MssEvent ConvertVstMidiEventToMssEvent(VstMidiEvent midiEvent, 
-                                                         long sampleTimeAtStartOfProcessingCycle, 
+        protected static MssEvent ConvertVstMidiEventToMssEvent(VstMidiEvent midiEvent,
+                                                         long sampleTimeAtStartOfProcessingCycle,
                                                          double sampleRate)
         {
             MssEvent mssEvent = new MssEvent();
@@ -269,9 +266,10 @@ namespace MidiShapeShifter.Framework
             //subtract 1 becasue channels are 0 based in midi but 1 based in mss
             byte channelByte = (byte)(mssEvent.mssMsg.Data1AsInt - 1);
 
-            midiData[0] = (byte) (statusByte | channelByte);
+            midiData[0] = (byte)(statusByte | channelByte);
 
-            if (mssEvent.mssMsg.Type == MssMsgType.PitchBend) {
+            if (mssEvent.mssMsg.Type == MssMsgType.PitchBend)
+            {
                 //most significant bits
                 int MsbVal = (mssEvent.mssMsg.Data3AsInt) >> 7;
                 midiData[2] = (byte)MsbVal;

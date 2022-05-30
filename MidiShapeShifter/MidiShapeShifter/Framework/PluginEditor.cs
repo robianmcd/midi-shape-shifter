@@ -1,14 +1,9 @@
-﻿using System;
-using System.Drawing;
-using System.Collections.Generic;
-
-using Jacobi.Vst.Core;
+﻿using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
-using Jacobi.Vst.Framework.Common;
-
 using MidiShapeShifter.Mss;
-using MidiShapeShifter.Mss.UI;
 using MidiShapeShifter.Mss.Relays;
+using System;
+using System.Drawing;
 
 namespace MidiShapeShifter.Framework
 {
@@ -39,9 +34,10 @@ namespace MidiShapeShifter.Framework
 
         public Rectangle Bounds
         {
-            get {
+            get
+            {
                 this.MssHub.EnsurePluginEditorExists();
-                return this.MssHub.PluginEditorView.Bounds; 
+                return this.MssHub.PluginEditorView.Bounds;
             }
         }
 

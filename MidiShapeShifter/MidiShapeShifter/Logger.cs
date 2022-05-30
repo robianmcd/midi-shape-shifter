@@ -1,11 +1,8 @@
 ﻿using Microsoft.VisualBasic.Logging;
 using MidiShapeShifter.Mss;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace MidiShapeShifter
 {
@@ -18,7 +15,8 @@ namespace MidiShapeShifter
 
         //Next log message id = 30
 
-        static Logger() {
+        static Logger()
+        {
             traceSource = new TraceSource("mss");
 
             FileLogTraceListener logListener = new FileLogTraceListener();
@@ -30,7 +28,7 @@ namespace MidiShapeShifter
             logListener.LogFileCreationSchedule = LogFileCreationScheduleOption.Weekly;
             logListener.DiskSpaceExhaustedBehavior = DiskSpaceExhaustedOption.DiscardMessages;
             logListener.TraceOutputOptions = TraceOptions.ThreadId;
-            
+
             TextWriterTraceListener logWriterListener = new TextWriterTraceListener(MssFileSystemLocations.SettingsFolder + "log.txt");
             traceSource.Listeners.Add(logListener);
 
@@ -50,7 +48,8 @@ namespace MidiShapeShifter
             }
         }
 
-        public static void StartLoggingHighVolume(int id = -1, string message = null) {
+        public static void StartLoggingHighVolume(int id = -1, string message = null)
+        {
             if (message != null)
             {
                 WriteEntry(id, message, TraceEventType.Verbose);
@@ -93,8 +92,10 @@ namespace MidiShapeShifter
             WriteEntry(id, message, TraceEventType.Verbose);
         }
 
-        public static void HighVolume(int id, string message) { 
-            if (loggingHighVelocity > 0) {
+        public static void HighVolume(int id, string message)
+        {
+            if (loggingHighVelocity > 0)
+            {
                 WriteEntry(id, message, TraceEventType.Verbose);
             }
         }

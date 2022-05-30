@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace MidiShapeShifter.Mss.Parameters
 {
@@ -41,13 +36,13 @@ namespace MidiShapeShifter.Mss.Parameters
 
         protected void ConfigureFieldsFromInputParamInfo()
         {
-        //Configure name text box
+            //Configure name text box
             this.paramNameTextBox.Text = this.inputParamInfo.Name;
 
-        //Configure Parameter Type Combo
+            //Configure Parameter Type Combo
             this.paramTypeCombo.SelectedIndex = (int)this.inputParamInfo.paramType;
 
-        //Configure min/max fields
+            //Configure min/max fields
             this.minParamValueLabel.Visible = this.inputParamInfo.allowUserToEditMaxMin;
             this.minParamValueTextBox.Visible = this.inputParamInfo.allowUserToEditMaxMin;
             this.maxParamValueLabel.Visible = this.inputParamInfo.allowUserToEditMaxMin;
@@ -59,7 +54,7 @@ namespace MidiShapeShifter.Mss.Parameters
                 this.maxParamValueTextBox.Text = this.inputParamInfo.MaxValue.ToString();
             }
 
-        //Configure value fields.
+            //Configure value fields.
             if (this.inputParamInfo.methodOfValueInput == ValueInputType.Number ||
                 this.inputParamInfo.methodOfValueInput == ValueInputType.Integer)
             {
@@ -83,7 +78,7 @@ namespace MidiShapeShifter.Mss.Parameters
             {
                 //Unknown ValueInputType
                 Debug.Assert(false);
-            }            
+            }
         }
 
         protected bool AttemptToSetResultParamInfo()
@@ -91,7 +86,7 @@ namespace MidiShapeShifter.Mss.Parameters
             bool resultParamInfoSetSuccessfully = true;
 
             MssParamType paramType = (MssParamType)this.paramTypeCombo.SelectedIndex;
-            string paramName = this.paramNameTextBox.Text;            
+            string paramName = this.paramNameTextBox.Text;
             this.resultParamInfo = Factory_MssParamInfo.Create(paramType, paramName);
 
 
@@ -248,7 +243,7 @@ namespace MidiShapeShifter.Mss.Parameters
                 }
                 else
                 {
-                    this.errorProvider.SetError(this.paramValueTextBox, "");                    
+                    this.errorProvider.SetError(this.paramValueTextBox, "");
                 }
             }
 
@@ -265,7 +260,7 @@ namespace MidiShapeShifter.Mss.Parameters
 
         private void OkBtn_Click(object sender, EventArgs e)
         {
-            if(AttemptToSetResultParamInfo() == true)
+            if (AttemptToSetResultParamInfo() == true)
             {
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -275,10 +270,10 @@ namespace MidiShapeShifter.Mss.Parameters
         private void paramTypeCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             MssParamType paramType = (MssParamType)this.paramTypeCombo.SelectedIndex;
-            if(paramType != this.inputParamInfo.paramType)
+            if (paramType != this.inputParamInfo.paramType)
             {
                 this.inputParamInfo = Factory_MssParamInfo.Create(paramType, this.paramNameTextBox.Text);
-            
+
                 ConfigureFieldsFromInputParamInfo();
             }
         }

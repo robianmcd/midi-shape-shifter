@@ -1,8 +1,4 @@
-﻿using System;
-
-using MidiShapeShifter.Mss;
-
-namespace MidiShapeShifter.Mss.MssMsgInfoTypes
+﻿namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
     /// <summary>
     /// Contains information and utility functions for an MSS message type that do not require any 

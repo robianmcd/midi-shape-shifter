@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MidiShapeShifter.CSharpUtil
 {
@@ -9,10 +6,10 @@ namespace MidiShapeShifter.CSharpUtil
     {
         public CoordinateType X { get; set; }
         public CoordinateType Y { get; set; }
-        
+
         public XyPoint()
-        { 
-            
+        {
+
         }
 
         public XyPoint(CoordinateType x, CoordinateType y)

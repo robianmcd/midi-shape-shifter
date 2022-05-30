@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace MidiShapeShifter.Mss
 {
@@ -26,7 +23,7 @@ namespace MidiShapeShifter.Mss
         //Used as the ID for commands that don't need to check for duplicate commands of the same 
         //type.
         protected CommandIdType genericId;
-        
+
         //List of pending commands. This is usually used as a queue.
         protected List<EditorCommandEntry> commandList;
 
@@ -100,7 +97,7 @@ namespace MidiShapeShifter.Mss
         /// </summary>
         public void DoAllCommands()
         {
-            while(true)
+            while (true)
             {
                 EditorCommandEntry curEntry = null;
 
@@ -138,6 +135,6 @@ namespace MidiShapeShifter.Mss
             }
 
         } //End Class EditorCommandId
-        
+
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss
 {
@@ -12,7 +8,7 @@ namespace MidiShapeShifter.Mss
         public static readonly int CURENT_VERSION = 2;
 
         [DataMember]
-        public int SerializedVersion {get; private set;}
+        public int SerializedVersion { get; private set; }
 
         public MssVersionInfo()
         {

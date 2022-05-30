@@ -1,13 +1,8 @@
-﻿using System;
+﻿using MidiShapeShifter.CSharpUtil;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Windows.Forms;
 using System.Runtime.Serialization;
-using System.Diagnostics;
-
-using MidiShapeShifter.CSharpUtil;
+using System.Windows.Forms;
 
 namespace MidiShapeShifter.Mss
 {
@@ -41,7 +36,7 @@ namespace MidiShapeShifter.Mss
         /// The root folder that contains settings files created by the user
         /// </summary>
         public abstract string RootFolderForUserSettings { get; }
-        
+
         /// <summary>
         /// Determines whether all settings files should have unique names. If this is true
         /// and two settings files have the same file name then (copy) will be appended to 
@@ -51,7 +46,8 @@ namespace MidiShapeShifter.Mss
 
         public abstract string ActiveSettingsFileName { get; protected set; }
 
-        public SettingsFileInfo GetActiveSettingsFile() {
+        public SettingsFileInfo GetActiveSettingsFile()
+        {
             return GetSettingsFromName(this.ActiveSettingsFileName);
         }
 
@@ -178,7 +174,7 @@ namespace MidiShapeShifter.Mss
         /// Get the filter string used in a file dialog for saving/loading settings.
         /// </summary>
         public string GetSettingsFileFilter()
-        { 
+        {
             return this.TypeOfSettingsName + " (*." + this.SettingsFileExtension + ")" +
                     "|*." + this.SettingsFileExtension +
                     "|All files (*.*)|*.*";
@@ -269,7 +265,8 @@ namespace MidiShapeShifter.Mss
             }
         }
 
-        public SettingsFileInfo GetSettingsFromName(string settingsName) {
+        public SettingsFileInfo GetSettingsFromName(string settingsName)
+        {
             //Search for the SettingsFileInfo instance associated with settingsName
             SettingsFileInfo settingsInfo = this.FlatSettingsFileList.Find(
                 (SettingsFileInfo curProgram) => curProgram.Name == settingsName);

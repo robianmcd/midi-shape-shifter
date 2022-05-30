@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MidiShapeShifter.Mss.Relays
 {
@@ -56,7 +53,7 @@ namespace MidiShapeShifter.Mss.Relays
 
         bool CalculatedBarZeroIsInitialized { get; }
         double GetBarPosAtSampleTime(long sampleTime);
-        long CalculatedBarZeroSampleTime {get;}
+        long CalculatedBarZeroSampleTime { get; }
         event CalculatedBarZeroChangedEventHandler CalculatedBarZeroChanged;
 
         event DoIdleProcessingEventHandler DoIdleProcessing;

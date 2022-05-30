@@ -1,10 +1,8 @@
-﻿using System;
+﻿using MidiShapeShifter.CSharpUtil;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
-using MidiShapeShifter.CSharpUtil;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.Parameters
 {
@@ -78,12 +76,13 @@ namespace MidiShapeShifter.Mss.Parameters
                 }
                 else
                 {
-                    return false;                    
+                    return false;
                 }
             }
         }
 
-        public IReturnStatus<MssParamInfo> GetCopyOfVariableParamInfo(MssParameterID variableParamId) {
+        public IReturnStatus<MssParamInfo> GetCopyOfVariableParamInfo(MssParameterID variableParamId)
+        {
             lock (this.memberLock)
             {
                 bool variableParamIdIsValid = this.variableParamDict.ContainsKey(variableParamId);
@@ -95,10 +94,11 @@ namespace MidiShapeShifter.Mss.Parameters
                 {
                     return new ReturnStatus<MssParamInfo>();
                 }
-            }            
+            }
         }
 
-        public void SetVariableParamInfo(MssParamInfo varParamInfo, MssParameterID variableParamId) {
+        public void SetVariableParamInfo(MssParamInfo varParamInfo, MssParameterID variableParamId)
+        {
             lock (this.memberLock)
             {
                 bool variableParamIdIsValid = this.variableParamDict.ContainsKey(variableParamId);

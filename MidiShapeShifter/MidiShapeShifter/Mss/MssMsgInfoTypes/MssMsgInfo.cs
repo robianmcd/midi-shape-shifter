@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
@@ -12,14 +8,14 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         public abstract string ConvertData1ToString(double Data1);
         public abstract string ConvertData2ToString(double Data2);
         public abstract string ConvertData3ToString(double Data3);
-        
+
         public abstract MssMsgType MsgType { get; }
 
         private IStaticMssMsgInfo _staticInfo = null;
         protected IStaticMssMsgInfo staticInfo
         {
             get
-            { 
+            {
                 if (_staticInfo == null)
                 {
                     _staticInfo = Factory_StaticMssMsgInfo.Create(this.MsgType);

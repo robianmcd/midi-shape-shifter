@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using NUnit.Framework;
-using Moq;
-
+﻿
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
-
-using MidiShapeShifter.Framework;
 using MidiShapeShifter.Midi;
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Relays;
+using Moq;
+using NUnit.Framework;
 
 namespace MidiShapeShifterTest.Framework
 {
@@ -86,7 +79,7 @@ namespace MidiShapeShifterTest.Framework
 
             //Supported event type
             vstEvents.Add(Factory_VstMidiEvent_Basic(0, CreateMidiDataWithDefaultValues(MssMsgType.PitchBend)));
-            
+
             //Unsupported event type
             VstMidiSysExEvent unsupportedEvent = new VstMidiSysExEvent(0, new byte[3]);
             vstEvents.Add(unsupportedEvent);
@@ -216,8 +209,8 @@ namespace MidiShapeShifterTest.Framework
         protected MidiHandlerProtectedWrapper Factory_MidiHandler_Basic()
         {
             MidiHandlerProtectedWrapper midiHandler = new MidiHandlerProtectedWrapper();
-            midiHandler.Init(() => this.dryMssEventInputPort, 
-                             () => this.wetMssEventOutputPort, 
+            midiHandler.Init(() => this.dryMssEventInputPort,
+                             () => this.wetMssEventOutputPort,
                              () => this.hostInfoOutputPort);
 
             var vstHostMock = new Mock<IVstHost>();

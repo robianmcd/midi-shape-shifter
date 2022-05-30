@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using MidiShapeShifter.Mss.Generator;
 
 namespace MidiShapeShifter.Mss.Mapping
 {
@@ -30,8 +26,11 @@ namespace MidiShapeShifter.Mss.Mapping
         /// </summary>
         [DataMember(Name = "Id")]
         protected int _id = UNINITIALIZED_ID;
-        public int Id { get { return this._id; }
-                        set { this._id = value; } }
+        public int Id
+        {
+            get { return this._id; }
+            set { this._id = value; }
+        }
 
         /// <summary>
         ///     Specifies which MSS messages will be accepted for input as well as additional information about the 
@@ -39,8 +38,11 @@ namespace MidiShapeShifter.Mss.Mapping
         /// </summary>
         [DataMember(Name = "InMssMsgRange")]
         protected IMssMsgRange _inMssMsgRange;
-        public IMssMsgRange InMssMsgRange { get { return this._inMssMsgRange; } 
-                                            set { this._inMssMsgRange = value; } }
+        public IMssMsgRange InMssMsgRange
+        {
+            get { return this._inMssMsgRange; }
+            set { this._inMssMsgRange = value; }
+        }
 
         /// <summary>
         ///     Specifies the range of messages that can be output as well as additional information about the output 
@@ -48,8 +50,11 @@ namespace MidiShapeShifter.Mss.Mapping
         /// </summary>
         [DataMember(Name = "OutMssMsgRange")]
         protected IMssMsgRange _outMssMsgRange;
-        public IMssMsgRange OutMssMsgRange { get { return this._outMssMsgRange; }
-                                             set { this._outMssMsgRange = value; } }
+        public IMssMsgRange OutMssMsgRange
+        {
+            get { return this._outMssMsgRange; }
+            set { this._outMssMsgRange = value; }
+        }
 
         /// <summary>
         ///     If there are multiple mapping entries with overlapping input ranges then a single mss message can
@@ -63,13 +68,16 @@ namespace MidiShapeShifter.Mss.Mapping
         /// <summary>
         ///     Contains information about the curve shape for this mapping and how it is being entered.
         /// </summary>
-        [DataMember(Name = "CurveShapeInfo")]        
-        protected CurveShapeInfo _curveShapeInfo;        
-        public CurveShapeInfo CurveShapeInfo { get { return this._curveShapeInfo; }
-                                               set { this._curveShapeInfo = value; } }
+        [DataMember(Name = "CurveShapeInfo")]
+        protected CurveShapeInfo _curveShapeInfo;
+        public CurveShapeInfo CurveShapeInfo
+        {
+            get { return this._curveShapeInfo; }
+            set { this._curveShapeInfo = value; }
+        }
 
         [DataMember]
-        public string ActiveTransformPresetName {get; set;}
+        public string ActiveTransformPresetName { get; set; }
 
         /// <summary>
         /// Specifies the primary input field. E.G. if this class was for a velocity curve then this 
@@ -83,15 +91,16 @@ namespace MidiShapeShifter.Mss.Mapping
             set { this._primaryInputSource = value; }
         }
 
-        public MappingEntry() 
+        public MappingEntry()
         {
             this.PrimaryInputSource = DEFAULT_INPUT_TYPE;
 
             this.ActiveTransformPresetName = TransformPresetMgr.DEFAULT_TRANSFORM_PRESET_NAME;
         }
 
-        public MappingEntry(MappingEntry newInstance) { 
-            
+        public MappingEntry(MappingEntry newInstance)
+        {
+
         }
 
         public void InitAllMembers(IMssMsgRange inMsgRange, IMssMsgRange outMsgRange,
@@ -157,7 +166,8 @@ namespace MidiShapeShifter.Mss.Mapping
             return mappingEntryClone;
         }
 
-        protected void DeepCloneIntoExistingInstance(MappingEntry entry) {
+        protected void DeepCloneIntoExistingInstance(MappingEntry entry)
+        {
             entry.Id = this.Id;
             entry.InMssMsgRange = this.InMssMsgRange.Clone();
             entry.OutMssMsgRange = this.OutMssMsgRange.Clone();

@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-using System.Runtime.Serialization;
+﻿using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Parameters;
-
-using MidiShapeShifter.CSharpUtil;
+using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss
 {
 
-    public enum EquationType { Curve, Point };    
+    public enum EquationType { Curve, Point };
 
 
     /// <summary>
@@ -66,7 +62,7 @@ namespace MidiShapeShifter.Mss
             ConstructNonSerializableMembers();
         }
 
-        protected void ConstructNonSerializableMembers() 
+        protected void ConstructNonSerializableMembers()
         {
             this.AllEquationsAreValid = false;
         }

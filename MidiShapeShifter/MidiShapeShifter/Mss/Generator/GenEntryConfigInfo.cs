@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
 namespace MidiShapeShifter.Mss.Generator
 {
-    
+
     /// <summary>
     /// If a generator uses a time based period then it will generate even when the transport is 
     /// stopped and it's period will be a fixed amount of time.
@@ -27,9 +25,10 @@ namespace MidiShapeShifter.Mss.Generator
     /// </summary>
     public enum GenBarsPeriod
     {
-        Bars32, Bars24, Bars16, Bars12, Bars8, Bars6, Bars4, Bars2, 
-        Bars1Point5, Bars1, DottedHalf, Half, DottedQuarter, Quarter, QuarterTriplet, DottedEighth, 
-        Eighth, EighthTriplet, Sixteenth, SixteenthTriplet, ThirtySecond };
+        Bars32, Bars24, Bars16, Bars12, Bars8, Bars6, Bars4, Bars2,
+        Bars1Point5, Bars1, DottedHalf, Half, DottedQuarter, Quarter, QuarterTriplet, DottedEighth,
+        Eighth, EighthTriplet, Sixteenth, SixteenthTriplet, ThirtySecond
+    };
 
     /// <summary>
     /// Stores configuration info about a GeneratorMappingEntry. Most of this information is
@@ -180,7 +179,7 @@ namespace MidiShapeShifter.Mss.Generator
                 return barsPeriodVal;
             }
             else
-            { 
+            {
                 double timeSig = (double)timeSignatureNumerator / timeSignatureDenominator;
                 return barsPeriodVal / (timeSig);
             }

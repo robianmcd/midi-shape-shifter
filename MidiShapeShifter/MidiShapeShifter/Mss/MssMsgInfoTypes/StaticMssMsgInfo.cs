@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
@@ -61,18 +57,18 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
         /// entries are querried. By default don't apply any pre-mapping querry processing.
         /// </summary>
         public virtual void ApplyPreMappingQueryProcessing(MssMsg msgToProcess)
-        { 
-            
+        {
+
         }
 
         public virtual void ApplyPreProcessing(MssMsg msgToProcess)
-        { 
-        
+        {
+
         }
 
         public virtual void ApplyPostProcessing(MssMsg preProcessedMsg, MssMsg msgToProcess)
-        { 
-        
+        {
+
         }
 
         public virtual bool TypeIsInRange(MssMsgType msgType)

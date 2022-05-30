@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using System.Runtime.Serialization;
-using System.IO;
-using System.Windows.Forms;
-
-using MidiShapeShifter.CSharpUtil;
 
 namespace MidiShapeShifter.Mss
 {
@@ -49,7 +42,9 @@ namespace MidiShapeShifter.Mss
 
         [DataMember(Name = "ActiveSettingsFileName")]
         protected string _activeSettingsFileName;
-        public override string ActiveSettingsFileName { get { return this._activeSettingsFileName;}
+        public override string ActiveSettingsFileName
+        {
+            get { return this._activeSettingsFileName; }
             protected set { this._activeSettingsFileName = value; }
         }
 
@@ -129,6 +124,6 @@ namespace MidiShapeShifter.Mss
             }
         }
 
-        
+
     }
 }

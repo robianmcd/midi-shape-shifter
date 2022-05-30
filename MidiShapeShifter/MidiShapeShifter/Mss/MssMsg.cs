@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss
@@ -9,8 +7,9 @@ namespace MidiShapeShifter.Mss
     //Mss message types include a subset of midi message types as well as some messages that are 
     //generated within Midi Shape Shifter. Data1 Data2 and Data3 can have a different meaning for 
     //each message. The following table sumerizes these meanings. NOTE- % values go from 0 to 1.
-    public enum MssMsgType { 
-    //  Type                Data1               Data2                   Data3
+    public enum MssMsgType
+    {
+        //  Type                Data1               Data2                   Data3
         Note,           //  Channel             Note number             Velocity
         NoteOn,         //  Channel             Note number             Velocity
         NoteOff,        //  Channel             Note number             Velocity
@@ -27,7 +26,8 @@ namespace MidiShapeShifter.Mss
     };
 
     //Used to distinguish between the three data fields in an mss msg.
-    public enum MssMsgDataField { 
+    public enum MssMsgDataField
+    {
         Data1, Data2, Data3
     }
 
@@ -112,7 +112,7 @@ namespace MidiShapeShifter.Mss
             }
         }
 
-        public override bool Equals(object o) 
+        public override bool Equals(object o)
         {
             MssMsg compareToMsg = (MssMsg)o;
             return this.Type == compareToMsg.Type &&

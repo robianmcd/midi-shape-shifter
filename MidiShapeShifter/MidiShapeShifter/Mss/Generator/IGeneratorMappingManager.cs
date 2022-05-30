@@ -1,8 +1,4 @@
-﻿using System;
-using MidiShapeShifter.Mss.Mapping;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using MidiShapeShifter.CSharpUtil;
+﻿using MidiShapeShifter.Mss.Mapping;
 
 namespace MidiShapeShifter.Mss.Generator
 {

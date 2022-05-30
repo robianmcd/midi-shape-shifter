@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 {
@@ -39,16 +36,16 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 
         //Contains a list of valid output message types when this class is the input type
         protected List<string> outMssMsgTypeNames = new List<string>();
-        
+
         //Specifies whether the same as input check box can be selected when this type is selected as the input type.
         protected abstract bool canSelectSameAsInput { get; }
 
         static MssMsgRangeEntryMetadata()
         {
-            VALID_INPUT_TYPES = new List<MssMsgType>() 
-            { 
-                MssMsgType.Note, MssMsgType.NoteOn, MssMsgType.NoteOff, MssMsgType.CC, 
-                MssMsgType.PitchBend, MssMsgType.PolyAftertouch, MssMsgType.ChanAftertouch, 
+            VALID_INPUT_TYPES = new List<MssMsgType>()
+            {
+                MssMsgType.Note, MssMsgType.NoteOn, MssMsgType.NoteOff, MssMsgType.CC,
+                MssMsgType.PitchBend, MssMsgType.PolyAftertouch, MssMsgType.ChanAftertouch,
                 MssMsgType.Generator, MssMsgType.Parameter
             };
         }
@@ -59,7 +56,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         public Label EntryField1Lbl
         {
             get
-            { 
+            {
                 if (this.ioCatagory == IoType.Input)
                 {
                     return this.mappingDlg.inEntryField1Lbl;
@@ -184,7 +181,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         {
             this.msgRange = msgRange;
 
-            if (this.EntryField1 != null) 
+            if (this.EntryField1 != null)
             {
                 SetEntryField1FromRange(this.msgRange);
             }
@@ -284,11 +281,11 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         ///     error provider will be alerted.
         /// </summary>
         /// <returns>True if entry field 1 contains valid user input.</returns>
-        public bool ValidateEntryField1() 
+        public bool ValidateEntryField1()
         {
             string errorMsg;
             this.entryField1IsValid = SetData1RangeFromField(out errorMsg);
-        
+
             //EntryField1 could be null if EntryField1 is not used by the active msg type
             if (this.EntryField1 != null)
             {
@@ -361,7 +358,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         /// </summary>
         /// <remarks>Precondition: The contents of the entry fields must be valid.</remarks>
         public IMssMsgRange CreateValidMsgRange()
-        { 
+        {
             if (this.entryField1IsValid == false)
             {
                 string dummyErrMsg;

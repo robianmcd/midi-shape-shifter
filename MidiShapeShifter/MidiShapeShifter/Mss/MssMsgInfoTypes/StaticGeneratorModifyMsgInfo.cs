@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
-    enum GenOperation {OnOff, PlayPause, SetPosition}
+    enum GenOperation { OnOff, PlayPause, SetPosition }
 
     public class StaticGeneratorModifyMsgInfo : StaticMssMsgInfo
     {
@@ -22,7 +20,7 @@ namespace MidiShapeShifter.Mss.MssMsgInfoTypes
             GenOperationNames.Insert((int)GenOperation.PlayPause, "Play/Pause");
             GenOperationNames.Insert((int)GenOperation.SetPosition, "SetPosition");
         }
-        
+
         public override MssMsgType MsgType
         {
             get { return MssMsgType.GeneratorModify; }

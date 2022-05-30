@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MidiShapeShifter.Mss.MssMsgInfoTypes
+﻿namespace MidiShapeShifter.Mss.MssMsgInfoTypes
 {
     public class StaticGeneratorMsgInfo : StaticMssMsgInfo
     {

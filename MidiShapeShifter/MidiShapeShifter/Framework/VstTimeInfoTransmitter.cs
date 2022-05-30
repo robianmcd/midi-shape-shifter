@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-
-using Jacobi.Vst.Core;
-
+﻿using Jacobi.Vst.Core;
 using MidiShapeShifter.Mss.Relays;
+using System;
+using System.Diagnostics;
 
 namespace MidiShapeShifter.Framework
 {
@@ -31,7 +26,7 @@ namespace MidiShapeShifter.Framework
             //Ensures that the host is transmitting all the required time info.
             Debug.Assert((timeInfo.Flags & RequiredTimeInfoFlags) == RequiredTimeInfoFlags);
 
-            double quarterNotesPerBar = ((double)timeInfo.TimeSignatureNumerator / 
+            double quarterNotesPerBar = ((double)timeInfo.TimeSignatureNumerator /
                                      (double)timeInfo.TimeSignatureDenominator) / 0.25;
             double barPos = timeInfo.PpqPosition / quarterNotesPerBar;
 
@@ -46,7 +41,7 @@ namespace MidiShapeShifter.Framework
             this.hostInfoInputPort.ReceiveTransportPlayingDuringUpdate(
                 (timeInfo.Flags & VstTimeInfoFlags.TransportPlaying) != 0);
 
-            this.hostInfoInputPort.ReceiveTimeSignatureDuringUpdate(timeInfo.TimeSignatureNumerator, 
+            this.hostInfoInputPort.ReceiveTimeSignatureDuringUpdate(timeInfo.TimeSignatureNumerator,
                                                                     timeInfo.TimeSignatureDenominator);
 
             this.hostInfoInputPort.FinishUpdate();

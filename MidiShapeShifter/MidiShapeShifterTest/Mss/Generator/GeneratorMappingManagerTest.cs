@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using NUnit.Framework;
-using Moq;
-
+﻿using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss;
 using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.Mapping;
-using MidiShapeShifter.CSharpUtil;
+using Moq;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MidiShapeShifterTest.Mss.Generator
 {
@@ -86,9 +82,9 @@ namespace MidiShapeShifterTest.Mss.Generator
             IReturnStatus<IGeneratorMappingEntry> getCopyRetStatus = genMgr.GetCopyOfMappingEntryById(newId);
             Assert.IsTrue(getCopyRetStatus.IsValid);
             IGeneratorMappingEntry genEntry = getCopyRetStatus.Value;
-            Assert.AreEqual(genEntry.Id, 
+            Assert.AreEqual(genEntry.Id,
                             genEntry.InMssMsgRange.Data1RangeBottom);
-            Assert.AreEqual(genEntry.Id, 
+            Assert.AreEqual(genEntry.Id,
                             genEntry.InMssMsgRange.Data1RangeTop);
             Assert.AreEqual(MssMsgUtil.UNUSED_MSS_MSG_DATA,
                             genEntry.InMssMsgRange.Data2RangeBottom);

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace MidiShapeShifter.Mss.Relays
 {
     public delegate void WetMssEventReceivedEventHandler(MssEvent mssEventList);
-    public delegate void SendingWetMssEventsEventHandler(List<MssEvent> mssEventList, 
+    public delegate void SendingWetMssEventsEventHandler(List<MssEvent> mssEventList,
             long sampleTimeAtEndOfProcessingCycle);
 
     public interface IWetMssEventOutputPort

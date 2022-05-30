@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
-
+﻿using MidiShapeShifter.CSharpUtil;
+using MidiShapeShifter.Mss.Mapping;
+using MidiShapeShifter.Mss.MssMsgInfoTypes;
+using MidiShapeShifter.Mss.Parameters;
 using NCalc;
 using NCalc.Domain;
-
-using MidiShapeShifter.CSharpUtil;
-using MidiShapeShifter.Mss.Mapping;
-using MidiShapeShifter.Mss.Parameters;
-using MidiShapeShifter.Mss.MssMsgInfoTypes;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {
@@ -29,7 +24,8 @@ namespace MidiShapeShifter.Mss.Evaluation
         public const int NUM_EXPRESSIONS_IN_CACHE = 500;
         protected LruCache<string, LogicalExpression> expressionCache;
 
-        public Evaluator() {
+        public Evaluator()
+        {
             this.expressionCache = new LruCache<string, LogicalExpression>(NUM_EXPRESSIONS_IN_CACHE);
         }
 
@@ -47,13 +43,15 @@ namespace MidiShapeShifter.Mss.Evaluation
             var erroneousPoints = new HashSet<int>();
             var controlPointValuesStatus = CalculateControlPointValues(evalInput.VariableParamInfoList, evalInput.TransformParamInfoList, evalInput.PointEquations, ref erroneousPoints);
 
-            if (controlPointValuesStatus.IsValid) {
+            if (controlPointValuesStatus.IsValid)
+            {
                 EvaluationCurveJob evalCurveJob = new EvaluationCurveJob();
 
                 string expressionStr = GetCurveExpressionString(evalInput.getPrimaryInputVal(), controlPointValuesStatus.Value, evalInput.CurveEquations);
                 var returnedExpression = CreateExpressionFromString(expressionStr, EvalType.Curve);
 
-                if (returnedExpression.IsValid) {
+                if (returnedExpression.IsValid)
+                {
                     evalCurveJob.Configure(evalInput, controlPointValuesStatus.Value, returnedExpression.Value);
 
                     evalCurveJob.Execute();
@@ -62,7 +60,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                     {
                         return new ReturnStatus<double>(evalCurveJob.OutputVal, true);
                     }
-    
+
                 }
 
             }
@@ -112,7 +110,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                 out HashSet<int> erroneousCurveIndexSet
             )
         {
-            Logger.HighVolume(23, String.Format("Sampling Expression - xGap: {0}, variableParamInfo: {1}", 
+            Logger.HighVolume(23, String.Format("Sampling Expression - xGap: {0}, variableParamInfo: {1}",
                 xDistanceBetweenPoints,
                 EnumerableUtils.ToString(variableParamInfoList)));
 
@@ -125,9 +123,9 @@ namespace MidiShapeShifter.Mss.Evaluation
             EvaluationCurveJob evalJob = new EvaluationCurveJob();
 
             var controlPointValuesStatus = CalculateControlPointValues(
-                variableParamInfoList, 
-                mappingEntry.CurveShapeInfo.ParamInfoList, 
-                mappingEntry.CurveShapeInfo.PointEquations, 
+                variableParamInfoList,
+                mappingEntry.CurveShapeInfo.ParamInfoList,
+                mappingEntry.CurveShapeInfo.PointEquations,
                 ref erroneousControlPointIndexSet);
 
             controlPointList = controlPointValuesStatus.Value;
@@ -165,7 +163,8 @@ namespace MidiShapeShifter.Mss.Evaluation
 
                 Logger.HighVolume(24, string.Format("Sampling curve {0}. Points in curve: {1}", curveIndex, numPointsInCurve));
 
-                if (numPointsInCurve == 0) {
+                if (numPointsInCurve == 0)
+                {
                     return;
                 }
 
@@ -189,7 +188,7 @@ namespace MidiShapeShifter.Mss.Evaluation
                     }
                 }
                 curCurvePoints[0] = firstEvalStatus.Value;
-                
+
 
                 Parallel.For(1, numPointsInCurve, pointIndex =>
                 {
@@ -333,7 +332,8 @@ namespace MidiShapeShifter.Mss.Evaluation
                 var xEquationStatus = CreateExpressionFromString(pointEquation.X, EvalType.ControlPoint);
                 var yEquationStatus = CreateExpressionFromString(pointEquation.Y, EvalType.ControlPoint);
 
-                if (!xEquationStatus.IsValid || !yEquationStatus.IsValid) {
+                if (!xEquationStatus.IsValid || !yEquationStatus.IsValid)
+                {
                     Logger.HighVolume(27, string.Format("The x or y equation for control point {0} was not a valid equation. Equations: {1}",
                         i, pointEquation));
                     erroneousControlPointIndexSet.Add(i);
@@ -429,11 +429,12 @@ namespace MidiShapeShifter.Mss.Evaluation
                 }
 
             }
-            else 
+            else
             {
                 //We have already ensured that the key is in the cache so the createValue function should not be called.
                 LogicalExpression parsedExpression = this.expressionCache.GetAndAddValue(formattedExpressionStr, () => { Debug.Assert(false); return null; });
-                if (parsedExpression != null) {
+                if (parsedExpression != null)
+                {
                     expression = new Expression(parsedExpression, EvaluateOptions.IgnoreCase);
                 }
             }
@@ -442,7 +443,8 @@ namespace MidiShapeShifter.Mss.Evaluation
             {
                 return new ReturnStatus<Expression>();
             }
-            else {
+            else
+            {
                 SetExpressionConstants(expression);
                 return new ReturnStatus<Expression>(expression);
             }

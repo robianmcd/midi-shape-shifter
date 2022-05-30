@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using MidiShapeShifter.Mss.Parameters;
+using System;
 using System.Diagnostics;
 using System.Windows.Forms;
-
-using MidiShapeShifter.Mss.Generator;
-using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss.Relays
 {
@@ -33,12 +29,12 @@ namespace MidiShapeShifter.Mss.Relays
         /// <summary>
         /// Specifies the types of host info that this relay recieved on the last update.
         /// </summary>
-        public HostInfoFields UpdatedFieldsInLastUpdate {get; private set;}
+        public HostInfoFields UpdatedFieldsInLastUpdate { get; private set; }
 
         /// <summary>
         /// Specifies the host info that has changed on the last update.
         /// </summary>
-        public HostInfoFields ChangedFieldsInLastUpdate {get; private set;}
+        public HostInfoFields ChangedFieldsInLastUpdate { get; private set; }
 
         /// <summary>
         /// Event that is fired after an update of host info has finished.
@@ -79,7 +75,7 @@ namespace MidiShapeShifter.Mss.Relays
         /// current information in HostInfoRelay so if for example the tempo changed then so would
         /// CalculatedBarZeroSampleTime.
         /// </summary>
-        public long CalculatedBarZeroSampleTime {get; private set;}
+        public long CalculatedBarZeroSampleTime { get; private set; }
         public bool CalculatedBarZeroIsInitialized { get; private set; }
         public event CalculatedBarZeroChangedEventHandler CalculatedBarZeroChanged;
         protected double samplesPerBar;
@@ -147,7 +143,7 @@ namespace MidiShapeShifter.Mss.Relays
 
             //Finish any updates that are dependant on multiple fields.
 
-            if (this.TempoIsInitialized == true && 
+            if (this.TempoIsInitialized == true &&
                 this.TimeSignatureIsInitialized == true &&
                 this.BarPosIsInitialized == true &&
                 this.SampleRateIsInitialized == true)
@@ -184,25 +180,25 @@ namespace MidiShapeShifter.Mss.Relays
                 HostUpdateFinished(this.ChangedFieldsInLastUpdate);
             }
 
-            if (this.ChangedFieldsInLastUpdate.HasFlag(HostInfoFields.SampleRate) && 
+            if (this.ChangedFieldsInLastUpdate.HasFlag(HostInfoFields.SampleRate) &&
                 SampleRateChanged != null)
             {
                 SampleRateChanged(this.SampleRate);
             }
 
-            if (this.ChangedFieldsInLastUpdate.HasFlag(HostInfoFields.Tempo) && 
+            if (this.ChangedFieldsInLastUpdate.HasFlag(HostInfoFields.Tempo) &&
                 TempoChanged != null)
             {
                 TempoChanged(this.Tempo);
             }
 
-            if (this.ChangedFieldsInLastUpdate.HasFlag(HostInfoFields.TimeSignature) && 
+            if (this.ChangedFieldsInLastUpdate.HasFlag(HostInfoFields.TimeSignature) &&
                 TimeSignatureChanged != null)
             {
                 TimeSignatureChanged(this.TimeSignatureNumerator, this.TimeSignatureDenominator);
             }
 
-            if (this.ChangedFieldsInLastUpdate.HasFlag(HostInfoFields.TransportPlaying) && 
+            if (this.ChangedFieldsInLastUpdate.HasFlag(HostInfoFields.TransportPlaying) &&
                 TransportPlayingChanged != null)
             {
                 TransportPlayingChanged(this.TransportPlaying);
@@ -235,7 +231,7 @@ namespace MidiShapeShifter.Mss.Relays
 
             this.UpdatedFieldsInLastUpdate |= HostInfoFields.SampleRate;
 
-            if (this.SampleRateIsInitialized == false || this.SampleRate != sampleRate) 
+            if (this.SampleRateIsInitialized == false || this.SampleRate != sampleRate)
             {
                 this.ChangedFieldsInLastUpdate |= HostInfoFields.SampleRate;
                 this.SampleRate = sampleRate;
@@ -266,7 +262,7 @@ namespace MidiShapeShifter.Mss.Relays
             this.UpdatedFieldsInLastUpdate |= HostInfoFields.TimeSignature;
 
             if (this.TimeSignatureIsInitialized == false ||
-                this.TimeSignatureNumerator != numerator || 
+                this.TimeSignatureNumerator != numerator ||
                 this.TimeSignatureDenominator != denominator)
             {
                 this.ChangedFieldsInLastUpdate |= HostInfoFields.TimeSignature;
@@ -283,7 +279,7 @@ namespace MidiShapeShifter.Mss.Relays
 
             this.UpdatedFieldsInLastUpdate |= HostInfoFields.TransportPlaying;
 
-            if (this.TransportPlayingIsInitialized == false || 
+            if (this.TransportPlayingIsInitialized == false ||
                 this.TransportPlaying != transportPlaying)
             {
                 this.ChangedFieldsInLastUpdate |= HostInfoFields.TransportPlaying;

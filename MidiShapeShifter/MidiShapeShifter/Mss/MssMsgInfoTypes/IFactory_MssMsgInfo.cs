@@ -1,5 +1,4 @@
-﻿using System;
-using MidiShapeShifter.Mss.Generator;
+﻿using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.Parameters;
 
 namespace MidiShapeShifter.Mss.MssMsgInfoTypes

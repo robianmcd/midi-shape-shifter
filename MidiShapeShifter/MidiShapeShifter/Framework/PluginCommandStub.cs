@@ -1,7 +1,7 @@
-﻿using System;
-using Jacobi.Vst.Core.Plugin;
+﻿using Jacobi.Vst.Core.Plugin;
 using Jacobi.Vst.Framework;
 using Jacobi.Vst.Framework.Plugin;
+using System;
 
 namespace MidiShapeShifter.Framework
 {
@@ -36,7 +36,7 @@ namespace MidiShapeShifter.Framework
                 base.SetProgram(programNumber);
             }
             catch (ArgumentOutOfRangeException)
-            { 
+            {
                 //If nothing is set when the plugin loads then it will default to the first program which is "Blank"
             }
         }

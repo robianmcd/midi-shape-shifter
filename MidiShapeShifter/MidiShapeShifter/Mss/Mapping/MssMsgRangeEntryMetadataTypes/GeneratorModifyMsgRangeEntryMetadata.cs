@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using MidiShapeShifter.Mss.MssMsgInfoTypes;
 using System.Diagnostics;
 using System.Windows.Forms;
-
-using MidiShapeShifter.Mss.MssMsgInfoTypes;
 
 namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 {
@@ -57,7 +52,7 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
         {
             //Sets the properties for the first entry field
             base.SetMappingDlgEntryFieldCustomProperties();
-            
+
             this.EntryField2Lbl.Visible = true;
             this.EntryField2Lbl.Text = "Operation:";
             this.EntryField2.Visible = true;

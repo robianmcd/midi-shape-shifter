@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using NCalc;
-
-using MidiShapeShifter.CSharpUtil;
-using System.Diagnostics;
+﻿using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Parameters;
-using MidiShapeShifter.Mss.Mapping;
+using NCalc;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {
@@ -42,7 +37,8 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// </summary>
         protected EvaluationCurveInput evalInput;
 
-        public override bool Execute() {
+        public override bool Execute()
+        {
             base.Execute();
 
             //If the output is invalid and it was not the result of an invalid control point then 
@@ -133,8 +129,8 @@ namespace MidiShapeShifter.Mss.Evaluation
         }
 
         //See EvaluationJob.FunctionHandler for documentation
-        protected override ReturnStatus<bool> HandleCustomFunctions(string funcName, 
-                                                      FunctionArgs args, 
+        protected override ReturnStatus<bool> HandleCustomFunctions(string funcName,
+                                                      FunctionArgs args,
                                                       List<double> evaluatedArgs)
         {
             ReturnStatus<bool> retStatus = new ReturnStatus<bool>();
@@ -159,7 +155,7 @@ namespace MidiShapeShifter.Mss.Evaluation
 
         }
 
-        protected bool HandleLfoFunc(FunctionArgs args, List<double>evaluatedArgs)
+        protected bool HandleLfoFunc(FunctionArgs args, List<double> evaluatedArgs)
         {
             if (evaluatedArgs.Count != 6)
             {
@@ -226,8 +222,8 @@ namespace MidiShapeShifter.Mss.Evaluation
             }
 
             double output;
-            bool success = HandleWaveformFunc(evaluatedArgs[0], 
-                                              (WaveformShap)evaluatedArgs[1], 
+            bool success = HandleWaveformFunc(evaluatedArgs[0],
+                                              (WaveformShap)evaluatedArgs[1],
                                               out output);
             args.Result = output;
             return success;
@@ -239,14 +235,14 @@ namespace MidiShapeShifter.Mss.Evaluation
             double inAsRamp = (1 + (input % 1)) % 1;
 
             switch (shape)
-            { 
+            {
                 case WaveformShap.Sin:
                     output = Math.Sin(2 * Math.PI * input) / 2 + 0.5;
                     break;
                 case WaveformShap.Triangle:
                     //Offset the base ramp wave so that the triangle wave starts at 0.5 instead 
                     //of 0.
-                    double inAsOffsetRamp = (1 + ((input+0.25) % 1)) % 1;
+                    double inAsOffsetRamp = (1 + ((input + 0.25) % 1)) % 1;
                     output = 1 - Math.Abs(inAsOffsetRamp - 0.5) * 2;
                     break;
                 case WaveformShap.Square:
@@ -337,10 +333,10 @@ namespace MidiShapeShifter.Mss.Evaluation
                 {
                     if (pointBeforeCurveExists && pointAfterCurveExists)
                     {
-                        snapOutputValue += GetEndPointSnapOffset(pointBeforeCurve.Y, rawCurveStart.Y, 
+                        snapOutputValue += GetEndPointSnapOffset(pointBeforeCurve.Y, rawCurveStart.Y,
                             pointBeforeCurve.X, pointAfterCurve.X, this.evalInput.getPrimaryInputVal());
 
-                        snapOutputValue += GetEndPointSnapOffset(pointAfterCurve.Y, rawCurveEnd.Y, 
+                        snapOutputValue += GetEndPointSnapOffset(pointAfterCurve.Y, rawCurveEnd.Y,
                             pointAfterCurve.X, pointBeforeCurve.X, this.evalInput.getPrimaryInputVal());
                     }
                     else if (pointBeforeCurveExists)
@@ -381,11 +377,11 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// <param name="dontAffectAtX">The X value where the function should not be affected after</param>
         /// <param name="XInput">The X value that the function is currently being evaluated at</param>
         /// <returns>Y offset to apply to the function when X = XInput</returns>
-        protected double GetEndPointSnapOffset(double snapToY, double snapFromY, 
+        protected double GetEndPointSnapOffset(double snapToY, double snapFromY,
                                              double snapAtX, double dontAffectAtX,
                                              double XInput)
         {
-            return (snapToY - snapFromY) * (XInput - dontAffectAtX) / 
+            return (snapToY - snapFromY) * (XInput - dontAffectAtX) /
                    (snapAtX - dontAffectAtX);
         }
 

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-using MidiShapeShifter.CSharpUtil;
+﻿using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.Parameters;
+using System.Collections.Generic;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {
@@ -11,7 +9,7 @@ namespace MidiShapeShifter.Mss.Evaluation
     {
         ReturnStatus<double> Evaluate(EvaluationCurveInput input);
         bool SampleExpressionWithDefaultInputValues(
-                double xDistanceBetweenPoints,  
+                double xDistanceBetweenPoints,
                 List<MssParamInfo> variableParamInfoList,
                 IMappingEntry mappingEntry,
                 out List<XyPoint<double>> points,

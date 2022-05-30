@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.Win32;
 using System.Diagnostics;
-
-using Microsoft.Win32;
 
 namespace MidiShapeShifter.Mss
 {
@@ -12,12 +7,12 @@ namespace MidiShapeShifter.Mss
     {
 
 
-        public static string SettingsFolder 
+        public static string SettingsFolder
         {
-            get 
+            get
             {
                 RegistryKey mssLocalMachineRegKey = CreateMssLocalMachineRegKey();
-                string settingsFolder = mssLocalMachineRegKey.GetValue("SettingsFolder","").ToString();
+                string settingsFolder = mssLocalMachineRegKey.GetValue("SettingsFolder", "").ToString();
                 mssLocalMachineRegKey.Close();
                 Debug.Assert(settingsFolder != "");
 
@@ -25,11 +20,12 @@ namespace MidiShapeShifter.Mss
             }
         }
 
-        public static string FactorySettingsFolder { 
-            get 
+        public static string FactorySettingsFolder
+        {
+            get
             {
                 return SettingsFolder + @"Factory Settings\";
-            } 
+            }
         }
 
         public static string UserSettingsFolder

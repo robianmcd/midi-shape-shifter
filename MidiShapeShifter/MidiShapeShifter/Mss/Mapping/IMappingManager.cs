@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-
-namespace MidiShapeShifter.Mss.Mapping
+﻿namespace MidiShapeShifter.Mss.Mapping
 {
     public interface IMappingManager : IGraphableMappingManager<IMappingEntry>
     {

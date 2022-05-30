@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MidiShapeShifter.Mss.Relays
+﻿namespace MidiShapeShifter.Mss.Relays
 {
     /// <summary>
     ///     Accepts unprocessed MssEvents and sends a message notifying any subscribers of the MssEvent.

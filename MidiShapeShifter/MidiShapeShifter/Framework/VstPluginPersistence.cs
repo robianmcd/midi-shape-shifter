@@ -1,12 +1,9 @@
-﻿using System;
-using System.IO;
-
-using Jacobi.Vst.Core;
+﻿using Jacobi.Vst.Core;
 using Jacobi.Vst.Framework;
-
 using MidiShapeShifter.CSharpUtil;
-
 using MidiShapeShifter.Mss;
+using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace MidiShapeShifter.Framework
@@ -45,8 +42,8 @@ namespace MidiShapeShifter.Framework
         protected PluginPrograms pluginPrograms;
 
         public VstPluginPersistence()
-        { 
-            
+        {
+
         }
 
         /// <summary>
@@ -73,7 +70,7 @@ namespace MidiShapeShifter.Framework
 
         protected void AttachHandlersToMssProgramMgrEvents()
         {
-            this.getMssProgramMgr().SaveProgramRequest += 
+            this.getMssProgramMgr().SaveProgramRequest +=
                 new SaveProgramRequestEventHandler(WritePluginState);
             this.getMssProgramMgr().LoadProgramRequest +=
                 new LoadProgramRequestEventHandler(ReadPluginState);

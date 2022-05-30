@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-
+﻿using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Parameters;
 using MidiShapeShifter.Mss.Relays;
-using MidiShapeShifter.Mss.Mapping;
-using MidiShapeShifter.CSharpUtil;
+using System;
+using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss
 {
@@ -27,7 +22,7 @@ namespace MidiShapeShifter.Mss
             this.stopwatch = Stopwatch.StartNew();
         }
 
-        public void Init(MssParameters mssParameters, 
+        public void Init(MssParameters mssParameters,
                          IWetMssEventOutputPort wetEventOutput,
                          IDryMssEventInputPort dryEventInput,
                          IHostInfoOutputPort hostInfoOutput)
@@ -37,7 +32,7 @@ namespace MidiShapeShifter.Mss
             this.dryEventInput = dryEventInput;
             this.hostInfoOutput = hostInfoOutput;
 
-            this.wetEventOutput.WetMssEventsReceived += 
+            this.wetEventOutput.WetMssEventsReceived +=
                 new WetMssEventReceivedEventHandler(WetEventReceived);
 
             this.mssParameters.ParameterValueChanged +=
@@ -64,7 +59,7 @@ namespace MidiShapeShifter.Mss
                         (MssParameterID)(int)wetEvent.mssMsg.Data1,
                         wetEvent.mssMsg.Data3);
                 }
-                
+
             }
         }
 

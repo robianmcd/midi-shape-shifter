@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using MidiShapeShifter.Mss;
 using System.Diagnostics;
-
-using MidiShapeShifter.Mss;
 
 namespace MidiShapeShifter.Midi
 {
@@ -113,7 +108,7 @@ namespace MidiShapeShifter.Midi
             bool successfullyConvertedType = GetStatusFromMssMsgType(msgType, out statusByte);
             Debug.Assert(successfullyConvertedType);
             statusByte |= (byte)(channel - 1);
-            
+
             midiData[0] = statusByte;
             midiData[1] = byte2;
             midiData[2] = byte3;

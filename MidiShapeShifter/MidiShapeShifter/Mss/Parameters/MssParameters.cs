@@ -1,10 +1,7 @@
-﻿using System;
+﻿using MidiShapeShifter.Mss.Mapping;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using MidiShapeShifter.Mss.Mapping;
 
 namespace MidiShapeShifter.Mss.Parameters
 {
@@ -15,9 +12,12 @@ namespace MidiShapeShifter.Mss.Parameters
     /// The number associated with each ID should not be changed to ensure backward compatibility as
     /// it is sometimes saved as an integer.
     /// </remarks>
-    public enum MssParameterID { VariableA = 0, VariableB = 1, VariableC = 2, VariableD = 3, 
-                                 VariableE = 4, Preset1 = 5, Preset2 = 6, Preset3 = 7, 
-                                 Preset4 = 8, Preset5 = 9 };
+    public enum MssParameterID
+    {
+        VariableA = 0, VariableB = 1, VariableC = 2, VariableD = 3,
+        VariableE = 4, Preset1 = 5, Preset2 = 6, Preset3 = 7,
+        Preset4 = 8, Preset5 = 9
+    };
 
     public delegate void ParameterNameChangedEventHandler(MssParameterID paramId, string name);
     public delegate void ParameterValueChangedEventHandler(MssParameterID paramId, double value);
@@ -86,7 +86,8 @@ namespace MidiShapeShifter.Mss.Parameters
 
         public static string GetDefaultPresetName(MssParameterID presetId)
         {
-            switch (presetId) { 
+            switch (presetId)
+            {
                 case MssParameterID.Preset1:
                     return "P1";
                 case MssParameterID.Preset2:
@@ -168,7 +169,7 @@ namespace MidiShapeShifter.Mss.Parameters
 
             //We need to check of the param type has changed here because the same raw value
             //can be displayed differently for different param types.
-            if ((paramTypeChanged || prevParamInfo.RawValue != paramInfo.RawValue) && 
+            if ((paramTypeChanged || prevParamInfo.RawValue != paramInfo.RawValue) &&
                 ParameterValueChanged != null)
             {
                 ParameterValueChanged(paramId, paramInfo.RawValue);
@@ -194,7 +195,8 @@ namespace MidiShapeShifter.Mss.Parameters
             else if (PRESET_PARAM_ID_LIST.Contains(paramId))
             {
                 return this.activeMappingInfo.GetActiveGraphableEntryManager().RunFuncOnMappingEntry(this.activeMappingInfo.ActiveGraphableEntryId,
-                    (mappingEntry) => {
+                    (mappingEntry) =>
+                    {
                         int paramIndex = PRESET_PARAM_ID_LIST.IndexOf(paramId);
                         MssParamInfo paramInfo = mappingEntry.CurveShapeInfo.ParamInfoList[paramIndex];
                         paramAccessor(paramInfo);
@@ -208,13 +210,14 @@ namespace MidiShapeShifter.Mss.Parameters
             }
         }
 
-        public bool GetActiveMappingExists() {
+        public bool GetActiveMappingExists()
+        {
             return this.activeMappingInfo.GetActiveMappingExists();
         }
 
         public void SetParameterName(MssParameterID paramId, string name)
         {
-            if (ALL_PARAMS_ID_LIST.Contains(paramId) == false) 
+            if (ALL_PARAMS_ID_LIST.Contains(paramId) == false)
             {
                 //paramDict should always contain every possible MssParameterID
                 Debug.Assert(false);
@@ -223,8 +226,8 @@ namespace MidiShapeShifter.Mss.Parameters
 
             bool triggerNameChangedEvent = false;
 
-            RunFuncOnParamInfo(paramId, 
-                paramInfo => 
+            RunFuncOnParamInfo(paramId,
+                paramInfo =>
                 {
                     if (paramInfo.Name != name)
                     {
@@ -233,7 +236,8 @@ namespace MidiShapeShifter.Mss.Parameters
                     }
                 });
 
-            if (triggerNameChangedEvent && ParameterNameChanged != null) {
+            if (triggerNameChangedEvent && ParameterNameChanged != null)
+            {
                 ParameterNameChanged(paramId, name);
             }
         }
@@ -250,8 +254,8 @@ namespace MidiShapeShifter.Mss.Parameters
             bool triggerValueChangedEvent = false;
             double newValue = -1;
 
-            RunFuncOnParamInfo(paramId, 
-                paramInfo => 
+            RunFuncOnParamInfo(paramId,
+                paramInfo =>
                 {
                     double previousValue = paramInfo.GetValue();
                     paramInfo.RawValue = rawValue;
@@ -303,20 +307,20 @@ namespace MidiShapeShifter.Mss.Parameters
 
             bool triggerMinValueChangedEvent = false;
 
-             RunFuncOnParamInfo(paramId, 
-                paramInfo => 
-                {
-                    if (paramInfo.MinValue != minValue)
-                    {
-                        paramInfo.MinValue = minValue;
-                        triggerMinValueChangedEvent = true;
-                    }
-            });
+            RunFuncOnParamInfo(paramId,
+               paramInfo =>
+               {
+                   if (paramInfo.MinValue != minValue)
+                   {
+                       paramInfo.MinValue = minValue;
+                       triggerMinValueChangedEvent = true;
+                   }
+               });
 
-             if (triggerMinValueChangedEvent && ParameterMinValueChanged != null)
-             {
-                 ParameterMinValueChanged(paramId, minValue);
-             }
+            if (triggerMinValueChangedEvent && ParameterMinValueChanged != null)
+            {
+                ParameterMinValueChanged(paramId, minValue);
+            }
 
 
         }
@@ -348,6 +352,6 @@ namespace MidiShapeShifter.Mss.Parameters
                 ParameterMaxValueChanged(paramId, maxValue);
             }
         }
-    
+
     }
 }

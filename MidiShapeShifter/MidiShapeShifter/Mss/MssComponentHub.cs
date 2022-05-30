@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
-
-using System.Drawing;
-using System.Windows.Forms;
-using System.Diagnostics;
-
+﻿using MidiShapeShifter.Mss.Generator;
 using MidiShapeShifter.Mss.Mapping;
 using MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes;
-using MidiShapeShifter.Mss.Generator;
-using MidiShapeShifter.Mss.UI;
-using MidiShapeShifter.Mss.Relays;
 using MidiShapeShifter.Mss.MssMsgInfoTypes;
 using MidiShapeShifter.Mss.Parameters;
-using System.Threading;
+using MidiShapeShifter.Mss.Relays;
+using MidiShapeShifter.Mss.UI;
+using System;
 using System.Globalization;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
+using System.Threading;
 
 namespace MidiShapeShifter.Mss
 {
@@ -88,7 +80,8 @@ namespace MidiShapeShifter.Mss
 
         protected EventLogger eventLogger;
 
-        static MssComponentHub() {
+        static MssComponentHub()
+        {
             //Some countries use a comma instead of a decimal point. This is not supported by NCalc so we 
             //need to ensure everyone is using a "."
             if (Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator != ".")
@@ -146,18 +139,18 @@ namespace MidiShapeShifter.Mss
             //events are recieved. A better solution would be to have a beforeEventRecieved event.
             this.eventLogger.Init(this.DryMssEventOutputPort, this.WetMssEventOutputPort);
 
-            this.msgEntryMetadataFactory.Init(this.genMappingMgr, 
+            this.msgEntryMetadataFactory.Init(this.genMappingMgr,
                                               (IMssParameterViewer)this.MssParameters);
             this.msgInfoFactory.Init(this.genMappingMgr, (IMssParameterViewer)this.MssParameters);
 
             this.sendEventsToHostTrigger.Init(this.HostInfoOutputPort, this.WetMssEventInputPort);
-            this.paramMsgHandler.Init(this.MssParameters, 
-                                      this.WetMssEventOutputPort, 
-                                      this.DryMssEventInputPort, 
+            this.paramMsgHandler.Init(this.MssParameters,
+                                      this.WetMssEventOutputPort,
+                                      this.DryMssEventInputPort,
                                       this.HostInfoOutputPort);
-            this.dryMssEventHandler.Init(this.DryMssEventOutputPort, 
-                                         this.WetMssEventInputPort, 
-                                         this.mappingMgr, 
+            this.dryMssEventHandler.Init(this.DryMssEventOutputPort,
+                                         this.WetMssEventInputPort,
+                                         this.mappingMgr,
                                          this.MssParameters);
             this.mssEventGenrator.Init(this.HostInfoOutputPort,
                                        this.WetMssEventOutputPort,
@@ -218,13 +211,13 @@ namespace MidiShapeShifter.Mss
                 this.PluginEditorView = new PluginEditorView();
 
                 this.PluginEditorView.CreateControl();
-                this.PluginEditorView.Init(this.MssParameters, 
-                                            this.mappingMgr, 
+                this.PluginEditorView.Init(this.MssParameters,
+                                            this.mappingMgr,
                                             this.genMappingMgr,
                                             this.MssProgramMgr,
                                             this.transformPresetMgr,
                                             this.DryMssEventOutputPort,
-                                            this.HostInfoOutputPort, 
+                                            this.HostInfoOutputPort,
                                             this.activeMappingInfo);
             }
         }

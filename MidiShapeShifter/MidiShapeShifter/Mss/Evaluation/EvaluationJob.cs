@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-
-using NCalc;
-
-using MidiShapeShifter.CSharpUtil;
+﻿using MidiShapeShifter.CSharpUtil;
 using MidiShapeShifter.Mss.Parameters;
+using NCalc;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace MidiShapeShifter.Mss.Evaluation
 {
@@ -29,8 +24,10 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// Stores the value of the evaluated equation if OutputIsValid is 
         /// true.
         /// </summary>
-        public double OutputVal {
-            get {
+        public double OutputVal
+        {
+            get
+            {
                 if (OutputIsValid == false)
                 {
                     Debug.Assert(false);
@@ -38,7 +35,8 @@ namespace MidiShapeShifter.Mss.Evaluation
                 return _outputVal;
             }
 
-            protected set {
+            protected set
+            {
                 _outputVal = value;
             }
         }
@@ -58,7 +56,7 @@ namespace MidiShapeShifter.Mss.Evaluation
         /// <summary>
         /// The equation as an Expression object.
         /// </summary>
-        protected Expression expression { get; set;}
+        protected Expression expression { get; set; }
 
         /// <summary>
         /// Evaluates the equation and stores the output in OutputVal.
@@ -110,7 +108,7 @@ namespace MidiShapeShifter.Mss.Evaluation
             if (this.expression != null)
             {
                 char charVarName = 'a';
-                foreach(MssParamInfo varInfo in input.VariableParamInfoList)
+                foreach (MssParamInfo varInfo in input.VariableParamInfoList)
                 {
                     double relVal = CustomMathUtils.AbsToRelVal(varInfo.MinValue, varInfo.MaxValue, varInfo.GetValue());
 
@@ -178,16 +176,16 @@ namespace MidiShapeShifter.Mss.Evaluation
             }
         }
 
-        protected virtual ReturnStatus<bool> HandleCustomFunctions(string funcName, 
-                                                     FunctionArgs args, 
+        protected virtual ReturnStatus<bool> HandleCustomFunctions(string funcName,
+                                                     FunctionArgs args,
                                                      List<double> evaluatedArgs)
         {
             return HandleBaseFunctions(funcName, args, evaluatedArgs);
         }
 
         //Return true if the function was handled
-        protected ReturnStatus<bool> HandleBaseFunctions(string funcName, 
-                                           FunctionArgs args, 
+        protected ReturnStatus<bool> HandleBaseFunctions(string funcName,
+                                           FunctionArgs args,
                                            List<double> evaluatedArgs)
         {
             ReturnStatus<bool> retStatus = new ReturnStatus<bool>();

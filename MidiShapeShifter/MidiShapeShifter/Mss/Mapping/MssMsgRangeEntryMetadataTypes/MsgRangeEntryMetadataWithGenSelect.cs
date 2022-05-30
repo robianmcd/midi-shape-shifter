@@ -1,11 +1,7 @@
-﻿using System;
+﻿using MidiShapeShifter.Mss.Generator;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.Diagnostics;
-
-using MidiShapeShifter.Mss.Generator;
+using System.Windows.Forms;
 
 namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
 {
@@ -70,9 +66,10 @@ namespace MidiShapeShifter.Mss.Mapping.MssMsgRangeEntryMetadataTypes
             this.EntryField1Lbl.Text = "Generator Name:";
             this.EntryField1.Visible = true;
 
-            List<IGeneratorMappingEntry>  genEntrieList = this.genMappingMgr.GetCopyOfMappingEntryList();
+            List<IGeneratorMappingEntry> genEntrieList = this.genMappingMgr.GetCopyOfMappingEntryList();
 
-            foreach (IGeneratorMappingEntry genEntry in genEntrieList) {
+            foreach (IGeneratorMappingEntry genEntry in genEntrieList)
+            {
                 ((ComboBox)this.EntryField1).Items.Add(genEntry);
             }
 

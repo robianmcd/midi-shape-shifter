@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
@@ -26,7 +24,7 @@ namespace MidiShapeShifter.Mss.Parameters
 
             //If this asserts false then WaveformShap must have been changed. Make sure valueNames
             //contains an entry for each WaveformShap and then update this assert statment.
-            Debug.Assert((int)WaveformShap.Saw == numWaveformShapes-1);
+            Debug.Assert((int)WaveformShap.Saw == numWaveformShapes - 1);
 
             _valueNameList = valueNames.AsReadOnly();
         }
@@ -52,7 +50,7 @@ namespace MidiShapeShifter.Mss.Parameters
         protected override void SetMembersWithDefaultValues()
         {
             this.MinValue = 0;
-            this.MaxValue = Enum.GetValues(typeof(WaveformShap)).Length-1;
+            this.MaxValue = Enum.GetValues(typeof(WaveformShap)).Length - 1;
             this.RawValue = (int)WaveformShap.Sin;
         }
 
