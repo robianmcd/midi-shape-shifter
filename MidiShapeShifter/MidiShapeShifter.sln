@@ -11,6 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidiShapeShifterTest", "Mid
 	EndProjectSection
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MidiShapeShifterInstaller", "MidiShapeShifterInstaller\MidiShapeShifterInstaller.vdproj", "{A5BC787D-A27A-427B-B616-5AC8CB43A06F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D19470F9-7D1E-4385-AD34-C7D826649F89} = {D19470F9-7D1E-4385-AD34-C7D826649F89}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

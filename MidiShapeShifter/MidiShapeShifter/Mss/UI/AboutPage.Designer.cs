@@ -40,9 +40,9 @@
             this.iconzaLink = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // OkBtn
-            // 
+            //
             this.OkBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.OkBtn.Location = new System.Drawing.Point(103, 174);
             this.OkBtn.Name = "OkBtn";
@@ -50,9 +50,9 @@
             this.OkBtn.TabIndex = 3;
             this.OkBtn.Text = "Ok";
             this.OkBtn.UseVisualStyleBackColor = true;
-            // 
+            //
             // pictureBox1
-            // 
+            //
             this.pictureBox1.Image = global::MidiShapeShifter.Properties.Resources.imgLogoWide;
             this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
@@ -60,9 +60,9 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
-            // 
+            //
             // titleLbl
-            // 
+            //
             this.titleLbl.AllowDrop = true;
             this.titleLbl.AutoSize = true;
             this.titleLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -72,56 +72,56 @@
             this.titleLbl.TabIndex = 5;
             this.titleLbl.Text = "MIDI Shape Shifter";
             this.titleLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
+            //
             // versionLbl
-            // 
+            //
             this.versionLbl.AutoSize = true;
             this.versionLbl.Location = new System.Drawing.Point(118, 33);
             this.versionLbl.Name = "versionLbl";
             this.versionLbl.Size = new System.Drawing.Size(45, 13);
             this.versionLbl.TabIndex = 6;
             this.versionLbl.Text = "Version:";
-            // 
+            //
             // homePageLbl
-            // 
+            //
             this.homePageLbl.AutoSize = true;
             this.homePageLbl.Location = new System.Drawing.Point(9, 83);
             this.homePageLbl.Name = "homePageLbl";
             this.homePageLbl.Size = new System.Drawing.Size(66, 13);
             this.homePageLbl.TabIndex = 7;
             this.homePageLbl.Text = "Home Page:";
-            // 
+            //
             // homePageLink
-            // 
+            //
             this.homePageLink.AutoSize = true;
             this.homePageLink.Location = new System.Drawing.Point(81, 83);
             this.homePageLink.Name = "homePageLink";
-            this.homePageLink.Size = new System.Drawing.Size(191, 13);
+            this.homePageLink.Size = new System.Drawing.Size(220, 13);
             this.homePageLink.TabIndex = 9;
             this.homePageLink.TabStop = true;
-            this.homePageLink.Text = "code.google.com/p/midi-shape-shifter/";
+            this.homePageLink.Text = "https://github.com/robianmcd/midi-shape-shifter";
             this.homePageLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.homePageLink_LinkClicked);
-            // 
+            //
             // thanksLbl
-            // 
+            //
             this.thanksLbl.AutoSize = true;
             this.thanksLbl.Location = new System.Drawing.Point(9, 106);
             this.thanksLbl.Name = "thanksLbl";
             this.thanksLbl.Size = new System.Drawing.Size(67, 13);
             this.thanksLbl.TabIndex = 10;
             this.thanksLbl.Text = "Powered By:";
-            // 
+            //
             // versionValueLbl
-            // 
+            //
             this.versionValueLbl.AutoSize = true;
             this.versionValueLbl.Location = new System.Drawing.Point(169, 33);
             this.versionValueLbl.Name = "versionValueLbl";
             this.versionValueLbl.Size = new System.Drawing.Size(28, 13);
             this.versionValueLbl.TabIndex = 11;
             this.versionValueLbl.Text = "x.x.x";
-            // 
+            //
             // vstNetLink
-            // 
+            //
             this.vstNetLink.Location = new System.Drawing.Point(19, 126);
             this.vstNetLink.Margin = new System.Windows.Forms.Padding(0);
             this.vstNetLink.Name = "vstNetLink";
@@ -130,9 +130,9 @@
             this.vstNetLink.TabStop = true;
             this.vstNetLink.Text = "VST.Net";
             this.vstNetLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.vstNetLink_LinkClicked);
-            // 
+            //
             // iconzaLink
-            // 
+            //
             this.iconzaLink.Location = new System.Drawing.Point(19, 146);
             this.iconzaLink.Margin = new System.Windows.Forms.Padding(0);
             this.iconzaLink.Name = "iconzaLink";
@@ -141,14 +141,14 @@
             this.iconzaLink.TabStop = true;
             this.iconzaLink.Text = "Iconza";
             this.iconzaLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.iconzaLink_LinkClicked);
-            // 
+            //
             // AboutPage
-            // 
+            //
             this.AcceptButton = this.OkBtn;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.OkBtn;
-            this.ClientSize = new System.Drawing.Size(281, 204);
+            this.ClientSize = new System.Drawing.Size(350, 204);
             this.Controls.Add(this.iconzaLink);
             this.Controls.Add(this.vstNetLink);
             this.Controls.Add(this.versionValueLbl);

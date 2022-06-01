@@ -24,6 +24,8 @@ ___
 
 ## News
 
+**Mayb 29 2022**: Released [Midi Shape Shifter 1.0.11-Beta](). Updated the Dotnet Framework to 4.5.2. Updated the installer. Cleaned up the code to match new C# changes. Dropped the support for Windows 32-bit
+
 **July 28 2013**: Released [Midi Shape Shifter 1.0.10-Beta](http://code.google.com/p/midi-shape-shifter/downloads/list). Several bugs were fixed in this release, the most notable of which was causing most people in continental Europe to not be able to use control points.
 
 **May 4 2013**: Released [Midi Shape Shifter 1.0.8-Beta](http://code.google.com/p/midi-shape-shifter/downloads/list). If you want to help make Midi Shape Shifter better let us know what you think at the [MSS User Forum](https://groups.google.com/d/forum/midi-shape-shifter).
@@ -33,8 +35,6 @@ ___
 ___
 
 ## Support
-
-| **Contact** | Email: `mss-support@googlegroups.com` |
 
 | **Forum**  | [MSS User Forum](https://groups.google.com/d/forum/midi-shape-shifter) - Post your questions and comments here.  |
 |---|---|

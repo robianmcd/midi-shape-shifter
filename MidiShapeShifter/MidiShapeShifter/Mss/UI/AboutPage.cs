@@ -17,7 +17,7 @@ namespace MidiShapeShifter.Mss.UI
 
         private void homePageLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://code.google.com/p/midi-shape-shifter/");
+            System.Diagnostics.Process.Start("https://github.com/robianmcd/midi-shape-shifter");
         }
 
         private void vstNetLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
