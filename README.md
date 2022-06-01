@@ -24,7 +24,7 @@ ___
 
 ## News
 
-**Mayb 29 2022**: Released [Midi Shape Shifter 1.0.11-Beta](https://github.com/robianmcd/midi-shape-shifter/releases/download/v1.0.11-beta/MidiShapeShifter-1.0.11-beta.zip). :tada: Moved the repository to GitHub by, Updated the Dotnet Framework to 4.5.2 by, Updated the installer and the build by, Cleaned up the code to match the new C# changes  by, Dropped the support for Windows 32-bit by
+**Mayb 29 2022**: Released [Midi Shape Shifter 1.0.11-Beta](https://github.com/robianmcd/midi-shape-shifter/releases/download/v1.0.11-beta/MidiShapeShifter-1.0.11-beta.zip). :tada: Moved the repository to GitHub, Updated the Dotnet Framework to 4.5.2, Updated the installer and the build, Cleaned up the code to match the new C# changes, Dropped the support for Windows 32-bit
 
 **July 28 2013**: Released [Midi Shape Shifter 1.0.10-Beta](http://code.google.com/p/midi-shape-shifter/downloads/list). Several bugs were fixed in this release, the most notable of which was causing most people in continental Europe to not be able to use control points.
 
