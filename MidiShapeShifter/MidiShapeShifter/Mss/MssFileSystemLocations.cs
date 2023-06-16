@@ -11,10 +11,18 @@ namespace MidiShapeShifter.Mss
         {
             get
             {
-                RegistryKey mssLocalMachineRegKey = CreateMssLocalMachineRegKey();
-                string settingsFolder = mssLocalMachineRegKey.GetValue("SettingsFolder", "").ToString();
+                RegistryKey mssLocalMachineRegKey = CreateMssCurrentUserRegKey();
+                var settingsFolder = mssLocalMachineRegKey.GetValue("SettingsFolder");
+
+                // if doesn't exist, create it
+                if (settingsFolder == null)
+                {
+                    mssLocalMachineRegKey.SetValue("SettingsFolder", MssConstants.DEFAULT_SETTINGS_FOLDER);
+                    settingsFolder = mssLocalMachineRegKey.GetValue("SettingsFolder");
+                }
+                Debug.Assert(settingsFolder != null);
+
                 mssLocalMachineRegKey.Close();
-                Debug.Assert(settingsFolder != "");
 
                 return settingsFolder;
             }
@@ -32,10 +40,11 @@ namespace MidiShapeShifter.Mss
 
         public static string UserTransformPresetFolder => UserSettingsFolder + @"Transformation Presets\";
 
-        private static RegistryKey CreateMssLocalMachineRegKey()
+        private static RegistryKey CreateMssCurrentUserRegKey()
         {
-            RegistryKey localMachine32 = RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, RegistryView.Registry32);
-            return localMachine32.OpenSubKey(@"SOFTWARE\" + MssConstants.APP_NAME);
+            RegistryKey localMachine32 = RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.CurrentUser, RegistryView.Registry32);
+            return localMachine32.OpenSubKey(@"SOFTWARE\" + MssConstants.APP_NAME) ??
+                   localMachine32.CreateSubKey(@"SOFTWARE\" + MssConstants.APP_NAME);
         }
     }
 
