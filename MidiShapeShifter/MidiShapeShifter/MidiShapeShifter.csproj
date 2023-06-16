@@ -63,10 +63,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Jacobi.Vst.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="LBIndustrialCtrls, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\LBIndustrialCtrls.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="NCalc, Version=1.3.6.0, Culture=neutral, PublicKeyToken=973cde3f1cafed03, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -402,6 +398,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\images\imgHelp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LBIndustrialCtrls_src\LBIndustrialCtrls\LBIndustrialCtrls.csproj">
+      <Project>{b4218bc9-9736-42b9-bc99-7903fdbeba28}</Project>
+      <Name>LBIndustrialCtrls</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
