@@ -35,6 +35,12 @@ namespace MidiShapeShifter.CSharpUtil
         {
             List<FileTreeFileInfo> programsCreated = new List<FileTreeFileInfo>();
 
+            // if dirPath does not exist, create it
+            if (Directory.Exists(dirPath) == false)
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+
             string[] programPathArr =
                 Directory.GetFiles(dirPath, "*." + fileExtension);
             //Add programs in dirPath
