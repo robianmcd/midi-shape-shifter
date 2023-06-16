@@ -47,14 +47,16 @@ namespace MidiShapeShifter.Framework
             this.MssHub.ClosePluginEditor();
         }
 
-        public void KeyDown(byte ascii, VstVirtualKey virtualKey, VstModifierKeys modifers)
+        public bool KeyDown(byte ascii, VstVirtualKey virtualKey, VstModifierKeys modifers)
         {
             // empty by design
+            return false;
         }
 
-        public void KeyUp(byte ascii, VstVirtualKey virtualKey, VstModifierKeys modifers)
+        public bool KeyUp(byte ascii, VstVirtualKey virtualKey, VstModifierKeys modifers)
         {
             // empty by design
+            return false;
         }
 
         public VstKnobMode KnobMode { get; set; }
