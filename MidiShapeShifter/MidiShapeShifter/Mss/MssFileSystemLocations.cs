@@ -12,15 +12,21 @@ namespace MidiShapeShifter.Mss
             get
             {
                 RegistryKey mssLocalMachineRegKey = CreateMssCurrentUserRegKey();
-                var settingsFolder = mssLocalMachineRegKey.GetValue("SettingsFolder");
+                var settingsFolderObject = mssLocalMachineRegKey.GetValue("SettingsFolder");
 
                 // if doesn't exist, create it
-                if (settingsFolder == null)
+                string settingsFolder = "";
+                if (settingsFolderObject == null)
                 {
-                    mssLocalMachineRegKey.SetValue("SettingsFolder", MssConstants.DEFAULT_SETTINGS_FOLDER);
-                    settingsFolder = mssLocalMachineRegKey.GetValue("SettingsFolder");
+                    // set it to the current user's Documents/MidiShapeShifter folder
+                    string current_user_documents_folder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+                    Debug.Assert(current_user_documents_folder != "");
+                    string default_settings_folder = current_user_documents_folder + @"\" + MssConstants.APP_FOLDER_NAME + @"\";
+
+                    mssLocalMachineRegKey.SetValue("SettingsFolder", default_settings_folder);
+                    settingsFolder = default_settings_folder;
                 }
-                Debug.Assert(settingsFolder != null);
+                Debug.Assert(settingsFolder != "");
 
                 mssLocalMachineRegKey.Close();
 
