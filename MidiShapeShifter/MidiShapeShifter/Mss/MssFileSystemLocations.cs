@@ -5,16 +5,40 @@ namespace MidiShapeShifter.Mss
 {
     public static class MssFileSystemLocations
     {
-
+        public static string default_settings_folder()
+        {
+            // set it to the current user's Documents/MidiShapeShifter folder
+            string current_user_documents_folder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+            Debug.Assert(current_user_documents_folder != "");
+            return current_user_documents_folder + @"\" + MssConstants.APP_FOLDER_NAME + @"\";
+        }
 
         public static string SettingsFolder
         {
             get
             {
-                RegistryKey mssLocalMachineRegKey = CreateMssLocalMachineRegKey();
-                string settingsFolder = mssLocalMachineRegKey.GetValue("SettingsFolder", "").ToString();
-                mssLocalMachineRegKey.Close();
+                RegistryKey mssLocalMachineRegKey = CreateMssCurrentUserRegKey();
+                Debug.Assert(mssLocalMachineRegKey != null);
+                object settingsFolderObject = mssLocalMachineRegKey.GetValue("SettingsFolder");
+
+                // if doesn't exist, create it
+                string settingsFolder = "";
+                if (settingsFolderObject == null)
+                {
+                    settingsFolder = default_settings_folder();
+
+                    try
+                    {
+                        mssLocalMachineRegKey.SetValue("SettingsFolder", settingsFolder, RegistryValueKind.ExpandString);
+                    }
+                    catch (System.Exception err)
+                    {
+                        Logger.Warning(0, "Unable to create registry key for SettingsFolder. Try again as administrator or ignore the warning:" + err.Message);
+                    }
+                }
                 Debug.Assert(settingsFolder != "");
+
+                mssLocalMachineRegKey.Close();
 
                 return settingsFolder;
             }
@@ -32,10 +56,11 @@ namespace MidiShapeShifter.Mss
 
         public static string UserTransformPresetFolder => UserSettingsFolder + @"Transformation Presets\";
 
-        private static RegistryKey CreateMssLocalMachineRegKey()
+        private static RegistryKey CreateMssCurrentUserRegKey()
         {
-            RegistryKey localMachine32 = RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, RegistryView.Registry32);
-            return localMachine32.OpenSubKey(@"SOFTWARE\" + MssConstants.APP_NAME);
+            RegistryKey current_user = RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.CurrentUser, RegistryView.Registry32);
+            return current_user.OpenSubKey(@"SOFTWARE\" + MssConstants.APP_NAME) ??
+                   current_user.CreateSubKey(@"SOFTWARE\" + MssConstants.APP_NAME);
         }
     }
 

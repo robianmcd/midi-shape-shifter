@@ -56,7 +56,9 @@ If you like this project and want to help out there is lots you can do.
 
 **Develop**
 
-> This is an open source project so if your a C# developer and your up for contributing some code then let me know. As an added bonus I can give you a free open-source license for `ReShaper` if you contribute.
+> This is an open source project so if your a C# developer and your up for contributing some code then let me know.
+
+To build the project you need [Visual Studio 22](https://visualstudio.microsoft.com/vs/), [.Net frame work 4.5.2](https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net452-developer-pack-offline-installer), and the [Installer Project extension](https://stackoverflow.com/a/54889614/7910299).
 
 **Donate**
 
