@@ -1,0 +1,4 @@
+[submodule "SDK/ZedGraph"]
+	path = SDK/ZedGraph
+	url = https://github.com/aminya/zedgraph/
+	branch = midi-shape-shifter

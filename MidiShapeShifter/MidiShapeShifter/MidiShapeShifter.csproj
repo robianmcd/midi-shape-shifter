@@ -400,8 +400,12 @@
       <Project>{b4218bc9-9736-42b9-bc99-7903fdbeba28}</Project>
       <Name>LBIndustrialCtrls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SDK\ZedGraphs\ZedGraph.csproj">
-      <Project>{2541686b-1673-43bf-af89-3163945db009}</Project>
+    <ProjectReference Include="..\..\SDK\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj">
+      <Project>{23a6c1ad-296b-4a10-a27a-adff30132902}</Project>
+      <Name>ZedGraph.WinForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SDK\ZedGraph\source\ZedGraph\ZedGraph.csproj">
+      <Project>{db003528-61d8-4fa6-b0b5-f4f09f1f9135}</Project>
       <Name>ZedGraph</Name>
     </ProjectReference>
   </ItemGroup>
