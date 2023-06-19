@@ -417,7 +417,8 @@
     <PostBuildEvent>rmdir "$(ProjectDir)bin\vst-dist\" /Q/S
 xcopy "$(TargetDir)" "$(ProjectDir)bin\vst-dist\" /E/H/Q
 del "$(ProjectDir)bin\vst-dist\$(TargetFileName)"
-copy "$(TargetPath)" "$(ProjectDir)bin\vst-dist\$(TargetName).net.vstdll"</PostBuildEvent>
+copy "$(TargetPath)" "$(ProjectDir)bin\vst-dist\$(TargetName).net.vstdll"
+copy "$(TargetDir)\Jacobi.Vst.Interop.dll" "$(ProjectDir)bin\vst-dist\$(TargetFileName)</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
