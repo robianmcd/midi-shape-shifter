@@ -356,8 +356,8 @@ namespace MidiShapeShifter.Mss.UI
         }
 
         /// <summary>
-        ///     Creates a ListViewItem based on the GeneratorMappingEntry specified by 
-        ///     <paramref name="id"/>. This ListViewItem is intended to be used in the 
+        ///     Creates a ListViewItem based on the GeneratorMappingEntry specified by
+        ///     <paramref name="id"/>. This ListViewItem is intended to be used in the
         ///     PluginEditorView's generator list box.
         /// </summary>
         /// <returns>The ListViewItem representation of a GeneratorMappingEntry</returns>
@@ -388,9 +388,9 @@ namespace MidiShapeShifter.Mss.UI
             }
         }
 
-        //Knob values are stored as floats which are less percise than doubles. The max and min value for a parameter 
-        //are stored as doubles so if the knob is set to 0.01f and the min value for a parameter is set to 0.01 then 
-        //then knob value will actually be less than the min value. To avoid this we round the knob value so that it 
+        //Knob values are stored as floats which are less percise than doubles. The max and min value for a parameter
+        //are stored as doubles so if the knob is set to 0.01f and the min value for a parameter is set to 0.01 then
+        //then knob value will actually be less than the min value. To avoid this we round the knob value so that it
         //should end up being the same as a double value as long as the double value is less than 6 digits.
         protected double GetRoundedKnobValueAsDouble(LBKnob knob)
         {
@@ -563,7 +563,7 @@ namespace MidiShapeShifter.Mss.UI
 
         protected void SetGraphOutputLabelText(string outputText)
         {
-            //The following code will cause the output type label to flicker so it should be 
+            //The following code will cause the output type label to flicker so it should be
             //avoided whenever possible.
             if (this.graphOutputLabelText != outputText)
             {
@@ -765,7 +765,7 @@ namespace MidiShapeShifter.Mss.UI
                     this.activeMappingInfo.GetActiveMappingManager().ReplaceMappingEntry(activeMappingEntryCopy);
 
                     RefreshMappingListView();
-                    //The equation curve needs to be updated incase the equation uses data1 or data2 
+                    //The equation curve needs to be updated incase the equation uses data1 or data2
                     //and the input range for these has changed.
                     this.commandQueue.EnqueueCommandOverwriteDups(
                         EditorCommandId.UpdateEquationCurve, () => UpdateEquationCurve());
@@ -778,7 +778,7 @@ namespace MidiShapeShifter.Mss.UI
             if (this.activeMappingInfo.GetActiveMappingExists() == false ||
                 this.activeMappingInfo.ActiveGraphableEntryType != GraphableEntryType.Mapping)
             {
-                //The delete button should be disabled if there is no ActiveGraphableEntry or if the 
+                //The delete button should be disabled if there is no ActiveGraphableEntry or if the
                 //active mapping is not in the mapping list view.
                 Debug.Assert(false);
                 return;
@@ -792,7 +792,7 @@ namespace MidiShapeShifter.Mss.UI
             if (this.activeMappingInfo.GetActiveMappingExists() == false ||
                 this.activeMappingInfo.ActiveGraphableEntryType != GraphableEntryType.Generator)
             {
-                //The delete button should be disabled if there is no ActiveGraphableEntry or if the 
+                //The delete button should be disabled if there is no ActiveGraphableEntry or if the
                 //active mapping is not in the mapping list view.
                 Debug.Assert(false);
                 return;
@@ -1096,7 +1096,7 @@ namespace MidiShapeShifter.Mss.UI
                             pointsCurveEdit.Add(curControlPoint.X, curControlPoint.Y);
                         }
                     }
-                    //Remove points. Itterate backwards so removing a point does not affect the 
+                    //Remove points. Itterate backwards so removing a point does not affect the
                     //index of the next point.
                     for (int i = pointsCurve.Points.Count - 1; i >= pointList.Count; i--)
                     {
@@ -1212,7 +1212,7 @@ namespace MidiShapeShifter.Mss.UI
         protected void RemoveEquationCurvesFromGraph()
         {
             GraphPane pane = this.mainGraphControl.GraphPane;
-            //Itterate through this list backwards so that removing an element wont affect the 
+            //Itterate through this list backwards so that removing an element wont affect the
             //index of the next element.
             for (int i = pane.CurveList.Count - 1; i >= 0; i--)
             {
@@ -1382,8 +1382,8 @@ namespace MidiShapeShifter.Mss.UI
                 this.activeMappingInfo.ActiveGraphableEntryType != GraphableEntryType.Mapping ||
                 this.activeMappingInfo.GetActiveMappingManager().GetMappingEntryIndexById(this.activeMappingInfo.ActiveGraphableEntryId) <= 0)
             {
-                //The move up button should be disabled if there is no ActiveGraphableEntry, 
-                //if the ActiveGraphableEntry is not in the mapping list view or if the 
+                //The move up button should be disabled if there is no ActiveGraphableEntry,
+                //if the ActiveGraphableEntry is not in the mapping list view or if the
                 //ActiveGraphableEntry cannot be moved up.
                 Debug.Assert(false);
                 return;
@@ -1399,7 +1399,7 @@ namespace MidiShapeShifter.Mss.UI
             if (this.activeMappingInfo.GetActiveMappingExists() == false ||
                 this.activeMappingInfo.ActiveGraphableEntryType != GraphableEntryType.Mapping)
             {
-                //The move up button should be disabled if there is no ActiveGraphableEntry, 
+                //The move up button should be disabled if there is no ActiveGraphableEntry,
                 //or if the ActiveGraphableEntry is not in the mapping list view.
                 Debug.Assert(false);
                 return;
@@ -1511,8 +1511,8 @@ namespace MidiShapeShifter.Mss.UI
                     };
 
 
-                    //If the click was close enough to an exsisting control point then start dragging 
-                    //it. The distances that is deemed "close enough" is defined in 
+                    //If the click was close enough to an exsisting control point then start dragging
+                    //it. The distances that is deemed "close enough" is defined in
                     //EqGraphConfig.ConfigureEqGraph.
                     if (GetClickedControlPoint(mousePt, out LineItem controlPointsCurve, out int nearestPointIndex))
                     {
@@ -1569,7 +1569,7 @@ namespace MidiShapeShifter.Mss.UI
                         //segment after the new point
                         string equationToDuplicate = curveInfo.CurveEquations[pointBeforeNewPointIndex + 1];
                         curveInfo.CurveEquations.Insert(pointBeforeNewPointIndex + 1, equationToDuplicate);
-                        //If the new equation is being inserted before the one that is currently 
+                        //If the new equation is being inserted before the one that is currently
                         //selected then the index of the currenly selected equation must be incremented.
                         if (curveInfo.SelectedEquationType == EquationType.Curve &&
                             curveInfo.SelectedEquationIndex > pointBeforeNewPointIndex + 1)
@@ -1587,8 +1587,8 @@ namespace MidiShapeShifter.Mss.UI
                         if (pointAfterNewPointIndex != -1)
                         {
                             curveInfo.PointEquations.Insert(pointAfterNewPointIndex, newPointEquation);
-                            //If the new point equation is being inserted before the point that is 
-                            //currently selected then the index of the currenly selected point 
+                            //If the new point equation is being inserted before the point that is
+                            //currently selected then the index of the currenly selected point
                             //equation must be incremented.
                             if (curveInfo.SelectedEquationType == EquationType.Point &&
                             curveInfo.SelectedEquationIndex >= pointAfterNewPointIndex)
@@ -1683,8 +1683,8 @@ namespace MidiShapeShifter.Mss.UI
             this.commandQueue.EnqueueCommandOverwriteDups(
                 EditorCommandId.UpdateCurveShapeControls, () => UpdateCurveShapeControls());
 
-            //Returning false tells zedgraphs that we have already handled the drag event. We 
-            //handel it in this method instead of letting zedgraphs handel it because zedgraphs 
+            //Returning false tells zedgraphs that we have already handled the drag event. We
+            //handel it in this method instead of letting zedgraphs handel it because zedgraphs
             //would immeadateally force a redraw which we don't want to do until the host is idle.
             return false;
         }
@@ -1698,8 +1698,8 @@ namespace MidiShapeShifter.Mss.UI
             if (this.activeMappingInfo.GetActiveMappingExists())
             {
 
-                //If the click was close enough to an exsisting control point then start dragging 
-                //it. The distances that is deemed "close enough" is defined in 
+                //If the click was close enough to an exsisting control point then start dragging
+                //it. The distances that is deemed "close enough" is defined in
                 //EqGraphConfig.ConfigureEqGraph.
                 bool controlPointClicked =
                     GetClickedControlPoint(mousePt, out LineItem controlPointCurve, out int nearestPointIndex);
@@ -1743,7 +1743,7 @@ namespace MidiShapeShifter.Mss.UI
         {
             if (this.activeMappingInfo.GetActiveMappingExists() == false)
             {
-                //This menu should be be possible to click when there is not active graphable 
+                //This menu should be be possible to click when there is not active graphable
                 //entry.
                 Debug.Assert(false);
                 return;
@@ -2025,7 +2025,7 @@ namespace MidiShapeShifter.Mss.UI
 
         private void EquationTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //backspace triggers keypress but delete does not so we just let backspace 
+            //backspace triggers keypress but delete does not so we just let backspace
             //be handeled automatically.
             if (e.KeyChar != '\b')
             {
@@ -2036,7 +2036,7 @@ namespace MidiShapeShifter.Mss.UI
 
         private void onlineHelp_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://code.google.com/p/midi-shape-shifter/wiki/OnlineDocumentation");
+            System.Diagnostics.Process.Start("https://github.com/aminya/midi-shape-shifter/tree/master/docs");
         }
 
     }
