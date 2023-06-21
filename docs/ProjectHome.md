@@ -19,7 +19,10 @@ MIDI Shape Shifter (MSS) is a VST MIDI plugin for mapping, generating and transf
 * Control multiple parameters with a single knob
 * etc
 
-[![alt text](http://img.youtube.com/vi/B8kptILs7vw/0.jpg)](http://www.youtube.com/watch?v=B8kptILs7vw)
+
+Checkout this Youtube Video:
+
+[![Youtube Video](https://github.com/robianmcd/midi-shape-shifter/assets/16418197/21ac3a5d-9b5a-4081-9815-0c84f6964680)](http://www.youtube.com/watch?v=B8kptILs7vw)
 ___
 
 ## News
