@@ -24,13 +24,7 @@ ___
 
 ## News
 
-**Mayb 29 2022**: Released [Midi Shape Shifter 1.0.11-Beta](https://github.com/robianmcd/midi-shape-shifter/releases/download/v1.0.11-beta/MidiShapeShifter-1.0.11-beta.zip). :tada: Moved the repository to GitHub, Updated the Dotnet Framework to 4.5.2, Updated the installer and the build, Cleaned up the code to match the new C# changes, Dropped the support for Windows 32-bit
-
-**July 28 2013**: Released [Midi Shape Shifter 1.0.10-Beta](http://code.google.com/p/midi-shape-shifter/downloads/list). Several bugs were fixed in this release, the most notable of which was causing most people in continental Europe to not be able to use control points.
-
-**May 4 2013**: Released [Midi Shape Shifter 1.0.8-Beta](http://code.google.com/p/midi-shape-shifter/downloads/list). If you want to help make Midi Shape Shifter better let us know what you think at the [MSS User Forum](https://groups.google.com/d/forum/midi-shape-shifter).
-
-**April 19 2013**: Fixed an issue with the 64-bit install for MSS v1.0.7Beta. The updated installer is now available for download. **March 10 2013**: Released [Midi Shape Shifter v1.0.7Beta](http://code.google.com/p/midi-shape-shifter/downloads/detail?name=MSS%20Installer%20v1.0.7Beta.exe). Added several bug fixes in this release mostly to do with the mapping dialog.
+**June 21 2023**: Released [Midi Shape Shifter 1.1.0](https://github.com/robianmcd/midi-shape-shifter/releases/download/v1.1.0/MidiShapeShifter-v1.1.0.zip). :tada: This fixes the loading issue because of dependencies. It updates the dependencies and revamps the build system to install and merge them automatically.
 
 ___
 
@@ -56,13 +50,17 @@ If you like this project and want to help out there is lots you can do.
 
 **Develop**
 
-> This is an open source project so if your a C# developer and your up for contributing some code then let me know.
-
-To build the project you need [Visual Studio 22](https://visualstudio.microsoft.com/vs/), [.Net frame work 4.5.2](https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net452-developer-pack-offline-installer), and the [Installer Project extension](https://stackoverflow.com/a/54889614/7910299).
+> This is an open source project so if your a C# developer and your up for contributing some code then let me know. As an added bonus I can give you a free open-source license for `ReShaper` if you contribute.
 
 **Donate**
 
-> The program is completely free but if you want to donate then you can do so through `PayPal`. Not really sure what I'll use the money for but I'll try to find something that will help the project go further. [![](https://dl.dropboxusercontent.com/u/20066539/Images/MSS/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=F6BUMTQGTUMDU&lc=US&item_name=MIDI%20Shape%20Shifter&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
+🤝 The program is free and open-source. You can show your support through `Patreon`:
+
+https://www.patreon.com/aminya
+
+or through `GitHub Sponsors`:
+
+https://github.com/sponsors/aminya
 
 ___
 
