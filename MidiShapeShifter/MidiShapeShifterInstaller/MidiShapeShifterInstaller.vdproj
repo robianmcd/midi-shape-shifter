@@ -105,6 +105,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_8B82667E77294DB8B82F2916C84F9A25"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_8C13A0979E1D4AD4BC9353B780A040C8"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -165,6 +171,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_DB667E121B16403A875864E14DFA3C4F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_DFC1C0B86D9C18AD244AB3DDEAE89A0F"
         "OwnerKey" = "8:_B44962717950491EBD1899D7FCD76462"
         "MsmSig" = "8:_UNDEFINED"
@@ -179,6 +191,12 @@
         {
         "MsmKey" = "8:_DFC1C0B86D9C18AD244AB3DDEAE89A0F"
         "OwnerKey" = "8:_FCB89128EED8E7D417BE122D3351706C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E040C1F90F514AC3BFBB506CB1CDA6BE"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -220,7 +238,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_DFC1C0B86D9C18AD244AB3DDEAE89A0F"
+        "OwnerKey" = "8:_B44962717950491EBD1899D7FCD76462"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -232,13 +250,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B44962717950491EBD1899D7FCD76462"
+        "OwnerKey" = "8:_FCB89128EED8E7D417BE122D3351706C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_FCB89128EED8E7D417BE122D3351706C"
+        "OwnerKey" = "8:_DFC1C0B86D9C18AD244AB3DDEAE89A0F"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -636,6 +654,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8B82667E77294DB8B82F2916C84F9A25"
+            {
+            "SourcePath" = "8:..\\..\\docs\\Documentation Link.url"
+            "TargetName" = "8:Documentation Link.url"
+            "Tag" = "8:"
+            "Folder" = "8:_5A64820ECF1C43759F5C2BA93B7B9DD5"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8C13A0979E1D4AD4BC9353B780A040C8"
             {
             "SourcePath" = "8:..\\..\\docs\\Documentation Link.url"
@@ -760,7 +798,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:MidiShapeShifter.net, Version=1.0.11.3449, Culture=neutral, processorArchitecture=AMD64"
+            "AssemblyAsmDisplayName" = "8:MidiShapeShifter.net, Version=1.1.0.5004, Culture=neutral, processorArchitecture=AMD64"
                 "ScatterAssemblies"
                 {
                     "_B44962717950491EBD1899D7FCD76462"
@@ -858,6 +896,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DB667E121B16403A875864E14DFA3C4F"
+            {
+            "SourcePath" = "8:..\\..\\Graphics\\Logo\\MSS-Logo-Balloon-Square-50x50.ico"
+            "TargetName" = "8:MSS-Logo-Balloon-Square-50x50.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_5A64820ECF1C43759F5C2BA93B7B9DD5"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DFC1C0B86D9C18AD244AB3DDEAE89A0F"
             {
             "AssemblyRegister" = "3:1"
@@ -887,6 +945,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E040C1F90F514AC3BFBB506CB1CDA6BE"
+            {
+            "SourcePath" = "8:..\\..\\Graphics\\Logo\\MSS Logo Balloon - Square 50x50.png"
+            "TargetName" = "8:MSS Logo Balloon - Square 50x50.png"
+            "Tag" = "8:"
+            "Folder" = "8:_5A64820ECF1C43759F5C2BA93B7B9DD5"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E29D09B1CF924F16B207B3823FB2D430"
@@ -1142,26 +1220,26 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:MidiShapeShifterInstaller"
-        "ProductCode" = "8:{F8A7F7E4-7EDB-400A-8B4B-8AD5CE2CFCC9}"
-        "PackageCode" = "8:{1B5292DF-6B68-4DC0-B106-B454C9BEEB66}"
+        "ProductName" = "8:MidiShapeShifter"
+        "ProductCode" = "8:{E8A182F1-9670-4256-BC91-D376C7ADB714}"
+        "PackageCode" = "8:{C730C135-1877-47B0-991D-B5B2BE6D4806}"
         "UpgradeCode" = "8:{09722608-4566-4848-B2B8-387064B8147D}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
-        "DetectNewerInstalledVersion" = "11:TRUE"
+        "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.1.0"
         "Manufacturer" = "8:MidiShapeShifter"
         "ARPHELPTELEPHONE" = "8:"
-        "ARPHELPLINK" = "8:"
-        "Title" = "8:MidiShapeShifterInstaller"
+        "ARPHELPLINK" = "8:https://github.com/robianmcd/midi-shape-shifter/issues"
+        "Title" = "8:MidiShapeShifter"
         "Subject" = "8:"
         "ARPCONTACT" = "8:MidiShapeShifter"
-        "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:"
-        "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:"
+        "Keywords" = "8:Midi, Shape, Shifter, DAW, VST"
+        "ARPCOMMENTS" = "8:MIDI VST for mapping, generating, and transforming MIDI data."
+        "ARPURLINFOABOUT" = "8:https://github.com/robianmcd/midi-shape-shifter/"
+        "ARPPRODUCTICON" = "8:_DB667E121B16403A875864E14DFA3C4F"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"

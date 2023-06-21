@@ -1,41 +1,43 @@
-## Overview ##
+# midi-shape-shifter
+
+![logo](https://github.com/aminya/midi-shape-shifter/raw/master/Graphics/Logo/MSS%20Logo%20Balloon%20-%20Square.png)
+
+MIDI VST for mapping, generating, and transforming MIDI data.
+
+## Overview
 
 MIDI Shape Shifter (MSS) is a VST MIDI plugin for mapping, generating and transforming MIDI data. This plugin's simple and flexible interface is capable of satisfying a wide range of MIDI needs. For example, MIDI Shape Shifter could be used to:
-  * Apply a velocity curve
-  * Generate an LFO
-  * Create mappings between ranges of MIDI data
-  * Filter out specified MIDI data
-  * Apply midi compression or gate effects
-  * Automatically harmonize notes
-  * Create split/dual keyboard
-  * Transpose
-  * Control multiple parameters with a single knob
-  * etc
 
-<a href='http://www.youtube.com/watch?feature=player_embedded&v=B8kptILs7vw' target='_blank'><img src='http://img.youtube.com/vi/B8kptILs7vw/0.jpg' width='425' height=344 /></a>
+* Apply a velocity curve
+* Generate an LFO
+* Create mappings between ranges of MIDI data
+* Filter out specified MIDI data
+* Apply midi compression or gate effects
+* Automatically harmonize notes
+* Create split/dual keyboard
+* Transpose
+* Control multiple parameters with a single knob
+* etc
 
----
+[![alt text](http://img.youtube.com/vi/B8kptILs7vw/0.jpg)](http://www.youtube.com/watch?v=B8kptILs7vw)
+___
 
-## News ##
-**July 28 2013**: Released [Midi Shape Shifter 1.0.10-Beta](http://code.google.com/p/midi-shape-shifter/downloads/list). Several bugs were fixed in this release, the most notable of which was causing most people in continental Europe to not be able to use control points.
+## News
 
-**May 4 2013**:  Released [Midi Shape Shifter 1.0.8-Beta](http://code.google.com/p/midi-shape-shifter/downloads/list). If you want to help make Midi Shape Shifter better let us know what you think at the [MSS User Forum](https://groups.google.com/d/forum/midi-shape-shifter).
+**June 21 2023**: Released [Midi Shape Shifter 1.1.0](https://github.com/robianmcd/midi-shape-shifter/releases/download/v1.1.0/MidiShapeShifter-v1.1.0.zip). :tada: This fixes the loading issue because of dependencies. It updates the dependencies and revamps the build system to install and merge them automatically.
 
-**April 19 2013**:  Fixed an issue with the 64-bit install for MSS v1.0.7Beta. The updated installer is now available for download.
-**March 10 2013**:  Released [Midi Shape Shifter v1.0.7Beta](http://code.google.com/p/midi-shape-shifter/downloads/detail?name=MSS%20Installer%20v1.0.7Beta.exe). Added several bug fixes in this release mostly to do with the mapping dialog.
+___
 
----
+## Support
 
-## Support ##
-| **Forum** | [MSS User Forum](https://groups.google.com/d/forum/midi-shape-shifter) - Post your questions and comments here. |
-|:----------|:----------------------------------------------------------------------------------------------------------------|
-| **Contact** | Email: `mss-support@googlegroups.com`                                                                           |
+| **Forum**  | [MSS User Forum](https://groups.google.com/d/forum/midi-shape-shifter) - Post your questions and comments here.  |
+|---|---|
+|  **Contact**  | Email: `mss-support@googlegroups.com`  |
 
+___
 
----
+## Contribute
 
-
-## Contribute ##
 If you like this project and want to help out there is lots you can do.
 
 **Give your Feedback**
@@ -52,16 +54,17 @@ If you like this project and want to help out there is lots you can do.
 
 **Donate**
 
-> The program is completely free but if you want to donate then you can do so through `PayPal`. Not really sure what I'll use the money for but I'll try to find something that will help the project go further.
-> [![](https://dl.dropboxusercontent.com/u/20066539/Images/MSS/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=F6BUMTQGTUMDU&lc=US&item_name=MIDI%20Shape%20Shifter&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
+🤝 The program is free and open-source. You can show your support through `Patreon`:
 
+https://www.patreon.com/aminya
 
----
+or through `GitHub Sponsors`:
 
+https://github.com/sponsors/aminya
 
-## Features ##
+___
 
-![http://dl.dropbox.com/u/20066539/Images/MSS/MSS-Screenshot.png](http://dl.dropbox.com/u/20066539/Images/MSS/MSS-Screenshot.png)
+## Features
 
 There are 3 main components to the MIDI Shape Shifter interface.
 
