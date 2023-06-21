@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="ILRepacker" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+
+        <ItemGroup>
+            <InputAssemblies Include="$(OutputPath)\MidiShapeShifter.dll" />
+            <InputAssemblies Include="$(OutputPath)\Jacobi.Vst.Core.dll" />
+            <InputAssemblies Include="$(OutputPath)\Jacobi.Vst.Framework.dll" />
+            <InputAssemblies Include="$(OutputPath)\LBIndustrialCtrls.dll" />
+            <InputAssemblies Include="$(OutputPath)\NCalc.dll" />
+            <InputAssemblies Include="$(OutputPath)\Ninject.dll" />
+            <InputAssemblies Include="$(OutputPath)\ZedGraph.dll" />
+            <InputAssemblies Include="$(OutputPath)\ZedGraph.WinForms.dll" />
+        </ItemGroup>
+
+        <!-- Must be a fully qualified name -->
+        <!-- <ItemGroup>
+            <DoNotInternalizeAssemblies Include="ExampleAssemblyToMerge3" />
+        </ItemGroup> -->
+
+        <ILRepack
+            Parallel="true"
+            Internalize="true"
+            InternalizeExclude="@(DoNotInternalizeAssemblies)"
+            InputAssemblies="@(InputAssemblies)"
+            TargetKind="Dll"
+            OutputFile="$(OutputPath)\MidiShapeShifter.net.vstdll"
+        />
+
+    </Target>
+</Project>
+<!-- /ILRepack -->
