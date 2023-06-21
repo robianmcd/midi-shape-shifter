@@ -34,6 +34,7 @@
             this.versionLbl = new System.Windows.Forms.Label();
             this.homePageLbl = new System.Windows.Forms.Label();
             this.homePageLink = new System.Windows.Forms.LinkLabel();
+            this.authors = new System.Windows.Forms.Label();
             this.thanksLbl = new System.Windows.Forms.Label();
             this.versionValueLbl = new System.Windows.Forms.Label();
             this.vstNetLink = new System.Windows.Forms.LinkLabel();
@@ -102,10 +103,19 @@
             this.homePageLink.Text = "https://github.com/robianmcd/midi-shape-shifter";
             this.homePageLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.homePageLink_LinkClicked);
             //
+            // Authors
+            //
+            this.authors.AutoSize = true;
+            this.authors.Location = new System.Drawing.Point(9, 106);
+            this.authors.Name = "authors";
+            this.authors.Size = new System.Drawing.Size(67, 26);
+            this.authors.TabIndex = 10;
+            this.authors.Text = "Created By:\nRob (@robianmcd), Amin Yahyaabadi (@aminya)";
+            //
             // thanksLbl
             //
             this.thanksLbl.AutoSize = true;
-            this.thanksLbl.Location = new System.Drawing.Point(9, 106);
+            this.thanksLbl.Location = new System.Drawing.Point(9, 146);
             this.thanksLbl.Name = "thanksLbl";
             this.thanksLbl.Size = new System.Drawing.Size(67, 13);
             this.thanksLbl.TabIndex = 10;
@@ -122,7 +132,7 @@
             //
             // vstNetLink
             //
-            this.vstNetLink.Location = new System.Drawing.Point(19, 126);
+            this.vstNetLink.Location = new System.Drawing.Point(19, 166);
             this.vstNetLink.Margin = new System.Windows.Forms.Padding(0);
             this.vstNetLink.Name = "vstNetLink";
             this.vstNetLink.Size = new System.Drawing.Size(50, 13);
@@ -133,7 +143,7 @@
             //
             // iconzaLink
             //
-            this.iconzaLink.Location = new System.Drawing.Point(19, 146);
+            this.iconzaLink.Location = new System.Drawing.Point(19, 186);
             this.iconzaLink.Margin = new System.Windows.Forms.Padding(0);
             this.iconzaLink.Name = "iconzaLink";
             this.iconzaLink.Size = new System.Drawing.Size(50, 13);
@@ -148,10 +158,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.OkBtn;
-            this.ClientSize = new System.Drawing.Size(350, 204);
+            this.ClientSize = new System.Drawing.Size(400, 400);
             this.Controls.Add(this.iconzaLink);
             this.Controls.Add(this.vstNetLink);
             this.Controls.Add(this.versionValueLbl);
+            this.Controls.Add(this.authors);
             this.Controls.Add(this.thanksLbl);
             this.Controls.Add(this.homePageLink);
             this.Controls.Add(this.homePageLbl);
@@ -180,6 +191,7 @@
         private System.Windows.Forms.Label versionLbl;
         private System.Windows.Forms.Label homePageLbl;
         private System.Windows.Forms.LinkLabel homePageLink;
+        private System.Windows.Forms.Label authors;
         private System.Windows.Forms.Label thanksLbl;
         private System.Windows.Forms.Label versionValueLbl;
         private System.Windows.Forms.LinkLabel vstNetLink;
