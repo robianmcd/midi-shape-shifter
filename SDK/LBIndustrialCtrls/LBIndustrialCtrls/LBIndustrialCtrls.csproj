@@ -1,21 +1,8 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectGuid>{B4218BC9-9736-42B9-BC99-7903FDBEBA28}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <TargetFramework>net7.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <RootNamespace>LBIndustrialCtrls</RootNamespace>
-    <AssemblyName>LBIndustrialCtrls</AssemblyName>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <NoStdLib>False</NoStdLib>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -33,111 +20,47 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>IndustrialCtrls.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>bin\Debug\</OutputPath>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>Full</DebugType>
-    <Optimize>False</Optimize>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>bin\Release\</OutputPath>
-    <DebugSymbols>False</DebugSymbols>
     <DebugType>None</DebugType>
-    <Optimize>True</Optimize>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <RegisterForComInterop>False</RegisterForComInterop>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <BaseAddress>4194304</BaseAddress>
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="System.Design" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Base\LBIndustrialCtrlBase.cs">
+    <Compile Update="Base\LBIndustrialCtrlBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Base\LBIndustrialCtrlBase.Designer.cs">
-      <DependentUpon>LBIndustrialCtrlBase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Button\ButtonRenderer.cs" />
-    <Compile Include="Button\LBButton.cs">
+    <Compile Update="Button\LBButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Button\LBButton.Designer.cs">
-      <DependentUpon>LBButton.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Base\Renderer.cs" />
-    <Compile Include="Knob\KnobRenderer.cs" />
-    <Compile Include="Knob\LBKnob.cs">
+    <Compile Update="Knob\LBKnob.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Knob\LBKnob.Designer.cs" />
-    <Compile Include="Led\LBLed.cs">
+    <Compile Update="Led\LBLed.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Led\LBLed.Designer.cs">
-      <DependentUpon>LBLed.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Led\LedRenderer.cs" />
-    <Compile Include="Led\LB7SegmentDisplay.cs">
+    <Compile Update="Led\LB7SegmentDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Led\LB7SegmentDisplay.Designer.cs">
-      <DependentUpon>LB7SegmentDisplay.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Led\LB7SegmentDisplayRenderer.cs" />
-    <Compile Include="Meters\LBAnalogMeter.cs">
+    <Compile Update="Meters\LBAnalogMeter.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Meters\LBAnalogMeter.Designer.cs" />
-    <Compile Include="Meters\LBDigitalMeter.cs">
+    <Compile Update="Meters\LBDigitalMeter.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Meters\LBDigitalMeter.Designer.cs">
-      <DependentUpon>LBDigitalMeter.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Meters\LBDigitalMeterRenderer.cs" />
-    <Compile Include="Meters\LBMeterThreshold.cs" />
-    <Compile Include="Meters\MeterRenderer.cs" />
-    <Compile Include="Utils\ColorMng.cs" />
-    <Compile Include="Utils\MathFunc.cs" />
-    <EmbeddedResource Include="Button\LBButton.resx">
-      <DependentUpon>LBButton.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Knob\LBKnob.resx">
-      <DependentUpon>LBKnob.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Led\LBLed.resx">
-      <DependentUpon>LBLed.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Led\LB7SegmentDisplay.resx">
-      <DependentUpon>LB7SegmentDisplay.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Meters\LBDigitalMeter.resx">
-      <DependentUpon>LBDigitalMeter.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="IndustrialCtrls.snk" />
-    <None Include="Knob\Knob.bmp" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -172,7 +95,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <AssemblyTitle>LBIndustrialCtrls</AssemblyTitle>
+    <Description>.NET library controls for measure, visualization and commands</Description>
+    <Company>LBSoft di Bonotto Luca</Company>
+    <Product>LBIndustrialCtrls</Product>
+    <AssemblyVersion>2.1.0.%2a</AssemblyVersion>
   </PropertyGroup>
 </Project>
