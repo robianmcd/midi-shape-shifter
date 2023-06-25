@@ -1,4 +1,3 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32519.379
@@ -10,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MidiShapeShifter", "MidiSha
 		{DB003528-61D8-4FA6-B0B5-F4F09F1F9135} = {DB003528-61D8-4FA6-B0B5-F4F09F1F9135}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidiShapeShifterTest", "MidiShapeShifterTest\MidiShapeShifterTest.csproj", "{F51E9F9B-101C-4F76-92C3-F28904E58466}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MidiShapeShifterTest", "MidiShapeShifterTest\MidiShapeShifterTest.csproj", "{F51E9F9B-101C-4F76-92C3-F28904E58466}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D19470F9-7D1E-4385-AD34-C7D826649F89} = {D19470F9-7D1E-4385-AD34-C7D826649F89}
 	EndProjectSection
@@ -52,8 +51,8 @@ Global
 		{D19470F9-7D1E-4385-AD34-C7D826649F89}.Deploy|x64.Build.0 = Release|x64
 		{D19470F9-7D1E-4385-AD34-C7D826649F89}.Release|Any CPU.ActiveCfg = Release|x64
 		{D19470F9-7D1E-4385-AD34-C7D826649F89}.Release|Any CPU.Build.0 = Release|x64
-		{D19470F9-7D1E-4385-AD34-C7D826649F89}.Release|x64.ActiveCfg = Release|x64
-		{D19470F9-7D1E-4385-AD34-C7D826649F89}.Release|x64.Build.0 = Release|x64
+		{D19470F9-7D1E-4385-AD34-C7D826649F89}.Release|x64.ActiveCfg = Release|Any CPU
+		{D19470F9-7D1E-4385-AD34-C7D826649F89}.Release|x64.Build.0 = Release|Any CPU
 		{F51E9F9B-101C-4F76-92C3-F28904E58466}.All|Any CPU.ActiveCfg = Debug|x64
 		{F51E9F9B-101C-4F76-92C3-F28904E58466}.All|Any CPU.Build.0 = Debug|x64
 		{F51E9F9B-101C-4F76-92C3-F28904E58466}.All|x64.ActiveCfg = Release|x64
@@ -67,8 +66,8 @@ Global
 		{F51E9F9B-101C-4F76-92C3-F28904E58466}.Deploy|x64.ActiveCfg = Release|x64
 		{F51E9F9B-101C-4F76-92C3-F28904E58466}.Release|Any CPU.ActiveCfg = Release|x64
 		{F51E9F9B-101C-4F76-92C3-F28904E58466}.Release|Any CPU.Build.0 = Release|x64
-		{F51E9F9B-101C-4F76-92C3-F28904E58466}.Release|x64.ActiveCfg = Release|x64
-		{F51E9F9B-101C-4F76-92C3-F28904E58466}.Release|x64.Build.0 = Release|x64
+		{F51E9F9B-101C-4F76-92C3-F28904E58466}.Release|x64.ActiveCfg = Release|Any CPU
+		{F51E9F9B-101C-4F76-92C3-F28904E58466}.Release|x64.Build.0 = Release|Any CPU
 		{A5BC787D-A27A-427B-B616-5AC8CB43A06F}.All|Any CPU.ActiveCfg = Debug
 		{A5BC787D-A27A-427B-B616-5AC8CB43A06F}.All|Any CPU.Build.0 = Debug
 		{A5BC787D-A27A-427B-B616-5AC8CB43A06F}.All|x64.ActiveCfg = Release
