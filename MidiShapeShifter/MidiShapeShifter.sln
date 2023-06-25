@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidiShapeShifter", "MidiShapeShifter\MidiShapeShifter.csproj", "{D19470F9-7D1E-4385-AD34-C7D826649F89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MidiShapeShifter", "MidiShapeShifter\MidiShapeShifter.csproj", "{D19470F9-7D1E-4385-AD34-C7D826649F89}"
 	ProjectSection(ProjectDependencies) = postProject
 		{23A6C1AD-296B-4A10-A27A-ADFF30132902} = {23A6C1AD-296B-4A10-A27A-ADFF30132902}
 		{B4218BC9-9736-42B9-BC99-7903FDBEBA28} = {B4218BC9-9736-42B9-BC99-7903FDBEBA28}

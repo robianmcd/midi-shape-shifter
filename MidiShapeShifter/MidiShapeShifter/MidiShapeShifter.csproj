@@ -1,22 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D19470F9-7D1E-4385-AD34-C7D826649F89}</ProjectGuid>
+    <TargetFramework>net7.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MidiShapeShifter</RootNamespace>
-    <AssemblyName>MidiShapeShifter</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,323 +17,31 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Jacobi.Vst.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=fa678e13c1efc859, processorArchitecture=AMD64">
-      <HintPath>..\packages\VST.NET.x64.1.1\lib\net40\Jacobi.Vst.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Jacobi.Vst.Framework, Version=1.1.0.0, Culture=neutral, PublicKeyToken=fa678e13c1efc859, processorArchitecture=AMD64">
-      <HintPath>..\packages\VST.NET.x64.1.1\lib\net40\Jacobi.Vst.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Jacobi.Vst.Interop, Version=1.1.0.0, Culture=neutral, PublicKeyToken=fa678e13c1efc859, processorArchitecture=AMD64">
-      <HintPath>..\packages\VST.NET.x64.1.1\lib\net40\Jacobi.Vst.Interop.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="NCalc, Version=1.3.8.0, Culture=neutral, PublicKeyToken=973cde3f1cafed03, processorArchitecture=MSIL">
-      <HintPath>..\packages\ncalc.1.3.8\lib\NCalc.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject, Version=3.3.6.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.6\lib\net45\Ninject.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
     <Reference Include="System.configuration" />
-    <Reference Include="System.Core">
+    <Reference Update="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.DirectoryServices" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CSharpUtil\ConsumerBlockingQueue.cs" />
-    <Compile Include="CSharpUtil\ContractSerializer.cs" />
-    <Compile Include="CSharpUtil\CustomListUtils.cs" />
-    <Compile Include="CSharpUtil\CustomMathUtils.cs" />
-    <Compile Include="CSharpUtil\DrawingControl.cs" />
-    <Compile Include="CSharpUtil\EnumerableUtils.cs" />
-    <Compile Include="CSharpUtil\FileTreeFolderNode.cs" />
-    <Compile Include="CSharpUtil\LruCache.cs" />
-    <Compile Include="CSharpUtil\ReturnStatus.cs" />
-    <Compile Include="CSharpUtil\CustomStringUtil.cs" />
-    <Compile Include="CSharpUtil\SendRateLimittedEvent.cs" />
-    <Compile Include="CSharpUtil\TwoWayDictionary.cs" />
-    <Compile Include="CSharpUtil\XyPoint.cs" />
-    <Compile Include="Framework\VstParameters.cs" />
-    <Compile Include="Framework\VstPluginPersistence.cs" />
-    <Compile Include="Framework\VstTimeInfoTransmitter.cs" />
-    <Compile Include="Ioc\IocMgr.cs" />
-    <Compile Include="Logger.cs" />
-    <Compile Include="Midi\MidiUtil.cs" />
-    <Compile Include="Mss\BaseSettingsFileMgr.cs" />
-    <Compile Include="Mss\EventLogger.cs" />
-    <Compile Include="Mss\Mapping\ActiveMappingInfo.cs" />
-    <Compile Include="Mss\Mapping\GraphableMappingManager.cs" />
-    <Compile Include="Mss\Mapping\IBaseGraphableMappingManager.cs" />
-    <Compile Include="Mss\ParameterMsgHandler.cs" />
-    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\ParameterMsgRangeEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\NoteMsgRangeEntryMetadata.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\ParameterMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticParameterMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\NoteMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticNoteMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\Factory_StaticMssMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\IMssMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\IStaticMssMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticCCMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticChanAftertouchMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticGeneratorMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticGeneratorModifyMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticGenericRelitivePosMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticMidiMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticMssMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticNoteOffMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticNoteOnMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticPitchBendMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticPolyAftertouchMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticRelBarPeriodPosMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\StaticRelTimePeriodPosMsgInfo.cs" />
-    <Compile Include="Mss\MssVersionInfo.cs" />
-    <Compile Include="Mss\Parameters\Factory_MssParamInfo.cs" />
-    <Compile Include="Mss\Parameters\MssIntegerParamInfo.cs" />
-    <Compile Include="Mss\Parameters\MssNumberParamInfo.cs" />
-    <Compile Include="Mss\Parameters\MssWaveformParamInfo.cs" />
-    <Compile Include="Mss\Parameters\ParameterEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Mss\Parameters\ParameterEditor.Designer.cs">
-      <DependentUpon>ParameterEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Mss\Parameters\VariableParamMgr.cs" />
-    <Compile Include="Mss\SettingsFileInfo.cs" />
-    <Compile Include="Mss\TransformPresetMgr.cs" />
-    <Compile Include="Mss\Evaluation\EvaluationControlPointInput.cs" />
-    <Compile Include="Mss\Evaluation\EvaluationControlPointJob.cs" />
-    <Compile Include="Mss\Evaluation\EvaluationCurveInput.cs" />
-    <Compile Include="Mss\Evaluation\EvaluationCurveJob.cs" />
-    <Compile Include="Mss\Generator\GenEntryHistoryInfo.cs" />
-    <Compile Include="Mss\Generator\GeneratorDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Mss\Generator\GeneratorDlg.Designer.cs">
-      <DependentUpon>GeneratorDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Mss\Generator\GenEntryConfigInfo.cs" />
-    <Compile Include="Mss\Generator\GeneratorMappingEntry.cs" />
-    <Compile Include="Mss\Generator\GeneratorMappingManager.cs" />
-    <Compile Include="Mss\Generator\IGeneratorMappingEntry.cs" />
-    <Compile Include="Mss\Generator\IGeneratorMappingManager.cs" />
-    <Compile Include="Mss\Generator\MssEventGenerator.cs" />
-    <Compile Include="Mss\ICurveShapeInfoContainer.cs" />
-    <Compile Include="Mss\CurveShapeInfo.cs" />
-    <Compile Include="Mss\Evaluation\IEvaluator.cs" />
-    <Compile Include="Mss\IMssMsgProcessor.cs" />
-    <Compile Include="Mss\IMssMsgRange.cs" />
-    <Compile Include="Mss\Parameters\IMssParameterViewer.cs" />
-    <Compile Include="Mss\Mapping\IGraphableMappingManager.cs" />
-    <Compile Include="Mss\Mapping\IMappingEntry.cs" />
-    <Compile Include="Mss\Mapping\IMappingManager.cs" />
-    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\ChanAftertouchMsgRangeEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\Factory_MssMsgRangeEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\MsgRangeEntryMetadataWithGenSelect.cs" />
-    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\PolyAftertouchMsgRangeEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\CCMsgRangeEntryMetadata.cs" />
-    <Compile Include="Framework\DummyAudioHandler.cs" />
-    <Compile Include="Mss\Mapping\EntryFieldInterpretingUtils.cs" />
-    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\GeneratorModifyMsgRangeEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\GeneratorMsgRangeEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MappingEntry.cs" />
-    <Compile Include="Mss\Mapping\MappingManager.cs" />
-    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\NoteOffMsgRangeEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\NoteOnMsgRangeEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\PitchBendMsgRangeEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\MidiMsgRangeEntryMetadata.cs" />
-    <Compile Include="Mss\Mapping\MssMsgRangeEntryMetadataTypes\MssMsgRangeEntryMetadata.cs" />
-    <Compile Include="Mss\MssComponentHub.cs" />
-    <Compile Include="Mss\MssConstants.cs" />
-    <Compile Include="Mss\Evaluation\EvaluationJob.cs" />
-    <Compile Include="Mss\Evaluation\Evaluator.cs" />
-    <Compile Include="Mss\Evaluation\EvaluationInput.cs" />
-    <Compile Include="Mss\MssEvent.cs" />
-    <Compile Include="Mss\MssFileSystemLocations.cs" />
-    <Compile Include="Mss\MssMsg.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\CCMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\ChanAftertouchMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\Factory_MssMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\GeneratorMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\GeneratorModifyMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\GenericRelitivePosMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\IFactory_MssMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\MidiMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\MssMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\NoteOffMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\NoteOnMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\PitchBendMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\PolyAftertouchMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\RelBarPeriodPosMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgInfoTypes\RelTimePeriodPosMsgInfo.cs" />
-    <Compile Include="Mss\MssMsgProcessor.cs" />
-    <Compile Include="Mss\MssMsgRange.cs" />
-    <Compile Include="Mss\MssMsgUtil.cs" />
-    <Compile Include="Mss\Mapping\MappingDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Mss\Mapping\MappingDlg.Designer.cs">
-      <DependentUpon>MappingDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Framework\MidiHandler.cs" />
-    <Compile Include="Framework\Plugin.cs" />
-    <Compile Include="Framework\PluginCommandStub.cs" />
-    <Compile Include="Framework\PluginEditor.cs" />
-    <Compile Include="Framework\PluginPrograms.cs" />
-    <Compile Include="Mss\Parameters\MssParamInfo.cs" />
-    <Compile Include="Mss\Parameters\MssParameters.cs" />
-    <Compile Include="Mss\MssProgramMgr.cs" />
-    <Compile Include="Mss\Relays\DryMssEventRelay.cs" />
-    <Compile Include="Mss\Relays\IDryMssEventOutputPort.cs" />
-    <Compile Include="Mss\Relays\IDryMssEventInputPort.cs" />
-    <Compile Include="Mss\Relays\IDryMssEventRelay.cs" />
-    <Compile Include="Mss\Relays\IHostInfoOutputPort.cs" />
-    <Compile Include="Mss\Relays\IHostInfoInputPort.cs" />
-    <Compile Include="Mss\Relays\HostInfoRelay.cs" />
-    <Compile Include="Mss\Relays\IHostInfoRelay.cs" />
-    <Compile Include="Mss\Relays\IWetMssEventOutputPort.cs" />
-    <Compile Include="Mss\Relays\IWetMssEventInputPort.cs" />
-    <Compile Include="Mss\Relays\IWetMssEventRelay.cs" />
-    <Compile Include="Mss\Relays\WetMssEventRelay.cs" />
-    <Compile Include="Mss\SendMssEventsToHostTrigger.cs" />
-    <Compile Include="Mss\DryMssEventHandler.cs" />
-    <Compile Include="Mss\CommandQueue.cs" />
-    <Compile Include="Mss\UI\AboutPage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Mss\UI\AboutPage.Designer.cs">
-      <DependentUpon>AboutPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Mss\UI\EqGraphConfig.cs" />
-    <Compile Include="Mss\UI\EquationEditorDlg.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Mss\UI\EquationEditorDlg.Designer.cs">
-      <DependentUpon>EquationEditorDlg.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Mss\UI\PluginEditorView.cs">
+    <Compile Update="Mss\UI\PluginEditorView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Mss\UI\PluginEditorView.Designer.cs">
-      <DependentUpon>PluginEditorView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="Settings.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Mss\Generator\GeneratorDlg.resx">
-      <DependentUpon>GeneratorDlg.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Mss\Parameters\ParameterEditor.resx">
-      <DependentUpon>ParameterEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Mss\UI\AboutPage.resx">
-      <DependentUpon>AboutPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Mss\UI\EquationEditorDlg.resx">
-      <DependentUpon>EquationEditorDlg.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Mss\Mapping\MappingDlg.resx">
-      <DependentUpon>MappingDlg.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Mss\UI\PluginEditorView.resx">
-      <DependentUpon>PluginEditorView.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Resources\images\imgAddBlue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgDeleteBlue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgDeleteGrey.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgDownBlue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgDownGrey.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgEditBlue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgEditGrey.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgNotebookBlue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgOpenBlue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgSaveBlue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgUpBlue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Class Diagrams\HighLevelStructure.cd" />
-    <None Include="Resources\images\imgUpGrey.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -368,60 +61,18 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\images\imgLeftBlue.png" />
+    <ProjectReference Include="..\..\SDK\LBIndustrialCtrls\LBIndustrialCtrls\LBIndustrialCtrls.csproj" />
+    <ProjectReference Include="..\..\SDK\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj" />
+    <ProjectReference Include="..\..\SDK\ZedGraph\source\ZedGraph\ZedGraph.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\images\imgLeftGrey.png" />
+    <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.18.2" />
+    <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
+    <PackageReference Include="ncalc" Version="1.3.8" />
+    <PackageReference Include="Ninject" Version="3.3.6" />
+    <PackageReference Include="System.DirectoryServices" Version="7.0.1" />
+    <PackageReference Include="VST.NET.x64" Version="1.1.0" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgRightBlue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgRightGrey.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgTrashBlue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgTrashGrey.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgOpenGrey.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgSaveGrey.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgAboutBlue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgLogoWide.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\images\imgHelp.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\SDK\LBIndustrialCtrls\LBIndustrialCtrls\LBIndustrialCtrls.csproj">
-      <Project>{b4218bc9-9736-42b9-bc99-7903fdbeba28}</Project>
-      <Name>LBIndustrialCtrls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SDK\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj">
-      <Project>{23a6c1ad-296b-4a10-a27a-adff30132902}</Project>
-      <Name>ZedGraph.WinForms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\SDK\ZedGraph\source\ZedGraph\ZedGraph.csproj">
-      <Project>{db003528-61d8-4fa6-b0b5-f4f09f1f9135}</Project>
-      <Name>ZedGraph</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
   <PropertyGroup>
     <PostBuildEvent>set ProjectDir=$(ProjectDir)
 set TargetDir=$(TargetDir)
@@ -430,14 +81,16 @@ set TargetFileName=$(TargetFileName)
 powershell "$(ProjectDir)/postbuild.ps1"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <AssemblyTitle>MidiShapeShifter</AssemblyTitle>
+    <Description>VST MIDI Plugin for mapping generating and transforming midi data.</Description>
+    <Company>SpeqSoft</Company>
+    <AssemblyVersion>1.1.0.%2a</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
-  <Import Project="..\packages\ILRepack.Lib.MSBuild.Task.2.0.18.2\build\ILRepack.Lib.MSBuild.Task.targets" Condition="Exists('..\packages\ILRepack.Lib.MSBuild.Task.2.0.18.2\build\ILRepack.Lib.MSBuild.Task.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\ILRepack.Lib.MSBuild.Task.2.0.18.2\build\ILRepack.Lib.MSBuild.Task.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ILRepack.Lib.MSBuild.Task.2.0.18.2\build\ILRepack.Lib.MSBuild.Task.targets'))" />
-  </Target>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Configuration>Release</Configuration>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Configuration>Release</Configuration>
+  </PropertyGroup>
 </Project>
